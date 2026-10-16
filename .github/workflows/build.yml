@@ -55,13 +55,14 @@ jobs:
       - name: 站点自检
         run: python tools/verify_site.py
 
-      # ---- 4. ★ 开启 Pages（如果还没开）----
-      # enablement: true 让 GitHub 自己把 Pages 打开，
-      # 省掉「去 Settings → Pages 手动点」那一步。
+      # ---- 4. 配置 Pages ----
+      # ★ 这里【不能】用 enablement: true 去自动开启 Pages ——
+      #   GitHub 的默认 GITHUB_TOKEN 没有创建 Pages 站点的权限（需要个人令牌）。
+      #   所以第一次要你手动开一次：
+      #     仓库 → Settings → Pages → Source 选「GitHub Actions」
+      #   开完之后，以后每次 push 都会自动部署，全绿。
       - name: 配置 Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       # ---- 5. 打包站点 ----
       - name: 上传 Pages 产物
