@@ -1,10 +1,12 @@
-name: build & check
+name: 构建并部署
 
-# 每次 push 自动：
-#   1. 内容质检（结构 / need 覆盖率 / 密钥泄露 / 个人信息）
+# 每次 push 自动做四件事：
+#   1. 内容质检（结构 / need 覆盖率 / ★ 密钥泄露 / 个人信息）
 #   2. 重新构建站点
 #   3. 站点自检（死链 / 样式）
-# 任何一步失败 → 整个 workflow 红，提醒你处理
+#   4. 开启 Pages（如果需要）并部署
+#
+# 任何一步失败 → 整个 workflow 变红，去 Actions 页面看日志。
 
 on:
   push:
@@ -12,6 +14,19 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+
+# ---- 权限 ----
+# pages / id-token 是部署 Pages 必须的。
+# contents 保持 read —— 这个工作流**不回写仓库**，避免它自己推自己形成死循环。
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同时只跑一个部署，别互相踩
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -40,37 +55,27 @@ jobs:
       - name: 站点自检
         run: python tools/verify_site.py
 
-      # ---- 4. 有改动就提交回去（构建产物跟着源码走）----
-      - name: 提交构建产物
-        if: github.event_name == 'push'
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add site/
-          if git diff --staged --quiet; then
-            echo "构建产物没有变化"
-          else
-            git commit -m "chore: 重新构建站点 [skip ci]"
-            git push
-          fi
+      # ---- 4. ★ 开启 Pages（如果还没开）----
+      # enablement: true 让 GitHub 自己把 Pages 打开，
+      # 省掉「去 Settings → Pages 手动点」那一步。
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
-      # ---- 5. 部署到 GitHub Pages ----
+      # ---- 5. 打包站点 ----
       - name: 上传 Pages 产物
-        if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
   deploy:
     needs: build
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: 部署到 GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
