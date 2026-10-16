@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第二章　Coze 工作流、对话流与多 Agent · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="02-第二章-Coze工作流与多Agent.html" class="cur">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 4 · 低代码 Agent 平台实战 › <strong>第二章</strong></div>
+<h1>第二章　Coze 工作流、对话流与多 Agent</h1>
+<div class="subtitle">阶段 4 · 低代码 Agent 平台实战　|　平台实操　|　难度 ★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>第一章你搭出来的 Bot 很强，但它有个<strong>天花板</strong>：它是一步步"对话"的。</p>
+<p>想象一个需求："帮我把历史人物<strong>诸葛亮</strong>的生平做成一条完整视频，要有文案、配音、字幕、背景音乐。"——如果让 Bot 在对话里硬干，它会：先生成文案、再让用户等、再生成图片……用户得在旁边一直陪着，中间任何一步断了整条就废了。</p>
+<p><strong>单轮对话撑不起多步骤、批量、有依赖关系的复杂任务。</strong></p>
+<p>Coze 给出了三段式升级路线：</p>
+<ul><li><strong>工作流（Workflow）</strong>：把多步骤任务编排成固定流水线，自动执行、自动批量；</li><li><strong>对话流（Chatflow）</strong>：为"边聊边办"的场景做精细化流程控制；</li><li><strong>多 Agent 模式</strong>：一个用户请求，分给多个"专家 Agent"协作处理，最后汇总。</li></ul>
+<p>这一章解决的就是：<strong>怎么把 Bot 从"单兵作战"升级成"多兵种协同的流水线团队"。</strong></p>
+</div>
+<div class="map"><span class="tag">在全局框架里的位置</span>
+<span class="node">上一章：用"人设 + 插件 + 知识库 + 记忆 + 对话体验"搭出了能用的单一 Bot</span>
+<span class="node"><span class="here">本章 ← 你在这里：给 Bot 装流水线（工作流）、装流程大脑（对话流）、装团队（多 Agent）</span></span>
+<span class="node">下一章：板块结束——你已能独立搭出"企业级"的低代码 AI 应用并发布</span>
+</div>
+<div class="note info"><span class="t">这一章你要达到什么程度</span>
+<p>10+ 个知识点，核心是<strong>三个案例</strong>：一个历史人物视频工作流（工作流全流程）、一个智能助教（对话流与分支）、一个多专家协作小助手（多 Agent）。最后看怎么用 Coze 做带界面的"应用"并发布上线。</p>
+<p>要求：<strong>能说清三个问题</strong>——①工作流解决了 Bot 的什么薄弱点？②对话流和普通 Bot 差在哪？③为什么有些任务要在 Bot 里挂 Agent 团队？</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 工作流：把"临场发挥"变成"固定流程"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>如果你要的不只是聊天，而是<strong>一条固定的业务流水线</strong>（生成视频、批量处理、数据转换），让模型在对话里"临场发挥"太不可靠了：</p>
+<ul><li>步骤容易漏（生成了文案忘了配图）；</li><li>不能批量（一张张让用户等，早就烦了）；</li><li>不能重试（某一步失败，整段推倒重来）；</li><li>过程不可控（模型自由发挥，输出格式不稳定）。</li></ul>
+<p>这些都是"单轮对话"模式的先天短板。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>工作流（Workflow）</strong>就是把任务拆成节点、按顺序连成线，让 Bot 像工厂流水线一样自动执行。</p>
+<p>它解决的正是上面四个痛点：</p>
+<ul><li><strong>固化流程</strong>：每个节点做什么、用什么参数，提前画好；</li><li><strong>批量处理</strong>：批处理节点一次喂入数组，逐条执行；</li><li><strong>条件控制</strong>：分支节点根据条件走不同路径；</li><li><strong>重跑与调试</strong>：单节点可测、可一键重跑，不必全盘推倒。</li></ul>
+<p>Coze 的节点类型够覆盖绝大多数场景：</p>
+<table>
+<tr><th>节点类型</th><th>干什么用</th><th>一句话记法</th></tr>
+<tr><td><strong>LLM 节点</strong></td><td>调用大模型做文本生成/意图识别（可写系统提示词）</td><td>"写、读、判断的都找它"</td></tr>
+<tr><td><strong>批处理节点</strong></td><td>对传入的数组逐条处理</td><td>"循环干活"</td></tr>
+<tr><td><strong>代码节点</strong></td><td>写 Python 做数据类型转换、逻辑计算</td><td>"搬数据、做算术"</td></tr>
+<tr><td><strong>插件节点</strong></td><td>调用平台插件（生图、搜素、AI 生视频……）</td><td>"调外部能力"</td></tr>
+<tr><td><strong>问题节点</strong></td><td>工作流中途向用户提问，收集输入</td><td>"等用户回答"</td></tr>
+<tr><td><strong>分支节点（条件判断）</strong></td><td>根据条件走不同分支</td><td>"分岔路口"</td></tr>
+<tr><td><strong>多 Agent 节点</strong></td><td>启动 Agent 处理子任务</td><td>"分活给专家"</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>把工作流和普通 Bot 混着用</td><td>先想清楚：是多步骤固定任务就走工作流，是开放对话就人设+知识库</td></tr>
+<tr><td>节点太多、线画得乱</td><td>只把"必须有顺序、有依赖"的步骤画成工作流，能并行的就并行</td></tr>
+<tr><td>上来就想把整个 Bot 塞进工作流</td><td>工作流是"干一件确定的事"的工具，不是整个 Bot 的替代品</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 历史人物视频实战：先拆需求，再画流程</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>从"我会用工作流节点"到"我能做出一条视频"之间，横着一个最常见的错误：<strong>不拆需求就开拖</strong>。</p>
+<p>用户说"做一条诸葛亮生平视频"，如果直接去画节点，你根本不知道该画什么节点、每个节点喂什么参数。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>任何复杂任务，<strong>第一步永远是拆解</strong>。把"生成历史人物生平视频"拆成一条明确的流水线：</p>
+<ol><li><strong>生成文案</strong>：LLM 根据人物名生成生平故事文案；</li><li><strong>生成图片提示词</strong>：LLM 把文案拆成画面描述（一次多个）；</li><li><strong>批量生成图片</strong>：批处理 + 文生图插件，一次出多张；</li><li><strong>生成视频提示词</strong>：LLM 为每张图生成动态描述；</li><li><strong>批量生成视频</strong>：AI 文生视频，图转视频；</li><li><strong>提取视频 URL</strong>：从返回结果里取出可下载的地址数组；</li><li><strong>配音</strong>：文本转语音，生成旁白音频；</li><li><strong>加字幕</strong>：自动给视频配字幕；</li><li><strong>拼接</strong>：多段视频拼成完整一条；</li><li><strong>加背景音乐</strong>：配上 BGM 收尾；</li><li><strong>输出结果</strong>：结束节点交给用户。</li></ol>
+<p>画出来就是一条从"输入人物名"到"输出成品视频"的单向流水线。<strong>需求拆得越细，节点画得越准</strong>——每个小步骤对应 1~2 个节点，工作流自然成型。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>直接开拖节点，画到一半发现漏了步骤</td><td>没先拆需求，边画边想</td></tr>
+<tr><td>步骤画太粗（一个"生成视频"节点搞定一切）</td><td>一个节点只干一件事，干不了的拆开</td></tr>
+<tr><td>拆完又堆回单 LLM 节点</td><td>把拆好的步骤合并，等于白拆</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 文案节点：LLM 把名字变成故事</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>流水线第一步：用户只输入"诸葛亮"三个字，但后面所有环节（配图、配音、字幕）都要基于<strong>一条完整、连贯、有画面感的生平文案</strong>。谁来完成从名字到文案的转换？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>用 <strong>LLM 节点</strong>，写一个"生成历史人物生平故事文案"的提示词：</p>
+<pre>你是专业的历史科普文案创作者。
+用户输入：{历史人物名}
+请生成 500 字左右的生平故事文案：
+1. 开头引出人物时代背景与简介
+2. 选取 3-5 个关键生平事迹，按时间顺序讲述
+3. 结尾总结人物历史贡献
+要求：语言生动、有画面感、适合配音。</pre>
+<p>关键点在于：<strong>每次生成的故事要相对可控</strong>——因为后面还会复用这段文案生成图片、配音。所以提示词里明确"结构固定、字数区间、适合配音"，而不是让模型放飞。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>文案太长，配音/字幕被迫截断</td><td>设定字数上限，配音按文案长度裁剪</td></tr>
+<tr><td>文案结构每次都不一样</td><td>固定"开头-事迹-结尾"三段式，输出可预期</td></tr>
+<tr><td>文案口语化差、像百科词条</td><td>提示词里明确"要生动、有画面感、适合配音口播"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 批量生图：一组提示词配一组图片</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>文案是<strong>一整段话</strong>，但做视频配图需要<strong>多张风格一致的画面</strong>（每段故事一张）。总不能手工把文案拆成 5 段再让用户排队等 5 次生图。</p>
+<p>需求是：<strong>自动拆文案 → 一次生成 N 张配图。</strong></p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>用两个节点接力：</p>
+<ol><li><strong>LLM 节点（生成图片提示词）</strong>：把文案拆成多段，每段生成一句"古风插画风、电影感构图"的图片提示词，输出为<strong>数组</strong>；</li><li><strong>批处理节点 + 文生图插件</strong>：数组每进来一项，就自动触发一次生图，结果仍是数组（一张图对应一段文案）。</li></ol>
+<p>关键在于<strong>批处理节点</strong>：给它喂一个数组，它会逐条执行内部逻辑，输出还是数组——这就是"批量"的真相：循环处理，而不是手写循环。</p>
+<p>讲义里对提示词质量的要求值得记住：图片提示词要写明<strong>风格（古风插画/写实/水墨）、内容主体、画面要素、色调</strong>，这样批量出的图才风格统一。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>生成的图风格五花八门</td><td>图片提示词没统一风格前缀，每段自由发挥</td></tr>
+<tr><td>批处理只跑了一条</td><td>输入没传成数组，或输出没配置数组类型</td></tr>
+<tr><td>图数和文案段数对不上</td><td>LLM 拆分结果不稳定，要在提示词里固定段数</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 批量视频：图片动起来，还要"安全化"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>图片有了，但视频平台对<strong>历史人物的生成内容有安全要求</strong>——空手生成历史名人视频，很容易触犯平台的"不得歪曲历史真实人物形象"类规则，轻则生成失败，重则账号受限。</p>
+<p>同时：5 张图对应 5 条视频，又要<strong>一条条手动等</strong>吗？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两步走：</p>
+<ol><li><strong>LLM 节点做"提示词安全化"</strong>：把图片提示词改写成安全的动态视频提示词。讲义里的方法是"移除 → 弱化 → 重构"三步：</li></ol>
+<ul><li><strong>移除</strong>：去掉涉及真实历史人物身份/真实事件的描述；</li><li><strong>弱化</strong>：把"再现某历史人物生平"降级为"古风人物场景"；</li><li><strong>重构</strong>：用"山水、园林、书生遥望"等画面性语言重述，保留氛围不保留人物实名。</li></ul>
+<ol><li><strong>批处理 + AI 文生视频插件</strong>：把安全化后的提示词数组逐条生成视频，结果仍是数组。</li></ol>
+<p>这一步也提示了做低代码应用的心态：<strong>平台能力（文生视频）+ 提示词工程（安全化）= 能用的效果。</strong>卡住你的往往不是工具，而是如何组织输入。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>视频生成失败/被拒</td><td>提示词含真实人物名与真实事迹，未做安全化</td></tr>
+<tr><td>视频内容与图片不匹配</td><td>视频提示词没参考图片信息（插件支持输入图时务必传入）</td></tr>
+<tr><td>只生成了一条</td><td>批处理输入输出的数组类型配置不对</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 提取 URL：插件返回的是"对象"，我们要的是"地址"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>文生视频插件返回的结果是一个<strong>对象/数组嵌套结构</strong>（每条不含下载地址，而是含 URL 的复杂对象）。但下一步拼接视频时，需要的是<strong>纯 URL 字符串数组</strong>。</p>
+<p>类型对不上，流水线就断了。这是数据工程问题——<strong>格式转换</strong>。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两类节点搞定：</p>
+<ul><li><strong>插件节点（如"米核 AI 剪映小助手"）</strong>：调用 <code>get_url</code> 之类的工具，从视频对象里把可访问的 URL 提取出来；</li><li><strong>代码节点</strong>：写 Python 做最终的类型统一——比如讲义的 <code>objs_to_str_list</code>，把对象数组转成字符串数组：</li></ul>
+<pre>def main(params):
+    results = params.get(&quot;results&quot;, [])
+    # 将每项提取为 str 类型的 URL
+    urls = [str(r[&quot;url&quot;]) for r in results if r.get(&quot;url&quot;)]
+    # 规范传输，避免可空类型问题
+    return {&quot;results&quot;: [urls] if urls else [&quot;&quot;]}</pre>
+<p>&gt; 小结一下：<strong>LLM 管"内容生成"，插件管"能力调用"，代码节点管"数据类型与格式"。</strong> 三者分工，别混着用。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>下游节点拿到的是 {} 而不是 URL</td><td>没做字段提取，把整个对象传下去了</td></tr>
+<tr><td>代码节点报类型错误</td><td>输入字段名和插件返回字段名对不上，先看插件返回结构</td></tr>
+<tr><td>空数组导致下游报错</td><td>返回前做空值兜底（如 [""]），别让空数组穿透</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 配音与字幕：让成品"能听能看"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>视频画面齐了，但<strong>没有旁白和字幕</strong>——用户看一条默片，体验大打折扣。要求是：把文案转成语音，并给视频加上跟随文案的字幕。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两个插件节点接力：</p>
+<ol><li><strong>语音合成</strong>（如"语音合成"功能）：输入文案 + 选择音色，输出<strong>音频文件 URL</strong>；</li><li><strong>视频处理插件</strong>：</li></ol>
+<ul><li><strong>VideoRemux</strong>：转格式/分流处理；</li><li><strong>VideoAutoText</strong>（自动添加字幕）：把文案/语音转文字后烧录成字幕，输入视频 URL + 文案，输出带字幕的视频。</li></ul>
+<p>这条链路的本质是<strong>"文本 → 音频 → 烧录"三步</strong>：文案既用于配音，又用于字幕，两条产线共用同一份文案数据。这种"一份数据多处复用"正是工作流的优势——<strong>数据在节点间流动，而不是人手工搬运</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>每条视频都要单独处理，慢</td><td>配音/字幕可批量：把 URL 数组喂给批处理</td></tr>
+<tr><td>字幕时间轴对不上画面</td><td>输入的是"文案全文"而非逐句时序文本时，字幕工具会按语音自动对齐</td></tr>
+<tr><td>音色选错，旁白像朗读</td><td>选叙事/解说类音色，别选客服/新闻腔</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 拼接与背景音乐：流水线最后一公里</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>所有素材都齐了：N 段带字幕的视频 + 1 条旁白 + 1 段背景音乐。最后要把它们合成<strong>一条完整成片</strong>——手工剪辑是不可能的。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>收尾三个节点：</p>
+<ol><li><strong>代码节点</strong>：把"多段视频 URL"转成标准数组（和讲解 ⑥ 同一套路，<code>objs_to_str_list</code> 复用）；</li><li><strong>VideoConcat 插件</strong>：按顺序把多段视频<strong>拼接</strong>成一条（顺序 = 数组顺序，所以文案顺序在源头就不能乱）；</li><li><strong>合并背景音乐</strong>：</li></ol>
+<ul><li>背景音乐文件先上传到临时文件站（讲义用 tmpfiles 这类服务拿到公网 URL）；</li><li><strong>video_audio_merge</strong> 把视频与音乐合成；</li><li>也可以直接插入"音乐/音效"媒体资源作为节点；</li></ul>
+<ol><li><strong>结束节点</strong>：把最终视频 URL 作为工作流输出，交给 Bot 回复给用户。</li></ol>
+<p>至此，<strong>"诸葛亮生平视频"工作流完整跑通</strong>：人物名 → 完整成片 URL。整套流程零手工、可批量、可重试——这是对话式 Bot 做不到的。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>拼接顺序乱了</td><td>数组顺序不可靠，源头拆分文案时就要保证顺序</td></tr>
+<tr><td>BGM 盖过旁白</td><td>合并参数里调音量平衡，先听再调</td></tr>
+<tr><td>结束节点返回的是整个对象</td><td>结束节点只保留最终 URL 字段，输出格式要精简</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 把工作流接入智能体：让用户觉得"在和 Bot 聊天"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>工作流本身是<strong>被动执行器</strong>——用户没法直接"跟工作流说话"，只能在对话里等它跑完。而用户的心智是：<strong>我在跟一个会做视频的助手聊天。</strong></p>
+<p>要解决的问题：<strong>怎么让"调用工作流"成为 Bot 的一种普通能力？</strong></p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>三步接好：</p>
+<ol><li><strong>发布工作流</strong>：在工作流右上角"发布"，打开"在工作流中的聊天中生效/可被 Bot 引用"；</li><li><strong>在 Bot 对话里引用</strong>：Bot 添加该工作流作为能力（类似插件），并给它配置一个<strong>库块触发描述</strong>（LibraryBlock）——告诉模型"什么时候该调它、输入是什么、输出是什么"；</li><li><strong>在 Bot 人设中约束调用规则</strong>：</li></ol>
+<pre># 视频生成
+当用户需要生成历史人物生平视频时：
+1. 调用「历史人物视频工作流」，参数为人物名
+2. 称呼用户、解释流程、&quot;正在为您生成，大约需要几分钟&quot;
+3. 工作流返回视频链接后，将链接直接发给用户</pre>
+<p>这样用户打出"做个诸葛亮的视频"，Bot 自动识别意图 → 调工作流 → 等待 → 把成品链接发回来。<strong>对话是外壳，工作流是内核。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>Bot 不主动调工作流</td><td>人设里没写触发条件，或库块描述写得含糊</td></tr>
+<tr><td>调用了但参数没填</td><td>库块描述里要写清"参数=人物名，从用户对话中提取"</td></tr>
+<tr><td>工作流跑 3 分钟用户以为卡死</td><td>人设里安排"正在生成"的过程话术，并提前说明耗时</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 对话流：边聊边办事的"流程大脑"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>工作流适合"执行型"任务。但另一类场景它管不了：<strong>智能助教</strong>——学生问"Git 怎么撤销提交？"。</p>
+<ul><li>回答要<strong>先判断</strong>这个问题的意图（是命令类、概念类还是闲聊？）；</li><li>回答要<strong>检索知识库</strong>（不能空答）；</li><li>检索成功和失败要<strong>走不同路径</strong>（失败要引导转人工/换个问法）。</li></ul>
+<p>这些"边对话边决策"的逻辑，用普通 Bot 的提示词写不清，用固定工作流又太死。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>对话流（Chatflow）</strong> = 面向对话场景定制的流程图：节点 + 判断 + 分支，但每一轮都可以"暂停、追问、再继续"。</p>
+<p>对比一下三种形态：</p>
+<table>
+<tr><th>形态</th><th>特点</th><th>适用</th></tr>
+<tr><td>普通 Bot</td><td>全自动，对话即答案</td><td>简单问答</td></tr>
+<tr><td>工作流</td><td>固定流水线，无对话</td><td>多步骤执行任务</td></tr>
+<tr><td><strong>对话流</strong></td><td>流程可分支、可追问，边聊边走</td><td>智能助教、多轮业务办理</td></tr>
+</table>
+<p>核心差异一句话：<strong>工作流是"跑一段程序"，对话流是"开一场有流程的对话"。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>对话流画成固定工作流</td><td>忘了加"意图识别 + 分支"，流程就死板了</td></tr>
+<tr><td>每个分支都用 LLM 节点重写答案</td><td>复用同一个 LLM 节点，用不同条件输入区分</td></tr>
+<tr><td>分不清对话流 vs 工作流</td><td>记口诀：要人回答的用对话流，不需要人回答的用工作流</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 智能助教案例：意图识别 + 知识库双分支</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>给一个"智能助教"画对话流：学生随便提问，助教要<strong>判断问题类型、按需检索知识库、失败时体面兜底</strong>。这需要"先看到内容，再决定走哪条路"的能力——固定 Bot 做不到。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>照着讲义画一条主干：</p>
+<ol><li><strong>意图识别节点</strong>：LLM 判断用户问题属于哪类——编程技术问题 / 课程内容咨询 / 闲聊 / 其他；</li><li><strong>分支/选择器</strong>：按意图分流（如技术问题走"知识库检索"支路，闲聊直接回复）；</li><li><strong>知识库检索节点</strong>：在课程知识库（<strong>Agent常见问答.xlsx</strong> 这类表格转成的知识库）中检索答案；</li><li><strong>RAG 判断节点</strong>：检索结果与问题相关吗？</li></ol>
+<ul><li><strong>成功分支</strong>：LLM 基于检索内容组织回答；</li><li><strong>失败分支</strong>：礼貌说明"我暂时没找到相关内容"，并引导用户换一种问法或转人工；</li></ul>
+<ol><li><strong>结束节点</strong>：输出最终回答。</li></ol>
+<p>这条流程你能在讲义里看到一个关键细节：<strong>右侧分支形成的"半成品"（比如直接复述检索结果），不代表可以交付</strong>——判断节点之后的两条路必须各自完整成文，别让用户看到半成品。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>意图识别分错类</td><td>提示词里给足意图类别定义 + 示例，别让模型自由发挥</td></tr>
+<tr><td>知识库检索结果很烂还硬答</td><td>RAG 判断节点没兜底，失败分支要"换问法/转人工"</td></tr>
+<tr><td>失败分支直接报错</td><td>失败也要说人话：引导 + 建议，别暴露技术错误</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ 多 Agent：一个 Bot 背后多个"专家"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"小助手"要同时扮演几个角色：<strong>分配任务的调度员、催作业的班主任、答疑的助教、处理投诉的客服</strong>。这些角色<strong>知识不同（班主任管作业表、助教管知识库）、语气不同（班主任严厉、客服温和）、职责不同</strong>——硬塞进一个 Bot 的人设，会互相干扰（班主任用客服口吻催作业就很怪）。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>多 Agent 模式</strong>：把不同职责拆成独立 Agent，用一个"主 Agent"（分发任务 Agent）统一入口、按需求分发给对应专家，最后汇总返回。</p>
+<p>拿小助手举例：</p>
+<ul><li><strong>分发任务 Agent（总入口）</strong>：识别用户请求属于哪类 → 发给对应 Agent；</li><li><strong>班主任 Agent</strong>：管作业提交/催缴/班级通知（可带专属人设"严格班主任口吻"）；</li><li><strong>助教 Agent</strong>：管技术答疑（接知识库）；</li><li><strong>投诉专员 Agent</strong>：管投诉建议（接到后<strong>写数据表</strong>留档，再回复用户）。</li></ul>
+<p>多 Agent 的核心价值：<strong>每个 Agent 可以有自己独立的人设、知识库、工具、记忆</strong>，互不污染；主 Agent 负责"把任务交给对的人"。就像公司分工：前台接单，各部门干活。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>所有活还堆在主 Agent 身上</td><td>主 Agent 只做"分发"，具体干活的必须下放到子 Agent</td></tr>
+<tr><td>子 Agent 回答风格混了</td><td>各子 Agent 独立设人设，别共用</td></tr>
+<tr><td>Agent 太多、互相套娃</td><td>2-4 个职责清晰的子 Agent 最稳，多了难调</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p13"><div class="head"><span class="no">13</span>⑬ 全局跳转条件：多 Agent 的"回家通道"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>多 Agent 组队后有个新问题：学生被分发到"投诉专员"，投诉完<strong>就出不来了</strong>——接下来想问"下节课作业"，还是投诉专员在回（它不懂作业）。<strong>子 Agent 之间互相"串门"、没有统一出口，整个体验就乱了。</strong></p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>用<strong>全局跳转条件（Global Jump Conditions）</strong>给多 Agent 设置"回家通道"：</p>
+<ul><li>定义<strong>全局条件</strong>（如"学生询问课程/作业相关 → 跳回分发任务 Agent"）；</li><li>每个子 Agent 回答后都会<strong>先检查全局条件</strong>，命中就自动跳转到总入口，而不是留在当前 Agent 里继续硬聊；</li><li>这样多 Agent 团队就有了"<strong>统一入口 + 统一出口</strong>"，对话永远不会困在某个子 Agent 里。</li></ul>
+<p>配套操作（讲义里有）：投诉专员接到投诉，把内容<strong>写入数据表</strong>（投诉记录表：学号、内容、时间、处理状态）——既留档，也让跳转后主 Agent 知道"这位同学反映过什么"。</p>
+<p>一句话总结：<strong>多 Agent 解决"谁来干活"，全局跳转解决"怎么回来"——两者缺一不可。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>子 Agent 答完就"失联"</td><td>没配全局跳转，用户被卡死在子 Agent</td></tr>
+<tr><td>跳转条件写得太宽泛</td><td>条件会影响所有 Agent，写清楚触发边界</td></tr>
+<tr><td>投诉没留档</td><td>建立数据表写入规则：字段、时机都要在提示词里定死</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p14"><div class="head"><span class="no">14</span>⑭ Coze 应用开发：从"聊天"到"带界面的 Web 应用"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>到目前为止，用户都是<strong>"打字聊"</strong>。但很多需求是<strong>表单驱动的</strong>：比如"智能投资顾问"——用户要填一堆选项（资金量、风险偏好、投资周期），填完点个按钮，出推荐方案。</p>
+<p>让用户在聊天框里打字填表？体验太差。<strong>需要一个真正的界面。</strong></p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>Coze 的<strong>应用（App）</strong>就是为此设计的：带 UI 的 AI 应用，可以搭建页面、写数据表、绑事件。智能投资顾问案例的四个组件：</p>
+<ol><li><strong>界面搭建</strong>：页面放表单组件（客户基本信息、资金量、风险偏好、投资周期下拉等）+ 结果展示区；</li><li><strong>数据表</strong>：创建业务数据表（客户信息表/产品推荐表），表单提交时写入；</li><li><strong>工作流输出产品推荐</strong>：后端接一个"产品推荐"工作流（基于 XYZ 公司证券产品知识库与客户画像，输出推荐基金产品）——注意知识库素材（<code>XYZ公司证券产品介绍.md</code>）就是这类场景的输入；</li><li><strong>按钮事件绑定</strong>：点"提交/生成推荐"按钮 → 触发工作流 → 结果填入界面。</li></ol>
+<p>这套组合拳的意义：<strong>Coze 已经不只是在做聊天机器人，而是在做完整的 AI Web 应用</strong>——前端界面、后端工作流、数据存储都由一个平台托管。这也是"低代码 Agent 平台实战"这一板块的落脚点。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>界面表单和工作流参数对不上</td><td>表单字段名要与工作流入参名保持一致</td></tr>
+<tr><td>按钮点了没反应</td><td>事件绑定没配工作流，或工作流未发布</td></tr>
+<tr><td>数据表当"界面变量"用</td><td>数据表是持久化存储，界面+工作流是计算，分层设计</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p15"><div class="head"><span class="no">15</span>⑮ 发布智能体：把 Bot 送到用户手里</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>Bot 做完了，它还在<strong>开发环境里自嗨</strong>——用户怎么用？</p>
+<p>发布要回答：<strong>发布到哪些渠道、以什么形式呈现在用户面前。</strong></p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>Coze 的发布能力把"成品 Bot"分发到常用平台：</p>
+<ul><li><strong>豆包 / Coze 商店</strong>：官方渠道，一键上架（走审核）；</li><li><strong>微信 / 抖音 / 头条 /QQ</strong>：以小程序或服务号形态嵌入（需各平台配置）；</li><li><strong>网页/API / SDK</strong>：嵌入自家网站或 App（企业常用）；</li><li><strong>团队共享</strong>：发布到团队空间，成员直接使用。</li></ul>
+<p>发布前 checklist：</p>
+<ol><li>人设、知识库、工作流、插件<strong>全部经过测试</strong>（先在自己里反复触发每个能力）；</li><li>发布设置里选择<strong>渠道</strong>与<strong>功能开放范围</strong>；</li><li>导出<strong>发布记录</strong>与<strong>调试日志</strong>——上线后监控用户实际触发情况，迭代优化。</li></ol>
+<p>至此板块闭环：<strong>用低代码平台，把一个想法从"人设配置"一路带到"线上可用"。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>上线后 Bot 表现和本地测试不一致</td><td>发布版本与最新版本没对齐，发布前检查"用哪个版本上线"</td></tr>
+<tr><td>审核不通过</td><td>人设里含违规内容（敏感话题、夸大宣传），先自查</td></tr>
+<tr><td>发布后没有监控</td><td>用数据模块看用户问题分布，反哺知识库补充</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章把 Bot 从"单兵"升级成了"军团"：</p>
+<ul><li><strong>工作流</strong>：把多步骤任务变成固定流水线（文案 → 成片），支持批量、重试、条件分支；节点 = LLM/批处理/代码/插件/问题/分支/多 Agent；</li><li><strong>实战一条龙</strong>：拆需求 → 文案 → 图片 → 视频（记得安全化提示词）→ 提 URL → 配音字幕 → 拼接加 BGM → 结束输出；</li><li><strong>接回对话</strong>：发布 → 库块描述 → 人设约束调用规则，让 Bot 变成"会调工作流的助手"；</li><li><strong>对话流</strong>：面向"边聊边决策"的场景，意图识别 + 知识库检索 + 成功/失败分支；</li><li><strong>多 Agent</strong>：各司其职的子 Agent + 分发总入口 + 全局跳转条件，组成"前台接单、后台分工"的团队；</li><li><strong>应用与发布</strong>：用界面 + 数据表 + 工作流搭 Web 应用，再发布到豆包/微信/网页等渠道。</li></ul>
+<p>到这一章为止，"低代码 Agent 平台实战"全部完成：<strong>你能从零把一个 AI 想法，配置成一个可用的应用。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>工作流解决的"单轮对话模式"四大痛点是什么？</li><li>生成历史人物视频时，为什么提示词要做"安全化"？口诀是什么？</li><li>工作流怎么"接入"Bot？需要哪三个环节？</li><li>对话流和普通 Bot、工作流的核心区别是什么？</li><li>"智能助教"案例里，知识库检索结果不满足条件时走哪个分支？做了什么？</li><li>多 Agent 模式帮"小助手"解决了什么问题？全局跳转条件又解决了什么？</li><li>Coze 的"应用"和"Bot"有什么区别？智能投资顾问案例用到了哪四个组件？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Coze 平台实战</a>
+<a href="#"><span class="k">素材</span>XYZ公司证券产品介绍.md（应用开发/投资顾问知识库素材）</a>
+<a href="#"><span class="k">素材</span>Agent常见问答.xlsx（智能助教知识库素材）</a>
+<a href="#"><span class="k">素材</span>music.mp3 / 风景.jpeg（工作流素材）</a>
+<a href="https://www.coze.cn/home" target="_blank" rel="noopener"><span class="k">官网</span>Coze 国内版</a>
+<a href="https://www.coze.cn/docs/guides/welcome" target="_blank" rel="noopener"><span class="k">官网</span>Coze 国内版官方文档</a>
+<a href="https://www.coze.com/home" target="_blank" rel="noopener"><span class="k">官网</span>Coze 国际版</a>
+<a href="https://ngrok.com" target="_blank" rel="noopener"><span class="k">文档</span>ngrok 内网穿透</a>
+</div>
+<div class="pager">
+<a href="01-第一章-Coze平台入门与Bot构建.html">← 第一章　Coze 平台入门与 Bot 构建</a>
+<a class="nxt" href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html">第一章　大模型核心原理 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="工作流：把&quot;临场发挥&quot;变成&quot;固定流程&quot;"><span class="n">1</span>工作流：把"临场发挥"变成"固定流程"</a>
+  <a href="#p2" title="历史人物视频实战：先拆需求，再画流程"><span class="n">2</span>历史人物视频实战：先拆需求，再画流程</a>
+  <a href="#p3" title="文案节点：LLM 把名字变成故事"><span class="n">3</span>文案节点：LLM 把名字变成故事</a>
+  <a href="#p4" title="批量生图：一组提示词配一组图片"><span class="n">4</span>批量生图：一组提示词配一组图片</a>
+  <a href="#p5" title="批量视频：图片动起来，还要&quot;安全化&quot;"><span class="n">5</span>批量视频：图片动起来，还要"安全化"</a>
+  <a href="#p6" title="提取 URL：插件返回的是&quot;对象&quot;，我们要的是&quot;地址&quot;"><span class="n">6</span>提取 URL：插件返回的是"对象"，我们要的是"地址"</a>
+  <a href="#p7" title="配音与字幕：让成品&quot;能听能看&quot;"><span class="n">7</span>配音与字幕：让成品"能听能看"</a>
+  <a href="#p8" title="拼接与背景音乐：流水线最后一公里"><span class="n">8</span>拼接与背景音乐：流水线最后一公里</a>
+  <a href="#p9" title="把工作流接入智能体：让用户觉得&quot;在和 Bot 聊天&quot;"><span class="n">9</span>把工作流接入智能体：让用户觉得"在和 Bot 聊天"</a>
+  <a href="#p10" title="对话流：边聊边办事的&quot;流程大脑&quot;"><span class="n">10</span>对话流：边聊边办事的"流程大脑"</a>
+  <a href="#p11" title="智能助教案例：意图识别 + 知识库双分支"><span class="n">11</span>智能助教案例：意图识别 + 知识库双分支</a>
+  <a href="#p12" title="多 Agent：一个 Bot 背后多个&quot;专家&quot;"><span class="n">12</span>多 Agent：一个 Bot 背后多个"专家"</a>
+  <a href="#p13" title="全局跳转条件：多 Agent 的&quot;回家通道&quot;"><span class="n">13</span>全局跳转条件：多 Agent 的"回家通道"</a>
+  <a href="#p14" title="Coze 应用开发：从&quot;聊天&quot;到&quot;带界面的 Web 应用&quot;"><span class="n">14</span>Coze 应用开发：从"聊天"到"带界面的 Web 应用"</a>
+  <a href="#p15" title="发布智能体：把 Bot 送到用户手里"><span class="n">15</span>发布智能体：把 Bot 送到用户手里</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第七章　环境变量与磁盘挂载管理 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="07-第七章-环境变量与磁盘挂载管理.html" class="cur">第七章　环境变量与磁盘挂载管理</a>
+  <a href="08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 18 · 云原生开发环境与 DevOps 工具链 › <strong>第七章</strong></div>
+<h1>第七章　环境变量与磁盘挂载管理</h1>
+<div class="subtitle">阶段 18 · 云原生开发环境与 DevOps 工具链　|　Linux 基础　|　难度 ★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>两台"看不见的系统"在幕后决定你的体验：<strong>环境变量</strong> 和 <strong>磁盘挂载</strong>。</p>
+<ul><li>为什么你敲 <code>java</code>、<code>mysql</code> 命令系统"认得"？因为 PATH 环境变量里存着命令的地址。很多人配 JAVA_HOME 时把 PATH 覆盖了，重启后连 ls 都找不到——这个坑后面装 JDK 必踩。</li><li>为什么新加一块硬盘，系统里根本"看不到"它？因为硬盘要经过<strong>分区 → 格式化 → 挂载</strong>三步才出现在目录树里，而且默认挂载重启就丢。不会配 fstab，重启一次数据目录就消失了。</li></ul>
+<p>这一章先讲环境变量（PATH、export、profile 文件、source），再完整走一遍"新硬盘从零到能用且重启不丢"的全流程（df/lsblk 查看、fdisk 分区、mkfs 格式化、mount 挂载、fstab 永久挂载）。配完这章，你才算真正"驯服"了这台机器。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一章</strong>：打包压缩与文件查找管道——会备份、会找了</span>
+<span class="node"><span class="here">本章 ← 你在这里：环境变量（命令从哪来）+ 磁盘管理（数据放哪去）</span></span>
+<span class="node"><strong>下一章</strong>：软件安装与进程服务管理——配好环境变量和挂载，开始装 JDK/Tomcat/MySQL，跑服务和进程</span>
+<span class="node"><strong>阶段终点</strong>：云原生开发环境与 DevOps 工具链，环境变量和挂载是容器卷与云盘配置的前置知识</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>环境变量部分"背三件事"：PATH 是什么、export 怎么用、改了文件要 source。磁盘部分建议<strong>真的加一块虚拟硬盘跟着走一遍</strong>（VMware 设置里加一块 20G 的盘），全程一条龙做完印象最深——所有命令都是实操出来的，别只看。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 环境变量：PATH 就是"命令的通讯录"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>为什么敲 <code>ls</code>、<code>ps</code>、<code>java</code> 系统直接执行了？系统怎么知道这些命令在哪个目录？——全靠 PATH 这个环境变量。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>PATH 里存着一串目录路径</strong>（冒号分隔）。你敲一个命令时，Shell 按顺序到这些目录里找同名文件，找到就执行：</p>
+<pre>echo $PATH
+# 输出类似：/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+echo $JAVA_HOME     # 没配过的话输出空行（变量不存在而已）</pre>
+<p>两个关键点：</p>
+<ul><li>查变量要加 <code>$</code>：<code>echo $PATH</code> 打印值，<code>echo PATH</code> 只打印字母 PATH；</li><li>PATH 的顺序就是查找顺序，第 1 个目录里没有才找第 2 个。</li></ul>
+<p>自定义变量示例：</p>
+<pre>MY_NAME=dev
+echo $MY_NAME       # 输出 dev</pre>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td><code>echo PATH</code> 输出了个字母 PATH</td><td>忘了 <code>$</code>；变量引用必须写 <code>$PATH</code></td></tr>
+<tr><td>新装的命令敲名字找不到</td><td>它不在 PATH 列表里：要么把目录加进 PATH，要么敲全路径执行</td></tr>
+<tr><td>变量赋值带空格报错（name = dev）</td><td>赋值号两边<strong>不能有空格</strong>：写 <code>name=dev</code></td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 系统级 vs 用户级：/etc/profile 和 ~/.profile</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>配 JAVA_HOME，是写给所有用户用，还是只给自己用？不同层面的配置放哪？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>配置分两层：</p>
+<table>
+<tr><th>层级</th><th>文件</th><th>生效对象</th><th>使用场景</th></tr>
+<tr><td>系统级</td><td>/etc/profile</td><td>所有用户的登录环境</td><td>JDK、全局 PATH 等公共配置</td></tr>
+<tr><td>用户级</td><td>~/.profile（或 ~/.bash_profile）</td><td>当前用户</td><td>个人别名、个人工具路径</td></tr>
+</table>
+<p>注意：还有 /etc/environment 等辅助文件，但记住这两个主力就够日常用。</p>
+<p>选择原则：<strong>只给自己用的放用户级，动了不应影响别人的公共配置放系统级</strong>。改系统级 = 影响全机器，动手前三思。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>在 /etc/profile 里乱加变量，其他用户环境全乱了</td><td>系统级配置影响所有人；个人偏好一律放 ~/.profile</td></tr>
+<tr><td>改了 ~/.profile 当前终端没效果</td><td>新配置只对<strong>新登录的会话</strong>生效（详见第 ③ 点的 source）</td></tr>
+<tr><td>分不清 ~/.profile 和 /etc/profile</td><td>带 ~ 的是当前用户家目录下的（私人），带 /etc 的是系统的（公共）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ export 与 source：怎么让配置"活过来"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>配好了变量，怎么让当前命令行立刻生效？export 和 source 分别是干什么的？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两件事分开记：</p>
+<pre># ① export：把【当前 shell】里的变量传给子进程（临时生效）
+export MY_NAME=dev
+export JAVA_HOME=/usr/local/jdk
+export PATH=$PATH:$JAVA_HOME/bin    # 追加而不是覆盖！</pre>
+<pre># ② source：重新执行一遍配置文件（让文件里的配置在当前会话生效）
+source /etc/profile
+# 等价简写：. /etc/profile</pre>
+<table>
+<tr><th>手段</th><th>生效范围</th><th>什么时候用</th></tr>
+<tr><td>export 直接敲</td><td>仅当前终端</td><td>临时测试</td></tr>
+<tr><td>写入 profile + source</td><td>当前终端立即 + 以后登录永久</td><td>正式安装（JDK 等）</td></tr>
+</table>
+<p><strong>最经典的坑</strong>：配置 PATH 时不带 <code>$PATH</code>，直接 <code>export PATH=/opt/jdk/bin</code>——把原有目录全覆盖了，连 ls、vim 都找不到了。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>export PATH=/opt/jdk/bin 之后，ls、vim 全"command not found"</td><td>覆盖了 PATH！恢复方法：<code>export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:$PATH</code> 或重开终端；<strong>永远用 $PATH:追加</strong></td></tr>
+<tr><td>改了 /etc/profile 但当前终端没变化</td><td>profile 只在登录时读；执行 <code>source /etc/profile</code> 让当前会话立即生效</td></tr>
+<tr><td>新开一个终端配置又"没了"</td><td>export 只在当前 shell 有效；正式配置请写进 profile 文件，别只敲 export</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ df：磁盘还剩多少</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>服务器跑着跑着报"磁盘空间不足"，怎么一眼看出哪个分区满了？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>df -h          # -h 人性化单位（G/M）
+df -T          # -T 显示文件系统类型（ext4、xfs…）</pre>
+<p>输出理解：每一行是一个文件系统（分区挂载点），重点看 <strong>Use% 列</strong>：</p>
+<pre>文件系统        大小  已用  可用  Use% 挂载点
+/dev/sda1      50G   45G   2.4G   95% /</pre>
+<p>Use% 超过 90% 就要警惕了；空间找回来靠第 ⑥ 点的 find -size 定位大文件。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>df 显示 / 满了，但 ls 单目录看不大</td><td>df 看的是"整个文件系统"的用量，不是当前目录；到 / 下用 du -x 或 find -size 找大头</td></tr>
+<tr><td>想精确定位哪个目录最占空间</td><td>df 给不了；用 <code>du -sh /要查目录</code> 逐级排查</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ lsblk：系统里有几块盘、几个分区</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>机器上到底有几块硬盘？每块盘分了几区？加的新盘为什么"看不到"？——lsblk 一览无余。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>lsblk              # 树状显示所有块设备和分区
+lsblk -f           # -f 额外显示文件系统类型和 UUID</pre>
+<p>输出长这样：</p>
+<pre>NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+sda      8:0    0  20G  0 disk
+├─sda1   8:1    0   1G  0 part /boot
+└─sda2   8:2    0  19G  0 part /
+sdb      8:16   0  20G  0 disk          ← 新盘：无分区，所以&quot;看不到&quot;</pre>
+<ul><li><strong>sda = 第一块盘，sdb = 第二块</strong>（sda、sdb 的排号随时可能随插拔变化）；</li><li>磁盘下面挂着分区（sda1、sda2）和挂载点；</li><li>新加的盘 sdb 没有分区、没有挂载点，所以在文件系统里"隐身"——接下来 ⑥⑦⑧ 把它变出来。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>新盘在系统里看不到</td><td>它没有分区/文件系统/挂载点，df 自然不会显示；用 lsblk 确认它在</td></tr>
+<tr><td>以为 sda/sdb 编号固定</td><td>编号是<strong>探测顺序</strong>，插拔可能变；关键场景（fstab，见第 ⑨ 点）用 UUID 而不是盘符</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ fdisk 分区：给新硬盘划地盘</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>sdb 还是一整块"白纸"，怎么把它划成能用的分区（比如先建 1 个分区占满全盘）？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>交互式分区工具，操作流程固定：</p>
+<pre>fdisk /dev/sdb        # 对第二块盘分区（千万别对 sda 动手！）</pre>
+<p>进入交互菜单后依次按键：</p>
+<pre>n        # new：新建分区
+p        # 主分区（primary）
+1        # 分区号 1
+回车      # 起始扇区，默认即可
+回车      # 结束扇区，默认 = 占满剩余空间
+w        # write：把方案写入磁盘（关键一步！）</pre>
+<p>其中 <strong>p 打印分区表</strong>、<strong>q 不保存退出</strong>、<strong>d 删除分区</strong>。完成后 <code>fdisk -l</code> 或 <code>lsblk</code> 看到 <code>/dev/sdb1</code>。</p>
+<p>背景知识：老式 MBR 分区表最多 4 个主分区、单分区上限 2TB；超过 2TB 或分区数更多的场景要用 <strong>GPT</strong> 分区表（fdisk 新版默认 GPT，或用 gdisk/parted）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>配了半天，fdisk -l 没变化</td><td>忘了按 <code>w</code>；w 才真正写入，q 是放弃！</td></tr>
+<tr><td>对着正在用的盘（如 sda）敲 fdisk</td><td>会破坏数据；<strong>操作前先 lsblk 确认盘符</strong>，新盘才敢动</td></tr>
+<tr><td>分区报"no free sectors"</td><td>空间都被占了/表满了；删一个分区或换 GPT</td></tr>
+<tr><td>MBR 只能 4 个主分区，建第 5 个失败</td><td>用扩展分区或把表转 GPT；学习场景 1-2 个分区够用</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ mkfs 格式化：给分区装上"文件系统"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>sdb1 建好了，但 df 还是不显示？——分区还差一步：<strong>格式化</strong>（建文件系统）。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>文件系统</strong>是"目录怎么组织、数据怎么定位"的规则：Windows 用 NTFS/FAT32，Linux 常用 ext4、xfs。</p>
+<pre>mkfs -t ext4 /dev/sdb1     # 指定类型格式化
+mkfs.ext4 /dev/sdb1        # 等价写法（ext4 专用）
+mkfs.xfs /dev/sdb1         # xfs 格式（CentOS 默认）</pre>
+<p>⚠️ 警告：<strong>格式化会清空该分区所有数据</strong>。这步是"把分区变成空白可用"，请确认盘符无误再执行。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>格式化 sda1 把系统盘清了</td><td>盘符写错了！格式化<strong>不可逆</strong>，操作前 lsblk 反复确认</td></tr>
+<tr><td>mkfs 报"设备忙"（busy）</td><td>该分区已被挂载/被占用；先卸载（umount）再格式化</td></tr>
+<tr><td>忘了格式化直接挂载</td><td>挂载会失败："wrong fs type"——必须先 mkfs 建文件系统</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ mount / umount：临时挂载与卸载</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>分区格式化好了，怎么让它出现在目录树里能被访问？——<strong>挂载</strong>：把一个目录当作入口"接入"分区。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>Linux 没有"打开 D 盘"这个动作，一切访问都通过目录树。挂载 = <strong>把分区挂到一个空目录上</strong>，之后访问这个目录 = 访问这个分区：</p>
+<pre>mkdir /data                    # 先准备一个空目录当挂载点
+mount /dev/sdb1 /data          # 把 sdb1 挂到 /data
+df -h                          # 确认挂载成功（/data 一行出现）
+umount /data                   # 卸载（挂载点里没有进程占用时才能卸）</pre>
+<p>注意事项：</p>
+<ul><li><strong>挂载点是目录</strong>：卸载后再 mount 其他分区，直接用同一个目录也行；</li><li>卸载时该目录下不能有进程在用，否则报 <code>target is busy</code>。</li></ul>
+<p>方法步骤就三步：<strong>mkfs 建文件系统 → mkdir 建挂载点 → mount 挂上</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>挂载到有内容的目录，原内容不见了</td><td>挂载会"盖住"目录原内容（不是删除！）；卸载后内容就回来了。别往挂载点里塞重要东西</td></tr>
+<tr><td>umount 报 "target is busy"</td><td>有进程在用该目录：<code>lsof /data</code> 找出进程，关掉后再卸载</td></tr>
+<tr><td>挂完重启又没了</td><td>mount 是临时的！要开机自动挂载走第 ⑨ 点 fstab</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ fstab 永久挂载：重启也不丢</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>mount 的盘一重启就消失，每次手动挂太蠢。怎么让系统开机自动挂载？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>改 <code>/etc/fstab</code>（filesystem table），加一行"开机自动挂载"规则。格式<strong>六个字段缺一不可</strong>：</p>
+<pre>设备  挂载点  文件系统类型  挂载选项  dump  fsck</pre>
+<p>用 UUID 最稳（盘符 sda/sdb 会变，UUID 唯一不变）：</p>
+<pre># 先查 UUID
+blkid /dev/sdb1
+# 输出：/dev/sdb1: UUID=&quot;xxxx-xxxx&quot; TYPE=&quot;ext4&quot;</pre>
+<p>然后编辑 /etc/fstab 追加一行：</p>
+<pre>UUID=xxxx-xxxx  /data  ext4  defaults  0  0</pre>
+<table>
+<tr><th>字段</th><th>含义</th></tr>
+<tr><td>第 1 列</td><td>设备（UUID 或 /dev/sdX1）</td></tr>
+<tr><td>第 2 列</td><td>挂载点目录 /data</td></tr>
+<tr><td>第 3 列</td><td>文件系统类型 ext4/xfs</td></tr>
+<tr><td>第 4 列</td><td>挂载选项（默认写 defaults）</td></tr>
+<tr><td>第 5 列</td><td>dump 备份标记（0 不备份）</td></tr>
+<tr><td>第 6 列</td><td>fsck 检查顺序（0 不检查）</td></tr>
+</table>
+<p><strong>改完先 <code>mount -a</code> 验证</strong>（重新读 fstab 尝试全部挂载），成功无误再重启——fstab 写错可能开机卡住进不了系统。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>改完 fstab 直接重启，结果开机起不来</td><td>fstab 任何一个字段错都可能启动失败（紧急模式）；<strong>先 <code>mount -a</code> 试</strong>，成功再重启</td></tr>
+<tr><td>盘符 sdb 变 sdc 后挂载失效</td><td>这就是要用 <strong>UUID 而不是 /dev/sdb1</strong> 的原因——UUID 不随插拔变</td></tr>
+<tr><td>fstab 里少写一个字段</td><td>六字段缺一不可，少一段 mount -a 就报错</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 系统状态检测：看网卡、看内核、看内存、看谁登录过</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>接手一台服务器，想快速摸底：什么系统？内存多大？谁来过？运行了多久？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>一条命令一个维度，全部背下来：</p>
+<pre>ip addr                      # 网卡和 IP 地址
+uname -a                     # 内核版本、主机名等
+cat /etc/redhat-release      # 发行版信息（redhat 系）
+free -h                      # 内存使用（-h 人性化）
+last                         # 最近登录记录（谁、什么时候、从哪来）
+history                      # 当前用户敲过的命令历史
+uptime                       # 运行时长 + 平均负载</pre>
+<p>重点解读 <strong>uptime 的负载</strong>：</p>
+<pre>load average: 0.30, 0.15, 0.10</pre>
+<p>三个数字分别是 <strong>1 / 5 / 15 分钟的平均负载</strong>——它是"排队等 CPU/IO 的任务数"，<strong>不是 CPU 占用率</strong>。0.5 不是"用了 50% CPU"，而是"平均 0.5 个任务在等/在跑"；负载接近或超过 CPU 核数才是压力大的信号。</p>
+<p>内存解读优先看 <strong>available</strong>（可用量），而不是 used——Linux 会拿空闲内存做缓存，used 大不代表不够用。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 load average 当 CPU 使用率</td><td>负载是"排队任务数"，CPU 使用率是"忙碌百分比"，两码事；1/5/15 分钟三个时间窗，不是 5/10/15</td></tr>
+<tr><td>free 显示 used 占 90% 就以为内存不够</td><td>Linux 把空闲内存用作缓存（cache/buffer），真正要看的指标是 available</td></tr>
+<tr><td>history / last 能查出"谁干过坏事"</td><td>可以辅助排查，但这俩都可能被清除/伪造，不能当唯一证据</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>PATH 是什么</td><td>命令查找目录列表；<code>echo $PATH</code> 查看，配置时永远 <code>$PATH:新目录</code> 追加</td></tr>
+<tr><td>配置放哪</td><td>系统级 /etc/profile（所有人）；用户级 ~/.profile（自己）；改完 source 立即生效</td></tr>
+<tr><td>export 和 source</td><td>export 当前 shell 临时生效；source 重读配置文件让配置立刻活</td></tr>
+<tr><td>怎么看磁盘</td><td>df -h（用量）+ lsblk（盘/分区结构）；加 -f 看 UUID</td></tr>
+<tr><td>新盘三步</td><td>fdisk 分区（n→p→1→回车→回车→w）→ mkfs 格式化 → mkdir+mount 挂载</td></tr>
+<tr><td>永久挂载</td><td>/etc/fstab 写六字段（UUID 挂载点 类型 选项 0 0），先 mount -a 验证再重启</td></tr>
+<tr><td>系统状态</td><td>ip addr / uname / free -h / last / uptime；load average 是 1/5/15 分钟平均负载</td></tr>
+</table>
+<p>一句话总结：<strong>环境变量靠"追加 PATH + export + 写 profile + source"来配置和维护，新硬盘则按"fdisk 分区、mkfs 格式化、mount 挂载、fstab 用 UUID 永久化"四步上线——这一章之后，你能自己给服务器"加内存条般的加盘"，也能随意调配命令路径，下一章装 JDK/MySQL 就是环境变量+挂载的实战。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>PATH 环境变量是干什么的？为什么配置新路径时推荐写成 $PATH:新路径？</li><li>改了 /etc/profile 后，当前终端怎么让配置立即生效？</li><li>配置 JAVA_HOME 这类全局变量，写在 /etc/profile 和 ~/.profile 有什么区别？</li><li>新硬盘从零到可用，需要依次执行哪些操作（写出命令关键词）？</li><li>fdisk 交互命令里 n、p、1、w 分别是什么含义？按 q 会怎样？</li><li>为什么永久挂载推荐在 fstab 里写 UUID 而不是 /dev/sdb1？</li><li>load average 的 0.50 表示"CPU 用了 50%"吗？它到底是什么口径？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Linux入门与实战讲义（159 页）</a>
+<a href="https://man7.org/linux/man-pages/man5/fstab.5.html" target="_blank" rel="noopener"><span class="k">文档</span>fstab 配置手册</a>
+<a href="https://man7.org/linux/man-pages/man8/fdisk.8.html" target="_blank" rel="noopener"><span class="k">文档</span>fdisk 使用手册</a>
+<a href="https://man7.org/linux/man-pages/man8/mount.8.html" target="_blank" rel="noopener"><span class="k">文档</span>mount 使用手册</a>
+</div>
+<div class="pager">
+<a href="06-第六章-打包压缩与文件查找管道.html">← 第六章　打包压缩与文件查找管道</a>
+<a class="nxt" href="08-第八章-软件安装与进程服务管理.html">第八章　软件安装与进程服务管理 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="环境变量：PATH 就是&quot;命令的通讯录&quot;"><span class="n">1</span>环境变量：PATH 就是"命令的通讯录"</a>
+  <a href="#p2" title="系统级 vs 用户级：/etc/profile 和 ~/.profile"><span class="n">2</span>系统级 vs 用户级：/etc/profile 和 ~/.profile</a>
+  <a href="#p3" title="export 与 source：怎么让配置&quot;活过来&quot;"><span class="n">3</span>export 与 source：怎么让配置"活过来"</a>
+  <a href="#p4" title="df：磁盘还剩多少"><span class="n">4</span>df：磁盘还剩多少</a>
+  <a href="#p5" title="lsblk：系统里有几块盘、几个分区"><span class="n">5</span>lsblk：系统里有几块盘、几个分区</a>
+  <a href="#p6" title="fdisk 分区：给新硬盘划地盘"><span class="n">6</span>fdisk 分区：给新硬盘划地盘</a>
+  <a href="#p7" title="mkfs 格式化：给分区装上&quot;文件系统&quot;"><span class="n">7</span>mkfs 格式化：给分区装上"文件系统"</a>
+  <a href="#p8" title="mount / umount：临时挂载与卸载"><span class="n">8</span>mount / umount：临时挂载与卸载</a>
+  <a href="#p9" title="fstab 永久挂载：重启也不丢"><span class="n">9</span>fstab 永久挂载：重启也不丢</a>
+  <a href="#p10" title="系统状态检测：看网卡、看内核、看内存、看谁登录过"><span class="n">10</span>系统状态检测：看网卡、看内核、看内存、看谁登录过</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

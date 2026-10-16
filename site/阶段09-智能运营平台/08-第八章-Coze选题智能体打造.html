@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第八章　Coze 选题智能体打造 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="08-第八章-Coze选题智能体打造.html" class="cur">第八章　Coze 选题智能体打造</a>
+  <a href="09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 9 · 智能运营平台 › <strong>第八章</strong></div>
+<h1>第八章　Coze 选题智能体打造</h1>
+<div class="subtitle">阶段 9 · 智能运营平台　|　实践　|　难度 ★★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>前面的章节搭好了"平台的身体"（数据库、后端、前端），现在要给平台装"大脑"。本章解决：<strong>在扣子（Coze）平台上打造"热搜选题智能体"</strong>——让一个 Bot 拿到用户的运营主题后，结合全网热点，一次性产出 5 大板块 × 10 个共 50 个爆款标题，而且输出格式严格可解析（否则后端没法落库）。</p>
+<p>为什么单独一章讲"平台上的 Bot 搭建"？因为 AI 应用的核心早已不在模型本身，而在<strong>提示词工程 + 工具编排 + 输出约束</strong>。这章的知识，比多背几个 API 都值钱。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">上一章：前端工程连接——平台身体搭完</span>
+<span class="node"><span class="here">本章 ← 你在这里：Coze 选题智能体打造——Bot 的人设、插件、输出规范</span></span>
+<span class="node">下一章：Coze API 调用与工作流——后端怎么调 Bot、工作流怎么编排</span>
+<span class="node">再往后：选题生成 API → 文案 → 配图 OSS 发布</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① Coze 平台是什么、解决什么</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"调用大模型"不等于"调一个 API"——真实业务需要人设、联网、多步编排。Coze 把这三件事产品化。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>扣子（Coze）是字节的 AI Bot 开发平台，核心能力三件套：</p>
+<ol><li><strong>Bot（智能体）</strong>：带人设的系统提示词 + 温度等参数 + 可选模型，一个 Bot 就是一套"会说话的专家"。</li><li><strong>插件/工具</strong>：内置搜索、图片、知识库、工作流等能力——<strong>热搜数据就来自搜索类插件</strong>。</li><li><strong>工作流（Workflow）</strong>：把"开始 → 插件 → 大模型 → 结束"编排成可视化流水线（下一章细讲）。</li></ol>
+<p>对我们项目的意义：<strong>选题 Bot 需要实时热搜，但大模型本身不联网</strong>——答案在"给 Bot 配一个搜索插件"，让 Bot 先搜热点再写标题。这是平台能否"结合全网热点"的技术根基。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>Bot 生成的标题没有时效性、不蹭热点</td><td>没配搜索插件，模型只凭训练知识"编热点"；人设里写"请搜索"也不可控</td></tr>
+<tr><td>插件搜索失败时 Bot 报错不回答</td><td>插件异常要有人设兜底（"搜索失败则说明你无法获取最新热点"），避免整轮对话报废</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 创建选题 Bot：从空 Bot 到"选题专家"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>Bot 怎么建？人设怎么写才能产出"爆款标题"而不是"AI 味文案"？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>在扣子平台新建 Bot 的完整流程：</p>
+<ol><li>登录扣子 → 创建 Bot（命名如"热搜选题机器人"）；</li><li><strong>添加插件</strong>：给 Bot 挂上联网搜索类插件（如"头条搜索"/"必应搜索"），让它可以查实时热点；</li><li><strong>编写人设与回复逻辑</strong>（下一点）；</li><li><strong>调试</strong>：右侧对话区直接测试，逐轮校准输出；</li><li><strong>发布</strong>：作为 API/应用发布，拿到 Bot ID（BOT_ID_TOPIC）。</li></ol>
+<p>⚠️ 关键认知：<strong>Bot 发布后才可被 API 调用</strong>。开发期在对话区测试只是"Bot 内部行为"，后端要能调，必须走到"发布"一步。</p>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 人设 Prompt：五板块 × 10 标题的输出契约</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>AI 输出是松散的，选题模块却要"严格 5 板块、每板块 10 条、每条≤20字、JSON 格式"。人设 Prompt 就是这份契约的制定现场。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>选题 Bot 的人设核心（讲义原文的精炼版）：</p>
+<pre>你是一位拥有10年互联网运营经验、擅长打造爆款内容的热搜分析专家。
+你的任务：根据用户给的运营主题，结合当下全网热搜，输出 5 大板块各 10 个爆款标题。
+5 大板块：
+①每日行业热点：今天的行业大事件
+②热点榜单：当天全网热榜话题
+③专业知识榜单：主题相关专业干货
+④人设共鸣：引发目标用户情感共鸣
+⑤灵感广场：与主题相关的创意脑暴
+
+格式规范（严格遵守）：
+1. 标题字数限制在20字以内；
+2. 用 &quot;一、二、三、四、五&quot;输出板块，每个板块输出 10 个标题；
+3. 只输出标题，不要输出解释；
+4. 生成结束后，将 5 个板块标题内容保存为 JSON 格式输出，供系统直接解析入库。</pre>
+<p>设计要点：<strong>"格式规范"不是装饰，是系统接口</strong>——后端按"一、二、三、四、五"分段 + JSON 提取，任何一条不遵守就会解析失败。所以人设里宁可重复强调，不可省略。这就是"提示词即接口"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>统计只有 43 个标题（缺板块/缺条数）</td><td>人设没强调"必须满 5×10、缺一不可"；生成后要对数量做校验，不足自动重发</td></tr>
+<tr><td>标题超 20 字</td><td>人设只说"限制"不够，要写"20字以内，越短越好"并给示例</td></tr>
+<tr><td>JSON 混在正文里、被解释文字包裹</td><td>人设要写死"JSON 单独一段，其余位置不得出现任何其他文字"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ JSON 输出规范：给后端一个"好解析"的结果</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>50 个标题最终要进数据库，格式必须机器可读。JSON 的结构怎么定，直接影响后端 create.py 的解析代码。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>约定 JSON 结构（与后端 create.py 的解析一一对应）：</p>
+<pre>{
+  &quot;每日行业热点&quot;: [
+    {&quot;title&quot;: &quot;xxx&quot;, &quot;sort_order&quot;: 1},
+    ...
+  ],
+  &quot;热点榜单&quot;: [...] ,
+  &quot;专业知识榜单&quot;: [...],
+  &quot;人设共鸣&quot;: [...],
+  &quot;灵感广场&quot;: [...]
+}</pre>
+<p>后端配合逻辑（下一章展开）：</p>
+<ul><li>遍历 <code>data.items()</code>：板块名 → Section；板块内列表 → 每条 Title（含 sort_order 1-10）。</li><li><strong>板块名就是 t_sections.name</strong>，顺序即板块顺序。</li></ul>
+<p>这等于把"数据库表结构"提前映射进了"提示词输出契约"——<strong>AI 输出从一开始就是为落库设计的</strong>。</p>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 温度与模型参数：稳定性 vs 创造性</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>同一个 Bot 为什么有时生成很好、有时重复？温度参数在调什么？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<ul><li><strong>温度（temperature）低（0.3 以下）</strong>：输出更确定、更守格式，适合"严格 JSON/数量固定"的选题任务。</li><li><strong>温度高（0.8+）</strong>：更有创造性但格式容易放飞，适合文案创意，不适合结构解析。</li></ul>
+<p>选题 Bot 建议<strong>低温度</strong>——宁可标题稍"平"，也要保证 5×10 齐全、JSON 可解析。格式违约的成本远高于创意损失。文案 Bot 可以适当调高。这是"按任务性质配参数"而非统一默认值。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>温度太高，标题板块混排、数量不满</td><td>降温度 + 人设强约束双管齐下；先降温度再改提示词，一次只动一个变量</td></tr>
+<tr><td>连续两次生成高度雷同</td><td>低温度正常现象；需要多样性可加"每个板块主题词不同"约束而不是盲目升温度</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 调试方法论：人设怎么"三次迭代"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>提示词不可能一次写好。有一个可复用的调试循环：测 → 归类失败 → 针对性改 → 复测。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>调试循环（示例）：</p>
+<ol><li><strong>第一轮</strong>：输入"新能源汽车" —— 输出只有 40 个标题、JSON 格式对 → 改人设补"每板块必须 10 个，共 50 个"。</li><li><strong>第二轮</strong>：输出 50 个但一个标题 35 字 → 补"≤20 字，数字、地名类长词也要拆分"。</li><li><strong>第三轮</strong>：格式数量都对，但"人设共鸣"板块像知识清单 → 给该板块补示例："从车主焦虑、家庭出行、通勤场景切入"。</li></ol>
+<p>迭代原则：<strong>一次只改一个约束，用对话记录对比</strong>——否则永远不知道是哪句 Prompt 起作用了。Bot 的人设是"代码"，要版本管理。</p>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 发布与获取 Bot ID：后端调用的门票</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>Bot 做好只是"内部可用"，后端要通过 API 调它，必须发布并拿到 Bot ID。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>发布路径：Bot 编辑页 → 发布 → 选择渠道（本场景走 <strong>API/应用</strong> 方式或复制的 BOT_ID）→ 发布成功后得到该 Bot 的 ID（形如 76xxxxxxxxxxxx72）。</p>
+<p>回到项目的 .env：</p>
+<pre>BOT_ID_TOPIC=你的选题机器人ID       # 即将在 coze_agent.py 里使用的
+COZE_TOKEN=你的扣子个人令牌（pat_开头）
+USER_ID=baizhan</pre>
+<ul><li>BOT_ID_TOPIC 就是本章建的"热搜选题机器人"。</li><li>COZE_TOKEN 是开发者令牌（个人访问令牌，pat_ 开头），<strong>等同账号权限，绝不入库</strong>。</li><li>USER_ID 是业务自定的用户标识（如 baizhan），传给 Coze 用于会话追踪。</li></ul>
+<p>⚠️ 拿到 Bot ID 后验证是否可调：在"扣子 API"或调试面板里用测试请求跑一次，能返回 50 标题 JSON 才算"发布成功可调用"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>API 调用报"Bot not found"</td><td>Bot 未发布或 BOT_ID 抄错；发布要在每次改完人设后重新发布</td></tr>
+<tr><td>用他人的 COZE_TOKEN</td><td>token 与账号绑定，菜单/工具权限不同；用自己的 token + 自己的 Bot</td></tr>
+<tr><td>改完人设不重新发布，调用还是旧行为</td><td>发布动作才让改动生效，编辑页保存 ≠ 发布</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<ul><li>Coze 三件套：Bot 人设、插件（联网搜索）、工作流编排</li><li>选题 Bot 使命：输入运营主题 → 结合实时热搜 → 5 板块 × 10 = 50 个标题</li><li>人设 Prompt = 代码：板块结构、条数、字数、JSON 输出全是硬约束</li><li>输出契约先行：JSON 的 key 直接映射数据库表字段，AI 输出生来就能落库</li><li>温度策略：选题低温度保格式，文案高温度保创意，按任务调参</li><li>调试循环：一轮一变量，记录对比，人设要版本管理</li><li>发布与 BOT_ID：发布后才可 API 调用，除人设改动记得重发</li><li>双子 Bot 架构：选题与文案各管一摊，人设聚焦输出才稳定</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>想让 Bot 结合"当下全网热搜"，正确做法是？</li></ol>
+<p>A. 提示词里写"结合热搜"　　B. 给 Bot 配联网搜索插件　　C. 数据库存热搜　　D. 训练模型</p>
+<ol><li>选题 Bot 一次要生成多少标题？</li></ol>
+<p>A. 10　　B. 25　　C. 50（5板块×10）　　D. 100</p>
+<ol><li>人设规范里"只输出标题、生成结束输出 JSON"是为了？</li></ol>
+<p>A. 好看　　B. 供后端直接解析入库　　C. 减少 token　　D. 方便人工阅读</p>
+<ol><li>选题任务建议把温度调得？</li></ol>
+<p>A. 高（保创意）　　B. 低（保格式稳定）　　C. 随意　　D. 关闭</p>
+<ol><li>后端 API 调用 Bot 前必须完成哪一步？</li></ol>
+<p>A. 保存人设　　B. 发布 Bot 并获取 BOT_ID　　C. 开启调试　　D. 添加插件</p>
+<ol><li>输出只有 43 个标题，最优先怎么修？</li></ol>
+<p>A. 提高温度　　B. 人设强调"必须满 5×10 共 50 个，缺少则补全"　　C. 换模型　　D. 加插件</p>
+<ol><li>改了人设但 API 行为没变，原因是？</li></ol>
+<p>A. 没重新发布　　B. 缓存　　C. 网络慢　　D. 后端没重启</p>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 双子 Bot 架构：选题与文案各管一摊</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>平台有两类 AI 任务：选题（结构化 50 标题）与文案（220-420 字自由正文）。它们人设、输出规范、温度要求都不同——塞进同一个 Bot 会互相干扰。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>项目拆成两个独立 Bot（.env 里两个 ID 一一对应）：</p>
+<table>
+<tr><th>Bot</th><th>人设</th><th>输出</th><th>温度倾向</th><th>配置键</th></tr>
+<tr><td>热搜选题机器人</td><td>热点分析专家</td><td>5 板块×10 标题 + JSON</td><td>低（保格式）</td><td>BOT_ID_TOPIC</td></tr>
+<tr><td>小红书文案机器人</td><td>爆款笔记作者</td><td>220-420 字正文</td><td>中高（保创意）</td><td>BOT_ID_CONTENT</td></tr>
+</table>
+<p><strong>互不干扰的价值</strong>：改选题人设不影响文案输出；选题要严格 JSON、文案要自然流畅，两套约束不会打架；Cozepy 调用时按接口各取各的 BOT_ID，代码上只差一个参数。</p>
+<p>教训：不要"一个 Bot 打天下"。AI 任务按"输出形态"拆分 Bot，是提示词工程里的模块化思维——<strong>单个 Bot 的人设越聚焦，输出越稳定</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>把两个任务塞进一个 Bot，格式时好时坏</td><td>双人设互相稀释；拆两个 Bot 各管一摊</td></tr>
+<tr><td>BOT_ID_TOPIC 与 CONTENT 填反</td><td>选题接口返回文案、文案接口返回标题；核对 .env 两个 ID 的用途标签</td></tr>
+<tr><td>只发布了其中一个</td><td>另一个接口 404/Bot not found；两个 Bot 都要各自发布</td></tr>
+</table>
+</div>
+</div></div>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>智能运营平台.pdf</a>
+<a href="https://www.coze.cn/" target="_blank" rel="noopener"><span class="k">官方</span>Coze 扣子开放平台</a>
+<a href="https://www.coze.cn/docs/guides/" target="_blank" rel="noopener"><span class="k">官方</span>Coze 提示词工程指南</a>
+</div>
+<div class="pager">
+<a href="07-第七章-前端工程接入与联调.html">← 第七章　前端工程接入与联调</a>
+<a class="nxt" href="09-第九章-CozeAPI调用与工作流编排.html">第九章　Coze API 调用与工作流编排 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="Coze 平台是什么、解决什么"><span class="n">1</span>Coze 平台是什么、解决什么</a>
+  <a href="#p2" title="创建选题 Bot：从空 Bot 到&quot;选题专家&quot;"><span class="n">2</span>创建选题 Bot：从空 Bot 到"选题专家"</a>
+  <a href="#p3" title="人设 Prompt：五板块 × 10 标题的输出契约"><span class="n">3</span>人设 Prompt：五板块 × 10 标题的输出契约</a>
+  <a href="#p4" title="JSON 输出规范：给后端一个&quot;好解析&quot;的结果"><span class="n">4</span>JSON 输出规范：给后端一个"好解析"的结果</a>
+  <a href="#p5" title="温度与模型参数：稳定性 vs 创造性"><span class="n">5</span>温度与模型参数：稳定性 vs 创造性</a>
+  <a href="#p6" title="调试方法论：人设怎么&quot;三次迭代&quot;"><span class="n">6</span>调试方法论：人设怎么"三次迭代"</a>
+  <a href="#p7" title="发布与获取 Bot ID：后端调用的门票"><span class="n">7</span>发布与获取 Bot ID：后端调用的门票</a>
+  <a href="#p8" title="双子 Bot 架构：选题与文案各管一摊"><span class="n">8</span>双子 Bot 架构：选题与文案各管一摊</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第五章　MCP：让 AI 接上真实世界（智能旅行助手实战） · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="05-第五章-MCP协议与智能旅行助手实战.html" class="cur">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 16 · Vibe Coding 实践 › <strong>第五章</strong></div>
+<h1>第五章　MCP：让 AI 接上真实世界（智能旅行助手实战）</h1>
+<div class="subtitle">阶段 16 · Vibe Coding 实践　|　概念+实战　|　难度 ★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p><strong>前面的章节里，AI 能看你的代码、改你的文件——但它的世界依然只限于"你的项目"。</strong> 它查不了天气、买不了火车票、不知道航班动态，因为它"与世隔绝"。怎么给 AI 装上"手和眼睛"，去访问外部数据源和工具？</p>
+<p><strong>答案是 MCP（Model Context Protocol，模型上下文协议）——AI 应用领域的"USB-C 接口"。</strong> 它统一了大模型与外部数据源和工具之间的通信协议，让 AI 能安全、灵活地调用各类资源。这一章会先讲透 MCP 的概念与组件，再带你做一个<strong>可运行的实战案例：智能旅行助手</strong>——用 Trae 集成高德地图、12306、飞常准三个 MCP 服务，让 AI 安排"国庆杭州七天游"。</p>
+<p>学完这一章，你能回答：<strong>MCP 是什么、为什么像 USB-C、三大核心功能是什么、Host/Client/Server 三个组件各干什么、两种通信机制怎么选、怎么在 MCP 广场配置服务、一份完整的 Agent 提示词长什么样</strong>。这章和阶段 15 的 MCP 章节呼应，但它是"在 IDE 里实战接 MCP"。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一个阶段（阶段 15 · Hermes-Agent 第 10 章）</strong>：你学过"Agent 用 MCP 扩展能力"的概念。</span>
+<span class="node"><span class="here">本章 ← 你在这里：在 Trae（IDE 环境）里真正接入 MCP 服务并把它们组合成一个可用应用——智能旅行助手</span></span>
+<span class="node"><strong>下一章（第 6 章起）</strong>：换第二把武器 Cursor——认识、四模式、规则、Chrome 插件实战</span>
+<span class="node"><strong>再往后</strong>：Codex 三章 → 打包交付</span>
+<span class="node"><strong>阶段终点</strong>：你既能"让 AI 写代码"（IDE），也能"让 AI 调外部工具"（MCP），完成真正的 Agent 应用开发</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>本章分两半：<strong>前半是概念（MCP 是什么/组件/传输），后半是实战（旅行助手）</strong>。概念部分抓三个词：<strong>USB-C、三个组件、两种传输</strong>；实战部分抓一条线：<strong>找 MCP 服务 → 配置服务 → 用提示词调起来</strong>。概念没吃透也能跟着做，做完再回来看概念会秒懂。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 什么是 MCP：AI 世界的 USB-C</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>先理解"为什么现在每个 AI 工具都在提 MCP"——它解决了什么问题，凭什么值得学。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>MCP（Model Context Protocol，模型上下文协议）</strong> 由 <strong>Anthropic 在 2024 年 11 月底推出</strong>，是一种开放标准，旨在<strong>统一大模型与外部数据源和工具之间的通信协议</strong>。</p>
+<p>讲义给了一个非常形象的比喻：<strong>MCP 可以被比喻为 AI 应用领域的 USB-C 接口</strong>。</p>
+<p>为什么是 USB-C？因为 USB-C 的特点是"<strong>一个接口，万物可插</strong>"：鼠标、硬盘、显示器、充电器，统统一个口搞定。MCP 同理——<strong>不同数据源和工具（数据库、网页接口、脚本、天气、票务……）用同一套协议接入 AI，AI 就能即插即用地"认识外部世界"</strong>。没有 MCP 之前，每个工具都要单独给 AI 写一套接入代码；有了 MCP，接入成本大幅下降，生态开始爆发。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 MCP 当成某个具体产品</td><td>MCP 是<strong>协议/标准</strong>（像 USB 是接口标准），不是具体软件；它约束"怎么接"，不限制"接什么"</td></tr>
+<tr><td>以为 MCP=API 调用</td><td>API 是"点对点对接"，MCP 是"统一标准对接"；MCP 上层还有工具发现、权限等能力</td></tr>
+<tr><td>记错出品方和时间</td><td>Anthropic 推出、2024 年 11 月底；本阶段实战用的 MCP 服务来自模型广场（魔塔）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② MCP 的核心作用：AI 的"读现实"能力</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>MCP 到底给 AI 带来了什么？用一句话+三个能力概括。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>MCP 的本质是<strong>为大模型提供"认知外部世界的能力"</strong>，让它能安全、灵活地调用各类资源，完成更复杂的任务。三大核心功能：</p>
+<ol><li><strong>安全访问本地和远程数据源</strong>——限制权限地读文件、读数据库、读远程数据；</li><li><strong>调用外部工具</strong>——数据库、网页接口、脚本等；3. <strong>在多个系统之间无缝对话和协作</strong>——让不同系统通过 AI 串起来。</li></ol>
+<p>一句话：<strong>MCP 就像 AI 和真实世界之间的桥梁，使 AI 拥有了"读取现实"的能力。</strong> 没有它 AI 是"盲人"——只能输出训练时学过的内容；有了它，AI 可以"查现在几点、问天气、买票、看航班"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把"MCP 三大功能"背成死知识点</td><td>记它的本质：<strong>数据</strong>（安全访问）+<strong>工具</strong>（调用执行）+<strong>协作</strong>（系统串联），全是"让 AI 有手有眼"</td></tr>
+<tr><td>以为 MCP 会让 AI 什么都能干、没边界</td><td>有边界：权限管理、沙箱、人工审核（Codex 的沙箱章节会细讲限制机制）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ MCP 的三个核心组件：Host / Client / Server</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>MCP 基于客户端-服务器模式，三个角色各司其职。这是理解 MCP 架构的关键地图。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>MCP 由三个核心组件构成，分工如下：</p>
+<table>
+<tr><th>组件</th><th>是什么</th><th>类比 / 职责</th></tr>
+<tr><td><strong>MCP Host（主机）</strong></td><td>提供 AI 交互环境的应用，如 Claude Desktop、Cursor 等</td><td>AI 的"<strong>操作台</strong>"：用户在主机里与 AI 对话，主机负责任务调度和用户指令解析</td></tr>
+<tr><td><strong>MCP Client（客户端）</strong></td><td>在主机内运行的通信桥梁</td><td>将用户请求转化为<strong>标准化的 API 调用（基于 JSON-RPC 格式）</strong>，并管理服务器响应</td></tr>
+<tr><td><strong>MCP Server（服务器）</strong></td><td>轻量级程序，暴露特定功能（文件读写、数据库查询、Web 搜索等）</td><td>每个服务器<strong>专注于单一资源类型</strong>，模块化设计支持灵活扩展</td></tr>
+</table>
+<p>流程示意：<strong>用户 ↔ Host（操作台）↔ Client（翻译官，JSON-RPC）↔ Server（工具人，如天气/票务）</strong>。多个 Server 可以像 U 盘一样插在一个 Host 上，即插即用。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>Host/Client/Server 混作一团</td><td>记忆锚点：Host=<strong>你用的 App</strong>（操作台），Client=<strong>App 里负责通信的那层</strong>（翻译官），Server=<strong>提供能力的程序</strong>（工具人）</td></tr>
+<tr><td>以为一个 Host 只能挂一个 Server</td><td>一个 Host 可插多个 Server，这就是"MCP 广场"生态的基础</td></tr>
+<tr><td>把 Trae 当 MCP Server</td><td>Trae 是 Host——你在 Trae 里用 AI，AI 通过 Client 调 Server（如高德 MCP）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ MCP 的两种通信机制：Stdio 与 Streamable HTTP</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>Host 和 Server 之间怎么"通话"？两种传输机制分别适用什么场景？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>MCP 支持两种主要的传输方式：</p>
+<p><strong>1. Stdio（标准输入输出）</strong></p>
+<ul><li>通过标准输入/输出流实现通信；</li><li>在<strong>构建本地集成和命令行工具</strong>时特别有用；</li><li>适合：本地跑的 Server，比如让你本机 AI 读文件、执行脚本。</li></ul>
+<p><strong>2. Streamable HTTP（官方推荐）</strong></p>
+<ul><li>使用 <strong>HTTP POST 请求</strong> 进行客户端到服务器的通信；</li><li>通过可选的 <strong>Server-Sent Events（SSE）流</strong> 实现服务器到客户端的通信；</li><li>适合：远程服务——比如云上的天气 API、票务 API，网络化的 MCP 服务大多用这种方式。</li></ul>
+<p>一句话：<strong>本地小工具用 Stdio，远程网络服务用 Streamable HTTP（官方推荐）。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为两种传输可以混用</td><td>一个 Server 通常选定一种传输；配置时看服务方文档说明</td></tr>
+<tr><td>本地 Stdio 服务挂了</td><td>确认启动命令和依赖正确；Stdio 服务用命令行启动，报错会打到终端</td></tr>
+<tr><td>远程服务连不上</td><td>检查网络、URL 是否正确、是否需要鉴权（API Key）；对照服务方文档</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 实战全景：智能旅行助手是什么</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>概念完毕，进入实战：我们要在 Trae 里做一个什么样的应用？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>智能旅行助手</strong>是一款借助 <strong>Trae IDE 集成高德地图 MCP、12306-MCP、Variflight-MCP</strong> 等多个服务的智能应用。它能提供<strong>一站式的出行规划服务</strong>：</p>
+<ul><li><strong>地图导航</strong>（高德地图 MCP）</li><li><strong>铁路票务查询</strong>（12306-MCP）</li><li><strong>航空航班信息查询</strong>（Variflight-MCP/飞常准）</li></ul>
+<p>三个能力有机融合后，用户只要说一句"国庆七天，帮我安排杭州七日游"，AI 就能结合实时天气、景点余票、地铁公交、航班车次，输出<strong>包含行程概览、每日详细时间表、交通指引、住宿餐饮、预算与行李清单的完整旅行计划</strong>，甚至生成可视化网页。</p>
+<p>它演示的正是本章开头那句话：<strong>MCP = 让 AI 接上真实世界。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为这是"官方出品"的应用</td><td>它是讲义演示的<strong>开发案例</strong>，用 Trae + 三个 MCP 服务搭建，不是预装应用；你要照着做</td></tr>
+<tr><td>三个 MCP 服务分不清</td><td>高德=地图/天气/导航；12306=火车票；飞常准（Variflight）=航班/天气/航班舒适度</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 配置 12306 MCP：从魔塔 MCP 广场接入</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>第一个 MCP 服务怎么找、怎么配置？这里走的就是"标准姿势"。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>配置 12306 MCP 的入口是<strong>魔塔 MCP 广场</strong>（https://modelscope.cn/mcp ）：</p>
+<ol><li>打开魔塔 MCP 广场；</li><li>找到 <strong>12306-MCP 车票查询工具</strong>；</li><li>按广场指引获得 MCP 服务的接入方式（服务名/URL/命令行启动方式等）；</li><li>在 Trae 的 MCP 配置入口中，把这个服务添加进来。</li></ol>
+<p>配置完成后，AI 就"会买票了"——至少能查车次、余票、票价等信息（实际操作以服务提供的工具能力为准）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>在广场找不到 12306-MCP</td><td>用"12306"关键词搜索；魔塔广场服务会更新，以当日广场列表为准</td></tr>
+<tr><td>配好后 AI 说"没有买票能力"</td><td>MCP 提供的工具范围因服务而异，区分"能查"与"能买"；先确认 Server 暴露了什么工具</td></tr>
+<tr><td>复制接入信息出错</td><td>注意区分"远程 URL 模式"和"本地命令行模式"两种接入，别混用</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 配置高德地图 MCP：地图、天气、导航全家桶</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>旅行助手最核心的地图能力，来自高德地图 MCP。它提供哪些工具？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>高德地图 MCP</strong> 为旅行助手提供地图类能力，包括：</p>
+<ul><li><strong>实时天气查询</strong>——每日高低温、天气状况；</li><li><strong>实时门票余量查询</strong>——景点余票动态获取；</li><li><strong>交通规划</strong>——高德地铁/公交 API；</li><li><strong>景点导航</strong>——唤起高德地图 App/网页导航；</li><li><strong>地图绘制</strong>——展示景点位置、访问路线。</li></ul>
+<p>这些能力让旅行计划从"纸面攻略"升级为"实时可执行方案"：行程里可以直接带"门票余量柱状图"、"景点间路线连线"、"点名字唤起导航"。</p>
+<p>配置方式与 12306 相同：在魔塔 MCP 广场找到对应服务并接入 Trae；接入后核对工具的激活情况。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>高德 MCP 需要 API Key</td><td>部分 MCP 服务需要你自己的高德开放平台 Key；按服务文档申请并配置，注意 Key 保密</td></tr>
+<tr><td>唤起导航在 PC 上行为不同</td><td>设计时做了设备适配：安卓/iOS 唤起 App、PC 跳网页版——验证时按设备分别测</td></tr>
+<tr><td>热门景点余票接口数据延迟</td><td>数据以服务返回为准，提示词里可要求"动态获取并展示"，但别承诺实时性</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 配置飞常准（Variflight）MCP：航班与天气</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>旅行还涉及"飞过去"——航班信息由飞常准提供。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>飞常准（Variflight）</strong> 的服务器提供多种工具，支持：</p>
+<ul><li><strong>查询航班信息</strong>——航班动态、起降时间等；</li><li><strong>天气数据</strong>——目的地/出发地天气；</li><li><strong>航班舒适度指标</strong>——机型、准点等维度综合评估。</li></ul>
+<p>接入方式和前两者相同（魔塔 MCP 广场 → 接入 Trae）。三个服务齐了之后，助手能力矩阵完整：<strong>12306 管铁路、高德管地图+天气+导航、飞常准管航班</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>三个服务只有两个能连上</td><td>逐个排查：服务是否上线、接入信息是否最新、是否需要额外授权；先跑通一个再连下一个</td></tr>
+<tr><td>把航班舒适度和天气工具搞混</td><td>舒适度是"这趟航班坐着舒不舒服"（准点/机型），天气是"目的地天气情况"，是不同工具</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ Agent 提示词设计：把能力编排成"旅行规划师"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>服务接好了，但 AI 怎么"知道"自己是旅行规划师、该按什么步骤输出？——靠提示词。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义用一份完整提示词把 AI 定位成"经验丰富的智能旅行行程规划师"。核心内容分两层：</p>
+<p><strong>先给角色与能力清单</strong>：</p>
+<pre>你是一个经验丰富的智能旅行行程规划师，基于智能集成平台（MCP）开发，拥有以下能力：
+- 实时天气查询（高德地图MCP）
+- 实时门票余量查询
+- 交通规划（高德地铁/公交API）
+- 景点导航（高德地图唤起功能）
+- 地图绘制（高德地图）
+- 行程可视化（路线图、时间轴图、门票图表）</pre>
+<p><strong>再给输出结构（总体规划步骤）</strong>，要求最终产出包含六个区：</p>
+<ol><li><strong>行程标题区</strong>：目的地、旅行日期与天数、天气信息摘要；</li><li><strong>行程概览区</strong>：按日期分区的行程简表（用图标标识景点/餐饮/交通/住宿）；</li><li><strong>详细时间表区</strong>：时间轴/表格，含时间、地点、停留时间、门票价格与余票；</li><li><strong>交通信息区</strong>：换乘点、地铁公交线路、预计时间、路线可视化；</li><li><strong>住宿与餐饮区</strong>：酒店地址、入住退房时间、推荐餐厅、便利设施；</li><li><strong>实用信息区</strong>：紧急电话、旅行提示、预算摘要、行李清单。</li></ol>
+<p>再配合网页生成要求（HTML5 + Font Awesome + Tailwind CSS + JavaScript、响应式、数字杂志风格、Mermaid 图表、高德地图 API 标点与路线）——一份完整可执行的 Agent 提示词就成型了。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>提示词写太泛（"帮我规划一下"）</td><td>要按讲义格式写<strong>角色+能力+六区结构+技术规范</strong>，AI 才有据可依</td></tr>
+<tr><td>提示词里承诺了 MCP 提供不了的数据</td><td>能力清单必须与实际接入的 MCP 工具一致，别让 AI"硬编"不存在的余票数据</td></tr>
+<tr><td>一个提示词塞太多要求</td><td>分步下发：先"角色+能力+六区结构"，再"网页生成技术规范"，再"地图/图表细节"，AI 逐轮吸收更稳</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 发起实战：一句话触发完整交付</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>提示词写好了，最后一步：怎么"用起来"？真实请求长什么样，预期产出是什么？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>配置完成、提示词就位后，直接向 Trae 发出需求（讲义原文示例）：</p>
+<p>&gt; <strong>国庆正好七天，请帮我安排一个旅行计划在杭州玩七天</strong></p>
+<p>预期是 AI 调用已接入的三个 MCP 服务，产出：</p>
+<ul><li>结合实时天气/余票/车次/航班的<strong>完整七日行程</strong>；</li><li>按提示词要求的<strong>六区结构</strong>组织内容；</li><li>可预览/可打开的<strong>可视化网页</strong>（行程路线、时间轴、门票余量图表、地图标注）。</li></ul>
+<p>这就是一次"从需求到成品"的 Vibe Coding + MCP 组合交付：<strong>你说人话（需求），AI 用 MCP（真实数据）+ 代码（网页）把事办了</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>请求后 AI 没调用 MCP</td><td>确认 MCP 服务已接好且工具在线；提示词里明确"使用高德 MCP 查询天气"等指令，引导它调用</td></tr>
+<tr><td>输出缺区块（没预算/没行李清单）</td><td>提示词六区结构逐条核对；追问"请补充实用信息区和预算摘要"</td></tr>
+<tr><td>网页打不开/样式乱</td><td>检查网络链路（CDN 字体/图标库需外网）；用"在浏览器中打开"验证真实渲染</td></tr>
+<tr><td>觉得"这不就是个聊天"</td><td>核心差别在<strong>数据真实</strong>：MCP 让天气/余票/车次是"查出来的"而非"编出来的"，这是 Agent 应用的意义</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 实战复盘：MCP 应用的通用套路</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>做完一个案例，把"做 MCP 应用"的方法论抽出来，以后任何工具都能套。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>从智能旅行助手中可以提取出 MCP 应用的<strong>四步通用套路</strong>：</p>
+<pre>第一步  选服务：在 MCP 广场（如魔塔 modelscope.cn/mcp）找目标服务
+第二步  接服务：把 Server 接入 Host（Trae），核对工具是否在线
+第三步  写提示词：角色 + 能力清单 + 输出结构 + 技术规范
+第四步  发请求：用自然语言发起真实需求，AI 调 MCP 拿数据并产出成果</pre>
+<p>任何"AI + 外部数据/工具"的 Agent 应用，都可以套这四步。这也是阶段 15（Hermes-Agent）+ 阶段 16（Trae/Cursor/Codex）两条线的交汇点：<strong>Agent 的"大脑"是模型，"手眼"是 MCP。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>每个新需求都从零摸索</td><td>沉淀模板：服务清单+提示词模板存到项目里（可用 Rules 固化），复用效率翻倍</td></tr>
+<tr><td>只配置服务不写提示词</td><td>服务是"原料"，提示词是"菜谱"，没有菜谱 AI 不知道怎么组合</td></tr>
+<tr><td>忽略验证</td><td>每次接新服务都要<strong>实际调一次</strong>（发个测试请求看返回），别只看"已连接"</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你打通了"AI 接上真实世界"的关键一环：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>MCP 概念</strong>：Anthropic 2024 年 11 月底推出的开放标准，AI 领域的"USB-C 接口"</td><td>三个核心功能=安全访问数据、调用外部工具、系统间协作；让 AI 拥有"读现实"能力</td></tr>
+<tr><td><strong>三组件</strong>：Host（操作台）/ Client（翻译官，JSON-RPC）/ Server（工具人，单能力）</td><td>理解任何 MCP 架构的骨架</td></tr>
+<tr><td><strong>两种传输</strong>：Stdio（本地）与 Streamable HTTP（远程，官方推荐）</td><td>选传输要看服务场景</td></tr>
+<tr><td><strong>实战配置</strong>：魔塔 MCP 广场接入 12306 / 高德地图 / 飞常准 三个服务</td><td>一次实操打通"找服务→接服务"</td></tr>
+<tr><td><strong>提示词编排</strong>：角色+能力+六区结构+技术规范</td><td>把三个服务编排成"旅行规划师"的关键</td></tr>
+<tr><td><strong>四步套路</strong>：选服务 → 接服务 → 写提示词 → 发请求</td><td>一个可复用的 MCP 应用开发方法论</td></tr>
+</table>
+<p>一句话记住本章：<strong>MCP 是 AI 世界的 USB-C——让 AI 从"只能想"变成"能查能调"；智能旅行助手就是"Trae + 三个 MCP 服务 + 一份好提示词"拼出的真实 Agent 应用。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>MCP 全称是什么？由哪家公司于何时推出？为什么被比喻为"AI 应用领域的 USB-C"？</li><li>MCP 的三大核心功能是什么？用一句话概括它的本质。</li><li>写出 MCP 三个核心组件及各自职责（可用类比）。</li><li>MCP 的两种通信机制分别是什么？各适合什么场景？官方推荐哪种？</li><li>智能旅行助手集成了哪三个 MCP 服务？它们分别提供什么能力？</li><li>配置 MCP 服务的主要入口（广场）是哪个网站？简述配置流程。</li><li>写一份 MCP Agent 提示词需要包含哪些要素？讲义中旅行助手提示词的"六区结构"是哪六区？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Trae 讲义（38 页）</a>
+<a href="https://www.trae.com.cn/" target="_blank" rel="noopener"><span class="k">工具</span>Trae 官网</a>
+<a href="https://modelscope.cn/mcp" target="_blank" rel="noopener"><span class="k">广场</span>魔塔 MCP 广场</a>
+<a href="04-第四章-Trae上下文Rules与自定义模型.html"><span class="k">上一章</span>Trae 上下文与 Rules</a>
+<a href="06-第六章-认识Cursor与安装配置.html"><span class="k">下一章</span>认识 Cursor</a>
+</div>
+<div class="pager">
+<a href="04-第四章-Trae上下文Rules与自定义模型.html">← 第四章　Trae 上下文、Rules 与自定义模型</a>
+<a class="nxt" href="06-第六章-认识Cursor与安装配置.html">第六章　认识 Cursor 与安装配置 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="什么是 MCP：AI 世界的 USB-C"><span class="n">1</span>什么是 MCP：AI 世界的 USB-C</a>
+  <a href="#p2" title="MCP 的核心作用：AI 的&quot;读现实&quot;能力"><span class="n">2</span>MCP 的核心作用：AI 的"读现实"能力</a>
+  <a href="#p3" title="MCP 的三个核心组件：Host / Client / Server"><span class="n">3</span>MCP 的三个核心组件：Host / Client / Server</a>
+  <a href="#p4" title="MCP 的两种通信机制：Stdio 与 Streamable HTTP"><span class="n">4</span>MCP 的两种通信机制：Stdio 与 Streamable HTTP</a>
+  <a href="#p5" title="实战全景：智能旅行助手是什么"><span class="n">5</span>实战全景：智能旅行助手是什么</a>
+  <a href="#p6" title="配置 12306 MCP：从魔塔 MCP 广场接入"><span class="n">6</span>配置 12306 MCP：从魔塔 MCP 广场接入</a>
+  <a href="#p7" title="配置高德地图 MCP：地图、天气、导航全家桶"><span class="n">7</span>配置高德地图 MCP：地图、天气、导航全家桶</a>
+  <a href="#p8" title="配置飞常准（Variflight）MCP：航班与天气"><span class="n">8</span>配置飞常准（Variflight）MCP：航班与天气</a>
+  <a href="#p9" title="Agent 提示词设计：把能力编排成&quot;旅行规划师&quot;"><span class="n">9</span>Agent 提示词设计：把能力编排成"旅行规划师"</a>
+  <a href="#p10" title="发起实战：一句话触发完整交付"><span class="n">10</span>发起实战：一句话触发完整交付</a>
+  <a href="#p11" title="实战复盘：MCP 应用的通用套路"><span class="n">11</span>实战复盘：MCP 应用的通用套路</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

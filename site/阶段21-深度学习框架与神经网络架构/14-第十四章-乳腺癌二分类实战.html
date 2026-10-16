@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第十四章　综合实战：乳腺癌二分类建模 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="14-第十四章-乳腺癌二分类实战.html" class="cur">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 21 · 深度学习框架与神经网络架构 › <strong>第十四章</strong></div>
+<h1>第十四章　综合实战：乳腺癌二分类建模</h1>
+<div class="subtitle">阶段 21 · 深度学习框架与神经网络架构　|　神经网络基础　|　难度 ★★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>前十三章的知识点散落在各处，这一章把它们<strong>串成一条流水线</strong>：加载数据 → 预处理 → 划分数据集 → 定义模型 → 训练 → 评估 —— 用<strong>威斯康星乳腺癌数据集</strong>（569 个样本、30 个特征，判断良性/恶性）做一个端到端二分类项目。看完这章，你就有能力独立完成一个"能跑、能评、能调"的完整小项目。</p>
+</div>
+<div class="map"><span class="tag">上一章→本章→下一章</span>
+<span class="node">上一章学完正则化。<strong>本章实战整合：从数据到模型到评估，跑通乳腺癌二分类完整流程</strong>。下一章跳出基础，精读目标检测经典论文 Faster R-CNN。</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 数据集认知：先看数据再动手</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>开始写代码前，为什么必须先搞清楚数据的规模、维度、分布？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>乳腺癌数据集（经典 scikit-learn load_breast_cancer）关键事实：</p>
+<ul><li><strong>569 个样本</strong>，<strong>30 个特征</strong>（细胞核的半径、纹理、面积等 10 个指标的均值/标准差/最差值）。</li><li>标签二分类：<strong>良性 357、恶性 212</strong>（比例约 6:4，基本平衡）。</li><li>特征含义：描述细胞核形态的连续数值，量纲相似但数值范围不同。</li></ul>
+<p>先 <code>data.shape</code>、<code>data.info()</code>、<code>label.value_counts()</code> 看一眼——<strong>特征数、类别分布、缺失值</strong>是建模第一信息。这里 30 个特征 vs 569 样本，维度适中，MLP 完全可行。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>类别严重失衡（如 99:1）</td><td>直接训练会学成"全猜多数类"；需加权损失或重采样（本数据集平衡，无碍）</td></tr>
+<tr><td>不看分布直接训</td><td>特征量级巨大差异会让梯度失衡；标准化后就好了</td></tr>
+<tr><td>忽略缺失值</td><td>有缺失要先填充或删除；检查 info()</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 数据预处理：标准化是回归/MLP 的命门</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>30 个特征量纲不同（有的 0~1、有的 0~1000），直接训练会怎样？怎么处理？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>大数值特征会主导梯度，小数值特征"说不上话"。<strong>标准化（StandardScaler）</strong> 把每个特征变成均值 0、方差 1，让所有特征"说话分量一样"：</p>
+<pre>from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)   # 拟合 + 转换训练集
+X_val = scaler.transform(X_val)           # 只用 transform！复用训练集的参数
+X_test = scaler.transform(X_test)</pre>
+<p><strong>铁律</strong>：scaler <strong>只在训练集上 fit</strong>，验证/测试集只 transform——否则验证/测试信息泄漏进预处理流程，评估虚高。</p>
+<p>预处理顺序：划分数据集 → 然后才标准化（先 split 再 scale）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>对全量数据 fit 再划分</td><td>验证集均值方差泄入训练，评估失真；<strong>先划分，再对训练集 fit</strong></td></tr>
+<tr><td>验证/测试集自己 fit</td><td>也必须复用训练集的 scaler，否则分布不一致</td></tr>
+<tr><td>忘记转成张量</td><td>sklearn 输出 numpy；训练前转 torch.tensor(..., dtype=torch.float32)</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 数据拆分与 DataLoader：7:1.5:1.5 + batch</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>数据处理好后，怎么变成"训练/验证/测试"三份并分批喂给模型？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>from sklearn.model_selection import train_test_split
+import torch
+from torch.utils.data import DataLoader, TensorDataset
+
+# 1 划分：训练 70%、其余分验证与测试 各 15%
+X_train, X_tmp, y_train, y_tmp = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y)
+X_val, X_test, y_val, y_test = train_test_split(
+    X_tmp, y_tmp, test_size=0.5, random_state=42, stratify=y_tmp)
+
+# 2 转张量（float32）
+Xtr = torch.tensor(X_train, dtype=torch.float32)
+ytr = torch.tensor(y_train, dtype=torch.float32).reshape(-1, 1)  # BCE 用 (N,1)
+
+# 3 分批
+train_loader = DataLoader(TensorDataset(Xtr, ytr), batch_size=32, shuffle=True)</pre>
+<ul><li><code>stratify=y</code>：<strong>按类别比例分层抽样</strong>，保证训练/验证/测试里正负比例一致。</li><li><code>random_state</code> 固定，结果可复现。</li><li>y 是 0/1，reshape 成 (N,1) 配 BCEWithLogitsLoss。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>分层抽样忘了 stratify</td><td>比例严重失衡时某份可能全是良性，评估失真</td></tr>
+<tr><td>随机种子不固定</td><td>不同次运行结果不同，无法比较调参；统一 random_state/手动 seed</td></tr>
+<tr><td>y 形状不匹配</td><td>BCEWithLogitsLoss 期望 target 与 logits 同形状；reshape(-1,1)</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 模型设计与初始化</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>针对 30 特征二分类，网络应该长什么样？用什么初始化？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>结构设计：<strong>输入 30 → 隐藏层（如 64）→ 隐藏层（如 32）→ 输出 1</strong>，中间配 ReLU + Dropout + BatchNorm，输出层单神经元配 BCEWithLogitsLoss：</p>
+<pre>class BreastNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(30, 64),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(64, 32),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(32, 1),      # 输出 1 个数（logit）
+        )
+    def forward(self, x):
+        return self.net(x)</pre>
+<p>初始化策略：</p>
+<ul><li>隐藏层 Linear <strong>默认 kaiming_uniform</strong>（ReLU 友好，够用）。</li><li>也可显式 <code>model.apply</code> 配 He（Kaiming）/Xavier 统一风格（第 9 章讲过）。</li><li>BatchNorm 的 gamma=1、beta=0 默认即可。</li></ul>
+<p>注意 BatchNorm1d 要求输入第二维 ≥1；<strong>batch=1 时 BN 无法计算</strong>，batch_size 别取 1。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>输出神经元设成 2</td><td>二分类单神经元 + BCE 即可；2 神经元 + softmax 是绕路写法</td></tr>
+<tr><td>Dropout 0.9</td><td>信息丢太多学不动；0.2-0.5 区间</td></tr>
+<tr><td>BatchNorm 与 batch 太小</td><td>batch=1 时 BN 方差为 0 报错；batch ≥ 16 更稳</td></tr>
+<tr><td>顺序 BN→ReLU→Dropout</td><td>常见组合：先归一化再激活再丢弃；保持全项目一致</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 训练循环：加验证监控的完整版</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>训练时怎么"一眼看清"有没有过拟合？保存什么才算"练好了"？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>在标准五连之外，<strong>每个 epoch 末尾在验证集上算一次 loss/准确率</strong>，并保存验证最优模型：</p>
+<pre>model = BreastNet()
+loss_fn = nn.BCEWithLogitsLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)
+
+best_val = 1e9
+for epoch in range(100):
+    model.train()
+    for xb, yb in train_loader:
+        optimizer.zero_grad()
+        loss = loss_fn(model(xb), yb)
+        loss.backward()
+        optimizer.step()
+
+    # 验证监控
+    model.eval()
+    with torch.no_grad():
+        val_loss = loss_fn(model(X_val), y_val.reshape(-1,1)).item()
+    if val_loss &lt; best_val:
+        best_val = val_loss
+        torch.save(model.state_dict(), &quot;best_model.pt&quot;)   # 只存参数
+    if epoch % 10 == 0:
+        print(epoch, loss.item(), val_loss)</pre>
+<ul><li><code>model.eval()</code> + <code>torch.no_grad()</code>：评估时关 Dropout、不建计算图。</li><li>用<strong>验证 loss 而非训练 loss</strong> 选模型（防止过拟合版本被保存）。</li><li><code>state_dict()</code> 只存参数，加载：<code>model.load_state_dict(torch.load(...))</code>。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>用训练 loss 选模型</td><td>会选出过拟合版本；必须按验证集选</td></tr>
+<tr><td>评估忘记 eval+no_grad</td><td>Dropout 干扰 + 白建计算图；两者搭配用</td></tr>
+<tr><td>存整个 model 而非 state_dict</td><td>存 state_dict 更稳、更省、更通用（结构变了也能 load 参数）</td></tr>
+<tr><td>训练完没早停</td><td>数据够小无所谓；大项目把"N 轮验证不降就停"加上</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 评估指标：准确率不够，还要看混淆矩阵</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>训练完，怎么科学地回答"这模型到底准不准"？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>只在测试集上做最终评估</strong>（它训练期间没被碰过）：</p>
+<pre>model.eval()
+with torch.no_grad():
+    logits = model(X_test)
+    preds = (torch.sigmoid(logits) &gt; 0.5).int()      # 概率 &gt;0.5 → 恶性
+    acc = (preds.view(-1) == y_test.int()).float().mean().item()
+    print(&quot;Test Acc:&quot;, acc)</pre>
+<p>再配<strong>混淆矩阵</strong>（2×2，看错误类型）：</p>
+<table>
+<tr><th>真实\预测</th><th>预测良性</th><th>预测恶性</th></tr>
+<tr><td>实际良性</td><td>TP（真阴性）</td><td>FP（假阳性）</td></tr>
+<tr><td>实际恶性</td><td>FN（假阴性）</td><td>TP（真阳性）</td></tr>
+</table>
+<p>关注点：</p>
+<ul><li><strong>假阴性（真恶性被判良性）代价极高</strong>——漏诊！医学场景宁可多报，不可漏报，此时要调<strong>阈值</strong>或用 <strong>召回率</strong> 考核。</li><li>多指标：准确率、精确率、召回率、F1、AUC（sklearn.metrics 全有）。</li></ul>
+<p><strong>医疗/风控等场景，"指标含义"比"准确率数字"更重要。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只报准确率</td><td>类别失衡时准确率骗人；配混淆矩阵、召回率、F1</td></tr>
+<tr><td>阈值固定 0.5</td><td>可调：想少漏诊把阈值调低（0.3），想少误报调高；按业务取舍</td></tr>
+<tr><td>测试集评估多次</td><td>评估一次定生死；反复看测试集等于拿它调参。</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>乳腺癌二分类实战全流程：</p>
+<table>
+<tr><th>阶段</th><th>关键动作</th><th>坑点</th></tr>
+<tr><td>数据认知</td><td>看 shape/分布/类别比</td><td>失衡要处理</td></tr>
+<tr><td>预处理</td><td>StandardScaler：只 fit 训练集</td><td>泄漏、没转张量</td></tr>
+<tr><td>划分</td><td>7:1.5:1.5 + stratify + 固定种子</td><td>分层抽样</td></tr>
+<tr><td>模型</td><td>30→64→32→1，ReLU+BN+Dropout</td><td>输出单神经元</td></tr>
+<tr><td>训练</td><td>五连 + 验证监控 + 存最优</td><td>eval+no_grad</td></tr>
+<tr><td>评估</td><td>测试集最终评估 + 混淆矩阵</td><td>阈值/召回率</td></tr>
+</table>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ AUC 与 ROC：二分类的"全局体检报告"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>阈值调到多少好？除了准确率，有没有"不依赖阈值"的综合指标？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>AUC（ROC 曲线下面积）</strong> 衡量模型把"正负样本排序"的能力，<strong>与阈值无关</strong>：</p>
+<ul><li>AUC = 0.5：瞎猜；AUC = 1.0：完美排序。</li><li>AUC &gt; 0.9 在医学二分类中通常算优秀。</li></ul>
+<pre>from sklearn.metrics import roc_auc_score, roc_curve
+
+probs = torch.sigmoid(logits).numpy()          # 概率
+auc = roc_auc_score(y_test, probs)
+fpr, tpr, thresholds = roc_curve(y_test, probs)  # 可画 ROC 曲线
+print(&quot;AUC:&quot;, auc)</pre>
+<p><strong>ROC 曲线</strong>：横轴假阳性率、纵轴真阳性率；曲线越贴近左上角越好，AUC 就是曲线下的面积。</p>
+<p><strong>怎么用</strong>：AUC 用来<strong>选模型</strong>（与阈值无关，稳定）；选定模型后，用<strong>混淆矩阵</strong>按业务需求定阈值（可多报 vs 少漏）。两个指标各司其职。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只用准确率评价二分类</td><td>不平衡数据失真；ACC/AUC/F1 一起看</td></tr>
+<tr><td>拿 AUC 当最终业务指标</td><td>AUC 是排序能力，业务上还是混淆矩阵+阈值更直接；两阶段使用</td></tr>
+<tr><td>概率没 sigmoid 就喂 roc_auc_score</td><td>该函数接受概率或分数，直接喂 logits 也可用，但记得口径一致</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 超参调优：先手调后搜索</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>lr、隐藏层大小、Dropout 这么多超参，怎么找一组好的？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>先小规模手调，再工具搜索</strong>：</p>
+<p><strong>第一步：手调关键参数</strong>（跑得快，找方向）</p>
+<ul><li>固定 5-10 个 epoch，把 lr 在 {1e-3, 1e-4, 3e-4} 里试，选验证集 AUC 最好的。</li><li>定 lr 后再调 Dropout（0.2/0.3/0.5）、隐藏层宽（32/64/128）。</li></ul>
+<p><strong>第二步：网格/随机搜索</strong>（自动扫参数组合）</p>
+<pre>from sklearn.model_selection import ParameterGrid
+
+grid = {&quot;lr&quot;: [1e-4, 3e-4, 1e-3],
+        &quot;hidden&quot;: [32, 64],
+        &quot;dropout&quot;: [0.2, 0.3, 0.5]}
+for params in ParameterGrid(grid):   # 3×2×3 = 18 组
+    run_one_trial(params)            # 每组小 epoch 跑，记录验证 AUC</pre>
+<p><strong>实践原则</strong>：每组试验用小 epoch 快速预筛，锁定 2-3 组优胜者再拉长训练精调；结果全按"验证集"排名，测试集最后用一次。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>组合爆炸</td><td>3 参数×4 取值=64 组全跑浪费时间；先手调降维再小幅搜索</td></tr>
+<tr><td>用测试集选参数</td><td>测试集被"见过"，最终分数虚高；所有调参决策只看验证集</td></tr>
+<tr><td>每组跑满 100 epoch</td><td>预筛选 10 epoch 足够区分好坏；胜者再细训</td></tr>
+</table>
+<p>一句话记住本章：<strong>乳腺癌实战 = 标准流水线：认知数据 → 先切分再标准化（只 fit 训练集）→ MLP(ReLU+BN+Dropout, 输出1神经元) + BCEWithLogits + Adam → epoch 循环里用验证集选模型、测试集最后裁决，评估别只看准确率，配混淆矩阵盯住假阴性。</strong></p>
+</div>
+</div></div>
+<h4>自测：能不能答上来</h4>
+<ol><li>为什么标准化必须"先切分、只对训练集 fit、验证/测试集只 transform"？</li><li>stratify=y 参数是干什么的？类别分布不均衡的划分会有什么后果？</li><li>二分类模型为什么用"单神经元 + BCEWithLogitsLoss"而不是两个神经元 + softmax？</li><li>训练循环里保存模型时为什么按验证 loss 而不是训练 loss 选择？</li><li>为什么训练状态和评估状态要分开（model.train()/model.eval()）？分别影响什么？</li><li>混淆矩阵的四种情况分别是什么？医学场景为什么特别关注"假阴性"？</li><li>如果测试集准确率 90% 但恶性漏诊率很高，可以怎么调整？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>神经网络基础(1)讲义（乳腺癌实战部分）</a>
+<a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-dataset" target="_blank" rel="noopener"><span class="k">文档</span>scikit-learn 乳腺癌数据集说明</a>
+</div>
+<div class="pager">
+<a href="13-第十三章-正则化与过拟合.html">← 第十三章　正则化与过拟合</a>
+<a class="nxt" href="15-第十五章-FasterRCNN论文精读.html">第十五章　精读经典论文：Faster R-CNN →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="数据集认知：先看数据再动手"><span class="n">1</span>数据集认知：先看数据再动手</a>
+  <a href="#p2" title="数据预处理：标准化是回归/MLP 的命门"><span class="n">2</span>数据预处理：标准化是回归/MLP 的命门</a>
+  <a href="#p3" title="数据拆分与 DataLoader：7:1.5:1.5 + batch"><span class="n">3</span>数据拆分与 DataLoader：7:1.5:1.5 + batch</a>
+  <a href="#p4" title="模型设计与初始化"><span class="n">4</span>模型设计与初始化</a>
+  <a href="#p5" title="训练循环：加验证监控的完整版"><span class="n">5</span>训练循环：加验证监控的完整版</a>
+  <a href="#p6" title="评估指标：准确率不够，还要看混淆矩阵"><span class="n">6</span>评估指标：准确率不够，还要看混淆矩阵</a>
+  <a href="#p7" title="AUC 与 ROC：二分类的&quot;全局体检报告&quot;"><span class="n">7</span>AUC 与 ROC：二分类的"全局体检报告"</a>
+  <a href="#p8" title="超参调优：先手调后搜索"><span class="n">8</span>超参调优：先手调后搜索</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+name: build & check
+
+# 每次 push 自动：
+#   1. 内容质检（结构 / need 覆盖率 / 密钥泄露 / 个人信息）
+#   2. 重新构建站点
+#   3. 站点自检（死链 / 样式）
+# 任何一步失败 → 整个 workflow 红，提醒你处理
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ---- 1. 内容质检 ----
+      # ★ 这一步会抓 API Key 泄露。
+      # 让 AI 写代码示例，它真会把讲义里的真 Key 抄进去 —— 这道闸门救命。
+      - name: 内容质检
+        run: python tools/check_content.py
+
+      # ---- 2. 重新构建 ----
+      - name: 构建站点
+        run: |
+          python tools/build_site.py
+          python tools/sync_index.py
+
+      # ---- 3. 站点自检 ----
+      - name: 站点自检
+        run: python tools/verify_site.py
+
+      # ---- 4. 有改动就提交回去（构建产物跟着源码走）----
+      - name: 提交构建产物
+        if: github.event_name == 'push'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/
+          if git diff --staged --quiet; then
+            echo "构建产物没有变化"
+          else
+            git commit -m "chore: 重新构建站点 [skip ci]"
+            git push
+          fi
+
+      # ---- 5. 部署到 GitHub Pages ----
+      - name: 上传 Pages 产物
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

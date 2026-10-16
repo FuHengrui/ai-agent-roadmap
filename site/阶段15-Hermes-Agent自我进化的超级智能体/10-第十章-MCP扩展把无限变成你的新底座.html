@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第十章　MCP 扩展：把&quot;无限&quot;变成你的新底座 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="10-第十章-MCP扩展把无限变成你的新底座.html" class="cur">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 15 · Hermes-Agent 自我进化的超级智能体 › <strong>第十章</strong></div>
+<h1>第十章　MCP 扩展：把&quot;无限&quot;变成你的新底座</h1>
+<div class="subtitle">阶段 15 · Hermes-Agent 自我进化的超级智能体　|　平台实操　|　难度 ★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>第六章说过"内置 40+ 工具，MCP 可扩展到无限"——现在轮到兑现这句话了。<strong>内置工具覆盖面再广，也一定有缺口</strong>：你想让它查 GitHub 仓库状态？没有 GitHub 工具。想操作企业微信？没有企微工具。每个需求都指望官方内置，等于把"能力天花板"交给别人决定。</p>
+<p><strong>MCP（Model Context Protocol）就是那个"自己决定天花板"的机制</strong>：只要外部服务提供 MCP 服务器，Hermes 就能像用内置工具一样调用它的工具——GitHub、数据库、企业内部系统，乃至你自己写的服务器。这是"自我进化"在<strong>能力供给端</strong>的最终形态。</p>
+<p>学完这一章，你能回答：<strong>MCP 是什么、Stdio 与 HTTP 两种传输怎么选、在配置里怎么注册一个 MCP 服务器、GitHub MCP 的完整接入（含 Token 配置）、装完怎么验证工具真的进来了</strong>。学完这章，你的 Agent 能力清单由"官方限定"升级为"万物皆可接"。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一章（第九章）</strong>：皮肤——外观个性化（轻松章，热身"配置驱动"）。</span>
+<span class="node"><span class="here">本章 ← 你在这里：MCP 扩展——能力"外接"，从 40+ 到无限的唯一通道</span></span>
+<span class="node"><strong>下一章</strong>：定时任务与 Web 仪表板——自动化与监控收尾</span>
+<span class="node"><strong>阶段终点</strong>：行为层（人格/工具/技能/记忆）→ 体验层（皮肤）→ 扩展层（MCP）→ 自动化层（Cron/仪表板）全部打通，Hermes 成为真正"长大了的伙伴"</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>MCP 是本阶段<strong>技术浓度最高</strong>的一章，但结构其实只有四件事：<strong>是什么（协议概念）→ 两种传输（Stdio/HTTP）→ 配置怎么拼（config.yaml 注册）→ 实例验证（GitHub）</strong>。跟着这四件事走，别被术语吓住。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① MCP：AI 世界的"USB-C"接口标准</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"MCP"三个字母听着像又一个黑话。到底什么是 Model Context Protocol？为什么说它是"无限工具"的关键？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>MCP = Model Context Protocol（模型上下文协议）</strong>——一个开放标准，定义了"AI 应用如何连接外部数据源和工具"的通用方式（讲义第 42 页）。</p>
+<p>用"USB-C"类比最好懂：</p>
+<table>
+<tr><th>项</th><th>USB-C</th><th>MCP</th></tr>
+<tr><td>解决的问题</td><td>一个口接所有外设（充电/数据/显示）</td><td>一个协议接所有外部工具（搜索/数据库/API）</td></tr>
+<tr><td>好处</td><td>不用每换设备换一种线</td><td>不用给每个服务写专属集成</td></tr>
+<tr><td>生态</td><td>任何厂商都能造 USB-C 设备</td><td>任何服务商都能提供 MCP 服务器</td></tr>
+</table>
+<p>对 Hermes：<strong>内置工具是"出厂自带外设"，MCP 是"即插即用的外设接口"</strong>——只要对方提供 MCP 服务器，不用改框架代码就能新增能力。这就是"无限扩展"的技术底座。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 MCP 当"一个工具"</td><td>它是<strong>协议/标准</strong>，允许接入无数 MCP 服务器提供的工具</td></tr>
+<tr><td>以为接 MCP 要改 Hermes 源码</td><td>改配置文件注册即可，框架零改动；这正是协议的价值</td></tr>
+<tr><td>把 MCP 和 API 直连混为一谈</td><td>MCP 是<strong>标准化封装</strong>：服务方写一个 MCP 服务器，所有 MCP 客户端通用；API 直连每家用一套</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 为什么要搞协议：从"每家用一套"到"一次接接口"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>没有 MCP 的年代，AI 要接外部服务是怎样一幅混乱图景？协议的"经济学价值"在哪？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>对比"无协议 vs 有协议"：</p>
+<p><strong>无协议（各写各的）</strong>：</p>
+<pre>Agent A 接 GitHub → 写专属集成
+Agent B 接 GitHub → 再写一套专属集成
+Agent C 接数据库 → 又一套……</pre>
+<p><strong>有协议（MCP）</strong>：</p>
+<pre>GitHub 团队写一次 MCP 服务器
+→ 所有 MCP 客户端（Hermes、其他框架）通用
+→ 数据库/企微/任何服务同样&quot;一次开发、处处可用&quot;</pre>
+<p>核心收益两条：<strong>① 集成成本从"写代码"降到"写配置"；② 生态复用——一个服务接入一次，全行业受益</strong>。理解这点，你就明白为什么 MCP 被当作 Agent 生态的"基础设施级"标准，而不是某个框架的私有功能。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>觉得"接一个服务也没多难，没必要学 MCP"</td><td>单看一个服务确实不难；几十个服务+换框架迁移时才见分晓——协议省的是<strong>长期和规模化</strong>的成本</td></tr>
+<tr><td>以为 MCP 只适合大厂服务</td><td>自己写个 MCP 服务器（几十行）也能接私有系统，个人开发者同样受益</td></tr>
+<tr><td>混淆 MCP 与"插件商店"</td><td>插件是框架内的分发机制；MCP 是跨框架的<strong>开放标准</strong>，权限更大参照系更宽</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 两种传输方式：Stdio 与 HTTP(S)</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>接入 MCP 服务器时，配置里要选"传输方式"——Stdio 和 HTTP(S) 是什么区别？什么时候该用哪个？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义第 43 页给出两种官方支持的传输：</p>
+<table>
+<tr><th>维度</th><th><strong>Stdio</strong></th><th><strong>HTTP(S)</strong></th></tr>
+<tr><td>通信方式</td><td><strong>标准输入/输出</strong>（本地进程间管道）</td><td><strong>远程 HTTP 请求</strong>（网络）</td></tr>
+<tr><td>服务器在哪</td><td>本地子进程（随 Hermes 启动）</td><td>远程服务器（独立部署/共享）</td></tr>
+<tr><td>典型场景</td><td>本地 CLI 工具、本机服务</td><td>云服务、团队共享、跨机器</td></tr>
+<tr><td>配置要点</td><td>command+args（启动命令）</td><td>url（端点）+ 可选 headers</td></tr>
+</table>
+<p>选择口诀：<strong>"本地跑得动就用 Stdio（简单直连），要远程/共享就用 HTTP(S)"</strong>。GitHub MCP 工人官方包里一般以 Stdio 方式启动本地服务器进程。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>Stdio 配置里试图填 url</td><td>Stdio 是 command+args（本地命令）；填 url 是 HTTP 的用法，写错位置必然失败</td></tr>
+<tr><td>HTTP 服务器不可达先怀疑配置</td><td>先 curl 端点确认服务活着；网络问题与配置问题分开排查</td></tr>
+<tr><td>混用"本地工具必须 Stdio"</td><td>本地也可走 HTTP（本地起服务端）；选择看部署形态不看是否本机</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 配置总览：MCP 服务器注册在 config.yaml</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>知道了协议和传输，落地第一步：MCP 服务器在哪里注册？配置块长什么样？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>MCP 服务器在 <code>~/.hermes/config.yaml</code> 中注册，结构（示意）：</p>
+<pre>mcpServers:
+  github:                       # 服务器名（自己起，唯一）
+    command: &quot;npx&quot;              # Stdio 方式：启动命令
+    args:
+      - &quot;-y&quot;
+      - &quot;@modelcontextprotocol/server-github&quot;
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: &quot;&lt;你的GitHubToken&gt;&quot;   # 见第 ⑥ 点安全提醒</pre>
+<table>
+<tr><th>字段</th><th>作用</th></tr>
+<tr><td><code>mcpServers</code></td><td>顶层配置块，可注册多个服务器</td></tr>
+<tr><td>服务器名（如上例 <code>github</code>）</td><td>唯一标识，<code>hermes mcp xxx</code> 命令引用它</td></tr>
+<tr><td>command / args</td><td>Stdio 启动命令与参数</td></tr>
+<tr><td>env</td><td>传给服务器的环境变量（如 Token）</td></tr>
+</table>
+<p>注册完成后，Hermes 会在启动时拉起这些服务器，把它们的工具并入可用工具集。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>多个服务器重名</td><td>名字唯一，重名后注册的会覆盖/冲突；起名带服务特征</td></tr>
+<tr><td>改完 config.yaml 不重启</td><td>MCP 服务器在<strong>启动时拉起</strong>；改配置后重启会话/网关才生效（配置驱动铁律）</td></tr>
+<tr><td>忘了 mcpServers 顶层键名</td><td>键名就是 <code>mcpServers</code>，不是 servers/mcp；写错键名静默不加载</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 注册后工具去哪了："并入可用工具集"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>MCP 服务器注册完，它的工具在哪能看见？"并入可用工具集"具体指什么？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>MCP 服务器的工具<strong>作为可用工具并入 Hermes 的工具集</strong>（讲义第 43 页）。验证入口：</p>
+<pre>hermes tools            # 查看所有可用工具
+hermes tools list       # （如支持）列出含 MCP 工具在内的完整清单</pre>
+<p>对照第六章：内置工具 + MCP 工具在<strong>同一个工具管理界面</strong>里出现，Agent 调用时不分"内置/外接"——<strong>对 Agent 而言都是"工具"</strong>。所以 MCP 工具也能被启用/禁用、也会出现在 /tools list，和内置工具平起平坐。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>在工具列表里找不到 MCP 工具</td><td>先查注册（mcpServers 配置）+ 重启未生效；再看启动日志有没有报错</td></tr>
+<tr><td>以为 MCP 工具要单独开"工具集"</td><td>并入既有工具体系，按工具管理统一查看/开关</td></tr>
+<tr><td>服务器没启动却去工具列表找</td><td>启动失败的工具不会出现在列表；先解决服务器拉起的报错</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ GitHub MCP 接入：从零到验证的完整链路</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>讲概念不如带一遍真流程。GitHub MCP 是官方最常见的例子，把它从创建 Token 到验证工具完整走一遍。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>接入 GitHub MCP 的完整链路（讲义第 43-47 页逻辑整合）：</p>
+<p><strong>第一步——准备 Token</strong>：在 GitHub 生成一个 Personal Access Token（Fine-grained PAT：仓库读权限等按需勾选）。<strong>Token 只用于配置，不进任何代码/记忆文件</strong>（红线！）。</p>
+<p><strong>第二步——注册服务器</strong>：</p>
+<pre>mcpServers:
+  github:
+    command: &quot;npx&quot;
+    args: [&quot;-y&quot;, &quot;@modelcontextprotocol/server-github&quot;]
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: &quot;&lt;你的GitHubToken&gt;&quot;   # 用真实 token 替换占位</pre>
+<p><strong>第三步——重启生效</strong>：重启 Hermes 会话/网关，让服务器被拉起。</p>
+<p><strong>第四步——验证</strong>：</p>
+<pre>hermes mcp list             # 查看已连接的服务器（github 应在线）
+hermes tools                # 或用 hermes tools list，找到 github_* 工具</pre>
+<p><strong>第五步——真实调用</strong>：让 Agent "列出我的某个仓库的 issues"，看它是否调 GitHub 工具成功。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>Token 权限不足导致 API 403</td><td>Fine-grained PAT 要勾选对应仓库/资源权限；报错先看 GitHub 返回的权限提示</td></tr>
+<tr><td>npx 首次拉包慢/失败</td><td>国内网络可能需要 npm 镜像（呼应第 2 章镜像天坑）；先单独跑一次 npx 命令验证</td></tr>
+<tr><td>验证时"没有 github 工具"</td><td>回查：注册了吗？重启了吗？启动日志有没有 Token 配置缺失的报错？</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ Token 安全：配置里的密钥红线</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>第 ⑥ 步里把 Token 写进了 config.yaml——这和"密钥不进文件"的红线冲突吗？需要把规则划清楚。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>分清两件事：① 密钥可以进"本地配置"用于启动服务；② 密钥绝不进"代码/记忆/技能/分享出去的文件"</strong>。</p>
+<table>
+<tr><th>场景</th><th>密钥可以吗</th></tr>
+<tr><td><code>~/.hermes/config.yaml</code> 本地配置（供 MCP 服务器进程读取）</td><td>✅ 可以（本机私有，配置即运行时）</td></tr>
+<tr><td>记忆文件 MEMORY/USER、技能 SKILL.md</td><td>❌ 绝对不行（会被分享/检索）</td></tr>
+<tr><td>聊天记录、日志、贴出来的代码片段</td><td>❌ 不行</td></tr>
+<tr><td>分享/打包任何配置</td><td>❌ 先脱敏（Token 换成 &lt;占位&gt;）</td></tr>
+</table>
+<p>实操建议：<strong>如果方便，Token 走环境变量引用</strong>（启动前 export），配置文件里写 <code>${GITHUB_PERSONAL_ACCESS_TOKEN}</code> 之类引用，最大限度避免明文落盘；不能则保持配置本地化，<strong>备份/分享前必脱敏</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>觉得"配置里写 token 也没人看见"</td><td>本地文件也会被打包/备份/同步；脱敏习惯要养成，泄漏一次就是全量泄露</td></tr>
+<tr><td>Token 明文写进 SKILL.md 教别人接入</td><td>技能文件是可分享的，token 进去=见证泄漏；技能里只写 &lt;占位符&gt;</td></tr>
+<tr><td>把含 token 的整份 config.yaml 发到群里求助</td><td>先 grep 检查 token 再发；<strong>分享前扫描是全书通用铁律</strong></td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ hermes mcp 命令族：查看与管理服务器</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>注册完服务器，日常怎么查状态、管服务器？有没有专门的命令入口？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给的关键命令：</p>
+<pre>hermes mcp list        # 查看已连接的 MCP 服务器及状态
+hermes mcp             # （带子命令）管理 MCP 服务器</pre>
+<table>
+<tr><th>命令</th><th>用途</th></tr>
+<tr><td><code>hermes mcp list</code></td><td>确认各服务器在线/离线、工具数</td></tr>
+<tr><td><code>hermes mcp &lt;子命令&gt;</code></td><td>按需连接/断开/查看详情（以实际 help 为准）</td></tr>
+</table>
+<p>配合工具管理：<code>hermes tools</code> / <code>/tools list</code> 看 MCP 工具有没有并入。<strong>管理顺序：注册（config.yaml）→ 重启 → mcp list 查在线 → tools 查工具 → 实际调用验证</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>找不到 hermes mcp 子命令</td><td>版本较老/未安装 MCP 支持时命令缺失；确认 Hermes 版本支持 MCP（讲义 0.10.0+ 语境）</td></tr>
+<tr><td>只查 mcp list 不查 tools</td><td>list 管服务器存活，tools 管工具可见；两步都要</td></tr>
+<tr><td>服务器状态 in 但工具没并入</td><td>部分服务器的工具注册失败（启动报错）；看 hermes 启动日志抓原因</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 多个服务器：MCP 的"叠加态"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>接完 GitHub 还想接别的（数据库、企微、自建服务）？多个 MCP 服务器怎么共存？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>mcpServers 是一个映射，可同时注册多个服务器</strong>（第 ④ 点结构）：</p>
+<pre>mcpServers:
+  github:
+    command: &quot;npx&quot;
+    args: [&quot;-y&quot;, &quot;@modelcontextprotocol/server-github&quot;]
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: &quot;&lt;你的GitHubToken&gt;&quot;
+  my-company-db:            # 第二个服务器
+    command: &quot;python&quot;
+    args: [&quot;/opt/mcp/my-db-server.py&quot;]
+  # enterprise-im:          # 更多同理
+  #   ...</pre>
+<p>所有服务器启动后<strong>工具全部合并进可用工具集</strong>。管理要领：<strong>每个服务器独立命名、独立 env、独立排查</strong>——一个挂掉不影响其它（除非资源冲突）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>一个服务器挂了拖垮全部工具</td><td>正常设计下服务器相互独立；逐一查各自启动日志即可，别全盘重来</td></tr>
+<tr><td>env 变量名冲突（两个服务器都要 TOKEN）</td><td>每个服务器有自己的 env 块，各自定义；Hermes 按服务器隔离传递</td></tr>
+<tr><td>追加新服务器后旧工具"消失"</td><td>多半是 YAML 缩进破坏；改完用 <code>hermes</code> 启动验证语法再继续</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ MCP 出问题时的排查路径</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>MCP 接入失败的常见场景五花八门，需要一条"由浅入深"的排查路径，避免瞎折腾。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>MCP 排查路径（按顺序）：</p>
+<pre>① 配置文件       mcpServers 键名、YAML 缩进、command/args 拼写
+② 服务器本身     单独手动跑一遍 command（如直接 npx 启动），看能不能起来
+③ 依赖与网络     npx 包能否下载（镜像）、Python 依赖是否安装、HTTP 端点可达性
+④ env 与权限     Token 是否缺失/过期、权限是否覆盖目标资源
+⑤ 重启与状态     hermes 重启 → hermes mcp list → hermes tools 查看注册成功
+⑥ 日志           hermes 启动日志里服务器报错信息（最有力的线索）</pre>
+<p><strong>核心思想：每层先自证"我这一层没问题"，再往下一层走</strong>——不跳过前面直接怀疑框架。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>一路"重启重启重启"</td><td>重启前先做②③④（服务器本身能否独立跑通）；基础没通重启多少次都没用</td></tr>
+<tr><td>报错信息一眼看不懂就放弃</td><td>报错里往往带社区链接/明确提示（如 GitHub 403 权限）；先读报错再改</td></tr>
+<tr><td>排查到一半全删配置重来</td><td>日志和 mcp list 会告诉你具体挂在哪；精准修一处胜过推倒重来</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ MCP 与技能的关系：工具 vs 手册，再划一次</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>第 7 章划了"工具集 vs 技能"，现在又多了 MCP——三者边界要重新立一遍，防止记串。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>三者的关系一句话：<strong>MCP 是"新工具"，技能是"新手册"，工具集是"开关"</strong>。</p>
+<table>
+<tr><th>概念</th><th>本质</th><th>例子</th></tr>
+<tr><td>工具集</td><td>工具的开关组合</td><td>web/terminal 开关</td></tr>
+<tr><td>内置工具</td><td>出厂自带动作</td><td>web_search</td></tr>
+<tr><td>MCP 工具</td><td>外接的新动作</td><td>github_get_issue</td></tr>
+<tr><td>技能（SKILL.md）</td><td>怎么用动作的流程手册</td><td>天气查询手册</td></tr>
+</table>
+<p>配合逻辑：<strong>MCP 给 Agent 更多"手脚"（新动作），技能教它"按什么流程编排手脚"（手册）</strong>。典型组合：装 GitHub MCP（获得工具）+ 写"周报生成"技能（规定用 GitHub 工具取数据→汇总→输出的流程）。工具决定<strong>能不能</strong>，技能决定<strong>怎么用</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为装了 MCP 服务器=会自动干活</td><td>MCP 只提供工具；会不会<strong>用</strong>、怎么编排，取决于 Agent 能力与技能支持</td></tr>
+<tr><td>想在 MCP 服务器里"装流程"</td><td>流程是技能的活（SKILL.md）；MCP 服务器只管暴露服务接口</td></tr>
+<tr><td>排查技能不生效却去查 MCP</td><td>技能不生效查技能链路（目录/描述/工具集开关）；只有技能依赖的 MCP 工具缺失才涉及 MCP</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ MCP 的"能力观"：无限，但要有节制</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>最后给一个冷静的提醒：MCP 带来"无限"，但也要求"节制"。盲目堆服务器会怎样？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>"无限扩展"是指天花板无限，不是让你把每个服务器的工具都同时开满</strong>。参考三原则：</p>
+<table>
+<tr><th>原则</th><th>解释</th></tr>
+<tr><td>按需接入</td><td>只为实际任务接服务器（接 GitHub 是因为你要管仓库，不是因为它出名）</td></tr>
+<tr><td>最小权限</td><td>Token 权限只给够用的（只读就给只读）；服务器只开要用的</td></tr>
+<tr><td>定期体检</td><td>不用的服务器注销/停用；留着的检查 Token 是否过期、是否还被需要</td></tr>
+</table>
+<p>潜在代价：<strong>每接入一个服务器=多一组启动进程+多一点攻击面+工具列表更拥挤</strong>。无限能力的前提是"你掌控着开关"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>一次接 10 个服务器"提前备着"</td><td>启动慢、噪音大、万一有漏洞全暴露；备着=都开着，风险不备存</td></tr>
+<tr><td>Token 全给最高权限"省心"</td><td>泄漏时损失最大化；最小权限是安全底线</td></tr>
+<tr><td>装了 MCP 就再也不回看</td><td>Token 会过期、服务器会失效；纳入日常体检（第 11 章仪表板也是监控视角）</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你的 Agent 拿到了"外接一切"的能力：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>MCP=协议标准</strong>（USB-C 类比）</td><td>看清 MCP 的本质：不是工具，是"接所有工具"的统一接口</td></tr>
+<tr><td><strong>Stdio vs HTTP(S)</strong>：本地子进程 / 远程端点</td><td>传输选型一眼定：本地 command+args，远程 url+headers</td></tr>
+<tr><td><strong>config.yaml 注册</strong>：mcpServers 块</td><td>新增能力从"写代码"降为"写配置"，一行一个服务器</td></tr>
+<tr><td><strong>GitHub 全流程</strong>：Token→注册→重启→mcp list→真实调用</td><td>一条完整样板，其它服务器照着套</td></tr>
+<tr><td><strong>Token 安全红线</strong>：本地配置可放、分享必脱敏、绝进记忆/技能</td><td>能力越强越要注意凭据卫生——泄漏一次损失一次</td></tr>
+<tr><td><strong>排查路径</strong>：配置→服务器→依赖→env→重启→日志</td><td>MCP 出问题不再瞎重启，逐层自证定位</td></tr>
+<tr><td><strong>三概念边界</strong>：MCP=新工具、技能=新手册、工具集=开关</td><td>什么时候调 MCP、什么时候写技能，一清二楚</td></tr>
+</table>
+<p>一句话记住本章：<strong>MCP 是能力外接的 USB-C 口——config.yaml 注册一个服务器、重启、mcp list 验证，GitHub 是样板；工具无限但接入要有节制，Token 只在本地、出必脱敏。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>MCP 全称是什么？用"USB-C"类比说明它的价值（协议解决什么问题）。</li><li>MCP 的两种传输方式分别是什么？各自的适用场景和配置要点是什么？</li><li>在 config.yaml 里注册一个 Stdio 类型的 MCP 服务器，请写出最小配置骨架（服务器名用 github，Token 用 &lt;占位&gt;）。</li><li>GitHub MCP 接入的完整链路是哪五步？</li><li>"Token 不能进文件"和"config.yaml 里写了 Token"矛盾吗？请说明密钥的"该放/不该放"边界，并给出两个更安全的替代做法。</li><li>MCP 工具接入后在哪里能看到？（提示：两个命令）排查 MCP 时，为什么"先单独手动跑一遍服务器命令"很重要？</li><li>MCP 工具、技能、工具集三者的关系是什么？请用一句话+一个例子说明"为什么装了 MCP 服务器不等于 Agent 会自动干活"。</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 42-47 页）</a>
+<a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener"><span class="k">官网</span>Model Context Protocol 官方文档</a>
+<a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener"><span class="k">参考</span>GitHub Model Context Protocol 服务器</a>
+</div>
+<div class="pager">
+<a href="09-第九章-皮肤主题与外观定制.html">← 第九章　皮肤主题与外观定制</a>
+<a class="nxt" href="11-第十一章-定时任务Web仪表板与常用命令.html">第十一章　定时任务、Web 仪表板与常用命令 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="MCP：AI 世界的&quot;USB-C&quot;接口标准"><span class="n">1</span>MCP：AI 世界的"USB-C"接口标准</a>
+  <a href="#p2" title="为什么要搞协议：从&quot;每家用一套&quot;到&quot;一次接接口&quot;"><span class="n">2</span>为什么要搞协议：从"每家用一套"到"一次接接口"</a>
+  <a href="#p3" title="两种传输方式：Stdio 与 HTTP(S)"><span class="n">3</span>两种传输方式：Stdio 与 HTTP(S)</a>
+  <a href="#p4" title="配置总览：MCP 服务器注册在 config.yaml"><span class="n">4</span>配置总览：MCP 服务器注册在 config.yaml</a>
+  <a href="#p5" title="注册后工具去哪了：&quot;并入可用工具集&quot;"><span class="n">5</span>注册后工具去哪了："并入可用工具集"</a>
+  <a href="#p6" title="GitHub MCP 接入：从零到验证的完整链路"><span class="n">6</span>GitHub MCP 接入：从零到验证的完整链路</a>
+  <a href="#p7" title="Token 安全：配置里的密钥红线"><span class="n">7</span>Token 安全：配置里的密钥红线</a>
+  <a href="#p8" title="hermes mcp 命令族：查看与管理服务器"><span class="n">8</span>hermes mcp 命令族：查看与管理服务器</a>
+  <a href="#p9" title="多个服务器：MCP 的&quot;叠加态&quot;"><span class="n">9</span>多个服务器：MCP 的"叠加态"</a>
+  <a href="#p10" title="MCP 出问题时的排查路径"><span class="n">10</span>MCP 出问题时的排查路径</a>
+  <a href="#p11" title="MCP 与技能的关系：工具 vs 手册，再划一次"><span class="n">11</span>MCP 与技能的关系：工具 vs 手册，再划一次</a>
+  <a href="#p12" title="MCP 的&quot;能力观&quot;：无限，但要有节制"><span class="n">12</span>MCP 的"能力观"：无限，但要有节制</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

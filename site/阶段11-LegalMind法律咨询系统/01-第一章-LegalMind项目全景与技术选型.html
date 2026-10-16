@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第一章　项目全景与技术选型 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="01-第一章-LegalMind项目全景与技术选型.html" class="cur">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 11 · LegalMind 法律咨询系统 › <strong>第一章</strong></div>
+<h1>第一章　项目全景与技术选型</h1>
+<div class="subtitle">阶段 11 · LegalMind 法律咨询系统（RAG + 多 Agent）　|　2 课时　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>普通人遇到法律问题，第一反应是"问朋友"或"上网搜"。网上搜到的答案是<strong>通稿</strong>，不针对你的案情；问朋友最多给你一句"这事得打官司"。真正有用的回答要命中两样东西：<strong>具体的法条</strong>和<strong>类似的判例</strong>——"你这案子和某法院 2023 年那个判例很像，按那个逻辑你大概能赢"。</p>
+<p>但法律条文和裁判文书动辄上千万条，不可能全塞进提示词。LegalMind 要做的，就是用 <strong>RAG（检索增强生成）</strong> 先把相关案例和法律依据"捞"出来，再交给 <strong>多 Agent 系统（意图识别 → 案例检索 → 问答/文书生成）</strong> 组织成专业回答——你问"离婚财产怎么分"，它先判断这是"问答"意图，检索离婚判例，再给你有法条有案例的回答；你说"帮我写起诉状"，它自动切换成文书生成通道。</p>
+<p>学完这一章，你手里有一张<strong>完整系统蓝图</strong>：这个"AI 律师"由哪些模块组成、每个模块用什么技术、请求从浏览器到 Postgres 再到 LLM 怎么走通。后面每一章都是这张图的一块拼图。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">上一章（阶段 10 · 安康智慧健康管理平台）：LangGraph 五节点工作流 + RAG 医学知识库——你已经跑通过"检索-生成"链路</span>
+<span class="node"><span class="here">本章 ← 你在这里：为"法律咨询系统"画全景图——痛点、功能模块、技术栈、架构分层与数据流</span></span>
+<span class="node">下一章：开发环境与基础设施——Python 3.14、Postgres/Redis 容器、.env 配置怎么一次搭好</span>
+<span class="node">再往后：FastAPI 骨架 → ORM 建模（用户/案例/会话/文书四张表）→ JWT 认证 → LLM 客户端 → 向量库 → RAG → Agent 工作流 → API 组装 → Vue3 前端</span>
+<span class="node">阶段终点：交付一个能跑通"咨询-检索-问答/文书生成"全流程的 AI 法律顾问 Web 应用</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 这个项目解决的真实痛点</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>先搞清楚"为什么非做这个系统不可"，后面的技术选型才有落点——技术永远为痛点服务。法律咨询行业有四件"传统方案干不了"的事：</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<table>
+<tr><th>痛点</th><th>具体表现</th><th>传统方案为什么不行</th></tr>
+<tr><td>信息过载</td><td>法条几十万条、裁判文书几千万份</td><td>人力翻不完，搜索引擎只给你链接不给结论</td></tr>
+<tr><td>回答不精准</td><td>同样问"欠钱不还怎么办"，民间借贷和工程款纠纷答法完全不同</td><td>通用大模型没喂你的案情细节，只能讲"正确废话"</td></tr>
+<tr><td>文书门槛高</td><td>起诉状、答辩状有固定格式和必备要素，写错一处立案就被退</td><td>普通人不知道"诉讼请求要列明金额""管辖法院不能随便写"</td></tr>
+<tr><td>案例依据难找</td><td>回答要有"哪个法院哪个案号判过类似案子"才有说服力</td><td>判例检索是专业法律数据库的活，普通用户够不着</td></tr>
+</table>
+<p>LegalMind 的解法一句话：<strong>用向量检索+关键词检索双路召回把相关案例捞出来 → 重排序挑最相关的 3-5 个 → 连同对话历史和用户问题一起交给 LLM → LLM 按法律人设组织成有案号、有法条的专业回答</strong>。用户要的是"结论+依据"，不是"链接列表"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"把几千条法条全塞进 prompt 让模型背"就行</td><td>prompt 有 token 上限，法条 + 文书动辄几千万份；RAG 的价值是<strong>只取相关的几条</strong>，不是全喂</td></tr>
+<tr><td>以为"通用大模型就是法律顾问，直接问就行"</td><td>通用模型没检索能力，答法律问题全靠训练记忆，容易一本正经引用不存在的法条——没有"案例+案号"背书，回答不可信</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 八大功能模块拆解</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>一个完整产品不可能一把梭，先把"这系统到底有哪些能力"列成清单，后面开发才有交付物清单。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给出的功能模块，就是 LegalMind 的需求地图：</p>
+<table>
+<tr><th>模块</th><th>职责</th><th>技术落点</th></tr>
+<tr><td>🔐 用户注册登录</td><td>账号体系、JWT 令牌、会话归属</td><td>User 模型 + JWT 认证</td></tr>
+<tr><td>💬 AI 法律咨询</td><td>基于案例的问答、带引用来源</td><td>QAAgent + RAG</td></tr>
+<tr><td>📋 法律文书生成</td><td>起诉状/答辩状/合同/律师函/上诉状</td><td>DocumentAgent + 模板</td></tr>
+<tr><td>🔎 案例检索</td><td>关键词/法条检索、按法院案件类型过滤</td><td>RetrievalAgent + HybridRetriever</td></tr>
+<tr><td>🧭 意图识别</td><td>判断问题属于 问答/文书/检索 哪一类</td><td>IntentAgent + LLM</td></tr>
+<tr><td>🗂️ 会话管理</td><td>多轮对话、会话列表、历史消息</td><td>ChatSession/ChatMessage 表</td></tr>
+<tr><td>🚀 流式输出</td><td>答案逐字显示，不等整段生成完</td><td>SSE + StreamingResponse</td></tr>
+<tr><td>🧠 向量知识库</td><td>裁判文书切片向量化、相似度召回</td><td>BGE 嵌入 + ChromaDB</td></tr>
+</table>
+<p>记住这张表：<strong>前 3 个偏业务，中间 3 个是 AI 核心，后 2 个是工程支撑</strong>——第 5、6 章解决后面两个，第 7~9 章解决中间三个。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"模块越多越高级，先全做上"</td><td>这 8 个模块有依赖关系：没有认证（第 5 章）、没有案例数据（第 4/7 章），聊天根本没法闭环。按依赖顺序做，不是按表里的顺序做</td></tr>
+<tr><td>以为"案例检索 = 聊天里的搜索"</td><td>聊天里的 RAG 检索是<strong>内部步骤</strong>（给 LLM 找依据），案例检索页是<strong>面向用户的独立界面</strong>——同一套 RetrievalAgent，两个消费场景，别混为一谈</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 技术选型：全套技术栈</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>项目用什么语言、什么框架、什么数据库，必须动手前一次性定清楚，避免中途换栈返工。这个项目是全栈 AI 应用，选型要同时照顾"AI 生态"和"Web 工程"两边。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义交付的技术栈清单（13 项），每项选它都有明确理由：</p>
+<table>
+<tr><th>#</th><th>技术</th><th>用途</th><th>为什么选它</th></tr>
+<tr><td>1</td><td>Python ≥ 3.14</td><td>后端语言</td><td>AI 生态（LangChain/LangGraph）只认 Python</td></tr>
+<tr><td>2</td><td>FastAPI ≥ 0.136</td><td>Web 框架</td><td>原生 async + Pydantic 校验 + 自带 SSE 支持</td></tr>
+<tr><td>3</td><td>Tortoise ORM ≥ 0.24</td><td>数据库操作</td><td>与 FastAPI async 生态契合、免写 SQL</td></tr>
+<tr><td>4</td><td>PostgreSQL 16</td><td>业务数据库</td><td>存用户/案例/会话/文书，JSON 字段支持数组</td></tr>
+<tr><td>5</td><td>Redis 7</td><td>缓存/队列</td><td>与 LangGraph checkpointer 搭配（本项目实际用 PG 存状态）</td></tr>
+<tr><td>6</td><td>LangChain ≥ 1.3</td><td>LLM 调用封装</td><td>Prompt/输出解析/多供应商统一接口</td></tr>
+<tr><td>7</td><td>LangGraph ≥ 1.2</td><td>Agent 编排</td><td>有向状态图，多 Agent 协作天然合适</td></tr>
+<tr><td>8</td><td>sentence-transformers</td><td>文本向量化</td><td>本地跑 BGE-small-zh，不依赖外部 API</td></tr>
+<tr><td>9</td><td>ChromaDB</td><td>向量数据库</td><td>轻量、支持过滤、与 LangChain 集成好</td></tr>
+<tr><td>10</td><td>rank-bm25</td><td>关键词召回</td><td>与向量检索互补，专治专有名词（案号、法条）</td></tr>
+<tr><td>11</td><td>python-jose</td><td>JWT 签发校验</td><td>标准 JWT 实现，配合 OAuth2 Bearer</td></tr>
+<tr><td>12</td><td>Vue3 + Vite + Tailwind</td><td>前端</td><td>组合式 API + 秒级热更新 + 原子类快速出 UI</td></tr>
+<tr><td>13</td><td>Pinia + vue-router</td><td>状态与路由</td><td>官方生态，auth/chat 两 store 管理全局状态</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"版本号写得越高越安全，直接装最新版"</td><td>表中版本是<strong>下限</strong>（≥），不是推荐最新。LangChain/LangGraph 迭代快、breaking change 多，教程代码往往是旧接口，直接装最新可能 API 对不上。先装下限版本验证跑通，再决定升不升</td></tr>
+<tr><td>以为"Redis 是必须的，没有就不算正规项目"</td><td>本项目的业务数据全在 Postgres，Redis 只是<strong>预留</strong>（见第 8 章 checkpointer 实际用 PG）。先想清楚"谁在生产/消费缓存"，再决定要不要引入，别为了技术选型而选型</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 总体架构：四层分工</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>系统大了不分层就会"面条代码"——路由里写业务、业务里调模型、模型里拼字符串。先把职责边界划清楚，每个文件写什么都心里有数。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>LegalMind 的分层（从请求到存储）：</p>
+<pre>浏览器 (Vue3)                    ── /api/* + SSE
+   │
+   ▼
+FastAPI 路由层 (app/api/*)       ── 参数校验、JWT 依赖、SSE 封装
+   │
+   ▼
+Agent 层 (app/agents/*)         ── 意图识别 / 问答 / 文书 / 检索 四枚 Agent
+   │
+   ▼
+LangGraph 工作流 (workflow.py)  ── 状态图编排节点，条件边按意图路由
+   │
+   ├─► RAG 层 (app/rag/*)       ── 向量检索 + BM25 + 重排序
+   │        │
+   │        └─► ChromaDB 向量库 + cases 表原始数据
+   │
+   └─► LLM 层 (app/llm/*)       ── 多供应商客户端 (DeepSeek/OpenAI)、Prompt 模板
+   │
+   ▼
+存储层                          ── PostgreSQL (Tortoise ORM) + Redis</pre>
+<p>要点：<strong>下层不知道上层是谁</strong>。rag 层只做"给 query 返回案例列表"；llm 层只做"给消息返回文本"；agent 层组装它们；workflow 层决定调用顺序。换一家 LLM 供应商只动 llm 层一个文件，这就是分层的价值。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"分层 = 按文件夹放文件"</td><td>分层是<strong>依赖方向的约束</strong>：api 层可以 import agent 层，agent 层<strong>不能</strong> import api 层。光按目录归类但不限制 import，照样写成面条代码</td></tr>
+<tr><td>以为"换供应商只改一个文件 = 改一下 .env 就完事"</td><td>.env 只解决模型名/Key/地址，若两家供应商的<strong>参数或接口不完全兼容</strong>（如 temperature 语义、流式格式），还要动 llm 层。分层保证的是"只动 llm 层"，不是"什么都不用动"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 请求的数据流（一次完整咨询）</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>模块清单有了、分层有了，但"用户敲一句话回车后，系统内部到底发生什么"还没讲透。理解主链路是后面每章的导航地图。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>一次"法律咨询"请求的完整旅程（对应 <code>POST /chat/stream</code>）：</p>
+<pre>1. 用户输入 &quot;离婚财产怎么分割？&quot;
+2. 前端 fetch /api/chat/stream（带 JWT），准备消费 SSE
+3. FastAPI 校验 JWT → 找到 User → 取/建 ChatSession
+4. Tile: 调用 workflow.astream(query, thread_id=session_id)
+5. intent_recognition 节点 → IntentAgent 识别意图 = &quot;qa&quot;
+6. 条件边按意图路由 → case_retrieval 节点 → RetrievalAgent
+7. HybridRetriever 双路召回 15 个候选 → Reranker 重排 → 取前 5
+8. qa_generation 节点 → QAAgent 组装 system + 案例 + 历史 → LLM 流式生成
+9. 每个 token 经 SSE 推给前端，前端逐字渲染
+10. 流结束 → 从 LangGraph 读最终 state 拿 sources → 一并推送
+11. ChatMessageRecord 落库（user 消息 + assistant 回复），会话列表可回看</pre>
+<p>"帮我写起诉状"走的分支不同：第 5 步识别出 <code>document</code> 意图后，直接跳到 <code>document_generation</code> 节点，不走检索（第 6~8 步换成文书模板+参数组装）。这就是<strong>条件边按意图分流</strong>的威力。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"所有请求都要先检索案例"</td><td>只有 qa / search 意图需要检索，<strong>文书生成默认不检索案例</strong>（用模板+参数）。如果给文书也接上检索，反而是把模板逻辑搅浑。链路看意图，不是一条路走到黑</td></tr>
+<tr><td>以为"SSE 是一次性返回整段文本"</td><td>SSE 是<strong>逐 token 推流</strong>，第 10 步的 sources 在流<strong>结束后</strong>单独推送。前端必须处理"先拼内容、再接引用"两段事件，漏了第二步就看不到引用来源</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 数据模型一览：四张核心表</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>动手写代码前，先知道数据长什么样。业务侧的"用户、案例、会话、消息、文书"要落库，字段设计决定后面 API 好不好写。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>LLM 检索增强生成(Retrieval-Augmented Generation)实现法律咨询时，需要检索"案例"这一核心数据，而支撑业务运转的还有用户与会话类数据。LegalMind 的 PostgreSQL 表设计：</p>
+<table>
+<tr><th>表</th><th>关键字段</th><th>用途</th></tr>
+<tr><td>users</td><td>id(UUID)、username、email、hashed_password、nickname</td><td>账号体系，JWT 兜底</td></tr>
+<tr><td>cases</td><td>id、title、case_number、court、judgment_date、case_type、summary、content、laws(JSON数组)</td><td>裁判案例库，RAG 的"语料源"</td></tr>
+<tr><td>chat_sessions</td><td>session_id(UUID)、user(外键)、created_at</td><td>一次多轮对话的容器</td></tr>
+<tr><td>chat_messages</td><td>id、chat_session(外键)、role、content、created_at</td><td>对话里的每条消息（user/assistant）</td></tr>
+<tr><td>generated_documents</td><td>id、user(外键)、type、content、created_at</td><td>生成过的法律文书存档</td></tr>
+</table>
+<p>注意两个设计细节：<strong>主键用 UUID 字符串</strong>（不用自增 int，防撞库+前后端字符串一致）；<strong>laws 用 Postgres 数组（JSON 字段）</strong>存法条列表，避免为每条法条建一张关联表。实际代码里这四张表是 Tortoise 的 Model 类，第 4 章细讲。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"UUID 是加密的，别人猜不到就等于安全"</td><td>UUID 只防<strong>枚举遍历</strong>（/cases/1、/cases/2 爬库），不防鉴权漏洞。安全靠的是第 5 章的"每个请求必须验证 JWT + 数据归属校验"，主键只是第一道小门槛</td></tr>
+<tr><td>以为"laws 字段应该拆成『案例-法条』关联表才规范"</td><td>法条列表是<strong>纯展示/过滤</strong>用的字符串数组，没有独立业务逻辑，拆表是过度设计，JSON 数组一次读出一行代码搞定。什么时候该拆表？法条自身有状态流转时再拆</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 环境与配置：.env 里有什么</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>数据库地址、LLM 密钥、向量库类型这些"环境相关"的东西不能写死在代码里——换了机器、换了供应商就得改代码，这是灾难。先看配置文件长什么样，你就知道第 2 章要搭什么环境。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>项目根目录 <code>.env</code> 是"唯一配置源"，代码里统一由 <code>settings</code>（pydantic-settings）读取。它按职责分四组：</p>
+<table>
+<tr><th>配置组</th><th>关键项（占位示例）</th><th>用途</th></tr>
+<tr><td>数据库</td><td><code>DATABASE_URL=postgresql://...</code>、<code>REDIS_URL=redis://...</code></td><td>第 2 章 docker-compose 起的服务地址</td></tr>
+<tr><td>LLM</td><td><code>LLM_API_KEY=sk-xxx</code>、<code>LLM_BASE_URL=https://api.deepseek.com</code>、<code>LLM_MODEL=deepseek-chat</code></td><td>第 6 章多供应商客户端读取</td></tr>
+<tr><td>RAG</td><td><code>EMBEDDING_MODEL=BAAI/bge-small-zh</code>、<code>EMBEDDING_DIM=512</code>、<code>RAG_TOP_K=5</code>、<code>RAG_SCORE_THRESHOLD=0.7</code>、<code>RERANK_ENABLED=True</code></td><td>第 7 章向量化与检索阈值</td></tr>
+<tr><td>认证</td><td><code>SECRET_KEY=your-secret-&lt;your-secret&gt;</code>、<code>ACCESS_TOKEN_EXPIRE_MINUTES=120</code></td><td>第 5 章 JWT 签发</td></tr>
+</table>
+<p>纪律：<strong>真实密钥永远只进 .env（且 .env 进 .gitignore），代码里一律通过 <code>settings</code> 读取，仓库里只放 <code>.env.example</code> 占位版</strong>。下面每章出现的 <code>settings.XXX</code> 都对应这里的某一项。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 .env 提交进 Git 仓库</td><td>.env 里有 LLM Key 和数据库密码，Git 历史里删不掉，扫号机器人几小时内就会抓到。<strong>先写进 .gitignore 再创建文件</strong>；已经提交了就立即吊销 Key 重建</td></tr>
+<tr><td>以为"改了 .env 立即生效"</td><td>pydantic-settings 在<strong>进程启动时</strong>读一次 .env，改完必须重启 uvicorn（<code>--reload</code> 会自动重启，但改 .env 本身不触发 reload 规则时需手动重启）</td></tr>
+<tr><td><code>.env</code> 里把值写成 <code>"sk-xxx"</code>（带引号）</td><td>引号会被当成值的一部分读进去；值直接写，不加引号</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 部署形态：docker-compose 起依赖</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>法律系统没跑起来之前，最烦的是"环境装不上"——Postgres 装半天、Redis 装半天、版本还不兼容。用容器一次性把依赖拉起，是本项目开发环境的第一课，也是第 2 章的先导。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>项目自带 <code>docker-compose.yml</code>，一条命令起两个基础设施：</p>
+<table>
+<tr><th>服务</th><th>镜像</th><th>关键配置</th></tr>
+<tr><td>postgres</td><td>postgres:16-alpine</td><td>POSTGRES_USER=legal_user / PASSWORD=&lt;db_password&gt; / DB=legal_db，端口 5432，volume 持久化</td></tr>
+<tr><td>redis</td><td>redis:7-alpine</td><td>端口 6379，开启 AOF 持久化（appendonly yes）</td></tr>
+</table>
+<pre>docker-compose up -d        # 后台拉起 Postgres + Redis
+docker-compose down         # 停止
+# 验证：docker compose ps 两个服务都是 healthy</pre>
+<p>注意：<strong>开发阶段业务数据也全在 Postgres</strong>（会话、消息、文书都落库），Redis 在这版主要是为 LangGraph 状态缓存预留 + 容器编排演示；真正持久化多轮对话状态的是 <code>langgraph-checkpoint-postgres</code>（第 8 章展开）。容器只放基础设施，业务代码仍然本地跑——这样改代码不用重启容器。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td><code>docker-compose down -v</code> 后数据全没了，哭</td><td><code>-v</code> 会<strong>删掉 volume（数据卷）</strong>，<code>down</code> 不带 <code>-v</code> 才保留数据。重置数据库用 <code>down -v</code>，日常停服用 <code>down</code></td></tr>
+<tr><td>以为"业务代码也要打进容器跑"</td><td>开发期容器只放 Postgres/Redis，业务代码本地跑（改完 <code>--reload</code> 秒生效）。打容器是第 12 章生产部署才做的事——开发期容器化代码只会拖慢迭代</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>完整系统蓝图</strong></td><td>痛点→8 模块→13 项技术→四层架构，后面的章节都是这张图的局部放大</td></tr>
+<tr><td><strong>请求主链路</strong></td><td>"入参→意图识别→检索→生成→SSE→落库"十一步，调试时知道卡在哪一环</td></tr>
+<tr><td><strong>配置纪律</strong></td><td>.env 是唯一配置源、密钥不进代码、容器只管基础设施——第 2 章立刻用上</td></tr>
+</table>
+<h4>自测：能不能答上来</h4>
+<ol><li>用一句话说清 LegalMind 的"AI 律师"和通用大模型的本质差别是什么？</li><li>四层架构里，如果要把 DeepSeek 换成 OpenAI，需要动哪些文件？为什么其他层不用动？</li><li>意图识别节点输出 <code>document</code> 后，工作流会跳过哪一步？为什么文书生成不需要检索案例？</li><li>cases 表的 <code>laws</code> 字段为什么用 JSON 数组而不是单独建表？</li><li>为什么主键选 UUID 而不是自增 int？至少说两个理由。</li><li>真实 LLM API Key 应该放在哪里？代码里通过什么对象读取？</li><li>docker-compose 在这套架构里负责什么？哪些东西不能放容器里跑（本项目里）？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>LegalMind 法律咨询系统：项目介绍</a>
+<a href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 官方文档</a>
+<a href="https://python.langchain.com/" target="_blank" rel="noopener"><span class="k">官网</span>LangChain 官方文档</a>
+<a href="https://langchain-ai.github.io/langgraph/" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 官方文档</a>
+</div>
+<div class="pager">
+<a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html">← 第十二章　LangGraph 工作流与 AI 对话</a>
+<a class="nxt" href="02-第二章-开发环境与基础设施.html">第二章　开发环境与基础设施 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="这个项目解决的真实痛点"><span class="n">1</span>这个项目解决的真实痛点</a>
+  <a href="#p2" title="八大功能模块拆解"><span class="n">2</span>八大功能模块拆解</a>
+  <a href="#p3" title="技术选型：全套技术栈"><span class="n">3</span>技术选型：全套技术栈</a>
+  <a href="#p4" title="总体架构：四层分工"><span class="n">4</span>总体架构：四层分工</a>
+  <a href="#p5" title="请求的数据流（一次完整咨询）"><span class="n">5</span>请求的数据流（一次完整咨询）</a>
+  <a href="#p6" title="数据模型一览：四张核心表"><span class="n">6</span>数据模型一览：四张核心表</a>
+  <a href="#p7" title="环境与配置：.env 里有什么"><span class="n">7</span>环境与配置：.env 里有什么</a>
+  <a href="#p8" title="部署形态：docker-compose 起依赖"><span class="n">8</span>部署形态：docker-compose 起依赖</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

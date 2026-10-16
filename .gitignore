@@ -1,0 +1,38 @@
+# 别把不该传的东西传上去
+
+# ---- 课程原始材料：版权，绝对不能进仓库 ----
+_阶段*提取/
+资料文件夹/
+outline/
+_资料索引/
+*.doc
+*.docx
+
+# ---- 讲义提取产物 ----
+images/
+*.pdf
+
+# ---- 密钥 / 环境 ----
+.env
+.env.*
+!.env.example
+*.key
+
+# ---- 个人 / 工具 ----
+.dumate/
+备份/
+shots/
+.vscode/
+.idea/
+*.log
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ---- 系统 ----
+.DS_Store
+Thumbs.db
+desktop.ini

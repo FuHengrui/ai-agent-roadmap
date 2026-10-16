@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第六章　张量索引、形状变换与拼接 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="06-第六章-张量索引形状变换与拼接.html" class="cur">第六章　张量索引、形状变换与拼接</a>
+  <a href="07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 21 · 深度学习框架与神经网络架构 › <strong>第六章</strong></div>
+<h1>第六章　张量索引、形状变换与拼接</h1>
+<div class="subtitle">阶段 21 · 深度学习框架与神经网络架构　|　PyTorch 入门　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>训练数据要"取数"（选出某几行、某几列、符合条件的样本），网络输出要"整形"（把一批特征排成批、加一维通道、换维度顺序），多路特征要"拼接"（concat/stack）。这一章把<strong>张量的索引、切片、形状变换、维度交换、内存连续性、拼接堆叠</strong>六大操作一次讲全——它们是数据预处理和模型代码里出现频率最高的操作。</p>
+</div>
+<div class="map"><span class="tag">上一章→本章→下一章</span>
+<span class="node">上一章学了张量的运算和广播。<strong>本章学"取数"（索引切片）与"整形"（形状变换、维度交换、拼接）</strong>。下一章讲自动微分——PyTorch 最核心的魔法：自动计算梯度。</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 索引的本质：张量就是一个多维表格</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>张量里的数据怎么按位置取出来？和列表索引有什么异同？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>把张量想成"多维表格"，索引就是确定"第几行第几列"：</p>
+<pre>t = torch.tensor([[1, 2, 3],
+                  [4, 5, 6],
+                  [7, 8, 9]])
+print(t[0, 0])   # 1：第 0 行第 0 列
+print(t[1, 2])   # 6：第 1 行第 2 列
+print(t[0])      # 第一行 [1,2,3]
+print(t[:, 0])   # 第一列 [1,4,7]</pre>
+<ul><li>逗号分隔每个维度的索引，<code>t[行, 列]</code>。</li><li>单个数字取一维；<code>:</code> 表示该维全取。</li></ul>
+<p>深度学习中索引常用于：数据预处理、批量取样本、特征选择、（注意力机制等后续内容）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>索引从 0 还是 1 开始</td><td>PyTorch 与 Python 一致，<strong>从 0 开始</strong>；第 1 行是 t[0]</td></tr>
+<tr><td>t[row] 和 t[:, row] 分不清</td><td>t[row] 取第 row 行（整行）；t[:, row] 取第 row 列</td></tr>
+<tr><td>忘记 : 的存在</td><td>单写 t[0, 1] 取的是单个元素；取整列必须 t[:, 1] 这种带冒号写法</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 切片索引：start:end:step 三件套</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>想取"前两行""隔行取""最后一行"，怎么写最顺？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>Python 切片语法 <strong><code>tensor[start:end:step]</code></strong> 原样支持，且与 Python 列表规则一致（<strong>左闭右开</strong>）：</p>
+<pre>print(t[0:2])      # 前两行
+print(t[:, 0:2])   # 前两列
+print(t[::2])      # 隔行选（第 0、2 行）
+print(t[-1])       # 最后一行
+print(t[:, -1])    # 最后一列
+print(t[-2:])      # 最后两行</pre>
+<p>负索引从尾部数：-1 是最后一个。-1 索引与容器类操作是数据分析的基本功。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>t[0:2] 以为取到第 3 行</td><td><strong>左闭右开</strong>：0:2 只含 0、1 两行</td></tr>
+<tr><td>负索引 -0 想象成"第 0 个从尾数"</td><td>-0 就是 0；尾部第一个要写 -1</td></tr>
+<tr><td>step 传负值方向搞反</td><td>[::-1] 反转顺序；带负步长时 start &gt; end 才是正着取</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 花式索引：列表索引与布尔索引</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>要选"第 1 行和第 3 行"这种不连续的，或者"大于 5 的所有元素"，怎么办？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两种高级索引：</p>
+<p><strong>列表索引</strong>——用列表或张量指定要的行/列：</p>
+<pre>indices = torch.tensor([0, 2])
+print(t[indices])        # 第 0 和第 2 行
+print(t[:, [0, 2]])      # 第 0 和第 2 列
+rows, cols = torch.tensor([0, 2]), torch.tensor([1, 2])
+print(t[rows, cols])     # 取 (0,1) 和 (2,2) 两个点</pre>
+<p><strong>布尔索引</strong>——按条件筛选：</p>
+<pre>mask = t &gt; 5
+print(t[mask])                  # 所有大于 5 的元素
+mask2 = (t &gt; 3) &amp; (t &lt; 8)
+print(t[mask2])                 # 条件组合
+row_mask = torch.tensor([True, False, True])
+print(t[row_mask])              # 只取第 0、2 行</pre>
+<p><strong>布尔索引是数据清洗最强武器</strong>：删离群点、按阈值过滤样本都是一行代码。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>布尔索引结果是一维数组，形状"消失了"</td><td>条件筛选本来就会扁平化；要保留结构就先选行/列再用布尔掩码</td></tr>
+<tr><td>组合条件用 and/or 报错</td><td>张量里布尔组合用位运算 **&amp;、</td><td>、~**，不是 Python 的 and/or</td></tr>
+<tr><td>列表索引传了超界索引</td><td>报错；先检查数据规模，或用 clamp 限制范围</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 省略号 ...：高维张量的偷懒神器</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>四维张量想取"第 0 个样本的全部"，难道要写 t[0, :, :, :]？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>用 <strong>省略号 <code>...</code></strong> 代表"任意数量的冒号"：</p>
+<pre>t4d = torch.rand(3, 4, 5, 6)
+print(t4d[0, ...])      # 等价于 t4d[0, :, :, :]，取第 0 个全部
+print(t4d[..., 0])      # 等价于 t4d[:, :, :, 0]，最后一维取第 0 个</pre>
+<p>在处理图像批次（B,C,H,W）或 Transformer 序列时，<code>x[0, ...]</code> 这种写法既安全又直观。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>... 放的位置理解不了</td><td>它就是"补全其余所有冒号"；前面写死了几个维度它就补几个</td></tr>
+<tr><td>一个索引里写多个 ...</td><td>会报错；一个张量索引最多一个 ...，因为其余维必须显式</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 形状查询：.shape 与 .size()</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>写代码时怎么知道自己手里的张量是什么形状？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两个等价手段：</p>
+<ul><li><code>.shape</code>：<strong>属性</strong>（无括号）。</li><li><code>.size()</code>：<strong>方法</strong>（带括号）。</li></ul>
+<p>都返回 torch.Size 元组，例如 torch.Size([2,3,4])。</p>
+<pre>x = torch.arange(24).reshape(2, 3, 4)
+print(x.shape)   # torch.Size([2, 3, 4])
+print(x.size())  # torch.Size([2, 3, 4])
+print(x.size(0)) # 2：单独看第 0 维</pre>
+<p><strong>调试神经网络第一法则：形状不确定就先打印 shape。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>.shape 写成方法带括号或 .size 忘括号</td><td>.shape 无括号属性，.size() 带括号方法，混用要么报错要么出乎意料</td></tr>
+<tr><td>size 想取某维值</td><td>.size(0)（方法带参数）取第 0 维长度；.shape 不能这样取</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 重定形状：reshape 与 view（含连续性坑）</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>把 (2,3,4) 展平成 (3,8) 或 (24,)，怎么写？reshape 和 view 到底差在哪？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>view 和 reshape 都是"重排形状"</strong>，但有一个关键区别：</p>
+<ul><li><code>view()</code>：<strong>要求张量内存连续</strong>，不连续会报错。</li><li><code>reshape()</code>：<strong>更宽容</strong>，不连续时自动补一份连续副本，一般推荐。</li></ul>
+<pre>x = torch.arange(24).reshape(2, 3, 4)
+r = x.reshape(3, 8)   # 总是可行
+v = x.view(3, 8)      # x 连续时可行
+x1 = x.transpose(0, 1)      # 转置后不连续
+# x1.view(3, 8)       # 报错！不连续
+# 先 .contiguous() 再 view 即可
+x1.contiguous().view(3, 8)</pre>
+<p><strong>重排不改变元素总数和顺序，只改变"怎么数它们"。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>view 报 "non-contiguous"</td><td>转置/切片后内存不连续；用 .contiguous() 或改用 reshape</td></tr>
+<tr><td>reshape 的目标元素数算错</td><td>reshape 前后元素总数必须一致：2×3×4=24，必须是 24 的因数组合</td></tr>
+<tr><td>用 -1 的写法</td><td><code>x.reshape(-1, 4)</code> 表示"其他维自动推断"；-1 只能出现一次</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 升维与降维：unsqueeze / squeeze</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>模型要 batch 维（加一维）、批量里要通道维，或想去掉多余的 1 维，怎么操作？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<ul><li><strong><code>unsqueeze(位置)</code></strong>：在指定位置<strong>增加一个大小为 1 的维度</strong>（升维），常用于加批次维度。</li><li><strong><code>squeeze()</code></strong>：<strong>移除所有大小为 1 的维度</strong>（降维）；<code>squeeze(dim)</code> 只移除指定维度。</li></ul>
+<pre>x = torch.randn(3, 4)
+b = x.unsqueeze(0)    # (1, 3, 4) 加 batch 维
+c = x.unsqueeze(1)    # (3, 1, 4)
+e = x.unsqueeze(-1)   # (3, 4, 1) 在最后加一维
+
+y = torch.randn(1, 3, 1, 4)
+print(y.squeeze().shape)   # (3, 4)</pre>
+<p><strong>升维配合广播是万能的</strong>：加个 1 维，就能让它自动广播到别的形状再运算。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>unsqueeze 位置参数到底是"插到哪"</td><td>数字表示<strong>插入后该维的位置</strong>：0 插最前、-1 插最后、n 插到第 n 个位置</td></tr>
+<tr><td>squeeze 把不想删的 1 删了</td><td>squeeze() 无参删所有 1 维；只想删指定位置写 squeeze(dim)</td></tr>
+<tr><td>以为 squeeze 会删非 1 维度</td><td>非 1 的维度它绝不碰，怎么样都不会删</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 维度交换：transpose 与 permute</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>图像格式 CHW 想换 HWC、序列维度想重排，怎么换维度顺序？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两个级别：</p>
+<ul><li><strong><code>transpose(a, b)</code></strong>：只能<strong>交换两个维度</strong>。</li><li><strong><code>permute(a, b, c)</code></strong>：可以<strong>任意重排所有维度</strong>。</li></ul>
+<pre>x = torch.randn(2, 3, 4)
+x1 = x.transpose(1, 2)     # 交换 1、2 维 → (2, 4, 3)
+x2 = x.permute(1, 2, 0)    # 按 (1,2,0) 重排 → (3, 4, 2)</pre>
+<p>典型场景：图像格式转换（C,H,W ↔ H,W,C）、序列处理的维度调整。</p>
+<p><strong>重要副作用</strong>：维度交换后的张量通常<strong>不再连续</strong>（内存顺序和逻辑顺序不一致）——这也是 view 报错的高发区。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>transpose 想一次换 3 个维</td><td>那是 permute 的活；transpose 一次只能换一对</td></tr>
+<tr><td>交换维度后 view 报错</td><td>交换破坏连续性；先 .contiguous() 再 view，或直接 reshape</td></tr>
+<tr><td>permute 的参数顺序记反</td><td>permute(新位置0的来源, 新位置1的来源, ...)；按"目标顺序上每个位置放原第几维"理解</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 内存连续性：is_contiguous 与 contiguous</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"连续"到底是什么意思？为什么转置后就不连续了？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>张量在内存里<strong>默认按维度顺序连续存储</strong>（第 0 维最外层、依次排列）。转置/permute 只是"改了读取顺序的视图"，底层数据没动，因此逻辑顺序与内存顺序不一致 → <strong>不连续</strong>。</p>
+<p>两个工具函数：</p>
+<ul><li><code>t.is_contiguous()</code>：判断是否连续。</li><li><code>t.contiguous()</code>：返回<strong>内存连续的新张量</strong>（若已连续则返回自身）。</li></ul>
+<pre>x = torch.randn(2, 3, 4)
+xt = x.transpose(0, 1)
+print(x.is_contiguous())   # True
+print(xt.is_contiguous())  # False
+print(xt.contiguous().is_contiguous())  # True</pre>
+<p><strong>一句话：交替使用转置与 view/形状操作时，先 .contiguous() 保平安。</strong></p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>分不清什么时候需要 contiguous</td><td>记住触发点：<strong>transpose/permute 之后</strong>（及部分切片后）要 view 或给某些算子前</td></tr>
+<tr><td>contiguous 把性能拖垮</td><td>它要做内存拷贝；频繁转置+变形状时考虑用 permute 后直接 reshape 减少往返</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 拼接与堆叠：cat 与 stack 的本质区别</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>把多个张量合成一个大张量，cat 和 stack 怎么选？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两个函数长相相似，<strong>本质完全不同</strong>：</p>
+<table>
+<tr><th>函数</th><th>行为</th><th>形状要求</th><th>结果</th></tr>
+<tr><td><strong>torch.cat(list, dim)</strong></td><td>沿<strong>已有维度</strong>拼接</td><td>除拼接维外其他维度必须相同</td><td>拼接维变大</td></tr>
+<tr><td><strong>torch.stack(list, dim)</strong></td><td><strong>新增一个维度</strong>再堆叠</td><td>所有张量形状<strong>完全相同</strong></td><td>多一维</td></tr>
+</table>
+<pre>a = torch.ones(2, 3)
+b = torch.zeros(2, 3)
+print(torch.cat((a, b), dim=0).shape)   # (4, 3)：纵向拼接
+print(torch.cat((a, b), dim=1).shape)   # (2, 6)：横向拼接
+print(torch.stack((a, b), dim=0).shape) # (2, 2, 3)：新增第 0 维</pre>
+<p><strong>cat 是"并排放在一起"，stack 是"装进一个新盒子"</strong>。数据合并（特征融合）、批处理（把多个样本堆成 batch）都用这两招。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>cat 时维度对不上报错</td><td>除拼接维外其他维必须严格相等；(2,3) 拼 (2,4) 无论沿哪维都失败</td></tr>
+<tr><td>stack 形状不同报错</td><td>stack 要求所有张量形状完全一致，因为它要新增维度</td></tr>
+<tr><td>误把 cat 当 stack</td><td>想"加一维装起来"用 stack；想"同一维变大"用 cat</td></tr>
+<tr><td>cat 的别名 torch.concatenate</td><td>两者等价，混用无碍</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>本章集齐了张量的"取数、整形、拼接"三件套：</p>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>基本索引</td><td>t[行, 列]，从 0 开始，: 表示全取</td></tr>
+<tr><td>切片</td><td>start:end:step，左闭右开，支持负数从尾部数</td></tr>
+<tr><td>花式索引</td><td>列表索引选不连续行/列；布尔索引按条件过滤（&amp;/</td><td>组合）</td></tr>
+<tr><td>省略号 ...</td><td>代表"其余所有冒号"，高维张量偷懒神器</td></tr>
+<tr><td>查形状</td><td>.shape（属性）/ .size()（方法）</td></tr>
+<tr><td>重定形状</td><td>reshape 通用；view 要求连续，不连续先 .contiguous()</td></tr>
+<tr><td>升维降维</td><td>unsqueeze 加 1 维；squeeze 删 1 维</td></tr>
+<tr><td>维度交换</td><td>transpose 换两个；permute 任意重排；之后常需 contiguous</td></tr>
+<tr><td>内存连续</td><td>transposed 后不连续；.contiguous() 使之连续</td></tr>
+<tr><td>拼接堆叠</td><td>cat 沿已有维拼接（其他维相等）；stack 新增一维（形状全同）</td></tr>
+</table>
+<p>一句话记住本章：<strong>索引用 [行,列]、切片左闭右开、筛选用布尔、高维靠 ...；整形记住 reshape 万能、unsqueeze/squeeze 扩删一维、transpose/permute 换顺序（之后要 contiguous）；多张量合一用 cat（并排）或 stack（装盒）。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>对 3×3 张量 t，t[1]、t[:, 1]、t[1, 1] 分别取到什么？</li><li>切片 t[0:2] 包含第几行？t[-2:] 呢？为什么？</li><li>如何选出张量中所有大于 5 的元素？组合条件（如大于 3 且小于 8）怎么写？</li><li>reshape 与 view 的区别是什么？什么时候 view 会报错，怎么解决？</li><li>t.unsqueeze(0) 和 t.unsqueeze(-1) 对形状 (3,4) 的张量分别产生什么形状？</li><li>transpose(1,2) 与 permute(1,2,0) 的区别是什么？为何 transpose 后要 .contiguous()？</li><li>torch.cat((a,b), dim=1) 与 torch.stack((a,b), dim=1) 对两个 (2,3) 张量分别得到什么形状？两者本质区别是什么？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>PyTorch入门讲义（索引/形状操作/拼接）</a>
+<a href="https://pytorch.org/docs/stable/torch.html#slicing-joining-mutations" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 张量切分与拼接官方文档</a>
+</div>
+<div class="pager">
+<a href="05-第五章-张量运算与广播机制.html">← 第五章　张量运算与广播机制</a>
+<a class="nxt" href="07-第七章-自动微分PyTorch的核心魔法.html">第七章　自动微分：PyTorch 的核心魔法 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="索引的本质：张量就是一个多维表格"><span class="n">1</span>索引的本质：张量就是一个多维表格</a>
+  <a href="#p2" title="切片索引：start:end:step 三件套"><span class="n">2</span>切片索引：start:end:step 三件套</a>
+  <a href="#p3" title="花式索引：列表索引与布尔索引"><span class="n">3</span>花式索引：列表索引与布尔索引</a>
+  <a href="#p4" title="省略号 ...：高维张量的偷懒神器"><span class="n">4</span>省略号 ...：高维张量的偷懒神器</a>
+  <a href="#p5" title="形状查询：.shape 与 .size()"><span class="n">5</span>形状查询：.shape 与 .size()</a>
+  <a href="#p6" title="重定形状：reshape 与 view（含连续性坑）"><span class="n">6</span>重定形状：reshape 与 view（含连续性坑）</a>
+  <a href="#p7" title="升维与降维：unsqueeze / squeeze"><span class="n">7</span>升维与降维：unsqueeze / squeeze</a>
+  <a href="#p8" title="维度交换：transpose 与 permute"><span class="n">8</span>维度交换：transpose 与 permute</a>
+  <a href="#p9" title="内存连续性：is_contiguous 与 contiguous"><span class="n">9</span>内存连续性：is_contiguous 与 contiguous</a>
+  <a href="#p10" title="拼接与堆叠：cat 与 stack 的本质区别"><span class="n">10</span>拼接与堆叠：cat 与 stack 的本质区别</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

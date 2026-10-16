@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第九章　皮肤主题与外观定制 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="09-第九章-皮肤主题与外观定制.html" class="cur">第九章　皮肤主题与外观定制</a>
+  <a href="10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 15 · Hermes-Agent 自我进化的超级智能体 › <strong>第九章</strong></div>
+<h1>第九章　皮肤主题与外观定制</h1>
+<div class="subtitle">阶段 15 · Hermes-Agent 自我进化的超级智能体　|　平台实操　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>Agent 有人格（SOUL）、有能力（工具）、会做事（技能）、记得住（记忆）——<strong>但它的"外貌"还是出厂默认</strong>：黑底白字的终端、朴素的横幅、一个转圈的加载动画。天天看着这套界面，多少有点"工装味"。</p>
+<p><strong>皮肤（skin）就是 CLI 的"换装系统"</strong>：改横幅颜色、改旋转器表情、改响应框的标签——让终端界面有辨识度、有情绪。别小看这一步：<strong>皮肤和 SOUL 一外一内，共同塑造"这个 Agent 是谁"的完整感知</strong>。而且皮肤机制（YAML 配置文件）是后面 MCP、Cron 里"用配置驱动行为"思路的预热。</p>
+<p>学完这一章，你能回答：<strong>皮肤在 CLI 里改哪些东西、8 款内置皮肤怎么切换、<code>/skin</code> 命令怎么用、皮肤和 SOUL 的分工边界、自定义皮肤 YAML 怎么写</strong>。五分钟完工的一章，但能让你的 Agent 从"默认款"变成"定制款"。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一章（第八章）</strong>：持久记忆——Agent"记得住"了。</span>
+<span class="node"><span class="here">本章 ← 你在这里：皮肤主题——外观个性化（CLI 换装），内外兼修的最后一块拼图</span></span>
+<span class="node"><strong>下一章</strong>：MCP 扩展——能力无限外接</span>
+<span class="node"><strong>再往后</strong>：定时任务与 Web 仪表板（第 11 章）——自动化与监控</span>
+<span class="node"><strong>阶段终点</strong>：性格/能力/记忆/外观全部就位，进入第 10-11 章的"扩展与自动化"深水区</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>本章很短、很轻，别过度用力。抓住两点：<strong>皮肤管"长什么样"（外部），SOUL 管"怎么说话"（内部）；<code>/skin</code> 切换、YAML 自定义</strong>。三分钟学完，剩下全是动手。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 皮肤是什么：CLI 的"外貌系统"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"给 Agent 换皮肤"具体能改哪些东西？皮肤到底作用在界面上的哪几处？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义定义：<strong>皮肤（skin）控制 CLI 的外观</strong>，具体影响：</p>
+<table>
+<tr><th>皮肤控制项</th><th>举例</th></tr>
+<tr><td>横幅（banner）</td><td>启动时显示的 Hermes 字样/配色</td></tr>
+<tr><td>旋转器（spinner）</td><td>等待时的加载动画表情</td></tr>
+<tr><td>响应框标签</td><td>每条回复信息边框上的标签文字</td></tr>
+</table>
+<p>把它类比成"终端主题"：<strong>默认皮肤是出厂款，skin 可换 8 款内置皮肤，也支持 YAML 自定义</strong>。操作方式是对话内斜杠命令 <code>/skin</code>。</p>
+<p>◎ 与第 5 章的边界再划一次：皮肤改"脸"，SOUL 改"性格"——改皮肤不会让你 Agent 说话变温柔，改 SOUL 也不会让终端变好看。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为换皮肤会改变回复语气</td><td>皮肤只管外观（banner/spinner/标签）；语气归 SOUL.md（第 5 章）</td></tr>
+<tr><td>在皮肤设置里找"个性选项"</td><td>个性的入口是 SOUL.md，别在 /skin 里找人格开关</td></tr>
+<tr><td>以为皮肤只在 GUI 里能配</td><td>皮肤是终端/CLI 的外观系统，用 /skin 斜杠命令直接换</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 8 款内置皮肤 + 支持自定义</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"换皮肤"到底有多少款可选？自定义怎么搞？先摸清供给清单。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义原话：<strong>提供 8 款内置皮肤，支持用户自定义皮肤</strong>。</p>
+<table>
+<tr><th>皮肤类型</th><th>怎么获得/使用</th></tr>
+<tr><td>8 款内置皮肤</td><td>通过 <code>/skin</code> 命令切换（免安装）</td></tr>
+<tr><td>自定义皮肤</td><td>写 YAML 配置文件（第 ⑤ 点）放对应目录</td></tr>
+</table>
+<p>切换动作就是对话里敲 <code>/skin</code>，按提示选择想要的款式。想确认有哪些，跑一遍 <code>/skin</code> 就能看到列表。<strong>外观定制就是这样"一行命令 + 一个选择"的轻量操作</strong>——不是重工程量。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>想"安装皮肤"却发现没有商店</td><td>内置 8 款即装即用；自定义走 YAML 文件，没有额外的"皮肤市场"</td></tr>
+<tr><td>/skin 里没有自己想要的款</td><td>那就写自定义 YAML（第 ⑤ 点），管够</td></tr>
+<tr><td>换了皮肤重启又变回默认</td><td>自定义/选择的皮肤要确认保存进配置；重启后仍生效才是持久配置</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ /skin 命令：切换皮肤的操作入口</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>换皮肤具体怎么操作？命令长什么样？有没有"马上换、马上试"的即时反馈？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>对话内输入斜杠命令：</p>
+<pre>/skin</pre>
+<p>然后再跟提示选择目标皮肤即可。这个命令的核心体验是<strong>交互式 + 即时生效</strong>——敲了、选了、界面立刻换装，不需要重启、不需要改配置。</p>
+<p>实际操作节奏（典型）：</p>
+<table>
+<tr><th>步骤</th><th>动作</th></tr>
+<tr><td>1</td><td>对话里输入 <code>/skin</code></td></tr>
+<tr><td>2</td><td>列出可用皮肤（8 款内置 + 可能的自定义）</td></tr>
+<tr><td>3</td><td>选择心仪皮肤 -&gt; 界面即时更新</td></tr>
+<tr><td>4</td><td>不喜欢？再 <code>/skin</code> 换另一款，直到满意</td></tr>
+</table>
+<p>这和 CLI 的其它斜杠命令（/tools、/cron）一致：<strong>对话内即改即用</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>敲 /skin 没反应</td><td>确认当前会话支持斜杠命令（CLI 会话内）；消息平台里某些斜杠命令语法不同</td></tr>
+<tr><td>选择后外观没变</td><td>看终端是否支持 ANSI 彩色/表情渲染；不支持的环境换色不可见（官方皮肤依赖终端能力）</td></tr>
+<tr><td>以为皮肤切换要改配置文件</td><td>/skin 对话内即改；YAML 自定义文件是"新增皮肤"的途径，两者不冲突</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 皮肤配置的存在形态：YAML 与配置文件</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>自定义皮肤"写 YAML"到底写什么、放哪？皮肤配置和框架主配置文件什么关系？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义第 41 页细节：<strong>自定义皮肤支持在 <code>~/.hermes/config.yaml</code> 中配置，也可以通过单独的 YAML 文件（skins/ 目录）定义</strong>。</p>
+<table>
+<tr><th>配置方式</th><th>位置</th><th>适合</th></tr>
+<tr><td>主配置内联</td><td><code>~/.hermes/config.yaml</code> 的皮肤段</td><td>简单改样式参数</td></tr>
+<tr><td>独立皮肤文件</td><td><code>~/.hermes/skins/*.yaml</code> 各一个</td><td>一套套皮肤独立管理、可分享</td></tr>
+</table>
+<p>YAML 皮肤文件的结构（示意）：</p>
+<pre>name: my-skin
+banner:
+  color: &quot;#00ff88&quot;
+  text: &quot;Hermes&quot;
+spinner:
+  frames: [&quot;◐&quot;, &quot;◓&quot;, &quot;◑&quot;, &quot;◒&quot;]
+label:
+  user: &quot;你&quot;
+  assistant: &quot;红豆&quot;</pre>
+<p><strong>把它当"外观配置"即可</strong>——和 config.yaml 管理工具/技能启用的思路一脉相承（第 7 章见过"配置驱动"模式）。想自定义到什么程度，取决于你对终端审美的耐心。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>YAML 写错导致启动报错</td><td>YAML 对缩进敏感；用 2 空格缩进、引号括字符串，改完跑 <code>hermes</code> 验证</td></tr>
+<tr><td>把皮肤字段塞进 SOUL.md</td><td>皮肤配置是 YAML（config/skins），不是 Markdown 人格文件；放错文件毫无效果</td></tr>
+<tr><td>改 config.yaml 前不备份</td><td>动主配置先备份（cp config.yaml config.yaml.bak），改坏可回滚，这是配置操作铁律</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 自定义皮肤完整流程：从写 YAML 到生效</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>想拥有一款属于自己的皮肤，完整流程怎么走？从文件创建到应用生效一共几个动作？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>自定义皮肤五步走：</p>
+<pre>① 创建文件   在 ~/.hermes/skins/ 下新建 my-skin.yaml（参考内置皮肤模板）
+② 填写结构   name + banner/spinner/label 等字段（按 YAML 语法）
+③ 验证语法   启动 Hermes 无报错 / hermes --version 类命令不带配置错误
+④ 选择应用   对话内 /skin → 选 my-skin
+⑤ 确认生效   观察横幅/转圈/标签变化；持久生效（重启后仍用该皮肤）</pre>
+<p>若不想独立文件，也可以直接在 <code>~/.hermes/config.yaml</code> 的皮肤配置块内联定义，效果等同。<strong>核心心法：先抄内置模板，改小参数，逐步加花活</strong>——别一上来手搓全套 YAML。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>找不到 skins/ 目录</td><td>不存在就自己建（~/.hermes/skins/）；或先看 config.yaml 里皮肤段写法</td></tr>
+<tr><td>自定义皮肤在 /skin 列表里不出现</td><td>检查文件扩展名 .yaml、放在正确的 skins 目录、name 字段唯一</td></tr>
+<tr><td>改了半天没效果</td><td>先换回内置皮肤确认基线；再逐步二分定位是哪个字段写得不对（或终端不渲染）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 皮肤与主题：别被"theme"绕晕</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>文档里可能同时出现 skin、theme、主题——它们是不是一个东西？术语边界在哪？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>在这个框架的语境里，<strong>skin（皮肤）就是主题/外观的正式称呼</strong>：</p>
+<table>
+<tr><th>术语</th><th>在 Hermes 语境</th></tr>
+<tr><td>skin</td><td>官方术语：控制 CLI 外观的配置单元（皮肤）</td></tr>
+<tr><td>theme / 主题</td><td>用户口语/中文翻译，指的就是 skin</td></tr>
+<tr><td>外观定制总称</td><td>横幅、旋转器、标签 = 皮肤的作用范围</td></tr>
+</table>
+<p>所以不用纠结"skin 和 theme 谁是谁"——<strong>看到 skin 当作主题即可</strong>（区别于其它框架里 theme 可能指颜色方案、font 等，这里统一叫皮肤）。唯一要防的是把"皮肤（外观）"和"个性（语气）"搞混，第 ① 点已划清。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>满世界找 "theme 设置" 找不到</td><td>在这套框架里入口就是 <code>/skin</code>，叫法不同，本质一个</td></tr>
+<tr><td>以为 theme 会改回复风格</td><td>不管叫 skin 还是 theme，都是外观；人格仍然在 SOUL</td></tr>
+<tr><td>网上教程说"改 theme 文件"</td><td>对应这里的皮肤 YAML；别按别的框架的术语脑补路径</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 皮肤与配置文件的"配置驱动"理念</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>皮肤这章其实在反复出现一个词：YAML、config.yaml、配置块。这个"配置驱动"的思路为什么重要？它和后面章节什么关系？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>皮肤系统的本质是<strong>配置驱动的外观系统</strong>：一切外观都由 YAML 声明的参数决定，不写死代码。这个理念贯穿 Hermes 全家桶：</p>
+<table>
+<tr><th>子系统</th><th>配置驱动体现</th></tr>
+<tr><td>皮肤</td><td>skins/*.yaml 声明颜色/表情/标签</td></tr>
+<tr><td>工具集</td><td>config.yaml 声明各平台启用哪些</td></tr>
+<tr><td>技能</td><td>SKILL.md 元数据声明触发条件</td></tr>
+<tr><td>记忆</td><td>MEMORY.md/USER.md 文件即配置</td></tr>
+<tr><td>MCP（第 10 章）</td><td>config.yaml 声明服务器与工具</td></tr>
+<tr><td>定时任务（第 11 章）</td><td>/cron 生成 cronjob 配置</td></tr>
+</table>
+<p><strong>看到"配置"就该想到"改配置→重启/重载→验证"这套循环</strong>（第 3 章"改网关配置必重启"同理）。理解这条主线，后面 MCP/Cron 学起来就是同一套打法。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>每章配置都从零学，觉得重复</td><td>抓住统一循环：<strong>改配置→重启/重载→验证</strong>，各章只是配置对象不同</td></tr>
+<tr><td>改配置不备份</td><td>任何 config/skins 改动前备份是铁律；万一改坏快速回滚</td></tr>
+<tr><td>只依赖 CLI 命令不愿看配置文件</td><td>高级玩法（自定义皮肤、MCP 精确配置）要碰 YAML；命令与文件两手都要</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 皮肤是"锦上添花"，别本末倒置</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>有人会在皮肤上耗费大量时间（配色、转圈表情、每款都试）。需要给一个清醒的边界提示：皮肤的权重到底该多大？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>诚实地说：<strong>皮肤是纯外观，不改变 Agent 的任何行为或能力</strong>。它的价值排序应该是：</p>
+<table>
+<tr><th>优先级</th><th>该做什么</th></tr>
+<tr><td>★★★</td><td>SOUL/工具/技能/记忆（行为层）</td></tr>
+<tr><td>★★</td><td>网关/平台接入（可用层）</td></tr>
+<tr><td>★</td><td>皮肤外观（体验层）</td></tr>
+</table>
+<p>建议：<strong>"出厂款难看就换一个顺眼的，五分钟后继续前进"</strong>。什么时候值得深玩自定义皮肤？只有当你有明确的美观诉求（演示、分享、仪式感）时——否则让它"看得顺眼"即可。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>花一小时试 8 款皮肤</td><td>换装 5 分钟即可收手；时间应留给 SOUL/技能等行为层配置</td></tr>
+<tr><td>以为换皮肤=调教完成</td><td>行为层（人格/工具/技能/记忆）才是"调教"，皮肤是外壳</td></tr>
+<tr><td>因皮肤暂时无法渲染就否定框架</td><td>外观是增强项；核心价值在行为层，别因装点问题影响主线</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 皮肤应用效果不佳时的排查表</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>皮肤切换后没看到变化，怎么快速定位问题？给一张按"由轻到重"排序的排查表。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>皮肤未见效排查表（从最常见开始）：</p>
+<table>
+<tr><th>#</th><th>排查项</th><th>动作</th></tr>
+<tr><td>1</td><td>命令用对了吗</td><td>确认在对话内用 <code>/skin</code>（非终端 shell 命令）</td></tr>
+<tr><td>2</td><td>终端支持渲染吗</td><td>ANSI 颜色/表情在部分终端/SSH 下禁用，换 Windows Terminal 等验证</td></tr>
+<tr><td>3</td><td>选的是持久皮肤吗</td><td>自定义皮肤确认 name 唯一、文件在 skins/ 目录</td></tr>
+<tr><td>4</td><td>会话重启了吗</td><td>若是从配置文件改的，重启 Hermes 会话让其加载</td></tr>
+<tr><td>5</td><td>配置有语法错吗</td><td>YAML 缩进/引号错误会静默失败；<code>hermes</code> 启动看报错</td></tr>
+</table>
+<p>排查思路与工具/MCP 配置同源：<strong>先测最小改动，再二分定位</strong>。这条"排查逻辑"适用于全部配置类问题，不止皮肤。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>重装框架想"解决"皮肤问题</td><td>皮肤问题 99% 是配置/终端环境，重装解决不了还丢配置</td></tr>
+<tr><td>只看命令不看文件状态</td><td>先看文件：皮肤选中的配置持久化了吗？YAML 合法吗？</td></tr>
+<tr><td>现场只改一个变量一次性试</td><td>一次只改一个变量，改完重启验证，别同时改 5 个字段无从定位</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 皮肤配置的安全与共享：别把"秘密"写进外观</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>自定义皮肤文件可以分享（跟技能一样）——但皮肤文件跟主配置同目录，万一里面有敏感信息呢？需要强调配置文件的卫生。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>皮肤 YAML 只声明外观字段</strong>（颜色、表情、标签），不该出现任何凭据；但它和 config.yaml 同在一处，分享时注意：</p>
+<table>
+<tr><th>场景</th><th>注意</th></tr>
+<tr><td>分享皮肤文件</td><td>只发 skins/*.yaml（外观字段），别把整个 ~/.hermes 打包扔出去</td></tr>
+<tr><td>备份整个配置目录</td><td>备份前检查有没有 API Key/Token 混进 config.yaml（密钥应走环境变量）</td></tr>
+<tr><td>用别人的皮肤</td><td>先读一遍 YAML 内容，确认没有可疑指令/URL 再应用</td></tr>
+</table>
+<p>这延续了全书的密钥红线：<strong>任何配置文件都不该含明文密钥；分享任何配置文件前先扫一眼</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 API Key 顺手填进皮肤 YAML "方便配色"</td><td>密钥与外观无关，绝不进皮肤文件；.env / 环境变量才是家</td></tr>
+<tr><td>打包 ~/.hermes 全目录分享"我的配置"</td><td>大概率带出密钥与私人记忆；只分享想分享的皮肤/技能文件</td></tr>
+<tr><td>应用来路不明的皮肤文件</td><td>先审 YAML 内容再应用；配置即代码，来历不明一律警惕</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 皮肤与多平台：CLI 之外，消息平台上能看到吗</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>把皮肤折腾到家了，微信/QQ 里看到的 Agent"长什么样"？皮肤影响消息平台吗？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>皮肤的改动只作用于 CLI（终端）界面</strong>。消息平台（微信/QQ/飞书）显示的是平台自己的聊天界面，Agent 的回复文字在其中正常展示——<strong>平台的"外观"由平台决定，皮肤管不到；但皮肤里定义的"响应框标签"等也不会出现在平台侧</strong>。</p>
+<table>
+<tr><th>界面</th><th>皮肤影响</th></tr>
+<tr><td>CLI 终端</td><td>✅ 横幅/转圈/标签全生效</td></tr>
+<tr><td>消息平台聊天</td><td>❌ 平台界面，皮肤不参与</td></tr>
+</table>
+<p>所以别指望"换个皮肤，微信里的机器人头像也变";跨平台的外观一致性不是皮肤的事。<strong>皮肤是你的终端私享体验</strong>——这反而让它可以大胆实验而不影响任何线上行为。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>在消息平台上找皮肤效果找不到</td><td>皮肤只作用于 CLI；平台界面由平台自身控制</td></tr>
+<tr><td>担心换皮肤影响线上机器人行为</td><td>纯外观，行为零影响；随便折腾</td></tr>
+<tr><td>以为平台机器人"也该配个皮肤"</td><td>没有这个需求；平台侧的可视化在 Web 仪表板（第 11 章）有个入口</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ 小结：外观定制的"够用"清单</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>最后一节把本章压缩成一份"够用就好"的检查清单，防止过度工程。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>外观定制"够用"清单（按序做，做完收工）：</p>
+<pre>□ 敲 /skin 浏览 8 款内置皮肤
+□ 选中一款顺眼的（5 分钟内敲定）
+□ （可选）在 ~/.hermes/skins/ 建一款自定义 YAML，改 banner/spinner
+□ 重启验证持久生效
+□ 记住边界：外观归皮肤，语气归 SOUL</pre>
+<p>做完这五条，外观这块就"毕业"了——<strong>它从来不是重点，但它让 Agent 有辨识度</strong>。接下来进入第 10 章 MCP 扩展，那才是真正的重头戏。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>清单没做完就跳到自定义</td><td>先体验内置款（5 分钟）再决定是否自定义；内置通常已够用</td></tr>
+<tr><td>自定义 YAML 失败就搁置</td><td>失败就退回内置款，别让皮肤阻塞主线进度</td></tr>
+<tr><td>复习时还要想"skin 是啥"</td><td>一句话归档：<strong>skin=CLI 外观=（banner+spinner+label）的 YAML 配置，/skin 切换</strong></td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你给 Agent 换了身"衣服"：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>皮肤=外观系统</strong>：banner/spinner/响应框标签</td><td>明确了"皮肤改脸、SOUL 改性格"的分工边界</td></tr>
+<tr><td><strong>8 款内置+自定义</strong></td><td>即装即用、可扩展，5 分钟换装不折腾</td></tr>
+<tr><td><strong>/skin 命令</strong>：交互式即改即用</td><td>最简单直接的外观操作入口，无需改配置</td></tr>
+<tr><td><strong>自定义 YAML</strong>：~/.hermes/skins/*.yaml 或 config.yaml 内联</td><td>"配置驱动"理念第一次完整亮相，为 MCP/Cron 热身</td></tr>
+<tr><td><strong>排查表</strong>：命令/终端/持久/重启/语法五排查</td><td>外观问题快速定位，技巧复用于一切配置问题</td></tr>
+<tr><td><strong>边界感</strong>：CLI 私享、不影响平台与行为</td><td>想怎么折腾都行，不碰行为层，不涉及任何权责</td></tr>
+</table>
+<p>一句话记住本章：<strong>皮肤是"终端换装"：/skin 切 8 款内置、YAML 自定义花色；改的是脸不是性格，5 分钟搞定收工去学重头戏。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>皮肤（skin）控制 CLI 的哪些外观元素？请列出至少三个。</li><li>皮肤和 SOUL.md 的分工边界是什么？"想让 Agent 说话更简洁"应该改哪个？</li><li>Hermes 内置多少款皮肤？切换皮肤的命令是什么？它属于终端命令还是对话内斜杠命令？</li><li>自定义皮肤有两种配置途径，分别是什么？（提示：主配置内联 / 独立皮肤文件）</li><li>请写出自定义皮肤从"创建 YAML 到应用生效"的五个步骤。</li><li>皮肤切换后没生效，请按顺序列出至少 3 个排查点（从最常见的原因开始）。</li><li>皮肤配置在消息平台（微信/QQ）上会生效吗？为什么？这条结论对你"折腾皮肤"的时间分配有什么启发？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 39-41 页）</a>
+<a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
+<a href="https://yaml.org/" target="_blank" rel="noopener"><span class="k">参考</span>YAML 语法速查</a>
+</div>
+<div class="pager">
+<a href="08-第八章-持久记忆MEMORY与USER双文件.html">← 第八章　持久记忆：MEMORY / USER 双文件</a>
+<a class="nxt" href="10-第十章-MCP扩展把无限变成你的新底座.html">第十章　MCP 扩展：把"无限"变成你的新底座 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="皮肤是什么：CLI 的&quot;外貌系统&quot;"><span class="n">1</span>皮肤是什么：CLI 的"外貌系统"</a>
+  <a href="#p2" title="8 款内置皮肤 + 支持自定义"><span class="n">2</span>8 款内置皮肤 + 支持自定义</a>
+  <a href="#p3" title="/skin 命令：切换皮肤的操作入口"><span class="n">3</span>/skin 命令：切换皮肤的操作入口</a>
+  <a href="#p4" title="皮肤配置的存在形态：YAML 与配置文件"><span class="n">4</span>皮肤配置的存在形态：YAML 与配置文件</a>
+  <a href="#p5" title="自定义皮肤完整流程：从写 YAML 到生效"><span class="n">5</span>自定义皮肤完整流程：从写 YAML 到生效</a>
+  <a href="#p6" title="皮肤与主题：别被&quot;theme&quot;绕晕"><span class="n">6</span>皮肤与主题：别被"theme"绕晕</a>
+  <a href="#p7" title="皮肤与配置文件的&quot;配置驱动&quot;理念"><span class="n">7</span>皮肤与配置文件的"配置驱动"理念</a>
+  <a href="#p8" title="皮肤是&quot;锦上添花&quot;，别本末倒置"><span class="n">8</span>皮肤是"锦上添花"，别本末倒置</a>
+  <a href="#p9" title="皮肤应用效果不佳时的排查表"><span class="n">9</span>皮肤应用效果不佳时的排查表</a>
+  <a href="#p10" title="皮肤配置的安全与共享：别把&quot;秘密&quot;写进外观"><span class="n">10</span>皮肤配置的安全与共享：别把"秘密"写进外观</a>
+  <a href="#p11" title="皮肤与多平台：CLI 之外，消息平台上能看到吗"><span class="n">11</span>皮肤与多平台：CLI 之外，消息平台上能看到吗</a>
+  <a href="#p12" title="小结：外观定制的&quot;够用&quot;清单"><span class="n">12</span>小结：外观定制的"够用"清单</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

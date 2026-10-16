@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第十六章　Spark Streaming：从&quot;批&quot;到&quot;流&quot;的第一课 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="16-第十六章-SparkStreaming从批到流的第一课.html" class="cur">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十六章</strong></div>
+<h1>第十六章　Spark Streaming：从&quot;批&quot;到&quot;流&quot;的第一课</h1>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　8 课时　|　难度 ★★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>前面的分析都是"一次算完一批"（批处理）：昨天的日志今天算。但<strong>实时世界等不了</strong>：双 11 大屏的实时成交额、风控对每笔交易的即时判断、推荐系统对刚发生的点击立刻响应——数据<strong>一到就要算</strong>。这就是流处理。</p>
+<p>Spark 对实时的答案叫 <strong>Spark Streaming</strong>，核心思想很优雅：<strong>把"连续不断的数据"切成"一段一段的小批"，每一小批用你熟悉的 Spark 批处理来算</strong>（微批次模型）。这意味着前面学的 RDD 算子、内核、调优<strong>全部直接复用</strong>——学它几乎没有新算子的负担，只有几个新概念：DStream、窗口、有状态。</p>
+<p>学完这一章你能：<strong>理解微批次架构、用 DStream 做无状态/有状态/窗口实时统计，并为 Streaming 程序配置 checkpoint</strong>。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">前 15 章：批处理全体系（RDD → SQL）</span>
+<span class="node"><span class="here">本章 ← 你在这里：实时第一课——Streaming 架构与 DStream 编程</span></span>
+<span class="node">下一章：Streaming 实战——Kafka 接入、偏移量、优雅关闭、调优</span>
+<span class="node">再往后：阶段综合实战与回顾</span>
+<span class="node">阶段终点：批+流两条腿都走，覆盖"能预埋数据也能应对实时"</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>Spark Streaming 的算子绝大多数和 RDD 一样——<strong>别背新算子，先想"这是不是我又见过的 map/reduceByKey"</strong>。真正新的只有三个：窗口、有状态、Kafka 接入。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 为什么需要流处理：批处理的天花板</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>先明确"流"要解决什么问题：<strong>数据延迟</strong>。批处理是 T+1 才能看昨天的报表；实时业务要"秒级看到最新"。理解批与流的分界线，才知道 Streaming 该用在哪、别用错地方。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>批 vs 流对比</strong>：</p>
+<table>
+<tr><th></th><th>批处理</th><th>流处理</th></tr>
+<tr><td>数据</td><td>已落盘的历史文件</td><td>源源不断到达的事件</td></tr>
+<tr><td>触发</td><td>手动/定时跑一次</td><td>数据一到就处理</td></tr>
+<tr><td>延迟</td><td>分钟~天</td><td>秒~分钟</td></tr>
+<tr><td>典型</td><td>报表、数仓 T+1</td><td>实时大屏、监控告警、风控</td></tr>
+<tr><td>Spark 方案</td><td>RDD / SparkSQL</td><td>Spark Streaming / Structured Streaming</td></tr>
+</table>
+<p><strong>Streaming 的两条技术路线</strong>（本阶段学经典版）：</p>
+<pre>Spark Streaming（DStream）    —— 本阶段主角，基于 RDD 微批次，成熟稳定
+Structured Streaming（结构化流）—— Spark 2.x 新一代，基于 DataFrame 微批次
+                          —— 表达更简单；本阶段末尾提一下，重点学 DStream 思想</pre>
+<p><strong>核心心智模型</strong>：流 = "<strong>很多个连续的小批</strong>"。每秒钟来 1 万条事件 = 每 2 秒切一个 2 万条的小批算一次。<strong>流处理 = 批处理的"重复执行 + 自动推进"</strong>。</p>
+<p><strong>适用判定</strong>：延迟敏感 + 数据流式到达 → 流；历史全量分析 → 批。两者常配合：流处理实时结果 + 批处理离线校准。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>用流处理重算历史数据</td><td>流不擅长"从头重扫大文件"（它会一直等新数据）。历史用批，实时用流，各司其职</td></tr>
+<tr><td>以为 Streaming 延迟是毫秒级</td><td>微批次最小间隔通常 500ms~几秒，不是毫秒。毫秒级要 Flink 这类真正的流引擎——接受 Spark 的"准实时"定位</td></tr>
+<tr><td>把"定时跑批"当流处理</td><td>定时跑批（cron+spark-submit）是批的自动化，不是流。流的特征是"数据驱动、持续运行"</td></tr>
+<tr><td>选错当项目天线</td><td>汇报/面试时先答清楚：Streaming 是<strong>微批次准实时</strong>方案，跟 Flink 的差异是面试加分点</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 微批次架构：Streaming 的运行方式</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>Spark Streaming 怎么做到"数据一到就算"？答案是<strong>微批次（Micro-batch）</strong>：把实时流按固定时间间隔切成小批，每批走一次"你熟悉的 Spark Job"。看懂这张架构图，Streaming 的每个概念都有了挂靠。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>实时数据流（Kafka/Socket/文件）
+     │  按 batchInterval（如 2 秒）切分
+     ▼
+ ┌────────────┐   ┌────────────┐   ┌────────────┐
+ │ Batch 1    │   │ Batch 2    │   │ Batch 3    │
+ │ (0-2 秒)   │   │ (2-4 秒)   │   │ (4-6 秒)   │
+ └────────────┘   └────────────┘   └────────────┘
+     │  每个 batch = 一个 RDD（必须 Spark Job 算）
+     ▼            ▼            ▼
+   spark 批处理引擎（完全复用 RDD/算子/内核 那套）</pre>
+<p><strong>三个组件</strong>：</p>
+<pre>DStream（离散化数据流）：代表&quot;整个流&quot;，本质是&quot;一连串按时间切开的 RDD&quot;
+  └─ 每 2 秒切出一个 RDD → 这个 RDD 就叫一个&quot;批次&quot;
+输入源 → DStream 输入（Socket/文件/Kafka）→ 转换（算子）→ 输出（foreachRDD/print）</pre>
+<p><strong>关键点</strong>：</p>
+<ol><li><strong>DStream 内部就是 RDD 序列</strong>：DStream 的每个转换，都是对"每个时间片的 RDD"执行同样的 RDD 算子</li><li><strong>batchInterval 决定延迟与开销</strong>：间隔越小延迟越低，但<strong>每批都有调度+启动 Job 的开销</strong>——100ms 的 Job 开销占比巨大，通常 1~5 秒起</li><li><strong>Job 数 = 批次数</strong>：跑 10 分钟、2 秒一批 = 300 个 Job，Spark UI 上会看到 Jobs 飞速切换（正常）</li></ol>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>UI 上 Job 多到刷屏以为崩了</td><td>正常！一批一个 Job。关注"处理耗时 vs 批间隔"：处理耗时接近/超过间隔=<strong>背压</strong>（处理不过来），要调并行度/间隔</td></tr>
+<tr><td>batchInterval 设 100ms 很爽但巨卡</td><td>调度开销 &gt; 实际计算。务实从 2~5 秒起步，看 UI 里每批处理耗时再调小</td></tr>
+<tr><td>以为 DStream 是一个超大 RDD</td><td>DStream 是"RDD 序列"，不是一个 RDD。它没有 collect/take 这种行动算子（那是单个 RDD 的）</td></tr>
+<tr><td>流跑在 local[*] 上每批都慢</td><td>本地模式并行度受限；生产要 spark-submit 均匀分布 Executor</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ DStream 编程模型：一张"时间维度的 RDD"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>正式开始写 DStream：<strong>输入从哪来、怎么创建 StreamingContext、算子怎么用</strong>。这一节解决"第一个 Streaming 程序写出来长什么样"——Socket 实时 WordCount 是经典的入门例，跑通它=摸清 DStream 编程骨架。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import org.apache.spark._
+import org.apache.spark.streaming._
+
+// ① 创建 StreamingContext（批间隔 2 秒）
+val ssc = new StreamingContext(sc, Seconds(2))
+
+// ② 输入源：Socket 文本流（测试常用；生产用 Kafka，下章）
+val lines: DStream[String] = ssc.socketTextStream(&quot;localhost&quot;, 9999)
+
+// ③ 转换（和 RDD 算子几乎一样，按时间片应用）
+val words = lines.flatMap(_.split(&quot; &quot;))
+val pairs = words.map((_, 1))
+val wc = pairs.reduceByKey(_ + _)
+
+// ④ 输出：print() 每批打前 10 条
+wc.print()
+
+// ⑤ 启动流并等待（真正开跑）
+ssc.start()
+ssc.awaitTermination()          // 阻塞，Ctrl+C 才停</pre>
+<p><strong>整套骨架五步</strong>：建 context → 接输入 → 转换 → 输出 → 启动。和批处理的唯一区别是<strong>多了 ssc.start()</strong>。</p>
+<p><strong>DStream 算子和 RDD 算子的关系</strong>：</p>
+<pre>DStream.map(f)  ==  每个时间片 RDD 都执行 .map(f)
+DStream.reduceByKey(...)  ==  每批 RDD 各自 reduceByKey（批间不合并！）</pre>
+<p><strong>注意</strong>：DStream 的 <code>reduceByKey</code> 是<strong>每批内</strong>聚合；跨批聚合要用有状态/窗口（本知识点后面）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>忘写 ssc.start() 程序"没反应"</td><td>流是懒的，start 才真正开始接收+计算。骨架五步缺一步都会"空转"</td></tr>
+<tr><td>awaitTermination 后还想干别的</td><td>awaitTermination 阻塞当前线程。要用 <code>ssc.start()</code> 后另起线程做别的，或 <code>awaitTerminationOrTimeout(ms)</code></td></tr>
+<tr><td>shutdown hook 没配</td><td>生产 Ctrl+C 会直接杀，没跑资源清理。裹 try-finally 或配优雅关闭（下章讲）</td></tr>
+<tr><td>一个 ssc 只能 start 一次</td><td>start 之后不能再次 start，stop 后也不能重启同一 ssc。重跑要 new StreamingContext</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 无状态转换：DStream 里"每批独立"的算子</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>DStream 转换分两大类，<strong>无状态（stateless）</strong> 是第一类：每个时间片独立处理，<strong>批与批之间不互相影响</strong>。map/filter/reduceByKey/join 全是这类——和批处理一模一样，心理负担为零。关键是理解"每批独立"的边界，别把"批间累计"的期望错安在它们身上。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>// 无状态：每批独立，输出只和本批输入有关
+val nums = ssc.socketTextStream(&quot;localhost&quot;, 9999).map(_.toInt)
+nums.map(_ * 2)                    // 批内×2
+nums.filter(_ &gt; 100)               // 批内过滤
+nums.reduce(_ + _)                 // 本批之和（只算本批！）
+nums.reduceByKey(_ + _)            // 本批按键聚合（跨批不累计）
+
+// 双流 join（同时间片对齐再关联）
+val a: DStream[(Int, String)] = ...
+val b: DStream[(Int, String)] = ...
+a.join(b)                          // 每个时间片上做 join</pre>
+<p><strong>无状态算子的特点</strong>：</p>
+<ol><li><strong>每批独立计算</strong>：输出不携带历史状态，天然无记忆</li><li><strong>转换函数和 RDD 极像</strong>：<code>map</code>/<code>flatMap</code>/<code>filter</code>/<code>reduceByKey</code>/<code>join</code>/<code>transform</code>，签名几乎一致</li><li><strong>性能模型</strong>：N 批 = N 个独立 Job，互不阻塞</li></ol>
+<p><strong>最有用的特殊算子 <code>transform</code></strong>：把 DStream 转成 RDD 做"批处理专属操作"（如和静态 RDD 做 broadcast 关联）：</p>
+<pre>val bigDict: RDD[Map[String, String]] = ...
+ds.transform(rdd =&gt; rdd.leftOuterJoin(bigDict))   // 每批 RDD 与静态维表 join</pre>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 reduceByKey 是"全流累计"</td><td>不是！无状态版<strong>每批各自聚合</strong>。想全流累计两个办法：有状态 updateStateByKey（下下点）或窗口</td></tr>
+<tr><td>transform 里创建了新的 StreamingContext</td><td>transform 内只能用已有 RDD/SSC 对象，<strong>不能在算子内 new StreamingContext</strong>（报错 "not allowed after stop"）</td></tr>
+<tr><td>无状态算子输出延迟=批间隔</td><td>对，无状态天然"一批一拍"。需要更细粒度用窗口（可控制统计粒度）</td></tr>
+<tr><td>join 两流时间片没对齐</td><td>DStream join 是按时间片对齐的：两个流的同一时间片才关联。间隔不同会各自处理后再 join——先确认两个流的批次间隔一致</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 有状态转换：updateStateByKey 与 mapWithState</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"实时累计网站总 PV"——<strong>跨批保存状态</strong>就是有状态转换：每个 key 维护一份"历史状态"，每批进来更新它。经典实现 <strong>updateStateByKey</strong>（简单但全量更新）与 <strong>mapWithState</strong>（高效增量）。本点把两种都说清，并给"必须开 checkpoint"这个硬约束。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>// updateStateByKey：维护每个 key 的累计状态
+// 状态函数：把&quot;本批新增值 + 历史状态&quot;合成新状态
+def updateFunc(newValues: Seq[Int], runningState: Option[Int]): Option[Int] = {
+  Some(newValues.sum + runningState.getOrElse(0))     // 本批和 + 历史值
+}
+
+val pairs = ...: DStream[(String, Int)]
+val total = pairs.updateStateByKey(updateFunc)
+// 每批输出：每个 key 的&quot;历史累计值&quot;</pre>
+<p><strong>两种有状态算子对比</strong>：</p>
+<table>
+<tr><th></th><th>updateStateByKey</th><th>mapWithState</th></tr>
+<tr><td>更新范围</td><td><strong>每批全量</strong>重新输出所有 key</td><td>只输出<strong>被更新的 key</strong></td></tr>
+<tr><td>性能</td><td>慢（全量）</td><td>快（增量）</td></tr>
+<tr><td>复杂度</td><td>简单</td><td>略复杂（超时/初值回调）</td></tr>
+<tr><td>适用</td><td>入门/数据量小</td><td>生产/按键量大</td></tr>
+</table>
+<p><strong>必须记：有状态必须先开 checkpoint</strong>：</p>
+<pre>ssc.checkpoint(&quot;hdfs://.../streaming_ckpt&quot;)    // ← 状态存这
+// 不设 checkpoint → 跑起来直接报错（No checkpoint directory）</pre>
+<p>原因：状态要跨批持久化、Driver 挂了状态要能恢复——<strong>checkpoint 就是 Streaming 的"进度+状态存根"</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>有状态算子没配 checkpoint 直接报错</td><td>硬性要求：<code>ssc.checkpoint(path)</code> 必配（状态+元数据+RDD 都在里面）</td></tr>
+<tr><td>updateStateByKey 每批输出"所有 key"太慢</td><td>key 量大时换 mapWithState；或缩小批次数据量。尽量把"不活跃 key"超时清理（mapWithState timeout）</td></tr>
+<tr><td>状态函数返回值类型写错</td><td>updateFunc 签名：<code>(Seq[V], Option[S]) =&gt; Option[S]</code>；泛型前后一致，错了编译直接警告</td></tr>
+<tr><td>Driver 重启后状态恢复错位</td><td>恢复要"从 checkpoint 重开"：<code>StreamingContext.getOrCreate(ckpt, creatingFunc)</code> 模式。直接 new 会从头跑丢状态</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 窗口操作：按时间窗做"滑动统计"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"最近 10 分钟的成交额""近 1 小时的活跃用户"——<strong>时间窗（Window）</strong>统计是流处理最常见需求：窗口有长度（看多久）和滑动步长（多久刷新一次）。Spark 用 <code>window()</code> 和一个神算子 <strong>reduceByKeyAndWindow</strong> 实现，比 updateState 更"时间友好"。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>// 窗口 = 把多个批合并成&quot;一个大批&quot;来算
+// window(窗口长度, 滑动间隔) 都必须是批间隔的整数倍
+val windowed = pairs.window(Seconds(60), Seconds(10))
+// 每 10 秒输出一次&quot;最近 60 秒&quot;的聚合
+
+// 经典：滑动窗口内按键聚合（最常用）
+pairs.reduceByKeyAndWindow(
+  (a: Int, b: Int) =&gt; a + b,      // 窗口内聚合
+  Seconds(60), Seconds(10)        // 窗口 60 秒，每 10 秒刷新
+)
+
+// 反向版本（减旧加新，高级优化）：窗口滑过时&quot;加新减少&quot;，避免全量重算
+pairs.reduceByKeyAndWindow(_ + _, _ - _, Seconds(60), Seconds(10))</pre>
+<p><strong>窗口的两个参数语义（必考）</strong>：</p>
+<pre>窗口长度（windowLength）：每个窗口覆盖多久的数据
+滑动间隔（slideInterval）：每多久算一次（新窗口起点）
+
+窗口 60s + 滑动 10s = 每 10 秒出一个&quot;过去 60 秒&quot;的统计
+窗口 = 滑动时：滚动窗口（每窗口互不重叠）
+窗口 &gt; 滑动时：滑动窗口（相邻窗口有重叠，常见）</pre>
+<p><strong>注意后缀</strong>：窗口必须整数倍于批间隔（batchInterval 2s → 窗口 6s/10s/... 都可以，3s 不行）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>窗口参数报 "window duration must be multiple of slide duration"</td><td>窗口/滑动都要是<strong>批间隔整数倍</strong>。检查两者和 batchInterval 的关系</td></tr>
+<tr><td>窗口统计结果"滞后一个窗口长度"</td><td>正常：输出的是<strong>窗口起止段</strong>的聚合，不是当前瞬间。报表要标注窗口口径</td></tr>
+<tr><td>窗口大了内存暴涨</td><td>窗口长 → 同时缓存多个批的数据。内存不足：加大 Executor 内存、缩小窗口，或开 spark.streaming.backpressure 自动调</td></tr>
+<tr><td>不知道用 window 还是 updateStateByKey</td><td>要"最近 N 时间"→窗口；要"历史累计"→有状态。窗口有"过期自动丢"，后者永久累计</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 输出算子与 checkpoint：foreachRDD 的正确姿势</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>算完的结果<strong>写到哪</strong>？foreachRDD 是 DStream 的输出主力：每批 RDD 让你自定义"落盘/写库/发通知"。但新手极易把"连接对象建在 foreachRDD 外"导致每批重建连接或序列化错误——<strong>连接要建在每批内部/分区内</strong>，这和 map 里建连接的坑同源同病。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>// 输出到外部存储（Redis/MySQL/Kafka）：连接作用域的经典坑
+result.foreachRDD { rdd =&gt;
+  val conn = createConnection()          // ✗ 错：Driver 上建一次，Task 序列化不了
+  rdd.foreach(row =&gt; conn.insert(row))
+}
+
+// 正确姿势一：连接建在每个 executor 的任务里（每 Task 一份，太浪费）
+result.foreachRDD(_.foreachPartition { rows =&gt;
+  val conn = createConnection()           // ✓ 每分区一个，遍历写入
+  rows.foreach(row =&gt; conn.insert(row))
+  conn.close()
+})
+
+// 正确姿势二：连接缓存到静态对象 + 分区内取（生产推荐，配连接池）
+result.foreachRDD(_.foreachPartition(rows =&gt; connectionPool.borrow().use{...}))</pre>
+<p><strong>checkpoint 的作用再强调</strong>（这里它管"输出不重复不丢"）：</p>
+<pre>checkpoint 里存三样：
+  ① 元数据（配置/上下文）→ Driver 恢复
+  ② RDD 数据 → 已算待输出数据的落点（Exact-once 的基础）
+  ③ 状态 → 有状态算子的当前累计</pre>
+<p><strong>输出幂等性</strong>：流式输出面临"重试重放"（Task 失败重跑一批），写库要幂等（主键去重/批次号）——这是流式落库的工程必修。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>foreachRDD 外建连接报序列化错</td><td>连接必须建在<strong>任务内</strong>（分区/批内部）。全局连接用 object 单例+连接池</td></tr>
+<tr><td>每批都重建连接，几分钟后就超时/慢</td><td>用连接池（静态缓存）复用；别在 Driver 建、也别在 Task 里每行建</td></tr>
+<tr><td>输出成功了却看不到（本地模式）</td><td>foreachRDD 里 println 在 Executor 打印，本地 local[2] 能看到部分；生产看日志文件。想收回到 Driver 用 collect（小结果）</td></tr>
+<tr><td>忘记幂等导致重复写入</td><td>流重放机制会重复执行输出。目标库加唯一键/批次号做去重，别只靠"应该只跑一次"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 批间隔怎么定：延迟与吞吐的博弈</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>Streaming 的"心跳"是批间隔（batch interval）——每多久收一批新数据。<strong>间隔设短=延迟低但任务调度频繁；设长=吞吐高但延迟大</strong>。100ms 还是 10s？本点给一套可操作的决策法。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>批间隔的核心矛盾</strong>：</p>
+<pre>间隔太小：一批还没算完，下一批已到 → 任务积压，延迟反而爆炸
+间隔太大：数据攒久了才算 → 延迟高，但调度开销低
+
+正确目标：找到&quot;能稳定跑完一批&quot;的最小间隔</pre>
+<p><strong>三步定间隔（实操）</strong>：</p>
+<pre>① 初选：先按业务容忍延迟定个上界
+     大屏仪表盘 → 1~5 秒；离线报表补实时 → 30 秒~1 分钟
+
+② 实测：以该间隔跑 10 分钟，UI 看&quot;每批处理时长&quot;
+     处理时长 &lt;&lt; 间隔 → 可以再调小（吃到更低延迟）
+     处理时长 ≈ 间隔 → 正好，保持
+     处理时长 &gt; 间隔 → 积压！先调大间隔或优化处理（见上一点背压）
+
+③ 收敛：在&quot;不积压&quot;前提下压到最小间隔 == 延迟最优</pre>
+<p><strong>和窗口的关系</strong>（易混点）：批间隔是"采样的频率"，窗口长度/滑动是"统计的跨度"——<strong>窗口可以大于间隔</strong>（如每 5 秒批一次、统计 1 分钟窗口），两者独立设置。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>间隔设 100ms 以为越快越好</td><td>处理跟不上就积压，延迟爆炸。以"处理耗时 &lt; 间隔"为唯一健康判据</td></tr>
+<tr><td>批间隔和窗口长度混为一谈</td><td>间隔=多久采一次样；窗口=统计多长跨度。独立设置，别当成一个数</td></tr>
+<tr><td>改间隔只改代码不测</td><td>间隔变化要先跑 10 分钟看积压。<code>Streaming tab</code> 的 Scheduling Delay 持续 &gt;0 就要调</td></tr>
+<tr><td>处理耗时忽高忽低</td><td>可能是 GC/资源争抢。先稳资源（核数/内存）再谈间隔精调</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>微批次世界观</strong>：流 = 连续的小批 = DStream = RDD 序列</td><td>批处理知识无缝迁移，学流几乎没有新算法负担</td></tr>
+<tr><td><strong>流式算子三条线</strong>：无状态（批内）/ 有状态（跨批）/ 窗口（时间窗）</td><td>实时统计的三种思维：独立算、累计算、滑窗算</td></tr>
+<tr><td><strong>checkpoint 铁律</strong>：有状态必配、驱动恢复靠它、输出幂等防重</td><td>流程序的"安全带"，不配=生产事故</td></tr>
+</table>
+<h4>自测：能不能答上来</h4>
+<ol><li>Spark Streaming 的"微批次"模型是什么意思？batchInterval 与延迟/开销的关系？</li><li>DStream 和 RDD 的关系是什么？DStream.map(f) 实际做了什么？</li><li>无状态 vs 有状态转换的区别？reduceByKey 在 DStream 里是哪种？</li><li>updateStateByKey 为什么要配 checkpoint？checkpoint 存了哪三样东西？</li><li>window(60s, 10s) 每多久输出一次？输出的是什么时段的聚合？窗口和滑动的限制条件是什么？</li><li>foreachRDD 里建数据库连接的正确位置在哪？为什么不能建在 Driver 且不能每行建？</li><li>判断题：DStream 的窗口参数可以是任意秒数，不必是批间隔的整数倍。</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>SparkStreaming 讲义（第 1-2 章：架构与 DStream）</a>
+<a href="#"><span class="k">讲义</span>SparkStreaming 讲义（第 3-4 章：有状态与窗口）</a>
+<a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark Streaming 编程指南</a>
+<a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html#performance-tuning" target="_blank" rel="noopener"><span class="k">官网</span>Spark Streaming 性能调优</a>
+</div>
+<div class="pager">
+<a href="15-第十五章-DSL与SQL写分析的两副笔墨.html">← 第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+<a class="nxt" href="17-第十七章-SparkStreaming实战Kafka接入与生产调优.html">第十七章　Spark Streaming 实战：Kafka 接入与生产调优 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="为什么需要流处理：批处理的天花板"><span class="n">1</span>为什么需要流处理：批处理的天花板</a>
+  <a href="#p2" title="微批次架构：Streaming 的运行方式"><span class="n">2</span>微批次架构：Streaming 的运行方式</a>
+  <a href="#p3" title="DStream 编程模型：一张&quot;时间维度的 RDD&quot;"><span class="n">3</span>DStream 编程模型：一张"时间维度的 RDD"</a>
+  <a href="#p4" title="无状态转换：DStream 里&quot;每批独立&quot;的算子"><span class="n">4</span>无状态转换：DStream 里"每批独立"的算子</a>
+  <a href="#p5" title="有状态转换：updateStateByKey 与 mapWithState"><span class="n">5</span>有状态转换：updateStateByKey 与 mapWithState</a>
+  <a href="#p6" title="窗口操作：按时间窗做&quot;滑动统计&quot;"><span class="n">6</span>窗口操作：按时间窗做"滑动统计"</a>
+  <a href="#p7" title="输出算子与 checkpoint：foreachRDD 的正确姿势"><span class="n">7</span>输出算子与 checkpoint：foreachRDD 的正确姿势</a>
+  <a href="#p8" title="批间隔怎么定：延迟与吞吐的博弈"><span class="n">8</span>批间隔怎么定：延迟与吞吐的博弈</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

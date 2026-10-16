@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第二章　能做什么：四大应用场景 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="02-第二章-能做什么四大应用场景.html" class="cur">第二章　能做什么：四大应用场景</a>
+  <a href="03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 14 · 小龙虾 OpenClaw 实战 › <strong>第二章</strong></div>
+<h1>第二章　能做什么：四大应用场景</h1>
+<div class="subtitle">阶段 14 · 小龙虾 OpenClaw 实战　|　平台实操　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p><strong>OpenClaw 到手之后，到底能帮我干什么？</strong> 这是所有人第一次接触"个人 AI 助理"时心里最大的问号。上一章讲了它是什么——一个能用自然语言驱动、替你操作各种软件工具的智能体，但"是什么"不等于"有什么用"。如果对能力的想象不落地，真上手要么不知道让它干什么，要么让它干它根本不该干的事。</p>
+<p><strong>讲义给了一句总纲：用自然语言替代人工完成重复性工作。</strong> 这句话是 OpenClaw 所有功能的地基，但太抽象，不拆开就落不了地。这一章把它拆成一张地图：三大核心场景（个人办公、团队协作、开发辅助）× 四大类能力（基础办公自动化、跨工具协同操作、轻量定制化需求、开发辅助），每类再拆成具体能做的事。</p>
+<p>学完这一章，你心里会有一张<strong>"需求 → 功能"对照表</strong>：老板让你汇总 Excel，你知道该走"数据简单处理"；想让 OpenClaw 每天 18 点自动出报告，你知道这叫"自动化规则设置"。心里有这张图，下一章部署完才知道往哪个方向试、要试什么。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">上一章（认识 OpenClaw）：你搞清了它<strong>是什么</strong>——能听懂自然语言、替你操作文件和软件工具的个人 AI 助理</span>
+<span class="node"><span class="here">本章 ← 你在这里：它能干什么——四大应用场景全景，解决"它能帮我做什么"</span></span>
+<span class="node">下一章：<strong>怎么部署</strong>——准备云服务器、安装 OpenClaw，让它真正跑起来</span>
+<span class="node">再往后：部署完成后对接钉钉 / 企业微信 / 飞书等平台工具，并在实际工作中启用这些能力</span>
+<span class="node">阶段终点：<strong>独立完成 OpenClaw 部署 + 多平台接入</strong></span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>本章是"功能地图"章，不写代码、不装环境。把注意力放在"一个需求对应哪类能力"上；下一章部署完，你要做的就是回到这张图，从最贴近自己工作的场景一个个试。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 价值全景：三大核心场景 × 四大类能力</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>对 OpenClaw 的第一印象容易走两个极端：要么觉得它"就是个会聊天的"，要么以为它"什么都能干"。动手之前先要有一张全景图——它覆盖哪些场景、分成哪几类能力，否则往下看每个小功能时，看不到它在整张图里的位置。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给它定了最简单的一句定位：<strong>用自然语言替代人工完成重复性工作</strong>。展开就是三大核心场景：</p>
+<table>
+<tr><th>场景</th><th>服务谁</th><th>典型诉求</th></tr>
+<tr><td>个人办公</td><td>所有人</td><td>文档、文件、日程、数据这些日常杂活不再亲手做</td></tr>
+<tr><td>团队协作</td><td>需要跨工具办事的人</td><td>让消息和文档在多个工具之间自动流动</td></tr>
+<tr><td>开发辅助</td><td>开发者与编程新手</td><td>写代码、看日志、管服务器这些"技术活"也能对话完成</td></tr>
+</table>
+<p>三大场景落到具体能力，就是讲义说的<strong>四大类</strong>：</p>
+<table>
+<tr><th>大类</th><th>包含的能力（对应本章小节）</th></tr>
+<tr><td>基础办公自动化</td><td>文档处理 ②、文件与日程管理 ③、数据简单处理 ④</td></tr>
+<tr><td>跨工具协同操作</td><td>通讯工具集成 ⑤、办公软件集成 ⑥、多场景适配 ⑦</td></tr>
+<tr><td>轻量定制化需求</td><td>私有知识库接入 ⑧、简单 API 接入 ⑨、自动化规则设置 ⑩</td></tr>
+<tr><td>开发辅助</td><td>代码生成与解释 ⑪、日志分析与远程运维 ⑫</td></tr>
+</table>
+<p>一句话记忆：<strong>办公自动化打底，跨工具协同做连接，定制化需求补个人化，开发辅助照顾技术活</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 OpenClaw 只是"聊天机器人"</td><td>它是<strong>能动手办事</strong>的智能体：生成文档、发群消息、拉代码都是真实操作，聊天只是入口</td></tr>
+<tr><td>把"场景"和"类"混为一谈</td><td>场景是<strong>为谁服务</strong>（个人/团队/开发），类是<strong>干什么活</strong>（办公/协同/定制/开发），两者是对同一批能力的两种切法</td></tr>
+<tr><td>想一次性全铺开</td><td>先盯住自己<strong>最高频的重复动作</strong>挑一类入手——比如天天做 Excel 就先试 ④，全铺开最容易半途而废</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 文档处理：总结、纪要、模板一嘴搞定</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>写工作总结、整理会议纪要、套模板、转格式、从旧文档里扒数据——这些活儿的共同点是<strong>重复且套路化</strong>，恰恰是自然语言指令最好使的地方。你需要知道：OpenClaw 能"写"哪些文档、"改"哪些格式。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义把文档处理拆成四类能力：</p>
+<table>
+<tr><th>能力</th><th>含义</th><th>例子</th></tr>
+<tr><td>生成文档</td><td>直接产出成品文档</td><td>"帮我写一份本周工作总结，分三项"</td></tr>
+<tr><td>格式转换</td><td>一种格式转另一种</td><td>TXT 转 PDF</td></tr>
+<tr><td>数据提取</td><td>从文档里捞出指定信息</td><td>从 Excel 提取 2026 年 1 月销售数据</td></tr>
+<tr><td>编辑排版</td><td>对既有文本做修改和排版</td><td>"把标题加粗、正文改成小四"</td></tr>
+</table>
+<p>讲义给了一条完整示例指令：</p>
+<pre>帮我将2026年1月销售数据Excel转换为PDF并按区域分类</pre>
+<p>这条指令有示范意义：<strong>"转换格式 + 分类整理"可以一步完成</strong>，不用先手动转格式、再手动归类——把最终想要的样子说清楚，其他交给它。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>指令含糊："帮我把这个 Excel 处理一下"</td><td>它猜不准你要<strong>转格式 / 改内容 / 算数据</strong>。指令要说清"对象 + 动作 + 结果"，如"把这份 TXT 转成 PDF 并加页码"</td></tr>
+<tr><td>生成的文档拿来就发</td><td>生成的是初稿。对外发送前复核数字、人名、期限；AI 写的总结尤其要回看原始材料对口径</td></tr>
+<tr><td>把"数据提取"和"数据计算"混着问</td><td>提取是<strong>把指定字段捞出来</strong>（属文档处理）；算平均值、总和属于 ④ 数据简单处理，分开问更准</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 文件与日程管理：自动分类 + 提醒同步</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>电脑里文件越堆越乱、重要会议怕忘、待办散落在好几个 App 里——这些都是"整理类"的重复劳动。你要知道它按什么维度替你把文件摆好、把日程管住。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给出三个能力点：</p>
+<ul><li>文件分类：按<strong>后缀名、创建时间、用途</strong>等维度，自动分类本地或服务器上的文件</li><li>日程管理：设置<strong>会议提醒、待办事项</strong></li><li>同步联动：日程和待办可<strong>同步至已关联的通讯工具</strong>（钉钉 / 企业微信 / 飞书，见 ⑤）</li></ul>
+<p>示例指令：</p>
+<pre>把下载文件夹里所有 PDF 按月份建子文件夹移进去
+周五 9:00 有一场评审会，提前 15 分钟用企业微信提醒我</pre>
+<p>关键认知：<strong>分类维度由你给，它不猜</strong>。OpenClaw 不知道你的"合理摆放"是什么样，必须把"按什么分、分到哪、叫什么名"说清楚，它才动得了手。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只写"整理一下我的文件"</td><td>没有维度就没法执行。给条件："按后缀名分""按创建时间分"或"按用途分"</td></tr>
+<tr><td>提醒发不到手机/群</td><td>提醒要送到通讯工具，前提是<strong>已经接入对应工具</strong>（见 ⑤）；没接入就只会停留在应用内部</td></tr>
+<tr><td>分类规则不可逆</td><td>大批量移动前，先让它"预览将怎么分"或按小样目录试跑一次，避免分完找不到</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 数据简单处理：不装分析软件也能算 Excel</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>要做汇总、求平均、求和、筛选，第一反应是学函数或者装数据分析软件——但很多是<strong>一次性小统计</strong>，学工具的成本比干活还高。你要确认：不碰工具、只说人话，能不能把数算出来。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义明确：<strong>无需专业数据分析工具</strong>，通过自然语言指令即可完成基础统计：</p>
+<table>
+<tr><th>操作</th><th>说法</th></tr>
+<tr><td>求和 / 平均</td><td>"帮我算一下这张表所有订单的总金额和平均值"</td></tr>
+<tr><td>汇总</td><td>"按月份汇总各地区销售额"</td></tr>
+<tr><td>筛选整理</td><td>"筛出销售额大于 10 万的客户，按金额倒序排列"</td></tr>
+</table>
+<p>它替代的是<strong>手动点 Excel 的机械操作</strong>，适合一次性、结果边界清楚的轻量统计；数据量极大、要复杂建模时，那属于专业工具和大数据栈的领域，别硬用这一招。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>反复改口径：一会儿平均、一会儿总和</td><td>开口前先想清楚<strong>算哪个字段、按什么分组、结果要几列</strong>，一次说清比来回问更准</td></tr>
+<tr><td>把轻量统计当大数据分析</td><td>几万行内的 Excel 级统计没问题；百万行级也硬塞给它，会卡在工具能力边界上</td></tr>
+<tr><td>结果口径没确认</td><td>"平均值"是全表还是筛选后？模糊时先补一句"按整张表算，还是按筛选后的行算"再让它动手</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 通讯工具集成：让消息在应用之间"跑腿"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>工作消息散在钉钉、企业微信、飞书里，把方案发到某个群、把沟通记录存到本地——这类"搬消息"是纯体力活。你要知道 OpenClaw 接入通讯工具后，能替你做哪些真实的收发动作。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给出两条代表能力：</p>
+<table>
+<tr><th>能力</th><th>示例指令</th></tr>
+<tr><td>发送到群聊</td><td>"将这份项目方案发送给研发部群聊"</td></tr>
+<tr><td>同步记录</td><td>"同步今天的客户沟通记录至本地文档"</td></tr>
+</table>
+<p>前提是<strong>先关联（接入）钉钉 / 企业微信 / 飞书之一</strong>，它才有权限替你发消息。注意区别：这不是简单"发一条通知"，而是<strong>内容可来自你的指令或文档、目标可以是具体群组</strong>的完整动作。</p>
+<p>配合 ⑩ 的自动化规则，"每天 18 点汇总群聊消息生成报告"这类需求，还能从"手动下指令"升级成"到点自动跑"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>没接入就喊"发到飞书"</td><td>在没接通的工具上只会报错。先完成工具授权与绑定（下一章部署与接入部分会做）</td></tr>
+<tr><td>发错群、发错内容</td><td>对外发送是<strong>真实动作</strong>。正式内容发送前，自己先核对收件群和内容无误再放行</td></tr>
+<tr><td>以为只能人工触发</td><td>结合自动化规则可以定时自动执行；手动发、定时发是同一能力的两种用法</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 办公软件集成：WPS/Office 免手动启动</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>过去用 WPS/Office 干活有一条固定流程：启动软件 → 打开文件 → 编辑 → 另存为，光点击就花掉几分钟。你要知道 OpenClaw 能否把"打开、编辑、保存"压缩成一句话。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义：关联 WPS、Office 等办公套件后，<strong>直接通过指令打开文件、编辑内容、保存至指定路径，无需手动启动软件</strong>。</p>
+<p>示例指令：</p>
+<pre>打开 D 盘项目下的方案.docx，把第二页报价改成 5800，保存到桌面</pre>
+<p>和 ② 文档处理的分工：② 偏向<strong>从无到有生成 / 转换文档</strong>，⑥ 偏向<strong>对已有文档文件执行"打开—编辑—保存"这类操作动作</strong>。前者是"造文档"，后者是"动文档"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为所有格式都能直接编辑</td><td>核心支持办公套件的常见格式；特殊格式先转成常见格式（如 TXT 转 PDF）再操作</td></tr>
+<tr><td>指令里路径写错</td><td>文件不存在直接失败。路径不确定就先说"帮我在 D 盘项目里找到方案.docx"确认对象</td></tr>
+<tr><td>重要文件被覆盖</td><td>编辑保存是<strong>覆盖式操作</strong>。动重要文件前，先让它"另存为副本再改"或明确保存到新路径</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 多场景适配：Git 拉代码、浏览器开网页</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>OpenClaw 不只在办公室软件里转，还能碰到开发者的代码仓库和普通人的浏览器。这两类人诉求不同，但都需要知道：接入这些工具之后，它能做到什么程度、做到哪一步为止。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义把这条能力按用户拆成两条线：</p>
+<table>
+<tr><th>使用者</th><th>接入工具</th><th>能做什么</th></tr>
+<tr><td>开发者</td><td>Git 代码仓库</td><td>指令拉取代码、生成简单代码片段</td></tr>
+<tr><td>普通用户</td><td>浏览器</td><td>自动打开指定网页并保存内容</td></tr>
+</table>
+<p>两条线的示例指令：</p>
+<pre>把 Git 仓库 main 分支的最新代码拉到本地
+打开产品官网首页，把产品介绍部分保存成文档</pre>
+<p>注意它的边界在<strong>可控的确定性动作</strong>（拉取、打开、保存）；需要登录态的复杂网页操作、会改动远端仓库的动作，都不在"一句话代跑"的默认范围内。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为浏览器能"全自动办完所有事"</td><td>讲义定位是打开网页、保存内容这类<strong>确定性动作</strong>；涉及登录态和账号操作的，先确认权限与合规</td></tr>
+<tr><td>Git 操作不看仓库就执行</td><td>拉取前核对分支与地址；涉及提交、推送这类<strong>改动远端</strong>的动作，先人工确认再放行</td></tr>
+<tr><td>以为两条线只能选一个</td><td>同一个会话里既能拉代码也能开网页。它是<strong>多工具协同</strong>，不是一次只能用一个工具</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 私有知识库接入：问自己的文档，答自己的业务</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>问公网 AI 得到的答案再全，也不认识你公司的规章制度、产品资料和个人业务文档。要让 AI 回答"你自己的东西"，就得把专属资料主动喂给它。这一节认识"私有知识库"解决什么问题、和普通搜索差在哪。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义：可导入个人或团队<strong>专属知识库</strong>（业务文档、产品资料、规章制度），输入相关问题即可快速检索答案，适配<strong>企业培训、个人学习</strong>等场景。</p>
+<table>
+<tr><th>对比</th><th>通用问答 / 公网搜索</th><th>私有知识库</th></tr>
+<tr><td>数据来源</td><td>网上公开内容</td><td>你自己导入的文档</td></tr>
+<tr><td>答案特点</td><td>通用、可能过时</td><td>贴合你的业务、随文档更新</td></tr>
+<tr><td>典型用途</td><td>常识咨询</td><td>制度问答、产品答疑、培训考核</td></tr>
+</table>
+<p>一句话理解：<strong>它让"问 AI"从"问全世界"变成"问你的资料库"</strong>——张开嘴之前，先确认自己要问的是哪一摊资料。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为知识库 = 聊天记忆</td><td>它是<strong>主动导入的文档集合</strong>，不是聊天记录缓存；没导入的东西依然答不上</td></tr>
+<tr><td>只导入不维护</td><td>文档更新后知识库要<strong>同步更新</strong>，否则答的是旧版制度、旧版产品参数</td></tr>
+<tr><td>一股脑全导进去</td><td>按用途分组（培训用、查制度用）检索才准；含敏感信息的资料注意访问权限</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 简单 API 接入：考勤、客户信息一句话查</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>考勤记录、客户信息这类数据通常锁在 OA、CRM 内部系统里，查一条要开系统、点好几层菜单。提到 API 你可能发怵，但讲义给它的定位是<strong>"简单"API 接入</strong>——你要先搞清楚它解决什么问题、接线的思路长什么样。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义：支持接入<strong>公开 API 或企业内部接口</strong>（如 OA 系统、CRM 系统接口），实现员工考勤查询、客户信息调取等个性化数据查询。</p>
+<table>
+<tr><th>环节</th><th>人话解释</th></tr>
+<tr><td>API 是什么</td><td>系统之间约定好的"取数接口"，你想查的数据它已经暴露好了</td></tr>
+<tr><td>OpenClaw 做什么</td><td>听懂你的自然语言问题 → 替你调用对应接口 → 把结果整理给你听</td></tr>
+<tr><td>典型说法</td><td>"查一下今天哪些同事还没打卡""调取客户 A 最近的沟通记录"</td></tr>
+</table>
+<p>价值在<strong>把"点系统找数据"变成"一句话要数据"</strong>，让 OA/CRM 里的数据问得动、答得出。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 API 接入要先写一堆代码</td><td>简单接入通常是<strong>配置接口地址与凭证</strong>，不是从零写代码；复杂的企业级对接才需要开发能力</td></tr>
+<tr><td>没权限就硬调内部接口</td><td>内部接口要<strong>有效授权与凭证</strong>；涉及员工、客户数据注意合规，别拿个人权限乱查</td></tr>
+<tr><td>密钥、Token 到处贴</td><td>任何密钥/Token/密码都不要写进文档或聊天明文，放环境变量或配置文件，只记录"它存在、放哪"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 自动化规则设置：定时定点，自己干活</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>人最消耗精力的不是把活儿干完，而是<strong>每天重复同一个动作</strong>：18 点汇总群聊、收到 PDF 就分类放好。手动下指令只算"方便"，到点自动跑才算"解放"。你需要理解"规则 = 触发条件 + 动作"这个模式。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给了两个现成规则，正好覆盖两种触发方式：</p>
+<table>
+<tr><th>规则</th><th>触发方式</th><th>自动执行的动作</th></tr>
+<tr><td>每日 18 点汇总群聊消息生成报告</td><td>定时（到点触发）</td><td>汇总群聊消息 → 生成报告</td></tr>
+<tr><td>收到 PDF 文件自动分类保存</td><td>事件（新文件出现触发）</td><td>识别 PDF → 按规则存入对应文件夹</td></tr>
+</table>
+<p>核心一句话：<strong>设置后自动执行、无需手动触发</strong>。它的本质是"你定好触发条件和动作清单，OpenClaw 当哨兵，一满足就干活"。这也是 ⑤⑥ 里各种"发送、保存"能力能被调起来自动跑的原因。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>规则设了但从不执行</td><td>先查<strong>前置依赖</strong>：汇总群聊得先接入通讯工具（⑤），存文件得目录可写；缺一环就静默失败</td></tr>
+<tr><td>触发与动作写得含糊</td><td>"每天生成报告"没说几点、汇总哪个群、发到哪——<strong>时间、对象、产出、去向</strong>都要写具体</td></tr>
+<tr><td>设完再不复查</td><td>自动任务出过一次错可能一直错。定期抽查产出（报告内容、文件位置）是否正常</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 代码生成与解释：新手的第一位编程陪练</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>编程新手最难的不是"不想学"，而是<strong>第一行代码憋不出来、报错看不懂</strong>。你需要知道：OpenClaw 能把"写码、讲码、纠错"三件事，降到什么样的门槛。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义：支持生成 <strong>Python、Java</strong> 等多种语言的基础代码片段、解释代码含义、排查基础语法错误，助力新手快速上手。</p>
+<table>
+<tr><th>能力</th><th>怎么开口</th></tr>
+<tr><td>生成片段</td><td>"用 Python 写一段读取 CSV 并打印前 10 行的代码"</td></tr>
+<tr><td>解释代码</td><td>"这段代码每一行在做什么，讲给我听"</td></tr>
+<tr><td>排查语法错误</td><td>把报错原文和代码一起贴给它："这个报错在哪一行，怎么改"</td></tr>
+</table>
+<p>它的定位是<strong>陪练不是替考</strong>：帮你起步、帮你纠错，但关键逻辑仍然要你自己理解和验证。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>拿生成代码当"免学编程"</td><td>定位是辅助<strong>新手快速上手</strong>；关键业务逻辑不理解就盲贴生产环境，风险自负</td></tr>
+<tr><td>报错只给一半信息</td><td>排错要<strong>报错原文 + 相关代码</strong>一起给，只说"报错了"它无法定位</td></tr>
+<tr><td>生成完不验证</td><td>让它生成后就在本机跑一遍。它给的是"很可能对"，不是"保证对"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ 日志分析与远程运维：看得懂日志、管得了服务器</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>服务器出问题最折磨人的两件事：日志几百行懒得逐行看、命令一条条敲还怕敲错。你要知道 OpenClaw 能把"看日志"和"管服务器"简化到什么程度、边界在哪。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给了两项能力：</p>
+<table>
+<tr><th>能力</th><th>干什么</th></tr>
+<tr><td>日志分析</td><td>导入服务器或程序运行日志，<strong>自动筛选异常信息、分析错误原因</strong>，不用手动逐行看</td></tr>
+<tr><td>远程运维</td><td>用对话式指令完成<strong>服务器状态查询、日志清理、程序启动</strong>等操作</td></tr>
+</table>
+<p>示例指令：</p>
+<pre>导入这台服务器的错误日志，筛出今天所有异常并分析可能原因
+帮我看下服务器 CPU 占用，超过 80% 就清理 7 天前的日志</pre>
+<p>核心价值：<strong>把"翻日志、敲命令"变成"说人话、看结论"</strong>，运维的重复劳动减到只剩"确认和执行"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>清理、重启不确认就执行</td><td>日志清理、程序重启是<strong>影响服务的动作</strong>，正式环境先确认影响面再放行</td></tr>
+<tr><td>权限不足反复重试</td><td>远程运维需要对应<strong>权限与凭据</strong>，报权限错先补授权，别原地重复执行</td></tr>
+<tr><td>把"分析原因"当"确诊"</td><td>它给的是<strong>基于日志的推断</strong>；真生产故障要人工结合环境、数据复核后再定论</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是三样东西：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>一张全景地图</strong>：三大场景 × 四大类能力</td><td>遇到任何需求能对号入座：这是文档活、协同活还是定制活</td></tr>
+<tr><td><strong>12 个能力点的边界感</strong></td><td>分得清"生成文档 vs 编辑文档""手动触发 vs 自动规则""轻量统计 vs 大数据分析"</td></tr>
+<tr><td><strong>一条指令习惯</strong>：对象 + 动作 + 结果</td><td>说清楚 OpenClaw 才靠谱——这是后面所有实操共用的基本功</td></tr>
+</table>
+<h4>自测：能不能答上来</h4>
+<ol><li>OpenClaw 的核心价值用讲义的一句话怎么表达？它替代的到底是什么？</li><li>判断题：OpenClaw 只能处理文档和表格，不能碰代码和服务器。</li><li>"帮我把各小组的销售额平均值算出来"属于四大类中的哪一类？</li><li>想让 OpenClaw 每天 18 点自动把群聊消息汇总成报告，需要哪两个能力配合？</li><li>指令"将这份项目方案发送给研发部群聊"缺少哪一步前置动作会执行失败？</li><li>私有知识库问答和普通公网搜索问答，最大的区别是什么？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>openclaw.pdf「认识OpenClaw」章节</a>
+<a href="#"><span class="k">讲义</span>讲义原文 openclaw.md（章节 1）</a>
+<a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
+</div>
+<div class="pager">
+<a href="01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html">← 第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+<a class="nxt" href="03-第三章-云端部署阿里云服务器与WebUI.html">第三章　云端部署：阿里云服务器与 WebUI 管理 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="价值全景：三大核心场景 × 四大类能力"><span class="n">1</span>价值全景：三大核心场景 × 四大类能力</a>
+  <a href="#p2" title="文档处理：总结、纪要、模板一嘴搞定"><span class="n">2</span>文档处理：总结、纪要、模板一嘴搞定</a>
+  <a href="#p3" title="文件与日程管理：自动分类 + 提醒同步"><span class="n">3</span>文件与日程管理：自动分类 + 提醒同步</a>
+  <a href="#p4" title="数据简单处理：不装分析软件也能算 Excel"><span class="n">4</span>数据简单处理：不装分析软件也能算 Excel</a>
+  <a href="#p5" title="通讯工具集成：让消息在应用之间&quot;跑腿&quot;"><span class="n">5</span>通讯工具集成：让消息在应用之间"跑腿"</a>
+  <a href="#p6" title="办公软件集成：WPS/Office 免手动启动"><span class="n">6</span>办公软件集成：WPS/Office 免手动启动</a>
+  <a href="#p7" title="多场景适配：Git 拉代码、浏览器开网页"><span class="n">7</span>多场景适配：Git 拉代码、浏览器开网页</a>
+  <a href="#p8" title="私有知识库接入：问自己的文档，答自己的业务"><span class="n">8</span>私有知识库接入：问自己的文档，答自己的业务</a>
+  <a href="#p9" title="简单 API 接入：考勤、客户信息一句话查"><span class="n">9</span>简单 API 接入：考勤、客户信息一句话查</a>
+  <a href="#p10" title="自动化规则设置：定时定点，自己干活"><span class="n">10</span>自动化规则设置：定时定点，自己干活</a>
+  <a href="#p11" title="代码生成与解释：新手的第一位编程陪练"><span class="n">11</span>代码生成与解释：新手的第一位编程陪练</a>
+  <a href="#p12" title="日志分析与远程运维：看得懂日志、管得了服务器"><span class="n">12</span>日志分析与远程运维：看得懂日志、管得了服务器</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

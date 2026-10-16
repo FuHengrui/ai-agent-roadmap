@@ -1,0 +1,370 @@
+/* ============================================================
+   简历知识库 · 统一样式表
+   所有章节 HTML 都引用这一个文件，改这里全站生效。
+   ============================================================ */
+
+:root {
+    --ink:        #1a1d21;   /* 正文 */
+    --ink-soft:   #4a5158;   /* 次要文字 */
+    --ink-faint:  #8a929a;   /* 注释 */
+    --line:       #e3e6ea;   /* 分隔线 */
+    --bg:         #ffffff;
+    --bg-soft:    #f7f8fa;   /* 卡片底 */
+    --bg-code:    #1f2430;   /* 代码底 */
+    --accent:     #2f6fd0;   /* 主色 */
+    --accent-bg:  #eef4fc;
+    --need:       #d97706;   /* 需求 */
+    --need-bg:    #fff8ec;
+    --idea:       #059669;   /* 思路 */
+    --idea-bg:    #ecfdf5;
+    --how:        #2f6fd0;   /* 做法 */
+    --how-bg:     #eef4fc;
+    --trap:       #dc2626;   /* 坑 */
+    --trap-bg:    #fef2f2;
+    --radius:     10px;
+    --maxw:       860px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Source Han Sans SC", sans-serif;
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------- 布局：左侧目录 + 正文 ---------------- */
+.layout { display: flex; align-items: flex-start; }
+
+.sidebar {
+    position: sticky; top: 0;
+    width: 268px; flex: 0 0 268px;
+    height: 100vh; overflow-y: auto;
+    padding: 22px 14px 60px;
+    border-right: 1px solid var(--line);
+    background: var(--bg-soft);
+    font-size: 14px;
+}
+.sidebar h2 {
+    font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 20px 10px 8px; font-weight: 600;
+}
+.sidebar h2:first-child { margin-top: 0; }
+.sidebar a {
+    display: block; padding: 5px 10px; margin: 1px 0;
+    color: var(--ink-soft); text-decoration: none; border-radius: 6px;
+    line-height: 1.5;
+}
+.sidebar a:hover { background: #e9edf2; color: var(--ink); }
+.sidebar a.cur { background: var(--accent); color: #fff; font-weight: 600; }
+.sidebar a.sub { padding-left: 22px; font-size: 13px; color: var(--ink-faint); }
+/* 还没写的章节：灰色不可点，避免死链 */
+.sidebar .pending {
+    display: block; padding: 5px 10px 5px 22px; margin: 1px 0;
+    color: #b9bfc6; font-size: 13px; cursor: default; line-height: 1.5;
+}
+.sidebar .brand {
+    font-size: 17px; font-weight: 700; color: var(--ink);
+    padding: 0 10px 4px; line-height: 1.4;
+}
+.sidebar .brand small { display:block; font-size: 12px; font-weight: 400; color: var(--ink-faint); }
+
+.main { flex: 1 1 auto; min-width: 0; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 40px 34px 120px; }
+
+/* ---------------- 标题 ---------------- */
+h1 {
+    font-size: 30px; line-height: 1.35; margin: 0 0 6px;
+    letter-spacing: -.01em;
+}
+h1 + .subtitle {
+    color: var(--ink-faint); font-size: 15px; margin-bottom: 30px;
+}
+h2 {
+    font-size: 22px; margin: 52px 0 14px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--line);
+}
+h3 { font-size: 18px; margin: 34px 0 10px; }
+h4 { font-size: 16px; margin: 24px 0 8px; color: var(--ink-soft); }
+
+/* 卡片内部的小标题（正文里写 # / ## / ### 渲染出来的）。
+   全局 h2 的 52px 上边距和那条横线是给「本章小结」这种页级标题用的，
+   放进卡片里太大、也太重，这里压小。 */
+.point .body h2, .point .body h3,
+.point .body h4, .point .body h5 {
+    margin: 22px 0 8px; padding-bottom: 0; border-bottom: none;
+}
+.point .body h2 { font-size: 18px; }
+.point .body h3 { font-size: 17px; }
+.point .body h4 { font-size: 16px; color: var(--ink); }
+.point .body h5 { font-size: 15px; color: var(--ink-soft); }
+
+p { margin: 12px 0; }
+strong { color: var(--ink); font-weight: 600; }
+a { color: var(--accent); }
+
+/* ---------------- 面包屑 ---------------- */
+.crumb {
+    font-size: 13px; color: var(--ink-faint); margin-bottom: 18px;
+}
+.crumb a { color: var(--ink-faint); text-decoration: none; }
+.crumb a:hover { color: var(--accent); }
+
+/* ---------------- 开篇「需求」块 ---------------- */
+.why {
+    background: var(--need-bg);
+    border-left: 4px solid var(--need);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 18px 22px; margin: 26px 0;
+}
+.why .tag {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    color: var(--need); letter-spacing: .06em; margin-bottom: 6px;
+}
+.why p { margin: 8px 0; }
+.why p:first-of-type { margin-top: 0; }
+.why p:last-child { margin-bottom: 0; }
+
+/* ---------------- 位置图（在全局框架里的位置）---------------- */
+.map {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 24px; margin: 26px 0;
+    font-size: 14px; line-height: 2.1;
+}
+.map .tag {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    color: var(--ink-faint); letter-spacing: .06em; margin-bottom: 10px;
+}
+.map .node { display: block; color: var(--ink-soft); }
+.map .here {
+    display: inline-block; background: var(--accent); color: #fff;
+    padding: 2px 12px; border-radius: 20px; font-weight: 600;
+}
+.map .arrow { color: var(--ink-faint); }
+
+/* ---------------- 知识点卡片 ---------------- */
+.point {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin: 30px 0; overflow: hidden;
+}
+.point > .head {
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+    padding: 13px 20px;
+    font-size: 17px; font-weight: 600;
+    display: flex; align-items: baseline; gap: 10px;
+}
+.point > .head .no {
+    flex: 0 0 auto;
+    background: var(--ink); color: #fff;
+    width: 24px; height: 24px; border-radius: 50%;
+    font-size: 13px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+    transform: translateY(2px);
+}
+.point > .body { padding: 4px 20px 18px; }
+.point > .body > p:first-child { margin-top: 14px; }
+
+/* 四段式小节 */
+.step { margin: 18px 0; padding-left: 14px; border-left: 3px solid var(--line); }
+.step.need { border-left-color: var(--need); }
+.step.idea { border-left-color: var(--idea); }
+.step.how  { border-left-color: var(--how); }
+.step.trap { border-left-color: var(--trap); }
+.step > .label {
+    font-size: 13px; font-weight: 700; letter-spacing: .04em;
+    margin-bottom: 4px; display: block;
+}
+.step.need > .label { color: var(--need); }
+.step.idea > .label { color: var(--idea); }
+.step.how  > .label { color: var(--how); }
+.step.trap > .label { color: var(--trap); }
+.step p { margin: 6px 0; }
+.step p:first-of-type { margin-top: 2px; }
+
+/* ---------------- 代码 ---------------- */
+pre {
+    background: var(--bg-code); color: #e6edf3;
+    padding: 15px 18px; border-radius: 8px;
+    overflow-x: auto; font-size: 13.5px; line-height: 1.7;
+    margin: 14px 0;
+    font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+pre .cmt { color: #7d8590; }   /* 注释 */
+pre .kw  { color: #ff7b72; }   /* 关键字 */
+pre .str { color: #a5d6ff; }   /* 字符串 */
+pre .fn  { color: #d2a8ff; }   /* 函数 */
+pre .num { color: #79c0ff; }   /* 数字 */
+code {
+    background: #eef1f4; color: #b8336a;
+    padding: 2px 6px; border-radius: 4px;
+    font-size: .9em;
+    font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+/* ---------------- 命令行 ---------------- */
+.cmd {
+    background: #0d1117; color: #c9d1d9;
+    padding: 13px 18px; border-radius: 8px; margin: 14px 0;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 13.5px; line-height: 1.8; overflow-x: auto;
+    /* 关键：<div> 默认折叠换行与连续空格，必须显式保留，
+       否则多行注释会被挤成一行、ASCII 示意图会全部错位 */
+    white-space: pre;
+}
+.cmd .p { color: #7ee787; }     /* 提示符 */
+.cmd .c { color: #7d8590; }     /* 注释 */
+
+/* ---------------- 提示条 ---------------- */
+.note {
+    border-radius: 8px; padding: 13px 18px; margin: 16px 0;
+    font-size: 14.5px; border: 1px solid;
+}
+.note.info { background: var(--accent-bg); border-color: #cfe0f7; color: #1e4e8c; }
+.note.warn { background: var(--need-bg);   border-color: #f5dfb8; color: #8a5a00; }
+.note.bad  { background: var(--trap-bg);   border-color: #fbd5d5; color: #9b1c1c; }
+.note .t { font-weight: 700; }
+
+/* ---------------- 表格 ---------------- */
+table {
+    width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14.5px;
+}
+th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+th { background: var(--bg-soft); font-weight: 600; }
+
+/* ---------------- 原始资料链接 ---------------- */
+.links {
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 18px 22px; margin: 34px 0 0;
+}
+.links .tag {
+    font-size: 12px; font-weight: 700; color: var(--ink-faint);
+    letter-spacing: .06em; display: block; margin-bottom: 10px;
+}
+.links a {
+    display: inline-block; margin: 4px 8px 4px 0;
+    background: #fff; border: 1px solid var(--line);
+    padding: 7px 14px; border-radius: 20px;
+    text-decoration: none; color: var(--accent); font-size: 14px;
+}
+.links a:hover { border-color: var(--accent); background: var(--accent-bg); }
+.links a .k { color: var(--ink-faint); font-size: 12px; margin-right: 5px; }
+
+/* ---------------- 页脚导航 ---------------- */
+.pager {
+    display: flex; justify-content: space-between; gap: 14px;
+    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line);
+    font-size: 14px;
+}
+.pager a { text-decoration: none; }
+.pager .nxt { margin-left: auto; text-align: right; }
+
+/* ---------------- 首页：阶段/章节列表 ---------------- */
+.stage { margin: 34px 0; }
+.stage > .h {
+    font-size: 19px; font-weight: 700; margin-bottom: 4px;
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+.stage > .h .badge {
+    font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 12px;
+    background: var(--bg-soft); color: var(--ink-faint); border: 1px solid var(--line);
+}
+.stage > .h .badge.done { background: #ecfdf5; color: var(--idea); border-color: #b7e4cd; }
+.stage > .h .badge.wip  { background: var(--need-bg); color: var(--need); border-color: #f5dfb8; }
+.stage > .desc { color: var(--ink-soft); font-size: 14.5px; margin: 4px 0 12px; }
+.chap-list { list-style: none; padding: 0; margin: 0; }
+.chap-list li { border-bottom: 1px solid var(--line); }
+.chap-list a {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 10px 4px; text-decoration: none; color: var(--ink);
+}
+.chap-list a:hover { background: var(--bg-soft); }
+.chap-list .n {
+    flex: 0 0 30px; color: var(--ink-faint); font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+.chap-list .t { flex: 1 1 auto; }
+.chap-list .s { flex: 0 0 auto; font-size: 12.5px; color: var(--ink-faint); }
+.chap-list a.todo .t { color: var(--ink-faint); }
+
+/* ---------------- 术语小标签 ---------------- */
+.term {
+    display: inline-block; background: #eef1f4; border-radius: 4px;
+    padding: 1px 7px; font-size: 13px; color: var(--ink-soft);
+    font-family: Consolas, monospace;
+}
+
+/* ---------------- 右侧「本页目录」 ---------------- */
+/* 由 build_site.py 从知识点卡片自动生成，见 tools/build_site.py 的 toc_html()。
+   默认隐藏 —— 屏幕不够宽时硬塞进来会把正文挤瘦，不如不显示。 */
+.toc {
+    display: none;
+    position: sticky; top: 0;
+    width: 236px; flex: 0 0 236px;
+    max-height: 100vh; overflow-y: auto;
+    padding: 42px 18px 60px 6px;
+    font-size: 13px; line-height: 1.5;
+}
+.toc-inner { padding-left: 12px; border-left: 1px solid var(--line); }
+.toc-head {
+    font-size: 12px; font-weight: 700; letter-spacing: .08em;
+    color: var(--ink-faint); margin-bottom: 9px;
+}
+.toc a {
+    display: block; position: relative;
+    padding: 5px 6px 5px 4px; margin: 1px 0;
+    color: var(--ink-soft); text-decoration: none;
+    border-radius: 5px;
+    /* 标题可能很长：单行截断，鼠标悬停看全文（title 属性） */
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: color .12s, background .12s;
+}
+.toc a .n {
+    display: inline-block; min-width: 17px;
+    color: var(--ink-faint); font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+.toc a:hover { color: var(--accent); background: var(--accent-bg); }
+/* 滚动时高亮当前所在的知识点 */
+.toc a.cur {
+    color: var(--accent); font-weight: 600;
+    background: var(--accent-bg);
+}
+.toc a.cur .n { color: var(--accent); }
+
+/* 屏幕够宽才显示右栏：侧边栏 268 + 目录 236 + 正文至少 ~700 */
+@media (min-width: 1240px) {
+    .toc { display: block; }
+}
+/* 点击目录跳转时给卡片留一点上方空隙，别贴着视口顶边 */
+.point { scroll-margin-top: 16px; }
+
+/* ---------------- 打印 ---------------- */
+@media print {
+    .sidebar, .pager, .toc { display: none; }
+    .layout { display: block; }
+    .wrap { max-width: none; padding: 0; }
+    body { font-size: 12pt; }
+    pre, .cmd { background: #f5f5f5; color: #000; border: 1px solid #ccc; }
+    .point, .why, .map { break-inside: avoid; }
+}
+
+/* ---------------- 窄屏 ---------------- */
+@media (max-width: 900px) {
+    .layout { display: block; }
+    .sidebar {
+        position: static; width: auto; height: auto; flex: none;
+        border-right: none; border-bottom: 1px solid var(--line);
+    }
+    .wrap { padding: 24px 18px 80px; }
+}

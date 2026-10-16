@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第八章　智能饮食引擎：DietAdvisor 剖析 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="08-第八章-智能饮食引擎与规则推荐.html" class="cur">第八章　智能饮食引擎与规则推荐</a>
+  <a href="09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第八章</strong></div>
+<h1>第八章　智能饮食引擎：DietAdvisor 剖析</h1>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>第七章只摸了 <code>diet_advisor</code> 的边，本章把它拆开看——<strong>DietAdvisor 是"规则式 AI"的典型代表</strong>：不用大模型，用静态医学规则（食谱库 + 阈值判断）就能给出合理的饮食建议。本章解决三件事：<strong>一是 10 条糖尿病推荐食谱库的设计</strong>，<strong>二是营养汇总与语义化评判的逻辑</strong>，<strong>三是"结合当前血糖动态调整推荐"的分支逻辑</strong>。</p>
+<p>关键认知：<strong>不是所有智能都要上大模型</strong>。规则引擎零成本、零延迟、结果可解释——本项目用规则引擎做"基础推荐"，用大模型做"生成式建议"，两层互补。看懂 DietAdvisor 就懂了"轻量 AI"的设计思路。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">上一章：饮食/用药/运动记录模块</span>
+<span class="node"><span class="here">本章 ← 你在这里：DietAdvisor——本项目第一个真正的"业务智能"</span></span>
+<span class="node">再往后：健康报告与 LLM 客户端——第二次接触 core 引擎</span>
+<span class="node">再往后：RAG → LangGraph</span>
+<span class="node">阶段终点：饮食模块"能记录"升级为"能建议"</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 规则引擎 vs 大模型：为什么用规则</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>饮食推荐是医疗场景，为什么不用大模型直接回答，而是先写死规则？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>DietAdvisor 的设计取舍：</p>
+<table>
+<tr><th>维度</th><th>规则引擎（DietAdvisor）</th><th>大模型生成</th></tr>
+<tr><td>成本</td><td>0（纯本地计算）</td><td>按 token 计费</td></tr>
+<tr><td>延迟</td><td>毫秒级</td><td>秒级</td></tr>
+<tr><td>确定性</td><td>同输入同输出，可测试</td><td>可能飘</td></tr>
+<tr><td>可解释性</td><td>推荐逻辑透明（GI 排序可见）</td><td>黑盒</td></tr>
+<tr><td>场景</td><td>高频基础推荐</td><td>个性化综合建议（报告/对话）</td></tr>
+</table>
+<p>本项目分工：<strong>DietAdvisor 管"今天吃什么"的即时推荐（毫秒响应），LLM 管周报、对话（个性化表述）</strong>。医疗建议还涉及责任边界——确定性规则更容易控风险。</p>
+<p>学习价值：掌握"何时用规则、何时用模型"的判断力，比会调 API 更重要。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>什么都丢给大模型</td><td>高频低风险场景用规则，成本与延迟都失控</td></tr>
+<tr><td>规则库写死但没人维护</td><td>规则库要"可增删"，推荐条目按餐次+GI 结构化存放</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② RECOMMENDED_FOODS：静态食谱库设计</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"推荐吃什么"的依据在哪？菜谱怎么组织才能被程序筛选？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>10 条食物字典按"餐次"和"GI 值"两个维度组织：</p>
+<pre>RECOMMENDED_FOODS: List[Dict] = [
+    {&quot;name&quot;: &quot;燕麦粥&quot;, &quot;calories&quot;: 150, &quot;carbs&quot;: 27, &quot;protein&quot;: 5,
+     &quot;fat&quot;: 3, &quot;gi&quot;: 55, &quot;meal&quot;: &quot;早餐&quot;, &quot;tip&quot;: &quot;富含膳食纤维，升糖慢&quot;},
+    {&quot;name&quot;: &quot;水煮鸡蛋&quot;, &quot;calories&quot;: 78, &quot;carbs&quot;: 0.6, &quot;protein&quot;: 6,
+     &quot;fat&quot;: 5, &quot;gi&quot;: 0, &quot;meal&quot;: &quot;早餐&quot;, &quot;tip&quot;: &quot;优质蛋白质，几乎不含碳水&quot;},
+    {&quot;name&quot;: &quot;糙米饭&quot;, &quot;calories&quot;: 220, &quot;carbs&quot;: 46, &quot;protein&quot;: 5,
+     &quot;fat&quot;: 2, &quot;gi&quot;: 56, &quot;meal&quot;: &quot;午餐/晚餐&quot;, &quot;tip&quot;: &quot;比白米GI低，营养更丰富&quot;},
+    {&quot;name&quot;: &quot;苹果&quot;, &quot;calories&quot;: 52, &quot;carbs&quot;: 14, &quot;protein&quot;: 0.3,
+     &quot;fat&quot;: 0.2, &quot;gi&quot;: 36, &quot;meal&quot;: &quot;加餐&quot;, &quot;tip&quot;: &quot;低GI水果，适量食用&quot;},
+    ... # 共 10 条
+]</pre>
+<p>数据结构设计要点：</p>
+<ul><li><strong>meal 支持多值</strong>：<code>"午餐/晚餐"</code> 用斜杠表达"两餐通用"——筛选时 <code>meal_type in f["meal"]</code> 就是子串匹配；</li><li><strong>gi 是筛选键</strong>：低 GI（≤55）代表升糖慢，是高血糖时的优先推荐；</li><li><strong>tip 是展示文案</strong>：同一条能同时服务"计算"（nutrition）与"展示"（前端卡片）。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>meal 字段写成单值</td><td>午餐晚餐都吃的食物得复制两条；用 "午餐/晚餐" 一字段多值</td></tr>
+<tr><td>gi 填错档次算法就错</td><td>GI 是排序/筛选依据，必须按食物成分表核实</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 营养汇总：按天聚合与 or 0 防护</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>get_daily_nutrition 怎么把一天的多条记录汇总成"总热量/四素/平均GI"？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>async def get_daily_nutrition(self, patient_id: int, date_str: Optional[str] = None):
+    if date_str:
+        date = datetime.fromisoformat(date_str).replace(tzinfo=timezone.utc)
+    else:
+        date = datetime.now(timezone.utc)
+    start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_of_day = start_of_day + timedelta(days=1)
+    records = await DietRecord.filter(
+        patient_id=patient_id,
+        eaten_at__gte=start_of_day,
+        eaten_at__lt=end_of_day,     # 半开区间，避免次日记录混入
+    ).all()
+    total_calories = sum(record.calories or 0 for record in records)
+    ...
+    gi_vals = [r.gi_value for r in records if r.gi_value is not None]
+    avg_gi = statistics.mean(gi_vals) if gi_vals else 0.0
+    return {
+        &quot;date&quot;: date.strftime(&#x27;%Y-%m-%d&#x27;),
+        &quot;meal_count&quot;: len(records),
+        &quot;total_calories&quot;: round(total_calories, 1),
+        &quot;total_protein&quot;: ..., &quot;total_fat&quot;: ..., &quot;total_carbs&quot;: ...,
+        &quot;avg_gi&quot;: avg_gi,
+        &quot;calorie_status&quot;: self._calorie_status(total_calories),
+        &quot;carb_status&quot;: self._carb_status(total_carbs),
+        &quot;records&quot;: [{&quot;name&quot;: r.food_name, &quot;calories&quot;: r.calories,
+                     &quot;meal&quot;: r.meal_type} for r in records],
+    }</pre>
+<p>三个细节值得抄：</p>
+<ol><li><strong>可选日期</strong>：<code>date_str</code> 为空用当前时间，前端可查任意历史日期；</li><li><strong>时间区间</strong>：<code>[start, start+1天)</code> 半开区间，<code>__lt</code> 收尾防越界；</li><li><strong>防 None 双保险</strong>：总量用 <code>or 0</code>，均值用 <code>if not None</code> 过滤——两种空值策略按语义选用。</li></ol>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>日期字符串格式不对</td><td><code>fromisoformat</code> 只认 ISO 格式 YYYY-MM-DD；前端必须规范传参</td></tr>
+<tr><td>次日 0 点的记录被算进今天</td><td>结束端必须 __lt 而不是 __lte</td></tr>
+<tr><td>avg_gi 把 None 当 0</td><td>过滤后求均值；0 会严重拉低真实 GI</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 热量与碳水语义化：两个状态判定函数</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"1800 千卡"数字冷冰冰，怎么转成"适中/偏高"这种可读判断？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>def _calorie_status(self, total_calories: float) -&gt; str:
+    if total_calories &lt; 1200:
+        return &quot;热量摄入偏低，可能营养不足&quot;
+    if total_calories &lt;= 1800:
+        return &quot;热量摄入适中，建议维持&quot;
+    return &quot;热量摄入偏高，可能营养过剩&quot;
+
+def _carb_status(self, total_carbs: float) -&gt; str:
+    if total_carbs &lt; 100:
+        return &quot;碳水化合物摄入偏低，可能营养不足&quot;
+    if total_carbs &lt;= 200:
+        return &quot;碳水化合物摄入适中，建议维持&quot;
+    return &quot;碳水化合物摄入偏高，注意控制碳水&quot;</pre>
+<p>规则表：</p>
+<table>
+<tr><th>指标</th><th>偏低</th><th>适中</th><th>偏高</th></tr>
+<tr><td>热量（千卡）</td><td>&lt;1200</td><td>1200–1800</td><td>&gt;1800</td></tr>
+<tr><td>碳水（克）</td><td>&lt;100</td><td>100–200</td><td>&gt;200</td></tr>
+</table>
+<p><strong>与模型层 status 完全同构</strong>——"原始数值 → 语义分级"是贯穿全系统的模式：血糖阈值（low/normal/high）、GI 等级、BMI 分类、热量状态全是它。掌握一个就会全部。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>边界值 1200/1800 归属漂移</td><td>&lt;1200 偏低、≤1800 适中；边界写法与血糖 status 保持一致（左闭右闭）</td></tr>
+<tr><td>阈值硬编码</td><td>本项目写死在类里；若多处用可提升到常量区统一管理</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ recommend_meal：结合血糖的分支推荐</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>血糖 9.5 和血糖 6.0 时，推荐的食谱应该不同——怎么动态调整？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>def recommend_meal(self, meal_type: str, recent_bg: Optional[float] = None):
+    # 1. 初筛：餐次匹配，或&quot;加餐&quot;通用食物
+    suitable = [f for f in RECOMMENDED_FOODS
+                if meal_type in f[&quot;meal&quot;] or f[&quot;meal&quot;] == &quot;加餐&quot;]
+    # 2. 分支：高血糖 → 按GI升序取前4；否则取前5
+    if recent_bg and recent_bg &gt; 8.0:
+        suitable = sorted(suitable, key=lambda x: x[&quot;gi&quot;])[:4]
+    else:
+        suitable = suitable[:5]
+    return suitable</pre>
+<p>分支逻辑：</p>
+<ul><li><strong>血糖 &gt;8.0（偏高/高）</strong>：<code>sorted(key=lambda x: x["gi"])</code> 按 GI 升序排序，取 GI 最低的 4 条——<strong>优先降糖</strong>；</li><li><strong>正常或无血糖数据</strong>：取库中前 5 条默认推荐——<strong>均衡优先</strong>；</li><li><code>recent_bg</code> 来自路由：<code>BloodSugar ... first()</code> 患者最近一次血糖。</li></ul>
+<p>这就是"规则智能"的动态性：<strong>同样问"午餐吃什么"，血糖不同答案不同</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>recent_bg 为 None 时崩溃</td><td><code>if recent_bg and recent_bg &gt; 8.0</code> 短路判空再判值</td></tr>
+<tr><td>按 GI 排序方向写反</td><td>高血糖要"最不升糖"的在前，必须升序（小 GI 在前）</td></tr>
+<tr><td>取前4前5的语义混淆</td><td>高血糖给更少选择（4）更聚焦；正常给5条更丰富</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 引擎接口设计：同步方法不硬等数据库</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>为什么 get_daily_nutrition 是 async 而 recommend_meal 是同步方法？混用会怎样？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<table>
+<tr><th>方法</th><th>是否 async</th><th>原因</th></tr>
+<tr><td>get_daily_nutrition</td><td>✅ async</td><td>内部 await DietRecord.filter(...).all()，必须异步</td></tr>
+<tr><td>recommend_meal</td><td>❌ 同步</td><td>纯内存计算（列表筛选+排序），无 I/O</td></tr>
+<tr><td>_calorie_status / _carb_status</td><td>❌ 同步</td><td>纯函数，无 I/O</td></tr>
+</table>
+<p>设计纪律：<strong>有数据库/网络 I/O 才 async，纯计算必须同步</strong>。路由调用时 <code>await diet_advisor.get_daily_nutrition(...)</code>（异步）与 <code>diet_advisor.recommend_meal(...)</code>（同步，但要保险可包 await）——<strong>同步方法在 async 路由里直接调用即可</strong>（不 await），不会有问题；反之同步方法里 await 才会炸。</p>
+<p>另外注意明确边界：<code>recommend_meal</code> 在章节里的路由为 <code>recommend/{meal_type}</code>，接 <code>patient_id</code> 与 <code>meal_type</code> 从路径取，内部拿最近血糖——<strong>引擎不自己连数据库</strong>，数据由路由喂进来，保持纯函数可单测。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>在同步方法里 await</td><td>SyntaxError；纯计算函数不要标 async</td></tr>
+<tr><td>把 I/O 藏进同步方法</td><td>路由会卡事件循环；同步方法里绝不能碰 await 数据库</td></tr>
+<tr><td>忘记区分调用语法</td><td>async 方法用 await 调；同步方法直接调，别画蛇添足</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 单例导出与路由接线</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>引擎写好后，路由怎么拿到这个"唯一实例"？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>与 health_analyzer 完全相同的模式——文件底部实例化：</p>
+<pre>diet_advisor = DietAdvisor()</pre>
+<p>路由引用：</p>
+<pre>from app.core.diet_advisor import diet_advisor
+
+@router.get(&quot;/patient/{patient_id}/daily&quot;)
+async def get_daily_nutrition(patient_id: int, date: Optional[str] = Query(default=None)):
+    patient = await Patient.get_or_none(id=patient_id)
+    if not patient:
+        raise HTTPException(status_code=404, detail=&quot;患者不存在&quot;)
+    return await diet_advisor.get_daily_nutrition(patient_id, date)
+
+@router.get(&quot;/recommend/{meal_type}&quot;)
+async def recommend_meal(patient_id: int, meal_type: str):
+    recent_bg = await BloodSugar.get_or_none(
+        patient_id=patient_id).order_by(&quot;-created_at&quot;).first()
+    return diet_advisor.recommend_meal(meal_type, recent_bg.value)</pre>
+<p>注意：这里讲义代码 <code>BloodSugar.get_or_none(...).order_by(...)</code> 是<strong>一个真实值得警惕的写法</strong>——<code>get_or_none</code> 返回单条记录的协程对象，再链 <code>.order_by()</code> 并不正确；若要"最近一次记录"，应写：</p>
+<pre>recent_bg = await BloodSugar.filter(patient_id=patient_id) \
+    .order_by(&quot;-measured_at&quot;).first()</pre>
+<p>并处理"无记录"的 None 情况。读代码要带着"它写对了吗"的眼睛。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>get_or_none 后链 order_by 报错</td><td>get_or_none 语义是"取零或一"；链排序应改用 filter().order_by().first()</td></tr>
+<tr><td>无血糖记录时 .value 崩溃</td><td>recent_bg 为 None 要判空：<code>recent_bg.value if recent_bg else None</code></td></tr>
+<tr><td>忘给 diet_advisor 加括号</td><td>导入的是实例不是类；调用才 <code>diet_advisor.recommend_meal</code></td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 规则引擎的边界与升级路径</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>规则式饮食建议的天花板在哪？如何平滑升级到"更智能"的方案？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>当前规则引擎的三个短板：</p>
+<ol><li><strong>食谱库固定 10 条</strong>：不能覆盖更多菜品与个体差异；</li><li><strong>分支仅按血糖</strong>：没有考虑 BMI、肾功能、过敏等个性化约束；</li><li><strong>没有对话能力</strong>：只能"要一份推荐"，不能追问"为什么"。</li></ol>
+<p>升级路径（本项目之外的延伸思路）：</p>
+<ul><li><strong>规则扩大</strong>：食谱库增到几十条 + 病理约束过滤（肾病低蛋白）；</li><li><strong>混合推荐</strong>：规则引擎筛候选 → LLM 基于患者档案精调表述；</li><li><strong>知识注入</strong>：RAG 检索指南条目补充推荐依据（本阶段第十二章已经在对话侧做了类似事）。</li></ul>
+<p><strong>在架构上，DietAdvisor 面向接口（返回结构化 dict/List），升级实现不影响路由</strong>——这就是引擎封装的红利。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>想加个性化又不重构</td><td>先从"喂更多参数"入手（如传 BMI），别推倒重来</td></tr>
+<tr><td>期望规则引擎"懂对话"</td><td>明确职责：规则给确定性建议，对话给生成式回答，各管一段</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>规则引擎设计范式</strong></td><td>静态库 + 语义分级 + 条件分支，零成本可解释，与大模型互补</td></tr>
+<tr><td><strong>DietAdvisor 全流程</strong></td><td>营养汇总（半开区间/or 0/均值过滤）→ 状态语义化 → 血糖分支推荐</td></tr>
+<tr><td><strong>引擎接线纪律</strong></td><td>单例导出、I/O 才 async、同步方法不碰数据库、路由喂数据引擎纯计算</td></tr>
+</table>
+<h4>自测：能不能答上来</h4>
+<ol><li>什么场景应该用规则引擎而不是大模型？本项目两者如何分工？</li><li>RECOMMENDED_FOODS 的 meal 字段为什么用 "午餐/晚餐" 这种写法？</li><li>半开区间 [start, start+1天) 的结束端为什么用 __lt 而不是 __lte？</li><li>total_calories 用 <code>or 0</code> 与 avg_gi 用 <code>if not None</code> 过滤，两种空值处理各适用什么场景？</li><li>血糖 &gt;8.0 与正常时，推荐逻辑分别如何取舍（排序与条数）？</li><li>找出讲义代码里 "最近一次血糖" 写法的隐患，并写出正确写法。</li><li>为什么 get_daily_nutrition 必须 async 而 recommend_meal 不需要？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>安康智慧健康管理平台：糖尿病AI健康助手讲义</a>
+<a href="https://baike.baidu.com/item/血糖生成指数" target="_blank" rel="noopener"><span class="k">百科</span>升糖指数（GI）</a>
+</div>
+<div class="pager">
+<a href="07-第七章-饮食用药运动三大模块.html">← 第七章　饮食用药运动三大模块</a>
+<a class="nxt" href="09-第九章-健康报告与LLM客户端.html">第九章　健康报告与 LLM 客户端 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="规则引擎 vs 大模型：为什么用规则"><span class="n">1</span>规则引擎 vs 大模型：为什么用规则</a>
+  <a href="#p2" title="RECOMMENDED_FOODS：静态食谱库设计"><span class="n">2</span>RECOMMENDED_FOODS：静态食谱库设计</a>
+  <a href="#p3" title="营养汇总：按天聚合与 or 0 防护"><span class="n">3</span>营养汇总：按天聚合与 or 0 防护</a>
+  <a href="#p4" title="热量与碳水语义化：两个状态判定函数"><span class="n">4</span>热量与碳水语义化：两个状态判定函数</a>
+  <a href="#p5" title="recommend_meal：结合血糖的分支推荐"><span class="n">5</span>recommend_meal：结合血糖的分支推荐</a>
+  <a href="#p6" title="引擎接口设计：同步方法不硬等数据库"><span class="n">6</span>引擎接口设计：同步方法不硬等数据库</a>
+  <a href="#p7" title="单例导出与路由接线"><span class="n">7</span>单例导出与路由接线</a>
+  <a href="#p8" title="规则引擎的边界与升级路径"><span class="n">8</span>规则引擎的边界与升级路径</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

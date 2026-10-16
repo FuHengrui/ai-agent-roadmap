@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第二章　环境准备与安装部署 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="02-第二章-环境准备与安装部署.html" class="cur">第二章　环境准备与安装部署</a>
+  <a href="03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 15 · Hermes-Agent 自我进化的超级智能体 › <strong>第二章</strong></div>
+<h1>第二章　环境准备与安装部署</h1>
+<div class="subtitle">阶段 15 · Hermes-Agent 自我进化的超级智能体　|　平台实操　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>第一章把 Hermes-Agent 介绍得天花乱坠，但<strong>装不上一切都是零</strong>。安装这个环节有两大拦路虎：一是 Windows 用户的原生支持还处于实验阶段，直接装大概率翻车；二是讲义反复强调的"pip 镜像、npm 镜像不还原就是天坑"，新手根本不知道还有这茬。</p>
+<p><strong>"一键安装"到底一键在哪、哪些坑是这"一键"绕不开的？</strong> 本来的前置条件只有 Git，但 Windows 用户要先把 WSL2 装好；安装时模型选错没关系，<code>hermes model</code> 随时能改；接入应用可以跳过，后面单独接。</p>
+<p>学完这一章，你手里有一台<strong>跑起来的 Hermes-Agent</strong>：知道 Windows 下怎么把环境备齐、一键脚本装什么、装完怎么选模型、启动成功长什么样、以及第一组必须记住的 hermes 命令。下一章就可以接微信/QQ/飞书了。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一章（第一章）</strong>：Hermes-Agent 是什么、定位"会进化的伙伴"、核心创新是自学习循环。</span>
+<span class="node"><span class="here">本章 ← 你在这里：把概念落地成一台能跑的安装，Windows 用户先过 WSL2 这一关</span></span>
+<span class="node"><strong>下一章</strong>：消息平台接入——微信、QQ、飞书扫码与配对审批，让 Agent"聊天即操作"</span>
+<span class="node"><strong>再往后</strong>：第一个应用案例 → SOUL.md 个性化 → 工具与工具集 → Skill 技能 → 持久记忆 → 皮肤 → MCP → 定时任务与仪表板</span>
+<span class="node"><strong>阶段终点</strong>：一台部署在你自己设备上的持久个人智能体，能通过消息账号随时指挥</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>这一章是典型"装环境"章，按顺序机械执行即可，难点只有三个：① Windows 先 WSL2；② 装前还原 pip/npm 镜像；③ 模型选错用 <code>hermes model</code> 补救。把这三句话抄在纸上，你就能少走 80% 的弯路。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 唯一前提：先装好 Git</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>安装说明里列了一堆东西（Python、Node、ripgrep、ffmpeg），新手容易以为要手动逐个装。需要明确：哪些必须自己装、哪些是安装脚本包办。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义明确：<strong>唯一的前提条件是 Git</strong>。安装程序会自动处理其他所有事项——你<strong>无需手动安装</strong> Python、Node.js、ripgrep 或 ffmpeg，安装程序会自动检测缺失的组件并安装。</p>
+<p>Git 下载：https://git-scm.com/?hl=zh-cn （官方中文页面），一直 Next 装完即可。装完可在终端验证：<code>git --version</code> 能打印版本号就算可用。</p>
+<p>安装脚本自动代劳的组件及用途：</p>
+<table>
+<tr><th>组件</th><th>用途</th></tr>
+<tr><td>uv</td><td>快速 Python 包管理器</td></tr>
+<tr><td>Python 3.11</td><td>通过 uv 安装，无需 sudo</td></tr>
+<tr><td>Node.js v22</td><td>浏览器自动化和 WhatsApp 桥接</td></tr>
+<tr><td>ripgrep</td><td>快速文件搜索</td></tr>
+<tr><td>ffmpeg</td><td>TTS 的音频格式转换</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>想手动把 Python/Node 全装一遍"求稳"</td><td>安装脚本会自动装它要的版本；手动装老版本反而可能冲突。让脚本管，你只保证 Git 可用</td></tr>
+<tr><td>Git 装完不确定成没成</td><td>终端跑 <code>git --version</code>；能输出版本即成功，报"不是内部或外部命令"则检查 PATH 或重装</td></tr>
+<tr><td>以为要 sudo 装 Python</td><td>笔电/桌面环境没 sudo 也不怕——Python 3.11 由 uv 安装，不需要系统权限</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② Windows 用户先过 WSL2 这一关</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>如果你是 Windows 用户（本阶段多数用户是），直接双击安装大概率失败——因为<strong>原生 Windows 支持仍处于实验阶段</strong>。需要一条官方推荐的 Windows 安装路径。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义明确：<strong>原生 Windows 支持仍处于实验阶段，请安装 WSL2 后在其中运行 Hermes Agent</strong>。WSL2 是微软官方提供的"Windows 里的 Linux 子系统"，装了它，Linux 命令、Linux 环境都能在 Windows 里跑。</p>
+<p>安装 WSL2 的官方姿势：</p>
+<ol><li><strong>以管理员身份打开 PowerShell</strong>；</li><li>输入：<code>wsl --install</code>；</li><li>按提示<strong>重新启动计算机</strong>。</li></ol>
+<p>重启后可以验证/安装指定发行版：</p>
+<pre>wsl --list --verbose        # 列出已安装的发行版及其 WSL 版本
+wsl --install -d Ubuntu-24.04   # 安装 Ubuntu 24.04 发行版</pre>
+<p>装好 Ubuntu 后，进入 WSL（终端输入 <code>wsl</code> 即可），Hermes-Agent 就装在这个 Linux 环境里。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>装完 WSL 没生效，命令找不到</td><td>大概率是重启没完成。讲义特别提示：<strong>官网说只重启一次，实际可能要 2-3 次</strong></td></tr>
+<tr><td>用"关机再开机"代替"重启"</td><td>讲义特别提示：<strong>是重启，不是关机再开机</strong>——两者生效机制不同，务必选"重启"</td></tr>
+<tr><td>装了 WSL1 或旧发行版</td><td>用 <code>wsl --list --verbose</code> 看 VERSION 是否为 2；不是 2 则 <code>wsl --set-default-version 2</code> 或按提示升级</td></tr>
+<tr><td>管理员 PowerShell 拼写/权限不对</td><td>开始菜单搜"PowerShell"→ 右键"以管理员身份运行"，再执行 <code>wsl --install</code></td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 一键安装：真正的安装命令就一行</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>环境备齐后，进入正式安装。安装步骤多不多？要不要翻墙？命令是什么？这一节给你确切的答案。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>Hermes-Agent 安装<strong>无需任何前置依赖手工处理</strong>（Git 除外），支持 Linux、macOS 和 WSL2，<strong>一键自动安装所有组件</strong>。安装命令只有一行：</p>
+<pre>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</pre>
+<p>要点拆解：</p>
+<ul><li><code>curl -fsSL</code>：静默跟随重定向下载脚本（-f 失败不报错、-s 静默、-S 显示错误、-L 跟随跳转）；</li><li>脚本下载后直接交给 bash 执行，自动检测缺什么装什么；</li><li>想看到每一步的执行过程、便于排查问题，可加 <code>-x</code>：<code>... | bash -x</code>（讲义第 55 页专门提到）。</li></ul>
+<p><strong>网络提示（讲义原文强调）</strong>：安装时无需翻墙；"非要翻墙，请你自重（如果实在下载不动，那你翻吧）"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>装到一半失败，报各种组件错误</td><td>先看是不是<strong>没还原 pip/npm 镜像</strong>（下一节专讲）；再看 WSL 里网络是否正常</td></tr>
+<tr><td>想找"Windows 原生安装包"</td><td>别找了，原生 Windows 实验性——规规矩矩在 WSL2 里装</td></tr>
+<tr><td>复制命令时网址少了个 s / 拼错</td><td>地址是 <code>hermes-agent.nousresearch.com/install.sh</code>，与前章官网域名一致；从讲义复制最稳</td></tr>
+<tr><td>等了很久没动静以为卡死</td><td>自动安装依赖阶段"安装时间有点长"，保持网络畅通耐心等（讲义原话）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 翻车重灾区：先把 pip 和 npm 镜像还原</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>这一步是给"用国内镜像源"的用户专门排雷的。很多人装 Python/Node 项目时配过清华、阿里等镜像，这些配置在 Hermes 安装时反而会导致安装失败——而且会失败得莫名其妙。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义原文（加粗警告）：<strong>程序员注意！请将 pip 镜像和 npm 镜像还原（别问，问就是坑，大坑，天坑）</strong>。</p>
+<p>原因：安装脚本会自动调用 pip / npm 下载组件，如果你之前配置了国内镜像源（如清华 PyPI、淘宝 npm），部分镜像的同步延迟或缺包会导致安装脚本认为"依赖装不上"或装到旧版本，从而中断或行为异常。<strong>还原成官方源</strong>再跑安装脚本，是最省心的做法。</p>
+<p>常见镜像还原操作示例（改回官方源）：</p>
+<pre># pip —— 删除或注释用户级镜像配置
+pip config unset global.index-url
+
+# npm —— 改回官方源
+npm config set registry https://registry.npmjs.org/</pre>
+<p>如果之前是写进配置文件（如 <code>~/.pip/pip.conf</code>、<code>~/.npmrc</code>）的，也一并改回官方源。装完 Hermes 后如果需要，可以再改回镜像。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>"我没配过镜像啊"也装失败</td><td>检查全盘配置文件：<code>pip config list</code>、<code>npm config get registry</code>，有非官方输出就还原</td></tr>
+<tr><td>还原了还失败</td><td>确认在<strong>正确的环境</strong>里执行：WSL2 里的 pip/npm 和 Windows 的是两套，都要还原</td></tr>
+<tr><td>装完又想用回镜像</td><td>可以改回，但注意以后凡是 Hermes 相关升级、技能安装也可能受镜像影响，出问题优先想到它</td></tr>
+<tr><td>只用 pip 没用过 npm，只还原 pip 行不行</td><td>安装脚本两个都要用，两个都还原才保险</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 安装流程：从下载到启动的完整节奏</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>命令敲下去之后会发生什么？中间要不要输入什么？走到哪一步算成功？提前要知道全流程，避免瞎等或误操作。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给出的安装流程大致四步：</p>
+<table>
+<tr><th>步骤</th><th>发生什么</th><th>你要做什么</th></tr>
+<tr><td>1. 自动装依赖</td><td>检测并安装 uv/Python/Node/ripgrep/ffmpeg 等，时间较长</td><td>保持网络畅通，耐心等待（讲义：安装时间有点长）</td></tr>
+<tr><td>2. 输入密码</td><td>提示输入 WSL 的密码</td><td>输入 WSL（Ubuntu）用户密码，进入下一步</td></tr>
+<tr><td>3. 选择模型</td><td>向导询问选哪个 LLM 服务商/模型</td><td>选熟悉的或额度够的（如 DeepSeek）；<strong>全部跟着推荐走也可以</strong></td></tr>
+<tr><td>4. 接入应用</td><td>询问是否接入微信/QQ/飞书等</td><td>这里<strong>可以先跳过</strong>，后面单独接入（第 3 章）</td></tr>
+</table>
+<p>第 4 步之后，输入 <code>hermes</code> 启动应用，看到正常对话界面即安装成功（第 8 页"到这里就成功了!"）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>等依赖自动安装时反复切窗口/断网</td><td>安装中途断网=整体失败，重跑一行命令最稳；保持终端别关</td></tr>
+<tr><td>忘了 WSL 密码</td><td>装 WSL 发行版时设置的就是；忘了可在 Windows 里对发行版执行 <code>wsl -u root</code> 重置</td></tr>
+<tr><td>接入应用时被一堆选项吓到</td><td>全部跳过或选默认即可，不影响安装；第 3 章专门细讲接入</td></tr>
+<tr><td>走到一半界面卡住</td><td>某些机型/终端渲染问题，连按回车或重跑脚本，多数可恢复</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 模型选错了怎么办：hermes model 随时改</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>安装向导让你选模型时，选错了、额度用完了、想换一家服务商，怎么办？是重新装一遍吗？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>不需要重装。<strong>执行 <code>hermes model</code> 可以随时重新选择 LLM 服务商和模型</strong>（讲义：提示"如果选择错了怎么办？执行 hermes model 重新选择（后续课程有演示~）"）。</p>
+<p>也就是说：模型选择不是"安装时一次性决定"，而是一条<strong>独立的管理命令</strong>。安装时先随便选一个能用的（或跟着推荐走），后面随时可以换：</p>
+<pre>hermes model        # 重新选择 LLM 服务商和模型</pre>
+<p>这背后是 Hermes 的"多模型路由"设计（讲义第 55 页提到其亮点之一就是多模型路由）：同一套 Agent 框架可以对接不同服务商，模型只是"大脑供应商"，可插拔。这也意味着选模型时<strong>优先选自己有额度的</strong>（如 DeepSeek），别硬选用不起的旗舰模型。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为选错模型=重装整套</td><td>一条 <code>hermes model</code> 搞定，重装是浪费生命</td></tr>
+<tr><td>选了个没额度的模型导致对话报错</td><td>换回有额度的；各家模型 API Key 配置按服务商向导填写</td></tr>
+<tr><td>以为"全部跟着推荐走"会选到付费最贵的</td><td>推荐通常是"配置最顺"而非"最贵"；没把握就选自己常用的模型服务商</td></tr>
+<tr><td>换模型后以前的功能丢了</td><td>模型只影响"大脑"，记忆/技能/配置都在文件里，不受换模型影响</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 接入应用先跳过，后面单独接</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>安装向导里有一大块"接入应用（微信/QQ/飞书）"，很多人会纠结：现在接还是不接？接的话那一堆授权选项怎么选？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给的官方建议是：<strong>接入应用，这里可以先跳过，后续我们单独接入</strong>。</p>
+<p>理由很实在：安装阶段的重点是先把核心跑起来、把模型配置好；接入平台涉及扫码、配对审批、授权策略一堆选项，混在安装流程里容易手忙脚乱出错。第 3 章会用一整章专门演示 <code>hermes gateway setup</code> 的完整接入流程（QQ 扫码、微信设备配对、飞书接入、DM/群聊策略）。</p>
+<p>而且接入是可逆的、可后补的——跳过不影响安装成功，随时想接随时执行 <code>hermes gateway setup</code>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>跳过后找不到"在哪再次接入"</td><td>随时执行 <code>hermes gateway setup</code> 重新进入接入向导</td></tr>
+<tr><td>接入时不小心选了"允许所有直接消息"</td><td>可在网关配置里改授权策略；推荐 DM 配对审批（第 3 章详述）</td></tr>
+<tr><td>以为必须先接平台才能启动 hermes</td><td>完全可以先本地启动对话，平台接入是"锦上添花"的触达方式</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 启动成功长什么样</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>装完了，怎么判断"成功了"？启动命令是什么？成功标志是什么？失败怎么排查？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>启动命令就是：</p>
+<pre>hermes</pre>
+<p>启动成功后你会进入一个交互式对话界面（CLI 对话），可以像聊天一样直接与 Agent 对话。讲义第 8 页标注"到这里就成功了!"——即能进入对话、Agent 能正常回应，就是安装成功的标志。</p>
+<p>启动不顺利时的排查顺序（按频率）：</p>
+<ol><li>WSL 是否就绪：<code>wsl --list --verbose</code>，VERSION 应为 2；</li><li>Git 是否可用：<code>git --version</code>；</li><li>pip/npm 镜像是否已还原（第 ④ 点）；</li><li>安装是否真的完整：重新执行一次安装命令，脚本会幂等地补装缺失组件。</li></ol>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>输入 hermes 报"command not found"</td><td>安装未完成或 PATH 未生效：重跑安装脚本；WSL 里新开终端让 PATH 生效</td></tr>
+<tr><td>启动后立刻退出/报模型配置错</td><td>检查模型额度与 Key；执行 <code>hermes model</code> 重新选一个可用的</td></tr>
+<tr><td>界面出现乱码/字符错位</td><td>WSL 终端字体问题，用 Windows Terminal 打开 WSL 再启动</td></tr>
+<tr><td>对话没反应</td><td>看是否在等模型响应（网络/额度）；换 <code>hermes model</code> 里的其他可用模型试试</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 第一组必须记住的 hermes 命令</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>安装完面对一个全新 CLI，最需要一份"高频命令速查表"，知道什么时候该敲哪条。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义第 56 页给了完整的常用命令表，全部背下来：</p>
+<table>
+<tr><th>命令</th><th>说明</th></tr>
+<tr><td><code>hermes</code></td><td>启动交互式对话</td></tr>
+<tr><td><code>hermes setup</code></td><td>运行完整配置向导</td></tr>
+<tr><td><code>hermes model</code></td><td>选择 LLM 服务商和模型</td></tr>
+<tr><td><code>hermes tools</code></td><td>配置启用的工具集</td></tr>
+<tr><td><code>hermes gateway setup</code></td><td>配置消息网关（接入平台）</td></tr>
+<tr><td><code>hermes update</code></td><td>更新到最新版本</td></tr>
+<tr><td><code>hermes version</code></td><td>查看当前版本</td></tr>
+<tr><td><code>hermes config show</code></td><td>查看当前配置</td></tr>
+<tr><td><code>hermes skills list</code></td><td>查看已安装的技能</td></tr>
+</table>
+<p>记忆技巧：把命令按"日常操作（hermes）→ 改配置（setup/model/tools/gateway）→ 看状态（version/config show/skills list）→ 升级（update）"分组记，很快就能形成肌肉记忆。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>想查看配置却敲 <code>hermes config</code></td><td>会提示缺子命令；完整形式是 <code>hermes config show</code></td></tr>
+<tr><td>升级时犹豫要不要 update</td><td>定期 <code>hermes update</code> 保持跟进；升级后如遇问题可用旧版本备份回退</td></tr>
+<tr><td>技能装了一堆但忘了有哪些</td><td>随时 <code>hermes skills list</code>；第 7 章会细讲 skills 的浏览/搜索/安装</td></tr>
+<tr><td>网关配置和工具配置搞混</td><td><code>gateway setup</code>=接平台；<code>tools</code>=开/关能力，两条命令职责完全不同</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ WSL 里的文件怎么和 Windows 互通</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>装是装在 WSL2（Linux）里的，但日常文件在 Windows 桌面/磁盘上：Agent 写出来的东西我怎么在 Windows 里打开？Windows 的资料怎么喂给 WSL 里的 Agent？需要一条文件互通的通道。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>WSL2 与 Windows 之间有两条互通的"桥"（讲义第 34 页专门图解 Windows 与 WSL 交互）：</p>
+<p><strong>① Windows 里看 WSL 文件</strong>：打开任意文件夹（如"此电脑"），在地址栏输入 <code>\\wsl$</code> 回车，就能看到已安装的 WSL 发行版（如 Ubuntu）；进入发行版找到目标目录（例如 <code>home/你的用户名/</code>），Windows 拖拽/复制粘贴都行。</p>
+<p><strong>② WSL 里看 Windows 文件</strong>：WSL 里 Windows 磁盘挂在 <code>/mnt/c/</code>、<code>/mnt/d/</code> 等位置，例如 Windows 桌面在 WSL 里就是 <code>/mnt/c/Users/你的用户名/Desktop/</code>，直接 cp 即可。</p>
+<p>如果 Agent 在 WSL 里生成了 <code>~/ai-agents-showcase/</code> 下的文件，而你希望它出现在 Windows 桌面，<strong>Agent 会自动帮你复制过去</strong>（第 4 章案例里有完整演示）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>地址栏输 <code>\\wsl$</code> 打不开</td><td>确认 WSL 发行版在运行（先执行 <code>wsl</code> 进一次）；地址栏要输完整 <code>\\wsl$</code> 而不是 <code>wsl$</code></td></tr>
+<tr><td>在 /mnt/c 里复制大文件很慢</td><td>WSL2 跨文件系统 IO 有开销，大文件用 Windows 侧操作或搬进 WSL 再处理</td></tr>
+<tr><td>找不到 Agent 生成的文件</td><td>先 <code>ls ~/项目名/</code> 看 WSL 侧路径，再决定复制到 Windows 哪里；让 Agent 直接复制到桌面最省事（第 4 章）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 装完先跑通一个最小验证</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"能启动"不等于"配置都对"。装完环境最好先做一次最小验证：确认模型通了、工具能调、记忆目录生成了，再往下走不会越走越乱。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>建议按"四连查"验证安装完整性：</p>
+<pre>hermes version          # ① 版本正常
+hermes model            # ② 模型配置可查看/可修改
+hermes config show      # ③ 配置可读
+hermes skills list      # ④ 技能目录初始化完成</pre>
+<p>然后进 <code>hermes</code> 对话，问一个简单问题（如"你好，介绍一下你自己"），确认 Agent 能基于所选模型正常回复——<strong>能回复=模型链路通了</strong>，安装这一步就算彻底达标。</p>
+<p>之后你还能验证记忆初始化：<code>~/.hermes/</code> 目录下应存在配置与状态文件（SOUL.md、memories/、state.db 等），这些是第 5、8 章的主角。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>四连查某一条报错就慌</td><td>逐条看：version/config 报错=安装不完整；skills list 报错=技能目录未生成，重跑安装脚本即可</td></tr>
+<tr><td>简单问题都不回</td><td>模型额度/网络问题优先；换 <code>hermes model</code> 里另一个服务商再试</td></tr>
+<tr><td>以为验证完就万事大吉</td><td>这只是"安装"达标；平台的接入、个性化、技能、记忆还要逐步配置，别停在最浅层</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ 安装阶段的常见失败与对症处理</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>把安装阶段能踩的坑集中成一张"对症状找药方"的速查表，真出问题了不慌、能自查。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>整合本章全部安装相关失败场景，整理成自查表：</p>
+<table>
+<tr><th>症状</th><th>最可能原因</th><th>对症处理</th></tr>
+<tr><td><code>wsl --install</code> 无反应/报错</td><td>需要管理员权限/未启用虚拟化</td><td>管理员 PowerShell 重试；BIOS 打开虚拟化</td></tr>
+<tr><td>重启多次还是没 WSL</td><td>用的是"关机再开机"</td><td>讲义强调：<strong>必须选"重启"</strong>，可能需 2-3 次</td></tr>
+<tr><td>安装脚本中途失败</td><td>pip/npm 镜像未还原</td><td>还原官方源后重跑脚本</td></tr>
+<tr><td>组件一直装不动</td><td>网络受限</td><td>讲义：无意翻墙先自己扛；实在下载不动可考虑，但先自查网络</td></tr>
+<tr><td>启动后模型报错</td><td>模型无额度/Key 错误</td><td><code>hermes model</code> 换有额度的服务商</td></tr>
+<tr><td>找不到 hermes 命令</td><td>PATH 未生效</td><td>新开 WSL 终端；重跑安装脚本</td></tr>
+<tr><td>WSL 里装好了但 Windows 用不了</td><td>用错了执行环境</td><td>Hermes 装在 WSL 内，必须在 WSL 终端里执行</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>遇到问题就"格式化重装"</td><td>八成问题是镜像/重启/管理员权限三类，对症处理已足够</td></tr>
+<tr><td>每个报错都全网搜</td><td>先对照本表自查；表外问题再带着"WSL 环境+版本号"去 GitHub Issues 搜</td></tr>
+<tr><td>排查完没<code>bash -x</code>重跑</td><td>想在日志里看到每一步执行过程，安装命令加 <code>-x</code>：`curl -fsSL ... \</td><td>bash -x`，报错定位一目了然</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章的产出是一台<strong>跑起来的 Hermes-Agent</strong>：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>WSL2（Windows 用户）</strong>：管理员 PowerShell <code>wsl --install</code>，重启 2-3 次，可选装 Ubuntu-24.04</td><td>原生 Windows 实验性，WSL2 是官方推荐的稳定运行环境</td></tr>
+<tr><td><strong>一键安装</strong>：`curl -fsSL https://hermes-agent.nousresearch.com/install.sh \</td><td>bash`</td><td>唯一前提 Git，其余组件脚本自动装；无需翻墙</td></tr>
+<tr><td><strong>镜像坑</strong>：装前还原 pip 和 npm 镜像源</td><td>讲义钦定天坑，不还原装一半必翻车</td></tr>
+<tr><td><strong>模型选择</strong>：跟着推荐走或选 DeepSeek 等有额度的；选错用 <code>hermes model</code> 随时改</td><td>模型可插拔、"多模型路由"，不必一次选对</td></tr>
+<tr><td><strong>启动验证</strong>：<code>hermes</code> 进入对话即成功；四连查（version/model/config/skills）</td><td>用最小验证确认安装链路完整，再往下走</td></tr>
+<tr><td><strong>命令速查</strong>：gateway setup（接平台）/ tools（配工具）/ config show（看配置）/ update（升级）</td><td>高频命令先背下来，后续章节反复使用</td></tr>
+</table>
+<p>一句话记住本章：<strong>Git 装好 → Windows 装 WSL2 → pip/npm 镜像还原 → 一行命令装完 → hermes 启动对话 → 模型错了随时换——安装，就这么回事。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>使用 Hermes-Agent 唯一必需的前置软件是什么？安装程序会自动代劳安装哪几类组件？</li><li>Windows 用户为什么必须先装 WSL2？安装 WSL2 的命令是什么？讲义在"重启"这件事上给了哪两条特别提示？</li><li>写出完整的一键安装命令（含网址）。安装过程中讲义对"翻墙"和"pip/npm 镜像"分别给出了什么警告？</li><li>安装向导有哪四个主要步骤？其中"接入应用"这一步的建议是什么（装还是跳过）？</li><li>模型选错了怎么办？请写出对应的命令，并解释"多模型路由"为什么让模型选择成为可随时调整的环节。</li><li>请写出至少 5 条 hermes 常用命令及其用途。</li><li>从 Windows 访问 WSL 文件应在文件资源管理器地址栏输入什么？反过来，WSL 里访问 Windows 桌面（假设用户名为 &lt;你的用户名&gt;）的路径是什么？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 3-8、34、55-56 页）</a>
+<a href="https://git-scm.com/?hl=zh-cn" target="_blank" rel="noopener"><span class="k">前置</span>Git 官方下载（中文）</a>
+<a href="https://learn.microsoft.com/zh-cn/windows/wsl/" target="_blank" rel="noopener"><span class="k">官方</span>Microsoft WSL 文档</a>
+<a href="https://hermes-agent.nousresearch.com/install.sh" target="_blank" rel="noopener"><span class="k">安装</span>一键安装脚本</a>
+</div>
+<div class="pager">
+<a href="01-第一章-认识自我进化的超级智能体HermesAgent.html">← 第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+<a class="nxt" href="03-第三章-消息平台接入微信QQ与飞书.html">第三章　消息平台接入：微信 / QQ / 飞书 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="唯一前提：先装好 Git"><span class="n">1</span>唯一前提：先装好 Git</a>
+  <a href="#p2" title="Windows 用户先过 WSL2 这一关"><span class="n">2</span>Windows 用户先过 WSL2 这一关</a>
+  <a href="#p3" title="一键安装：真正的安装命令就一行"><span class="n">3</span>一键安装：真正的安装命令就一行</a>
+  <a href="#p4" title="翻车重灾区：先把 pip 和 npm 镜像还原"><span class="n">4</span>翻车重灾区：先把 pip 和 npm 镜像还原</a>
+  <a href="#p5" title="安装流程：从下载到启动的完整节奏"><span class="n">5</span>安装流程：从下载到启动的完整节奏</a>
+  <a href="#p6" title="模型选错了怎么办：hermes model 随时改"><span class="n">6</span>模型选错了怎么办：hermes model 随时改</a>
+  <a href="#p7" title="接入应用先跳过，后面单独接"><span class="n">7</span>接入应用先跳过，后面单独接</a>
+  <a href="#p8" title="启动成功长什么样"><span class="n">8</span>启动成功长什么样</a>
+  <a href="#p9" title="第一组必须记住的 hermes 命令"><span class="n">9</span>第一组必须记住的 hermes 命令</a>
+  <a href="#p10" title="WSL 里的文件怎么和 Windows 互通"><span class="n">10</span>WSL 里的文件怎么和 Windows 互通</a>
+  <a href="#p11" title="装完先跑通一个最小验证"><span class="n">11</span>装完先跑通一个最小验证</a>
+  <a href="#p12" title="安装阶段的常见失败与对症处理"><span class="n">12</span>安装阶段的常见失败与对症处理</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

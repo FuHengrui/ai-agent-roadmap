@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第十四章　Pandas 统计、可视化与性能 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="14-第十四章-Pandas统计可视化与性能.html" class="cur">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 17 · 数据科学与智能分析基础 › <strong>第十四章</strong></div>
+<h1>第十四章　Pandas 统计、可视化与性能</h1>
+<div class="subtitle">阶段 17 · 数据科学与智能分析基础　|　数据分析　|　难度 ★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p><strong>表处理能力齐了，但收尾三件事还没解决：①统计报告要的透视表/交叉表/频数表；②"表 → 图"一刻钟出图；③数据一大（几百万行）Pandas 卡死怎么办。</strong> 这三点是 Pandas 从"会用"到"能交付"的分水岭。</p>
+<p>学完你能回答：value_counts 和萧群、pivot_table 和 crosstab 的区别、df.plot 和 matplotlib 的关系、Pandas 三大主流图怎么出、大表读取怎么提速、向量化为什么比循环快。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一章</strong>：数据合并与时间序列——跨表、跨时间</span>
+<span class="node"><span class="here">本章 ← 你在这里：Pandas 收官——透视统计、直出图表、性能优化，Pandas 五章到此闭环</span></span>
+<span class="node"><strong>下一章</strong>：MySQL 入门——数据科学链路里的"存"，Pandas 的 to_sql 将在这里安家</span>
+<span class="node"><strong>再往后</strong>：MySQL 六章 → 阶段收官</span>
+<span class="node"><strong>阶段终点</strong>：完成"读数据 → 清洗 → 计算 → 可视化 → 入库"全链路</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>本章前 3 点是"统计表"，中 4 点是"出图"，后 3 点是"提速"——三段各自独立、合起来是交付三部曲。性能段（⑧⑨⑩）先记结论："<strong>先统计再循环、先减列再读取、能向量化就别 for</strong>"，细节用到再翻。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① value_counts：频数统计</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>某个类别列各有多少个</strong>（男多少女多少、各省销量）——value_counts 一行出频数，还带归一化占比。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import pandas as pd
+
+df = pd.DataFrame({&#x27;性别&#x27;: [&#x27;男&#x27;, &#x27;女&#x27;, &#x27;男&#x27;, &#x27;男&#x27;]})
+
+df[&#x27;性别&#x27;].value_counts()      # 男 3、女 1（默认降序）
+df[&#x27;性别&#x27;].value_counts(normalize=True)   # 占比：男 0.75
+df[&#x27;性别&#x27;].value_counts(dropna=False)     # NaN 也纳入统计</pre>
+<p>要点：</p>
+<ul><li><strong>默认按频数降序</strong>，结果带索引=类别值；</li><li><strong>normalize=True 输出比例</strong>（求和=1）；</li><li><strong>dropna=False 才统计缺失值</strong>（默认忽略 NaN）。</li></ul>
+<p>多列版本：<code>df.nunique()</code> 数每列不同值个数（分类"多样性"体检）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>value_counts 结果没到预期</td><td>默认忽略 NaN，统计前先想清楚要不要 dropna=False</td></tr>
+<tr><td>想按字母序不是频数序</td><td>value_counts().sort_index() 排标签</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② pivot_table：透视表</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>"每个班 × 每个性别的平均成绩"这种二维交叉统计</strong>——pivot_table 把"行、列、值、聚合"四个维度一次指定。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import pandas as pd
+
+df = pd.DataFrame({&#x27;班级&#x27;: [&#x27;A&#x27;, &#x27;A&#x27;, &#x27;B&#x27;, &#x27;B&#x27;],
+                   &#x27;性别&#x27;: [&#x27;男&#x27;, &#x27;女&#x27;, &#x27;男&#x27;, &#x27;女&#x27;],
+                   &#x27;成绩&#x27;: [88, 92, 76, 85]})
+
+pd.pivot_table(df,
+               index=&#x27;班级&#x27;,          # 行方向分组
+               columns=&#x27;性别&#x27;,        # 列方向分组
+               values=&#x27;成绩&#x27;,         # 要统计的值
+               aggfunc=&#x27;mean&#x27;)        # 聚合方式（默认 mean）
+# 性别   女   男
+# 班级
+# A     92   88
+# B     85   76</pre>
+<p>关键参数：<strong>index/columns/values/aggfunc</strong> 四件套——aggfunc 支持 'sum'/'count'/'max' 等；<code>fill_value=0</code> 填空值；<code>margins=True</code> 加小计行。</p>
+<p>与 groupby 的关系：<strong>pivot_table = 行×列双维度分组</strong>；groupby 做单维聚合，透视做二维交叉。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>出来的格子里 NaN</td><td>该（行,列）组合无数据；fill_value=0 处理</td></tr>
+<tr><td>values 列有多个想分别看</td><td>传 values=['成绩','身高']，aggfunc 用字典</td></tr>
+<tr><td>aggfunc 想多个函数</td><td>aggfunc=['mean','sum'] 多层结果</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ crosstab：交叉表</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>两个（或多个）分类列的交叉"计数"</strong>——crosstab 是"count 版透视表"，专门数组合出现的次数。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import pandas as pd
+
+df = pd.DataFrame({&#x27;性别&#x27;: [&#x27;男&#x27;, &#x27;女&#x27;, &#x27;男&#x27;, &#x27;男&#x27;, &#x27;女&#x27;],
+                   &#x27;是否购买&#x27;: [&#x27;是&#x27;, &#x27;否&#x27;, &#x27;是&#x27;, &#x27;否&#x27;, &#x27;是&#x27;]})
+
+pd.crosstab(df[&#x27;性别&#x27;], df[&#x27;是否购买&#x27;])
+# 是否购买  否  是
+# 性别
+# 女       1  1
+# 男       1  2
+
+pd.crosstab(df[&#x27;性别&#x27;], df[&#x27;是否购买&#x27;], normalize=&#x27;index&#x27;)  # 行内占比</pre>
+<p>与 pivot_table 的区别：</p>
+<ul><li><strong>crosstab 专做"计数交叉"</strong>，不需要 values（数行即可）；</li><li><strong>pivot_table 需要指定 values + aggfunc</strong>（均值/求和等）；</li><li>输入都是"列"，顺序是 crosstab(行变量, 列变量)。</li></ul>
+<p>用途：客户画像（性别×是否购买）、市场分析主力表。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>crosstab 想算均值</td><td>它不是干这个的；用 pivot_table(values=..., aggfunc='mean')</td></tr>
+<tr><td>行列传反</td><td>crosstab(行, 列)：第一个参数变行索引</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ df.plot：Pandas 直出图 &amp; 中文设置</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>分析完想立刻看趋势</strong>，不用每次回 matplotlib —— DataFrame 自带 plot 方法，内部就是 matplotlib。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import matplotlib.pyplot as plt
+import pandas as pd
+
+plt.rcParams[&#x27;font.sans-serif&#x27;] = &#x27;SimHei&#x27;      # 中文先配好（必备！）
+plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False
+
+df = pd.DataFrame({&#x27;月份&#x27;: [1, 2, 3, 4], &#x27;销售额&#x27;: [10, 20, 15, 30]})
+df.set_index(&#x27;月份&#x27;).plot()     # 折线图（默认）：索引做 x</pre>
+<p>理解：</p>
+<ul><li><strong>df.plot(kind=...) 是 matplotlib 的封装</strong>：kind 决定图型；</li><li><strong>非数值/索引列自动当 x</strong>：x 轴用索引，数值列各画一条；</li><li>中文乱码和 matplotlib 同样的 rcParams 配置（第 3 章内容复用）。</li></ul>
+<p>配置习惯：<strong>一个脚本内把两行 rcParams 写在最前</strong>，全脚本图都正确。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>df.plot 中文变方块</td><td>同一套 rcParams 配置没写；确认 SimHei 可用</td></tr>
+<tr><td>想用某列做 x 轴</td><td>df.plot(x='月份', y='销售额') 显式指定</td></tr>
+<tr><td>plot 和 plt 分不清</td><td>df.plot 只是生成图，plt.show/savefig 仍归 matplotlib 管</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 折线图与面积图</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>多列趋势对比（两产品销量走势）</strong>——Pandas 一行出多线；要"累积量感"用面积图。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import matplotlib.pyplot as plt
+import pandas as pd
+
+plt.rcParams[&#x27;font.sans-serif&#x27;] = &#x27;SimHei&#x27;
+plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False
+
+df = pd.DataFrame({&#x27;月份&#x27;: [1, 2, 3, 4],
+                   &#x27;产品A&#x27;: [10, 20, 15, 30],
+                   &#x27;产品B&#x27;: [8, 12, 18, 22]})
+
+df.set_index(&#x27;月份&#x27;).plot(kind=&#x27;line&#x27;, marker=&#x27;o&#x27;)   # 多列折线
+df.set_index(&#x27;月份&#x27;).plot(kind=&#x27;area&#x27;, alpha=0.5)    # 面积图（alpha 半透明）</pre>
+<p>记忆法：<strong>kind 参数切换图型</strong>——'line' 折线、'area' 面积、'bar' 柱状、'hist' 直方、'pie' 饼图、'box' 箱线、'scatter' 散点。</p>
+<p>面积图多列叠加可能相互遮挡，<strong>alpha=0.3-0.5 半透明</strong>是标配。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>面积图叠得太黑</td><td>加 alpha=0.3~0.5 半透明</td></tr>
+<tr><td>图太挤没有刻度</td><td>figsize 在 plot(figsize=(8,4)) 里控制</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 柱状图与直方图</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>分类对比用柱状（bar）、分布看直方（hist）</strong>——Pandas 一行切换，分组柱状加参数。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+plt.rcParams[&#x27;font.sans-serif&#x27;] = &#x27;SimHei&#x27;
+plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False
+
+df = pd.DataFrame({&#x27;月份&#x27;: [1, 2, 3, 4],
+                   &#x27;产品A&#x27;: [10, 20, 15, 30],
+                   &#x27;产品B&#x27;: [8, 12, 18, 22]})
+
+df.set_index(&#x27;月份&#x27;).plot(kind=&#x27;bar&#x27;)               # 分组柱状（并列）
+df.set_index(&#x27;月份&#x27;).plot(kind=&#x27;bar&#x27;, stacked=True) # 堆叠柱状
+s = pd.Series(np.random.normal(60, 10, 100))
+s.plot(kind=&#x27;hist&#x27;, bins=20)                        # 直方图</pre>
+<p>分工：<strong>bar 是"类别标签"的对比（x 是分类），hist 是"数值"的分布（x 是区间）</strong>——和 matplotlib 章节的口诀一致。</p>
+<p>补充：柱状图常常配 rot=0 让 x 标签横排（月份文字太长不重叠）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>hist 画出来的像 bar</td><td>传了分类值；hist 必须传连续数值</td></tr>
+<tr><td>柱状标签挤成一团</td><td>plot(kind='bar', rot=0) 横排标签</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 饼图、箱线图与散点图</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>占比（pie）、分布五数（box）、两变量关系（scatter）</strong>——Pandas + NumPy 一套带走。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+plt.rcParams[&#x27;font.sans-serif&#x27;] = &#x27;SimHei&#x27;
+plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False
+
+df = pd.DataFrame({&#x27;部门&#x27;: [&#x27;研发&#x27;, &#x27;销售&#x27;, &#x27;行政&#x27;], &#x27;人数&#x27;: [80, 50, 20]})
+df.set_index(&#x27;部门&#x27;)[&#x27;人数&#x27;].plot(kind=&#x27;pie&#x27;, autopct=&#x27;%.1f%%&#x27;)   # 饼图
+
+data = pd.DataFrame({&#x27;成绩&#x27;: np.random.normal(70, 10, 100),
+                     &#x27;班级&#x27;: np.random.choice([&#x27;A&#x27;, &#x27;B&#x27;], 100)})
+data.boxplot(by=&#x27;班级&#x27;)      # 按班级分组箱线
+
+data.plot(kind=&#x27;scatter&#x27;, x=&#x27;成绩&#x27;, y=&#x27;班级&#x27;)   # 散点（x,y 都传数值列）</pre>
+<p>提示：<strong>scatter 要 x/y 两个数值列</strong>；boxplot 是 DataFrame 方法（不是 plot(kind)）——一个月错一次没关系，记住"箱线是 df.boxplot"。</p>
+<p>点 ⑦ 组合提示：<strong>占比 pie → 分布 box → 关系 scatter</strong>，一页分析报告的基本构成。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>scatter 报错 missing x/y</td><td>传明确的两列：plot(kind='scatter', x='列1', y='列2')</td></tr>
+<tr><td>boxplot 当 plot(kind) 传入不认</td><td>箱线用 df.boxplot() 独立方法</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 性能认知：数据量级与计时</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>"Pandas 怎么这么慢？"先诊断：数据多大、慢在哪一步。</strong> 会用计时工具，才知道优化有没有效。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import pandas as pd
+import numpy as np
+
+# 数据量认知参考：
+#    1 万行   → 各种操作毫秒级
+#    100 万行 → 单次操作亚秒~秒级（注意内存）
+#    1000 万+ → 要考虑 chunk/列裁剪/换工具
+
+df = pd.DataFrame({&#x27;a&#x27;: np.random.randn(1_000_000),
+                   &#x27;b&#x27;: np.random.randn(1_000_000)})
+
+# 计时手段：
+%timeit df[&#x27;a&#x27;].mean()          # Jupyter 魔法：多次计时取均值
+%time df[&#x27;a&#x27;].mean()            # 单次计时</pre>
+<p>两类计时魔法（Jupyter 专用）全流程可用：</p>
+<ul><li><strong>%time 单次</strong>、<strong>%timeit 多次取稳定</strong>；</li><li>脚本场景用 <code>import time; t=time.time(); ...; print(time.time()-t)</code>。</li></ul>
+<p>优化节奏：<strong>先计时定位瓶颈 → 针对性优化 → 再计时对比</strong>。别凭感觉优化。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>%timeit 在脚本文件里报错</td><td>它是 Jupyter 魔法；脚本用 time 模块</td></tr>
+<tr><td>1 千万行操作卡死</td><td>先看内存（任务管理器）、降列数（usecols）再往下（第 ⑨ 点）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 大文件读取提速：usecols / dtype / chunksize</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>几个 G 的 CSV 一读就内存爆</strong>——三招：只读需要的列、指定类型省内存、按块分批处理。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import pandas as pd
+
+# 第 1 招：只读需要的列
+df = pd.read_csv(&#x27;big.csv&#x27;, usecols=[&#x27;日期&#x27;, &#x27;销售额&#x27;])
+
+# 第 2 招：指定 dtype 省内存（字符串→category，整数→int32）
+df = pd.read_csv(&#x27;big.csv&#x27;,
+                 dtype={&#x27;性别&#x27;: &#x27;category&#x27;})
+
+# 第 3 招：分块读，逐块处理
+chunks = pd.read_csv(&#x27;big.csv&#x27;, chunksize=100000)   # 每 10 万行一块
+total = 0
+for chunk in chunks:              # 逐块累加
+    total += chunk[&#x27;销售额&#x27;].sum()
+print(total)</pre>
+<p>memory 概念：</p>
+<ul><li><strong>usecols 少读列</strong>（最省）；<strong>dtype 省内存</strong>（int64→int32 省一半、object→category 效果显著）；</li><li><strong>chunksize 分批</strong>：内存恒定，处理完再丢弃，适合聚合类任务。</li></ul>
+<p>重复读取场景还可用 <code>pd.read_csv(..., parse_dates=['日期'])</code> 一步转时间。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只读一部分列但后续缺列报错</td><td>usecols 想清楚下游需要哪些列再定</td></tr>
+<tr><td>分块聚合结果不对</td><td>每块单独统计后手动合并（上面 total 累加示例）</td></tr>
+<tr><td>dtype 指定后值被截断</td><td>int32 不够大时数值溢出，用 int64 或 float32 评估</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 代码优化：向量化 &gt; apply &gt; for</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p><strong>同一个任务三种写法速度差百倍</strong>——优化顺序：能向量化绝不循环。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({&#x27;成绩&#x27;: np.random.randint(0, 100, 100000)})
+
+# ❌ 慢：显式 for 循环
+# result = []
+# for x in df[&#x27;成绩&#x27;]:
+#     result.append(x * 2)
+
+# 中：apply（逐行 Python）
+df[&#x27;成绩x2&#x27;] = df[&#x27;成绩&#x27;].apply(lambda x: x * 2)
+
+# ✅ 快：向量化（整个列一次运算）
+df[&#x27;成绩x2&#x27;] = df[&#x27;成绩&#x27;] * 2
+
+# ✅ 条件逻辑也向量化：np.where / 掩码
+df[&#x27;等级&#x27;] = np.where(df[&#x27;成绩&#x27;] &gt;= 60, &#x27;及格&#x27;, &#x27;不及格&#x27;)</pre>
+<p>速度对比经验：<strong>向量化 ≈ 100 倍于 apply ≈ 1000 倍于 for 循环</strong>。</p>
+<p>三条铁律：</p>
+<ol><li><strong>加减乘除/比较/逻辑 → 直接列运算</strong>（最淳朴最快）；</li><li><strong>条件分支 → np.where / 掩码赋值</strong>（loc[条件] = 值）；</li><li><strong>apply 只留给"确无向量化写法"的自定义函数</strong>（如复杂字符串处理）。</li></ol>
+<p>附加技巧：<code>df.eval('新列 = a + b')</code> 与 <code>pd.eval</code> 可进一步提速表达式。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>觉得循环"能看懂就先用"</td><td>数据一大就卡；养成"先想向量化写法"的习惯</td></tr>
+<tr><td>np.where 只支持两分支</td><td>多分支用 np.select(条件列表, 值列表)</td></tr>
+<tr><td>eval 语法报错</td><td>列名不能有空格等；较复杂表达式优先普通向量化</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章，Pandas 五章的收官三件套：</p>
+<table>
+<tr><th>能力</th><th>关键 API</th><th>一句话</th></tr>
+<tr><td>频数</td><td>value_counts(normalize=)</td><td>类别计数/占比</td></tr>
+<tr><td>透视</td><td>pivot_table(index, columns, values, aggfunc)</td><td>二维交叉聚合</td></tr>
+<tr><td>交叉</td><td>crosstab(行列, normalize=)</td><td>两个分类的计数交叉</td></tr>
+<tr><td>出图</td><td>df.plot(kind=...)</td><td>line/area/bar/hist/pie/box/scatter</td></tr>
+<tr><td>中文</td><td>rcParams SimHei + unicode_minus</td><td>与 matplotlib 同一套</td></tr>
+<tr><td>计时</td><td>%time / %timeit</td><td>先测再优</td></tr>
+<tr><td>大文件</td><td>usecols / dtype / chunksize</td><td>少读、瘦身、分块</td></tr>
+<tr><td>提速</td><td>向量化 &gt; apply &gt; for</td><td>np.where 管条件</td></tr>
+</table>
+<p>一句话记住本章：<strong>value_counts 数数、pivot_table 交叉聚合、df.plot 一行出图（先配好 rcParams 中文）；性能上"向量化优先、for 循环最后"，大文件 usecols+chunksize——Pandas 至此功成，数据科学链路中"清洗计算可视化"三段全部就绪。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>value_counts 默认的排序方式是什么？normalize=True 和 dropna=False 各起什么作用？</li><li>pivot_table 的 index、columns、values、aggfunc 四个参数分别是什么含义？</li><li>crosstab 和 pivot_table 的核心差异是什么？crosstab 需要 values 吗？</li><li>df.plot 内部的底层库是什么？Pandas 出中文图的先决配置是哪两行？</li><li>df.plot(kind='bar', stacked=True) 与分组柱状（不 stacked）的视觉差别是什么？</li><li>hist 与 bar 的本质区别（从数据类型上讲）是什么？</li><li>%time 与 %timeit 的区别是什么？脚本文件里没有这两个魔法该怎么办？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Pandas 讲义（145 页）</a>
+<a href="https://pandas.pydata.org/" target="_blank" rel="noopener"><span class="k">工具</span>Pandas 官网</a>
+<a href="https://pandas.pydata.org/docs/user_guide/visualization.html" target="_blank" rel="noopener"><span class="k">文档</span>Pandas 可视化</a>
+</div>
+<div class="pager">
+<a href="13-第十三章-数据合并与时间序列.html">← 第十三章　数据合并与时间序列</a>
+<a class="nxt" href="15-第十五章-MySQL入门概念安装与SQL初识.html">第十五章　MySQL 入门：概念、安装与 SQL 初识 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="value_counts：频数统计"><span class="n">1</span>value_counts：频数统计</a>
+  <a href="#p2" title="pivot_table：透视表"><span class="n">2</span>pivot_table：透视表</a>
+  <a href="#p3" title="crosstab：交叉表"><span class="n">3</span>crosstab：交叉表</a>
+  <a href="#p4" title="df.plot：Pandas 直出图 &amp; 中文设置"><span class="n">4</span>df.plot：Pandas 直出图 &amp; 中文设置</a>
+  <a href="#p5" title="折线图与面积图"><span class="n">5</span>折线图与面积图</a>
+  <a href="#p6" title="柱状图与直方图"><span class="n">6</span>柱状图与直方图</a>
+  <a href="#p7" title="饼图、箱线图与散点图"><span class="n">7</span>饼图、箱线图与散点图</a>
+  <a href="#p8" title="性能认知：数据量级与计时"><span class="n">8</span>性能认知：数据量级与计时</a>
+  <a href="#p9" title="大文件读取提速：usecols / dtype / chunksize"><span class="n">9</span>大文件读取提速：usecols / dtype / chunksize</a>
+  <a href="#p10" title="代码优化：向量化 &gt; apply &gt; for"><span class="n">10</span>代码优化：向量化 &gt; apply &gt; for</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

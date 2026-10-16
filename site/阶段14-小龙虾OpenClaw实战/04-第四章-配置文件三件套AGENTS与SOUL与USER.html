@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第四章　配置文件三件套：AGENTS / SOUL / USER · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="cur">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 14 · 小龙虾 OpenClaw 实战 › <strong>第四章</strong></div>
+<h1>第四章　配置文件三件套：AGENTS / SOUL / USER</h1>
+<div class="subtitle">阶段 14 · 小龙虾 OpenClaw 实战　|　平台实操　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>上一章你把 OpenClaw 部署好、第一轮对话也跑通了。但打开对话你会发现，它说话像个"通用客服"——四平八稳、没有什么立场，甚至每次开头都要来一句"这是一个好问题"。</p>
+<p><strong>问题不是模型不够聪明，而是它不知道"你是谁、它该是谁、该怎么干活"。</strong> OpenClaw 靠工作空间顶层的三份配置文件解决这件事：AGENTS.md 是行为宪法，SOUL.md 是人格定义，USER.md 是服务对象画像，合称"配置文件三件套"。这一章把它们逐个讲透，并给出一份可以直接照抄修改的模板。</p>
+<p>学完这一章，你能回答：<strong>三份文件各自管什么、怎么写、怎么协同，以及最常见的四个误区</strong>。配置这件事的回报率极高——同一个模型，配置不同，用起来的体验天差地别。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">上一章（阶段 14 · 小龙虾 OpenClaw 实战）：你已经完成 OpenClaw 的部署并跑通第一轮对话——<strong>AI 有了"房子"</strong></span>
+<span class="node"><span class="here">本章 ← 你在这里：给 AI 立"规矩"和"人格"——AGENTS / SOUL / USER 配置三件套</span></span>
+<span class="node">下一章：把配置好的机器人接入企业微信、钉钉等 IM——<strong>AI 首次对外上岗</strong></span>
+<span class="node">再往后：三件套与多平台接入持续打磨，把 AI 调成真正"懂你"的助手</span>
+<span class="node">阶段终点：完成「部署 + 配置三件套 + 五平台接入」，你的专属 AI 助理正式可用</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 配置体系总览：三份文件的分工定位</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>OpenClaw 里能配置的地方很多，新手最容易懵的就是：到底有几份文件、谁管什么？先建立一张全景地图，后面每份文件讲起来你才知道它在体系里的位置。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 工作空间的<strong>顶层规则体系由三份文件构成</strong>，分工非常清晰：</p>
+<table>
+<tr><th>文件</th><th>定位</th><th>一句话职责</th></tr>
+<tr><td><strong>AGENTS.md</strong></td><td>行为宪法</td><td>定义 AI 在工作空间中的行为模式、会话流程、内存管理机制，以及与人类交互的基本原则</td></tr>
+<tr><td><strong>SOUL.md</strong></td><td>人格定义</td><td>决定 AI 的性格、说话风格、核心原则——它"是谁"</td></tr>
+<tr><td><strong>USER.md</strong></td><td>服务对象画像</td><td>告诉 AI"自己正在为谁工作"：你的背景、偏好、常用工具</td></tr>
+</table>
+<p>三份文件都放在工作空间顶层，OpenClaw 启动时自动读取。记住这个顺序：<strong>先有规矩（AGENTS），再有人格（SOUL），最后知道为谁服务（USER）</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只填一个文件就以为配置完成</td><td>三份分工不同：AGENTS 管"怎么干活"，SOUL 管"是谁"，USER 管"为谁服务"，一个都不能少</td></tr>
+<tr><td>分不清谁管记忆</td><td>会话流程和内存管理机制由 AGENTS.md 定义，不是 USER.md 也不是 SOUL.md</td></tr>
+<tr><td>改完配置不验证</td><td>改完后实际跑一轮对话测试，别只看文件内容"写对了"就觉得生效了</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② AGENTS.md：行为宪法（管什么）</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>AI 上线前你最担心的往往不是它"不够聪明"，而是它没边界：说话没边、该记的东西记不住、上次聊到哪这次忘了。这些"底层行为"由谁来约束？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>AGENTS.md 是 OpenClaw 工作空间的<strong>顶层规则文档</strong>，管四件事：</p>
+<ul><li><strong>行为模式</strong>：AI 在工作空间里怎么干活、按什么方式推进任务</li><li><strong>会话流程</strong>：一次对话怎么开始、怎么进行、怎么结束</li><li><strong>内存管理机制</strong>：哪些信息该记住、怎么记、什么时候写入长期记忆</li><li><strong>与人类交互的基本原则</strong>：什么时候该问、什么时候直接做</li></ul>
+<p>它像一个公司的"员工手册"——不定义这个员工多有才（那是 SOUL 的事），只定义<strong>底线和流程</strong>，所以讲义称它为"行为宪法"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 AGENTS.md 只是"适配说明"</td><td>它决定 AI 能否记住对话：会话流程、内存管理机制都在这份文件里</td></tr>
+<tr><td>把想得到的规则全塞进 AGENTS.md</td><td>规则越多越容易互相打架。核心行为准则放这里，细节点交给专门的文件</td></tr>
+<tr><td>照抄别人的 AGENTS.md 不读一遍</td><td>别人的规则未必兼容你的工作流。先用内置默认版跑通，再按需加规则</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ SOUL.md：人格定义</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>默认状态下 AI 回复像客服：四平八稳、没有立场，每个问题都答"看情况"、看"因人而异"。你需要的不是更聪明的模型，而是一个<strong>有性格的助手</strong>——这由谁决定？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>如果说 AGENTS.md 是"行为宪法"，那 <strong>SOUL.md 就是人格定义</strong>。它决定 AI 的三件事：</p>
+<ul><li><strong>性格</strong>：外向还是内敛？毒舌还是温和？</li><li><strong>说话风格</strong>：简洁还是详细？严肃还是幽默？</li><li><strong>核心原则</strong>：什么是绝对不能做的？什么是必须坚持的？</li></ul>
+<p>特别要强调"核心原则"：讲义指出，<strong>AI 可以有明确立场，不要凡事"看情况"</strong>。给 AI 一个观点和判断的偏好，它输出的质量会肉眼可见地提升——这是三份文件里"性价比"最高的一处配置。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 SOUL.md 写成"人设小作文"</td><td>SOUL 是给 AI 读的执行文件，越具体可执行越好："偶尔毒舌但从不恶意"比"幽默风趣"管用</td></tr>
+<tr><td>性格与风格混在一起写</td><td>分开三个区块：性格、说话风格、核心原则。AI 解析更稳定，后期迭代也好改</td></tr>
+<tr><td>核心原则写成口号</td><td>原则要能落地成行为，如"技术术语保留英文"就是可执行的风格，而不是空泛的"要专业"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ USER.md：服务对象画像（五要素）</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>AI 已经知道"它是谁"了，但还不知道"在为谁工作"：不知道你的名字、职业、几点睡觉、常不用什么工具。缺了这部分，AI 连"深夜别打扰你"都做不到。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>USER.md 是 AI 了解「自己正在为谁工作」的窗口，包含<strong>五个要素</strong>：</p>
+<ol><li><strong>基本信息</strong>：名字、称呼、时区、位置</li><li><strong>背景</strong>：职业、技能、兴趣</li><li><strong>工作重点</strong>：当前最重要的目标（可列 2-3 个，按优先级排）</li><li><strong>偏好</strong>：沟通风格偏好、工作时间、不要打扰的时间</li><li><strong>常用工具</strong>：邮箱、代码环境、常用平台</li></ol>
+<p>注意里面的信息直接决定体验：<strong>时区写错了，"深夜勿扰"就形同虚设</strong>；不写勿扰时间，AI 凌晨三点也能把你叫起来。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>在 USER.md 里填密钥/密码</td><td>配置文件可能被分享或同步，token、密码、连接串一律不写，放环境变量或密钥文件</td></tr>
+<tr><td>只填"基本信息"不填偏好</td><td>决定体验的是偏好和勿扰时间——那才是 AI"懂不懂你"的关键</td></tr>
+<tr><td>时区/位置乱填或不填</td><td>时区直接决定"深夜勿扰"怎么算，填错等于没设这一条</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 三者协同关系：行为规则层 → 人格定义层 → 服务对象层</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>三份文件各自独立，但 AI 每一次回答里三份都在同时起作用。它们到底怎么配合？如果理解不了层级关系，出问题时你就不知道去改哪个文件。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给了一张三层嵌套图，从上到下依次传递：</p>
+<p><strong>AGENTS.md（行为规则层）</strong> → 定义<strong>会话流程、内存管理、心跳机制</strong> ↓ ↓ ↓ <strong>SOUL.md（人格定义层）</strong> → 承载<strong>性格、说话风格、核心原则</strong> ↓ ↓ ↓ <strong>USER.md（服务对象层）</strong> → 承载<strong>基本信息、背景技能、偏好目标</strong></p>
+<p>一句话概括：<strong>AGENTS 决定"怎么运行"，SOUL 决定"以什么人格运行"，USER 决定"为谁运行"</strong>。上层的运行机制会传递到下层，下层的人格与服务对象信息又反过来决定规则怎么落地——比如"深夜不打扰"这条规则，要同时靠 AGENTS 的流程约束和 USER 的时区/勿扰时间来落地。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>三份文件写了互相矛盾的要求</td><td>例：AGENTS 要求"简洁直接"，SOUL 里又写"长篇大论"，AI 会摇摆。动手前先对齐主线</td></tr>
+<tr><td>以为改 SOUL 就能解决"记不住"</td><td>记忆机制归 AGENTS 的内存管理管，SOUL 管人格，两个维度别混</td></tr>
+<tr><td>背下三层结构但用不上</td><td>遇到"AI 表现不对"先定位：规则问题查 AGENTS、人设问题查 SOUL、信息缺失查 USER</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ SOUL 写作实战：性格 / 风格 / 原则三段式示例</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>定义都看懂了，但 SOUL.md 到底长什么样？直接给你一个骨架，对着改三行就能用。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>按<strong>三段式</strong>组织：<code>## 性格</code> → <code>## 说话风格</code> → <code>## 核心原则</code>，每段用短条目列具体规则。参考写法：</p>
+<pre># SOUL.md - Who You Are
+## 性格
+- 聪明、高效、有点话多
+- 对技术充满好奇
+## 说话风格
+- 简洁直接，不啰嗦
+- 技术术语保留英文
+- 重要信息用**加粗**标注
+## 核心原则
+- AI 可以有明确立场，不要凡事&quot;看情况&quot;</pre>
+<p>两个进阶认知：一是<strong>人格是逐渐显现的</strong>——你不可能第一次就写出完美的 SOUL.md，先写一个 Basic 版本用起来，跑一段时间再迭代；二是<strong>emoji 可以用但克制</strong>，重要信息用加粗而不是靠颜文字和感叹号。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把口语化表达原样写进 SOUL</td><td>口头表达要转成书面指令，如"AI 可以有明确立场，不要凡事'看情况'"，含义不变、表达更稳</td></tr>
+<tr><td>一上来追求"一次写完美"</td><td>第一版先覆盖性格 + 风格 + 3 条原则，用几天再迭代，别憋大招</td></tr>
+<tr><td>原则写得抽象</td><td>"重要信息用加粗标注"比"要突出重点"可执行得多，AI 不会解读余韵</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ USER 写作实战：五要素示例</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>SOUL 定义了 AI 是谁，现在轮到让 AI 认识你。USER.md 怎么写最省事？同样给一个可直接套用的骨架。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>按五个区块组织，名字、邮箱一类信息用<strong>占位符</strong>先顶住：</p>
+<pre># USER.md - About Your Human
+## 基本信息
+- 名字: [你的名字]
+- 称呼: [如 boss、老板、兄弟]
+- 时区: UTC+8 北京
+## 工作重点
+1. [当前最重要的目标]
+2. [次要目标]
+## 偏好
+- 勿扰时间: 23:00-08:00
+## 常用工具
+- 邮箱: [your@mail.com]
+- 代码: [常用语言和工具]</pre>
+<p>写完骨架后，把"工作重点"和"偏好"两项认真填实——这两项直接决定 AI 每天围绕什么转、什么时候闭嘴。USER.md 还是<strong>活文档</strong>：目标变了、作息变了，记得同步更新。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只填基本信息就开用</td><td>工作重点没写，AI 不知道优先级；勿扰时间没写，它会随时打扰</td></tr>
+<tr><td>填了真实邮箱/密码</td><td>只需要占位符或脱敏描述（如"公司邮箱"），真实凭证永远放密钥文件</td></tr>
+<tr><td>写完再也不更新</td><td>用户是活人，目标、岗位、偏好会变。每个月过一遍 USER.md 值得做</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 沟通与安全准则：不客套 / 不泄隐私 / 不擅自破坏 / 深夜不打扰</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>AI 接入你的工作空间后，最怕两件事：泄露隐私、乱打扰。这些"红线"应该写在哪、怎么写？讲义给了一份可以直接照抄的准则清单。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>把讲义里的沟通与安全准则整理成<strong>六条可执行条款</strong>，可写入 AGENTS.md 与 USER.md：</p>
+<ol><li><strong>绝对不要以"好问题"开头</strong>——直接回答</li><li><strong>不泄露用户的隐私数据</strong></li><li><strong>不在群聊中过度发言</strong></li><li><strong>不在未确认的情况下执行破坏性操作</strong>（删除、强推、批量改名等）</li><li><strong>深夜（23:00-08:00）除非紧急，否则不主动打扰</strong></li><li><strong>发现用户加班太晚，主动提醒休息</strong></li></ol>
+<p>注意这些条款的共同点：<strong>都具体到"能执行的动作"</strong>。"要礼貌"是态度，"不以'好问题'开头"是动作——写配置时永远选动作。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只写"要保护好隐私"</td><td>太抽象。写成"不泄露用户的隐私数据"，并列出哪些算隐私（密码、token、私人信息）</td></tr>
+<tr><td>忘了"破坏性操作需确认"</td><td>没这条，AI 可能直接执行删除、覆盖等不可逆操作。这条必须进 AGENTS.md</td></tr>
+<tr><td>只设了勿扰时间，没写"加班提醒"</td><td>讲义专门要求"发现工作太晚要提醒休息"，这是贴心值来源，别漏</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 误区 1 + 2：写得越多越好、一次性写完</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>开始动笔时，新手最容易犯的两个"写作姿势"错误：一是拼命往文件里堆内容，二是想一次性写到完美。两个都反着来才对。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>误区 1：写得越多越好？错。</strong> 规则越多，AI 越容易陷入"分析瘫痪"——每条规则都在抢注意力，结果哪个都没执行好。好的 SOUL.md 应该像<strong>法律条文一样简洁，少即是多</strong>。</p>
+<p><strong>误区 2：一次性写完？错。</strong> 人格是<strong>逐渐显现</strong>的，你不可能第一次就写出完美的 SOUL.md。正确姿势：先写一个 <strong>Basic 版本</strong>（性格 + 风格 + 几条原则），使用一段时间，根据实际对话效果再迭代——哪里不对就针对性补一条，而不是重写。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>从 2000 字人设小作文开始</td><td>10 条精简规则 &gt; 2000 字人设：规则多到 AI 都记不住，等于没写</td></tr>
+<tr><td>写完就再也不动</td><td>人格是逐渐显现的：跑几天看对话效果，发现不对劲就针对性加一条</td></tr>
+<tr><td>把"少即是多"理解成"什么都不写"</td><td>精简不等于空白：性格、风格、原则三块每块至少有一条可执行内容</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 误区 3：只关注 USER.md</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>很多人上手第一步就是埋头填 USER.md——感觉最"实在"，填的都是自己的真实信息。但这样做只完成了一半配置。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>误区 3：只关注 USER.md？错。</strong> 核心区别在于：</p>
+<ul><li><strong>USER.md 告诉你「为谁服务」</strong>——用户是谁、什么背景、什么偏好</li><li><strong>SOUL.md 告诉 AI「它是谁」</strong>——什么性格、什么风格、什么原则</li></ul>
+<p>只填 USER.md 不填 SOUL.md，就像<strong>给一个没有灵魂的机器打工</strong>——你会觉得它"不懂你"。它知道你的所有信息，却不知道该以什么样子回应你，说出来的话依然是干巴巴的客服腔。两份文件必须配套写：一遍写"你是谁"，一遍写"我是谁"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只填 USER 就开始用</td><td>AI 知道你是谁，但不知道自己该是什么样——对话依旧像客服</td></tr>
+<tr><td>用"多填点 USER 信息"代替 SOUL</td><td>信息多 ≠ 人格有。信息补水的是"服务对象层"，人格是另一层，补不齐</td></tr>
+<tr><td>USER 和 SOUL 写了互相冲突的诉求</td><td>例：SOUL 写"毒舌"，USER 写"不爱听讽刺"。先对齐再交付</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 误区 4：完全不管 AGENTS.md</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>AGENTS.md 是唯一一份名字里不带"人格"、不带"用户"的文件，看起来最像"技术文档"，于是不少人直接跳过它。这个跳过有代价。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>误区 4：完全不管 AGENTS.md？错。</strong> 真相一句话：<strong>AGENTS.md 决定了 AI 能否记住你们之间的对话。</strong></p>
+<p>因为会话流程和内存管理机制都由这份文件定义——哪些信息该进记忆、什么时候写、怎么组织，全在这里。完全不管它，等于把"记不记得住你"这件事交给了默认值；而 SOUL.md 和 USER.md 再精致，也补不了"失忆"的窟窿。</p>
+<p>正确顺序：<strong>先保证 AGENTS.md 的基本规则合理（会话流程 + 内存管理跑通），再去打磨 SOUL 的人格和 USER 的信息</strong>——正好与三件套的层级顺序一致。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只调 SOUL/USER，从不动 AGENTS</td><td>记忆机制在 AGENTS 里：不管它，AI 可能记不住关键上下文，人格再鲜活也白搭</td></tr>
+<tr><td>复制别人的 AGENTS.md 不读一遍</td><td>别人的规则未必兼容你的工作流。先用默认版跑通，再按需增量修改</td></tr>
+<tr><td>把"请记住我"写进 SOUL 就当配置完成</td><td>记住/遗忘是机制问题（AGENTS 的内存管理），不是人设问题，写进 SOUL 不管用</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是<strong>四样东西</strong>：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>三件套全景地图</strong></td><td>知道 AGENTS / SOUL / USER 各自管什么、怎么协同，遇问题能定位到具体文件</td></tr>
+<tr><td><strong>可直接套用的写作模板</strong></td><td>SOUL 三段式 + USER 五要素骨架，填上占位符就能跑起来</td></tr>
+<tr><td><strong>四类避坑清单</strong></td><td>少即是多、先 Basic 后迭代、SOUL/USER 缺一不可、AGENTS 决定记忆</td></tr>
+<tr><td><strong>沟通与安全准则</strong></td><td>不客套开头、不泄隐私、不擅自破坏性操作、深夜不打扰，直接抄进配置</td></tr>
+</table>
+<h4>自测：能不能答上来</h4>
+<p>1.（单选）在 OpenClaw 中，哪个文件主要用于定义 AI 的性格、说话风格以及核心原则？A AGENTS.md　B SOUL.md　C USER.md　D CONFIG.md 2.（单选）USER.md 的主要作用是什么？A 定义 AI 的运行规则和内存机制　B 定义 AI 的性格和语言风格　C 描述 AI 服务对象的背景信息和偏好　D 控制 AI 的模型参数</p>
+<ol><li>为什么说"SOUL.md 写得越多越好"是误区？好的 SOUL.md 应该像什么？（提示：分析瘫痪）</li><li>"只填 USER.md 不填 SOUL.md"会得到什么样的 AI？讲义把它比作什么？</li><li>判断题：AGENTS.md 只影响 AI 的回复语气，不影响它能不能记住对话。</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>openclaw.pdf「OpenClaw Web UI 解读」章节</a>
+<a href="#"><span class="k">讲义</span>OpenClaw 配置文件三件套：AGENTS / SOUL / USER</a>
+<a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
+</div>
+<div class="pager">
+<a href="03-第三章-云端部署阿里云服务器与WebUI.html">← 第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+<a class="nxt" href="05-第五章-多平台接入企业微信与钉钉.html">第五章　多平台接入：企业微信与钉钉 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="配置体系总览：三份文件的分工定位"><span class="n">1</span>配置体系总览：三份文件的分工定位</a>
+  <a href="#p2" title="AGENTS.md：行为宪法（管什么）"><span class="n">2</span>AGENTS.md：行为宪法（管什么）</a>
+  <a href="#p3" title="SOUL.md：人格定义"><span class="n">3</span>SOUL.md：人格定义</a>
+  <a href="#p4" title="USER.md：服务对象画像（五要素）"><span class="n">4</span>USER.md：服务对象画像（五要素）</a>
+  <a href="#p5" title="三者协同关系：行为规则层 → 人格定义层 → 服务对象层"><span class="n">5</span>三者协同关系：行为规则层 → 人格定义层 → 服务对象层</a>
+  <a href="#p6" title="SOUL 写作实战：性格 / 风格 / 原则三段式示例"><span class="n">6</span>SOUL 写作实战：性格 / 风格 / 原则三段式示例</a>
+  <a href="#p7" title="USER 写作实战：五要素示例"><span class="n">7</span>USER 写作实战：五要素示例</a>
+  <a href="#p8" title="沟通与安全准则：不客套 / 不泄隐私 / 不擅自破坏 / 深夜不打扰"><span class="n">8</span>沟通与安全准则：不客套 / 不泄隐私 / 不擅自破坏 / 深夜不打扰</a>
+  <a href="#p9" title="误区 1 + 2：写得越多越好、一次性写完"><span class="n">9</span>误区 1 + 2：写得越多越好、一次性写完</a>
+  <a href="#p10" title="误区 3：只关注 USER.md"><span class="n">10</span>误区 3：只关注 USER.md</a>
+  <a href="#p11" title="误区 4：完全不管 AGENTS.md"><span class="n">11</span>误区 4：完全不管 AGENTS.md</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

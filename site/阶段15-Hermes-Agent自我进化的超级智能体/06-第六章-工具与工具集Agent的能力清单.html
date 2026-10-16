@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第六章　工具与工具集：Agent 的&quot;能力清单&quot; · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="06-第六章-工具与工具集Agent的能力清单.html" class="cur">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 15 · Hermes-Agent 自我进化的超级智能体 › <strong>第六章</strong></div>
+<h1>第六章　工具与工具集：Agent 的&quot;能力清单&quot;</h1>
+<div class="subtitle">阶段 15 · Hermes-Agent 自我进化的超级智能体　|　平台实操　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>第四章见证 Agent 干活时，你看到的是"黑盒"：它 curl 搜索、写文档、生成网页，背后到底调用了什么、还能调用什么？<strong>你现在对它的能力边界一无所知</strong>——就像雇了个人却不清楚他会哪些技能，指派任务全凭猜。</p>
+<p><strong>"会进化的伙伴"不是凭空变出能力的，它的一切行动都来自"工具"</strong>：搜索用 web 工具、跑命令用 terminal、看网页用 browser、生成图片用 image_gen……这些工具被组织成"工具集"，可以按平台启用或禁用。看懂工具的<strong>分类地图</strong>和<strong>开关方法</strong>，你就掌握了指挥 Agent 的"完全控制权"。</p>
+<p>学完这一章，你能回答：<strong>工具和工具集是什么关系、Hermes 内置的八大类工具各管什么、40+ 工具长什么样、怎么查看/启用/禁用工具集、工具集和技能、MCP 有什么区别</strong>。这是理解后面所有扩展能力（Skill、MCP、Cron）的基础层。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一章（第五章）</strong>：SOUL.md 给 Agent 注入人格——它"是谁"。</span>
+<span class="node"><span class="here">本章 ← 你在这里：工具系统——Agent"能做什么"，八大类能力清单与开关</span></span>
+<span class="node"><strong>下一章</strong>：Skill 技能系统——把"会做的流程"沉淀成可复用的技能</span>
+<span class="node"><strong>再往后</strong>：持久记忆（第 8 章）→ 皮肤（第 9 章）→ MCP 扩展（第 10 章）→ 定时任务与仪表板（第 11 章）</span>
+<span class="node"><strong>阶段终点</strong>：你清楚知道 Agent 的每一项能力边界，并能按需开关、扩展、沉淀</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>本章信息密度高，但结构异常清晰：<strong>一张八类工具表 + 三组管理命令</strong>。先把"八类"背下来（网络/终端/浏览器/媒体/Agent编排/记忆/自动化/集成），命令随用随查即可。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 工具：扩展 Agent 能力的最小单元</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"Agent 会做事"听着抽象，落到实处就是一个个具体的"动作"。需要搞清楚：Agent 的能力原子单元到底是什么？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义定义：<strong>工具（tool）是扩展 Agent 能力的函数</strong>——每个工具就是 Agent 能执行的一个具体动作。例如：</p>
+<table>
+<tr><th>工具</th><th>动作</th></tr>
+<tr><td>web_search</td><td>搜索网络</td></tr>
+<tr><td>web_extract</td><td>提取页面内容</td></tr>
+<tr><td>terminal</td><td>执行终端命令</td></tr>
+<tr><td>read_file</td><td>读取文件</td></tr>
+<tr><td>image_generate</td><td>生成图片</td></tr>
+</table>
+<p><strong>Agent 本身只有"脑子"（LLM），一切行动的"手脚"都是通过调用工具实现的</strong>。脑子里想"我需要搜索"→ 调用 web_search → 拿到结果 → 再决定下一步。这印证了第四章的观察：它的每次 curl、每次写文件，背后都是某个工具在干活。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 Agent 的能力是"模型自带"</td><td>模型只负责想，执行全靠工具；换模型不换工具，能力不丢（第 2 章"多模型路由"呼应）</td></tr>
+<tr><td>把"提示词技巧"当能力</td><td>提示词只是指挥，工具才是执行；会写提示词+工具齐全，才是真正的"能干活"</td></tr>
+<tr><td>以为工具越多越好</td><td>工具要<strong>组织成工具集、按需开启</strong>（下一节），全开未必好用，还可能互相干扰</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 工具集：把工具按平台组织、按需开关</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>单个工具是原子，但 Agent 不需要每次都把上百个工具全加载——既浪费 token 又增加决策噪音。怎么管理"用哪些工具"这件事？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义明确：<strong>工具被组织成逻辑上的工具集（toolsets），可以按平台启用或禁用</strong>。</p>
+<p>理解"平台"这个词：不同运行环境（CLI 对话、消息平台、API 调用）可以有不同的工具组合。比如：</p>
+<table>
+<tr><th>场景</th><th>推荐工具集组合</th></tr>
+<tr><td>日常 CLI 对话</td><td>web + terminal + file + memory</td></tr>
+<tr><td>网页检索任务</td><td>web + browser + extract</td></tr>
+<tr><td>媒体创作</td><td>image_gen + tts + vision</td></tr>
+<tr><td>自动化值守</td><td>cronjob + send_message + web</td></tr>
+</table>
+<p>好处是双重的：<strong>按需加载省 token、按场景隔离降干扰</strong>。你不需要记住工具仓库里每一个工具，只需要知道"哪个场景开哪个工具集"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>工具全禁了，Agent 啥也不会</td><td>工具集是能力的开关，全关=裸模型；至少保留 web/terminal/file 三件套再折腾</td></tr>
+<tr><td>任意平台都开同一套工具集</td><td>平台有平台的特点（如消息平台不适合开浏览器），按平台差异化配</td></tr>
+<tr><td>以为工具集=工具本身</td><td>工具集是"组的开关"，组内是具体工具；开文件工具集=能用 read_file 等一批工具</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 内置工具注册表：40+ 工具从哪来</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"Hermes 内置了广泛的工具注册表"——这个注册表里到底有什么？规模多大？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义第 26 页：<strong>Hermes 内置了广泛的工具注册表，涵盖网络搜索、浏览器自动化、终端执行、文件编辑、记忆、委托、RL 训练、消息传递、Home Assistant 等</strong>。</p>
+<p>规模上：内置 40+ 种工具（第 10 章 MCP 部分提到"内置了 40+ 工具"）。它们分属不同能力域：</p>
+<table>
+<tr><th>能力域</th><th>代表工具</th></tr>
+<tr><td>网络搜索</td><td>web_search、web_extract</td></tr>
+<tr><td>终端执行</td><td>terminal、process、patch</td></tr>
+<tr><td>文件编辑</td><td>read_file、write_file 族</td></tr>
+<tr><td>浏览器自动化</td><td>browser_navigate、browser_snapshot</td></tr>
+<tr><td>记忆</td><td>memory、session_search</td></tr>
+<tr><td>委托</td><td>delegate_task</td></tr>
+<tr><td>消息传递</td><td>send_message</td></tr>
+<tr><td>其他</td><td>RL 训练、Home Assistant、MCP 等</td></tr>
+</table>
+<p>40+ 只是"起点"——技能（第 7 章）能加流程、MCP（第 10 章）能无限接外部工具。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 40+ 就是全部能力上限</td><td>这是内置底座；Skill 加"流程手册"、MCP 加"外部工具"，实际能力近乎无限</td></tr>
+<tr><td>想把 40+ 工具全部背下来</td><td>没意义；背<strong>八类</strong>（下一节）+ 常用几个即可，其余用 <code>hermes tools</code> 现查</td></tr>
+<tr><td>以为工具注册表只在 CLI 里可见</td><td>各平台配置工具也是同一个注册表（<code>hermes tools</code> 交互式配置覆盖多平台）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 八大类工具全景图</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>40+ 工具零散记不住，需要一张"分类地图"把它们归位。这样看到任何工具名都能立刻判断它属于哪类、大概干嘛。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义第 27 页给出一张完整的<strong>八大类工具表</strong>（含类别/示例/描述）：</p>
+<table>
+<tr><th>类别</th><th>示例工具</th><th>描述</th></tr>
+<tr><td><strong>网络</strong></td><td>web_search、web_extract</td><td>搜索网络并提取页面内容</td></tr>
+<tr><td><strong>终端与文件</strong></td><td>terminal、process、read_file、patch</td><td>执行命令并操作文件</td></tr>
+<tr><td><strong>浏览器</strong></td><td>browser_navigate、browser_snapshot、browser_vision</td><td>支持文本与视觉的交互式浏览器自动化</td></tr>
+<tr><td><strong>媒体</strong></td><td>vision_analyze、image_generate、text_to_speech</td><td>多模态分析与生成</td></tr>
+<tr><td><strong>Agent 编排</strong></td><td>todo、clarify、execute_code、delegate_task</td><td>规划、澄清、代码执行与子 Agent 委托</td></tr>
+<tr><td><strong>记忆与召回</strong></td><td>memory、session_search</td><td>持久化记忆与会话搜索</td></tr>
+<tr><td><strong>自动化与交付</strong></td><td>cronjob、send_message</td><td>定时任务与出站消息传递</td></tr>
+<tr><td><strong>集成</strong></td><td>ha_*、MCP 服务器工具、rl_*</td><td>Home Assistant、MCP、强化学习训练及其它</td></tr>
+</table>
+<p><strong>八类的记忆锚点</strong>：从"获取信息（网络/浏览器）→ 操作环境（终端/媒体）→ 自我管理（编排/记忆）→ 主动输出（自动化/集成）"这条主线去理解，自然不忘。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 web_extract 和 browser_navigate 都当"上网"混用</td><td>web_extract=抓取指定页面文本；browser=交互式操作浏览器（点击/滚动）；第四章"API 不行就上浏览器"就是两者分工</td></tr>
+<tr><td>以为 ha_* 是"哈哈系"娱乐工具</td><td>ha_*=Home Assistant（智能家居）集成；rl_*=强化学习训练，都是企业/极客向能力</td></tr>
+<tr><td>忘记记忆类工具存在</td><td>memory/session_search 是"进化"的发动机（第 8 章），先在这里记住它们归类</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 常见工具集清单：17 个可开关的"组"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>知道了八类工具，还不能直接操作——实操层面开关的是"工具集名"。有哪些工具集可以直接启停？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义第 28 页给出的<strong>常见工具集清单</strong>（可直接在命令里用的"组名"）：</p>
+<table>
+<tr><th>工具集</th><th>大致对应</th></tr>
+<tr><td>web / terminal / file</td><td>网络、终端、文件</td></tr>
+<tr><td>browser</td><td>浏览器自动化</td></tr>
+<tr><td>vision / image_gen / tts</td><td>媒体三件套</td></tr>
+<tr><td>moa</td><td>多 Agent 协作</td></tr>
+<tr><td>skills</td><td>技能加载</td></tr>
+<tr><td>todo</td><td>任务规划</td></tr>
+<tr><td>memory / session_search</td><td>记忆与检索</td></tr>
+<tr><td>cronjob</td><td>定时任务</td></tr>
+<tr><td>code_execution</td><td>代码执行</td></tr>
+<tr><td>delegation / clarify</td><td>委托与澄清</td></tr>
+<tr><td>homeassistant / rl</td><td>集成类</td></tr>
+</table>
+<p>这些名字就是第 ⑥ 点命令里的参数。<strong>记不住全名没关系，用 <code>hermes tools</code> 交互式配置会列出可选清单</strong>，名字是给命令用的钥匙。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>试图自己发明"工具集名"</td><td>名字是<strong>既定清单</strong>，写错会报"未知工具集"；以 <code>hermes tools</code> 列出的为准</td></tr>
+<tr><td>以为 skills 工具集=技能本身</td><td>skills 工具集负责<strong>加载/管理技能</strong>（第 7 章），技能内容在 ~/.hermes/skills/ 下，两回事</td></tr>
+<tr><td>一次性想开 10 个工具集</td><td>按任务需要开，开太多反而让模型选择困难；最小够用原则</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 三组管理命令：查看、启用、禁用、按场景指配</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>工具集的开关命令长什么样？如何在特定场景临时指定工具集？命令行和对话内分别怎么操作？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义给了三组命令，各管一个场景：</p>
+<pre># ① 启动时指定工具集（一次性，按任务）
+hermes chat --toolsets &quot;web,terminal&quot;
+
+# ② 查看所有可用工具 / 配置启用工具
+hermes tools</pre>
+<p>对话内（斜杠命令）：</p>
+<pre>/tools list              # 查看当前工具
+/tools disable browser   # 禁用浏览器工具
+/tools enable rl         # 启用强化学习工具</pre>
+<p>三个场景对照：</p>
+<table>
+<tr><th>场景</th><th>用什么</th><th>特点</th></tr>
+<tr><td>这次任务只要网络+终端</td><td><code>hermes chat --toolsets "web,terminal"</code></td><td>一次性、不落盘</td></tr>
+<tr><td>长期开关某类工具</td><td><code>/tools enable/disable &lt;名字&gt;</code></td><td>会话内即时生效</td></tr>
+<tr><td>按平台交互式配置</td><td><code>hermes tools</code></td><td>向导式、覆盖各平台</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 --toolsets 会永久改了配置</td><td>它是<strong>本次启动</strong>的限制；<code>hermes tools</code> 交互式配置才是持久设置</td></tr>
+<tr><td>斜杠命令和 CLI 命令记混</td><td>对话内用 <code>/tools</code>（斜杠开头）；终端用 <code>hermes chat/tools</code>；两者都能控工具</td></tr>
+<tr><td>disable 了 browser 后第四章那种页面任务做不了</td><td>页面任务依赖 file/terminal 多些，但"浏览器搜索"会失效——按需开回来即可</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 工具集与"能力边界"：开什么才有什么</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>第四章里 Agent"会搜索、会建站、会启动服务器"，那是工具集开得全。如果某类工具没开，Agent 会怎样？需要建立"能力边界"意识。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>Agent 能做什么 = 开启的工具集决定</strong>。工具没开，即使"脑子"知道怎么做也执行不了：</p>
+<table>
+<tr><th>你可以期待</th><th>前提是开了</th></tr>
+<tr><td>上网搜索/提取网页</td><td>web</td></tr>
+<tr><td>跑命令/改文件</td><td>terminal + file</td></tr>
+<tr><td>看网页/点按钮</td><td>browser</td></tr>
+<tr><td>生成图片/语音</td><td>image_gen + tts</td></tr>
+<tr><td>定时跑任务</td><td>cronjob</td></tr>
+<tr><td>记住跨会话的事情</td><td>memory</td></tr>
+</table>
+<p>所以排查"Agent 为什么不会 X"时，第一反应应是<strong>查工具集开没开</strong>（<code>hermes tools</code> / <code>/tools list</code>），而不是怀疑模型笨。能力边界是可配置的，这正是"可控权"所在。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>Agent 说"我没法上网"先怀疑网络</td><td>先 <code>/tools list</code> 查 web 开没开——九成是工具集问题不是网络问题</td></tr>
+<tr><td>定时任务不跑先怀疑 cron 语法</td><td>先查 cronjob 工具集是否启用；没开它连调度器都调不到</td></tr>
+<tr><td>一遇到能力缺失就"全开"</td><td>全开=高噪声+潜在安全面扩大；按需开、用完关，才是正确姿势</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 工具集 vs 技能（Skills）：别搞混的两种扩展</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>接下来第 7 章要学 Skills，但本章"工具集"里也有一个 skills 工具集——两者极易混淆，需要提前把边界划清楚。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>用"零件 vs 手册"的比喻理解：</p>
+<table>
+<tr><th>维度</th><th>工具/工具集</th><th>技能（Skills）</th></tr>
+<tr><td>本质</td><td>可执行的<strong>函数</strong>（动作）</td><td>按需加载的<strong>知识文档</strong>（流程）</td></tr>
+<tr><td>类比</td><td>螺丝刀、电钻</td><td>使用说明书</td></tr>
+<tr><td>存在形式</td><td>内置注册表</td><td>~/.hermes/skills/ 下的 SKILL.md</td></tr>
+<tr><td>什么时候参与</td><td>Agent 行动时直接调用</td><td>Agent <strong>需要时</strong>才载入（渐进披露）</td></tr>
+<tr><td>开关</td><td>/tools enable/disable</td><td>hermes skills list/install</td></tr>
+</table>
+<p>tool 负责"能做什么动作"，skill 负责"这个动作流程怎么做才对"。二者配合：技能文档指导 Agent <strong>编排</strong>工具完成复杂任务。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"装个技能"就能获得新工具</td><td>技能是流程手册，若流程里要用的工具没开，技能也跑不动——工具是地基</td></tr>
+<tr><td>工具集里的 skills 名误当"技能列表"</td><td>skills 工具集管<strong>加载</strong>技能；查有什么技能用 <code>hermes skills list</code></td></tr>
+<tr><td>认为技能能替代工具集配置</td><td>两者独立：先确保工具可用，再谈按什么流程用（第 7 章完整展开）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 工具集 vs MCP：内置与外部</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>第 10 章会讲 MCP"无限扩展工具"，和本章的内置工具集什么关系？现在先建立一条清晰的边界。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>一句话概括：<strong>工具集是"内置的手脚"，MCP 是"外接的义肢"</strong>。</p>
+<table>
+<tr><th>维度</th><th>内置工具集</th><th>MCP（第 10 章）</th></tr>
+<tr><td>来源</td><td>Hermes 内置注册表</td><td>外部 MCP 服务器提供</td></tr>
+<tr><td>数量</td><td>40+ 固定</td><td>近乎无限，随接随有</td></tr>
+<tr><td>通信</td><td>框架内直接调用</td><td>Stdio（本地）/ HTTP（远程）协议</td></tr>
+<tr><td>例子</td><td>web_search、terminal</td><td>GitHub API 工具、数据库查询工具</td></tr>
+</table>
+<p>讲义原话点明两者关系：<strong>Hermes 内置了 40+ 工具，但通过 MCP 可以扩展到几乎无限</strong>。学习顺序上：先把内置的用熟，再按需接 MCP。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>一上来就想全上 MCP 跳过内置工具</td><td>内置是基础，很多需求内置就够；先掌握六/七/八章再说 MCP</td></tr>
+<tr><td>以为 MCP 工具会出现在 /tools 列表里</td><td>MCP 工具接入后会成为可用工具的一部分，<code>hermes tools list</code> 能查到它们（讲义第 48 页验证命令）</td></tr>
+<tr><td>把 MCP 当"技能"装</td><td>MCP 是工具通道，技能是流程文档，机制完全不同（第 10 章拆解）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 终端与文件类工具的威力与风险</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>八大类里，"终端与文件"（terminal、process、read_file、patch）风险最高也最强大——它直接让 Agent 操作你的系统。需要正确认识它的双刃剑属性。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><strong>危险与威力同源</strong>：terminal 类工具意味着 Agent 能执行任意命令、读写任意文件。它的威力（第四章建站/启动服务器全靠它）与风险（删库、覆盖文件、下载执行恶意内容）并存。</p>
+<p>Hermes 的安全设计正是围绕它展开：</p>
+<table>
+<tr><th>风险</th><th>安全机制</th></tr>
+<tr><td>危险命令（下载即执行等）</td><td>安全扫描 + 命令审批（第四章 /approve 已见）</td></tr>
+<tr><td>工具滥用</td><td>工具集按需开关（本章）</td></tr>
+<tr><td>来源不明</td><td>技能安装带安全扫描（第 7 章）、MCP 需显式配置（第 10 章）</td></tr>
+</table>
+<p>理解了这个，你就明白为什么"允许所有直接消息"等策略极度危险——<strong>陌生人能指挥 Agent 就等于间接拥有你的终端权限</strong>（呼应第 3 章）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只看到 terminal 的威力忘了风险</td><td>对公开放消息权限 = 把终端权限交给陌生人；第 3 章的权限策略不是摆设</td></tr>
+<tr><td>审批弹窗一律 /approve always</td><td>高危命令模式的永久放行会关掉安全闸门；单次/会话内放行即可</td></tr>
+<tr><td>以为本地 Agent 没有权限问题</td><td>本地 Agent 权限更大（直接碰你的系统），安全配置要更严而非更松</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 记忆类工具：进化的核心引擎预告</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>八类工具里"记忆与召回"（memory、session_search）和后面第 8 章是同一件事。但工具视角下的"记忆"和文件视角下的"记忆"是什么关系？先埋下伏笔。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>工具视角：<strong>memory（增删记忆）、session_search（搜历史会话）是两个可调用的工具</strong>；文件视角：它们操作的对象是 ~/.hermes/memories/ 下的 MEMORY.md / USER.md 和 state.db（第 8 章）。</p>
+<table>
+<tr><th>工具</th><th>做什么</th><th>对应文件</th></tr>
+<tr><td>memory</td><td>添加/替换/删除记忆条目</td><td>MEMORY.md / USER.md</td></tr>
+<tr><td>session_search</td><td>全文检索历史对话</td><td>state.db（SQLite+FTS5）</td></tr>
+</table>
+<p>这就把第八章的"记忆系统"挂到了本章的"工具地图"上：<strong>记忆不是玄学，是一个叫 memory 的工具在操作两个文件</strong>。先把"记忆类工具存在"记住，细节第 8 章展开。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"记忆"是模型自动发生的</td><td>得有 memory 工具<strong>显式调用</strong>（写入记忆文件）才会记；工具没开=记不住</td></tr>
+<tr><td>以为 session_search 会翻出所有历史</td><td>它搜的是 ~/.hermes/state.db 里的历史会话，覆盖"聊过什么"，不是记忆文件</td></tr>
+<tr><td>提前急着玩记忆</td><td>工具先认识、命令后学；第 8 章用一整章把机制和命令讲透</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ 给你的工具管理"操作手册"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>把本章命令串成一份"随用随查"的操作手册，实操时不用翻全章。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>工具管理操作手册（三查三改）：</p>
+<pre># 三查
+hermes tools              # ① 查看所有可用工具（终端）
+/tools list               # ② 查看当前会话工具（对话内）
+hermes tools              # ③ 每个平台配置工具（交互式）
+
+# 三改
+hermes chat --toolsets &quot;web,terminal&quot;  # ① 本次任务限定工具集
+/tools disable browser                 # ② 会话内禁用某工具
+/tools enable rl                       # ③ 会话内启用某工具</pre>
+<p>配置后验证：<code>/tools list</code> 看变化是否生效（会话内）；持久配置后重启生效（跨会话）。</p>
+<p>记住宏观顺序：<strong>查能力（hermes tools）→ 配场景（--toolsets / 交互式）→ 会话内微调（/tools enable|disable）→ 验证（/tools list）</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>改了工具集后老会话没变化</td><td>会话内用 /tools 即时生效；改配置文件的持久配置需重启网关/新会话</td></tr>
+<tr><td>手册背不下来</td><td>只记两个入口（hermes tools 终端 / /tools 对话内）+ 一个动作（enable/disable），剩下的现场 --help</td></tr>
+<tr><td>验证时发现 disable 的还在</td><td>确认名字拼写（如 browser 与 browser_navigate 是工具集与工具的区别）；yes 工具集名才有效</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你拿到了 Agent 的"能力说明书"：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>工具=函数</strong>：Agent 的每个动作都是调用工具</td><td>破除"模型自带能力"误解，理解"手脚"从哪来</td></tr>
+<tr><td><strong>工具集=按平台开关的组</strong></td><td>按场景加载、省 token、隔离干扰、边界可控</td></tr>
+<tr><td><strong>八大类地图</strong>：网络/终端文件/浏览器/媒体/编排/记忆/自动化/集成</td><td>40+ 工具归位到 8 个格子里，见名知类</td></tr>
+<tr><td><strong>17 个常见工具集名</strong>：web、terminal、file、browser、vision、memory...</td><td>命令参数就是这些名字，开门钥匙</td></tr>
+<tr><td><strong>三组命令</strong>：hermes chat --toolsets / hermes tools / /tools enable</td><td>disable</td><td>查、配、调三件套，覆盖所有操作场景</td></tr>
+<tr><td><strong>边界三连</strong>：工具≠技能（动作 vs 手册）、内置≠MCP（固定 vs 无限）、记忆类工具=进化引擎</td><td>不被后面章节概念绕晕，地基打牢</td></tr>
+</table>
+<p>一句话记住本章：<strong>工具干活、工具集把关——八大类记心里，hermes tools 查一切，/tools 随时开关；能力边界你说了算。</strong></p>
+<h4>自测：能不能答上来</h4>
+<ol><li>工具和工具集分别是什么？为什么工具要组织成工具集再按平台启用/禁用？</li><li>请默写八大类工具及其代表示例（每类至少一个工具名）。</li><li>讲义里给出的 "Hermes 内置了 40+ 工具" 是否意味着能力到此为止？后续可以通过哪两种机制扩展？</li><li>请写出 3 条工具管理命令：启动时限定工具集、查看所有工具、对话内禁用某工具（禁用 browser 为例）。</li><li>工具集和技能（Skills）的本质区别是什么？请用"零件/手册"比喻说明，并指出技能存放在哪个目录。</li><li>内置工具集和 MCP 扩展的关系是什么？为什么说"terminal 类工具是双刃剑"？</li><li>有个场景：Agent 说"我没法上网搜索"。按本章知识，你的第一排查动作应该是什么？为什么？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 25-28、45-46 页）</a>
+<a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
+<a href="https://www.home-assistant.io/" target="_blank" rel="noopener"><span class="k">参考</span>Home Assistant 集成文档</a>
+</div>
+<div class="pager">
+<a href="05-第五章-个性化定制SOULmd身份文件.html">← 第五章　个性化定制：SOUL.md 身份文件</a>
+<a class="nxt" href="07-第七章-Skill技能系统从安装到实战.html">第七章　Skill 技能系统：从安装到实战 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="工具：扩展 Agent 能力的最小单元"><span class="n">1</span>工具：扩展 Agent 能力的最小单元</a>
+  <a href="#p2" title="工具集：把工具按平台组织、按需开关"><span class="n">2</span>工具集：把工具按平台组织、按需开关</a>
+  <a href="#p3" title="内置工具注册表：40+ 工具从哪来"><span class="n">3</span>内置工具注册表：40+ 工具从哪来</a>
+  <a href="#p4" title="八大类工具全景图"><span class="n">4</span>八大类工具全景图</a>
+  <a href="#p5" title="常见工具集清单：17 个可开关的&quot;组&quot;"><span class="n">5</span>常见工具集清单：17 个可开关的"组"</a>
+  <a href="#p6" title="三组管理命令：查看、启用、禁用、按场景指配"><span class="n">6</span>三组管理命令：查看、启用、禁用、按场景指配</a>
+  <a href="#p7" title="工具集与&quot;能力边界&quot;：开什么才有什么"><span class="n">7</span>工具集与"能力边界"：开什么才有什么</a>
+  <a href="#p8" title="工具集 vs 技能（Skills）：别搞混的两种扩展"><span class="n">8</span>工具集 vs 技能（Skills）：别搞混的两种扩展</a>
+  <a href="#p9" title="工具集 vs MCP：内置与外部"><span class="n">9</span>工具集 vs MCP：内置与外部</a>
+  <a href="#p10" title="终端与文件类工具的威力与风险"><span class="n">10</span>终端与文件类工具的威力与风险</a>
+  <a href="#p11" title="记忆类工具：进化的核心引擎预告"><span class="n">11</span>记忆类工具：进化的核心引擎预告</a>
+  <a href="#p12" title="给你的工具管理&quot;操作手册&quot;"><span class="n">12</span>给你的工具管理"操作手册"</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第六章　手写 LoRA 微调（三）：训练与保存 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="06-第六章-手写LoRA微调三训练与保存.html" class="cur">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第六章</strong></div>
+<h1>第六章　手写 LoRA 微调（三）：训练与保存</h1>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>模型工作台和数据都备好了，现在要<strong>点火</strong>：把 LoRA 挂到模型上、配好训练超参、跑起 Trainer、把训练好的权重保存下来。这一章是全流程的高潮，也是报错高发区——<code>get_peft_model</code> 报找不到模块、训练显存爆炸、loss 不下降、保存完不知道存了啥，每个坑都能卡你一整天。</p>
+<p>学完这一章，你会得到两个可复用的关键产物：<strong>挂好 LoRA 的可训练模型</strong> + <strong>训练结束后保存下来的 LoRA 权重目录</strong>（几十到几百 MB，而不是几个 GB 的完整模型——这正是 LoRA 的意义）。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">上一章（手写 LoRA 二）：数据准备完成——train/eval 数据集已 token 化、验收通过</span>
+<span class="node"><span class="here">本章 ← 你在这里：LoraConfig + get_peft_model 挂载 → TrainingArguments 配参 → Trainer.train() → 保存 LoRA 权重</span></span>
+<span class="node">下一章：手写 LoRA（四）测试微调效果、合并权重、上传 Hugging Face——交付闭环</span>
+<span class="node">再往后：Unsloth 提速 → GGUF/Ollama 部署 → LLaMA-Factory WebUI</span>
+<span class="node">阶段终点：你能独立完成"环境→数据→训练→部署"微调全链路</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 配置 LoRA：LoraConfig 的每个参数</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>第 3 章讲过 r / α / target_modules 原理，现在要看它们在代码里长什么样。<code>LoraConfig</code> 每个字段管什么、怎么填？照抄会错在哪？——这一节把配置和原理对上号。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义代码（整理为可运行版）：</p>
+<pre>from peft import LoraConfig, TaskType
+
+lora_config = LoraConfig(
+    r=8,                      # 低秩矩阵的秩：补丁宽度
+    lora_alpha=32,            # 缩放因子：补丁强度（实际强度 ≈ α/r = 4）
+    target_modules=[&quot;q_proj&quot;, &quot;v_proj&quot;],  # 挂载哪些层（见第4章架构图）
+    lora_dropout=0.1,         # 补丁随机失活，防过拟合
+    bias=&quot;none&quot;,              # 不动偏置，最省
+    task_type=TaskType.CAUSAL_LM,  # 因果语言模型任务
+)</pre>
+<p>参数速记表：</p>
+<table>
+<tr><th>参数</th><th>作用</th><th>常用值</th></tr>
+<tr><td>r</td><td>秩：A(d×r)、B(r×k) 的宽度</td><td>8/16/32</td></tr>
+<tr><td>lora_alpha</td><td>强度缩放</td><td>通常 = 2×r 左右（这里 8→32）</td></tr>
+<tr><td>target_modules</td><td>挂在哪</td><td><code>["q_proj","v_proj"]</code> 起步</td></tr>
+<tr><td>lora_dropout</td><td>防过拟合</td><td>0.05~0.1</td></tr>
+<tr><td>bias</td><td>是否训偏置</td><td>"none"</td></tr>
+<tr><td>task_type</td><td>任务类型</td><td>CAUSAL_LM</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td><code>get_peft_model</code> 报 "module q_proj not found"</td><td>模块名和模型架构对不上（比如模型叫 self.query）。<strong>先 print(model) 看真实模块名</strong>（第 4 章），再填 target_modules</td></tr>
+<tr><td>忘记显式 <code>lora_alpha</code>，效果弱到看不见</td><td>只设 r 不设 α，默认 α=r（强度=1），浮在表面。<strong>明确配（如 α=2r）</strong>，变化才可观</td></tr>
+<tr><td>dropout 设 0.5 这种离谱值</td><td>dropout 太高会把补丁学信号丢掉，训练半天不收敛。0.05~0.2 之间试</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 挂载 LoRA：prepare + get_peft_model</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>配置写好了，还差两步"接入"：如果是量化模型，要先 <code>prepare_model_for_kbit_training</code> 做准备；然后 <code>get_peft_model</code> 真正把 LoRA 补丁挂上去。挂完怎么确认"挂上了"？</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义代码：</p>
+<pre>from peft import get_peft_model, prepare_model_for_kbit_training
+
+# 量化模型训练前的准备（4bit/8bit 加载时必调）
+model = prepare_model_for_kbit_training(model)
+# 把 LoRA 配置应用到模型上
+peft_model = get_peft_model(model, lora_config)
+print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B</pre>
+<p>为什么量化后要 prepare：bitsandbytes 量化会<strong>冻结</strong>部分层，prepare 会解冻需要训练的层、必要时打开 gradient checkpointing——不做这步，量化模型上训练可能完全不动或报错。</p>
+<p>验证"挂上了"的方法：再次 print 模型，注意力层里能看到：</p>
+<pre>(q_proj): lora.Linear(...)
+    (lora_dropout): ...
+    (lora_A): Linear(1536, 8)   ← 补丁来了
+    (lora_B): Linear(8, 1536)</pre>
+<p>只要看到 lora_A/lora_B，就说明这个层挂载成功——你没挂的层（如 gate_proj）不会出现这个结构。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>忘了 prepare_model_for_kbit_training，量化模型训练报错/不动</td><td>4bit 加载 + 训练的组合必须 prepare；<strong>非量化（fp16 全精度加载）时这步可省</strong>，讲义环境默认都装 bitsandbytes，加了最稳</td></tr>
+<tr><td>看不到 lora_A/lora_B 就开训</td><td>先 debug：检查 get_peft_model 是否成功、print 是否显示 PEFT 结构。<strong>没挂上就训练 = 训了个原模型</strong>，白烧电</td></tr>
+<tr><td>以为"挂 LoRA 后再打印的模型还是原来那坨"</td><td>挂载后模型结构会多出 lora_* 子层、参数统计变化。看到多出的部分才是挂成功的标志</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ TrainingArguments：训练超参每个字段</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>训练是门"玄学调参"？其实每个超参都有明确职责。这节把讲义里的 TrainingArguments 逐行翻译成人话，并标出显存/效果/速度三维取舍——之后你就能自己改参数，而不是只会抄。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义训练参数（整理为可运行版）：</p>
+<pre>from transformers import TrainingArguments
+
+training_args = TrainingArguments(
+    output_dir=&quot;./results&quot;,          # 日志/检查点输出目录
+    num_train_epochs=3,              # 训练轮数
+    learning_rate=2e-4,              # 学习率
+    per_device_train_batch_size=4,   # 每卡训练批次
+    per_device_eval_batch_size=4,    # 每卡验证批次
+    gradient_accumulation_steps=2,   # 梯度累积：等效 batch 翻倍
+    weight_decay=0.01,               # 权重衰减防过拟合
+    evaluation_strategy=&quot;epoch&quot;,     # 每个 epoch 结束评估一次
+    save_strategy=&quot;epoch&quot;,           # 每个 epoch 保存一次
+    load_best_model_at_end=True,     # 训练结束自动加载最佳模型
+    push_to_hub=False,               # 训练完不自动传 HF
+    report_to=[&quot;tensorboard&quot;],       # 训练日志记录到 tensorboard
+    logging_dir=&quot;./logs&quot;,            # 日志目录
+    label_names=[&quot;labels&quot;],          # 告诉 Trainer 标签字段名
+)</pre>
+<p>三维速记：</p>
+<ul><li><strong>显存不够</strong> → 减小 batch_size + 加大 gradient_accumulation_steps（等效 batch 不变，显存降）；</li><li><strong>epoch 卡死/过拟合</strong> → 看验证 loss，早停或降学习率；</li><li><strong>训练太久</strong> → 加大 batch（显存允许时）、减少 epoch。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>显存 OOM 还硬扛 batch=4</td><td>降 <code>per_device_train_batch_size=2</code> 或 1，同时 <code>gradient_accumulation_steps</code> 翻倍到 4，等效 batch 不变、显存掉一半</td></tr>
+<tr><td>忘了 <code>label_names=["labels"]</code>，Trainer 找标签报错</td><td>自定义字段名时 Trainer 会猜错。<strong>显式声明标签字段</strong>，报错秒消</td></tr>
+<tr><td><code>evaluation_strategy</code> 参数名版本不同报错</td><td>新版 transformers 建议用 <code>eval_strategy</code>（evaluation_strategy 兼容保留但警告）。看本地版本文档，用哪个都行但要一致</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ Trainer：把一切都连起来</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>模型、数据、超参都齐了，Trainer 就是把它们组装起来的"总机房"——传模型、训练参数、数据集、分词器，一行 train() 开跑。这一节看清 Trainer 的接线图。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义代码：</p>
+<pre>from transformers import Trainer
+
+trainer = Trainer(
+    model=peft_model,        # 挂好 LoRA 的模型
+    args=training_args,      # 超参
+    train_dataset=train_dataset,  # 训练集（第5章产物）
+    eval_dataset=eval_dataset,    # 验证集
+    tokenizer=tokenizer,     # 分词器
+)
+# 开始训练
+trainer.train()              # ← 点火</pre>
+<p>Trainer 内部替你干了全套脏活：自动批处理、梯度累积、评估触发、保存检查点、日志记录、tensorboard 写入。<strong>新手只要保证输入（模型/数据/超参）对，Trainer 就是可靠的"驾驶员"</strong>。</p>
+<p>训练过程中你会看到：进度条、各 step 的 loss、每个 epoch 的 eval loss。观察点：<strong>训练 loss 应逐步下降，eval loss 也应下降或持平</strong>——若 eval loss 开始升高而 train loss 继续降，就是过拟合信号。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td><code>trainer.train()</code> 立刻报 "dataset missing labels"</td><td>训练/验证集里没有 labels 列（第 5 章 preprocess 漏写或 remove_columns 误删）。回到数据验收那步</td></tr>
+<tr><td>训练进度条 0% 卡很久</td><td>首次运行在序列化/编译/数据加载，正常；若 10 分钟以上没动，查是否磁盘慢或数据量异常</td></tr>
+<tr><td>想中途停止但想保留已训部分</td><td>Trainer 自动按 save_strategy 存检查点，中断后 <code>trainer.train(resume_from_checkpoint="./results/checkpoint-xxx")</code> 可续训（无需我们手动处理）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 保存 LoRA 权重：model.save_pretrained + 分词器</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>训练结束，现在要把成果"存下来"——但 LoRA 微调的产物不是整个大模型，而是<strong>补丁权重 + 分词器 + 配置</strong>。存什么、存哪、多大，直接影响第 7 章的加载。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义代码：</p>
+<pre>peft_model_path = &quot;./lora_model&quot;
+tokenizer.save_pretrained(peft_model_path)   # 保存分词器
+trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）</pre>
+<p>保存后 <code>./lora_model</code> 目录里有什么：</p>
+<table>
+<tr><th>文件</th><th>内容</th></tr>
+<tr><td>adapter_config.json</td><td>LoRA 配置（r/α/modules/base 模型名等）</td></tr>
+<tr><td>adapter_model.safetensors</td><td>真正的 A/B 补丁权重</td></tr>
+<tr><td>tokenizer 相关</td><td>tokenizer_config / vocab 文件</td></tr>
+</table>
+<p>关键点：</p>
+<ul><li><strong>没有完整 model 权重</strong>（几个 GB），而是补丁（视 r 和模块数，几十~几百 MB）——这是 LoRA 最核心的工程价值：<strong>轻、快、可复用</strong>；</li><li><code>adapter_config.json</code> 里记录了 <code>base_model_name_or_path</code>，第 7 章按它找回底座；</li><li>完整模型一份都不落？——要的（合并版）在下一章 merge 时再产生，训练阶段先存补丁即可。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为存的是完整模型，传到别处发现打不开</td><td>LoRA 权重<strong>必须配合同名底座</strong>使用：加载时先载底座、再挂 adapter（第 7 章）。单独拿 adapter 文件给别人用，对方也得先下载底座</td></tr>
+<tr><td>只 save 了模型没 save tokenizer</td><td>加载时 tokenizer 找不到，乱码一堆。<strong>tokenizer 和模型要一起存</strong>（讲义两行都写了）</td></tr>
+<tr><td>保存路径被多次覆盖</td><td>LoRA 迭代训练会覆盖旧版本。<strong>按实验命名目录</strong>（如 lora_epoch3 / lora_r16）留档，方便对比回退</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 训练监控：tensorboard 怎么看</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>训练跑了半小时，怎么知道它在变好？不能全靠肉眼看进度条。tensorboard 就是训练过程的"仪表盘"——loss 曲线、学习率、梯度范数都可视化，一眼看出过拟合、不收敛。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>训练参数里 <code>report_to=["tensorboard"]</code> + <code>logging_dir="./logs"</code> 已把日志写好。查看方法：</p>
+<pre>tensorboard --logdir ./logs
+# 浏览器打开 http://localhost:6006</pre>
+<p>重点看四张图：</p>
+<table>
+<tr><th>曲线</th><th>健康形态</th><th>问题形态</th></tr>
+<tr><td>train/loss</td><td>稳步下降</td><td>不降=学习率太低/数据错；陡升=爆了</td></tr>
+<tr><td>eval/loss</td><td>下降后持平</td><td>开始回升=过拟合</td></tr>
+<tr><td>learning_rate</td><td>按调度下降</td><td>异常=调度配置错</td></tr>
+<tr><td>梯度范数</td><td>平稳小值</td><td>爆炸(NaN)=学习率太高/数据脏</td></tr>
+</table>
+<p>GPU 显存不够看不到吗？——tensorboard 用 CPU 就能跑，只读日志文件，不占训练资源。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>tensorboard 页面打开空白</td><td><code>--logdir</code> 路径要指到<strong>含 events 文件的目录</strong>；logs 与 results 结构不同，别指错层级</td></tr>
+<tr><td>loss 前几个 step 异常大</td><td>正常：初始未拟合，loss 高是常态；持续几个 epoch 不降才是问题</td></tr>
+<tr><td>训练到一半 loss 变 NaN</td><td>典型原因：学习率太高 / 数据里有空样本 / fp16 溢出。先降学习率，再看数据（第 5 章 filter 空行）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 常见训练中报错速查表</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>把这一章最容易踩的报错集中成一张速查表，训练报错时不用全网搜——按"现象→原因→解法"三步查就好。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<table>
+<tr><th>报错现象</th><th>根因</th><th>解法</th></tr>
+<tr><td>CUDA out of memory</td><td>显存不足</td><td>降 batch → 加梯度累积 → 量化(QLoRA) → 换小模型</td></tr>
+<tr><td>TrainingArguments 参数名报错</td><td>版本 API 变更</td><td>用 <code>eval_strategy</code> 或按文档版本对齐</td></tr>
+<tr><td>ModuleNotFoundError: peft/bitsandbytes</td><td>没装</td><td><code>pip install peft bitsandbytes</code>（在 lora_env 里）</td></tr>
+<tr><td>Found no labels in dataset</td><td>数据缺 labels</td><td>回第 5 章：preprocess_function 里必须产出 labels 列</td></tr>
+<tr><td>loss = nan / inf</td><td>学习率过高/数据脏/数值溢出</td><td>降学习率 → 清洗数据空行 → 换 bf16/fp32</td></tr>
+<tr><td>RuntimeError: expected GPU but CUDA unavailable</td><td>torch 装成 CPU 版</td><td>重装 cu 版 torch（第 4 章）并验证 cuda.is_available()</td></tr>
+<tr><td>Unexpected key in adapter</td><td>adapter 和底座架构不匹配</td><td>确认 base_model_name_or_path 和保存时一致</td></tr>
+</table>
+<p>建议把这张表存在工程 README 里——报错先查表，30 秒定位，避免全网漫游。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>同一个报错反复出现，每次重新搜</td><td><strong>记录报错+解法到你的笔记</strong>。同一项目里报错高度重复，积累 10 条你就成了老手</td></tr>
+<tr><td>报错信息和网上"一模一样"但解法无效</td><td>版本不同：先看本地库版本（pip show），再对网上的版本滤波，别盲目照抄</td></tr>
+<tr><td>报错就重装"全家桶"</td><td>重装是最后手段。先看<strong>堆栈最后一行</strong>是哪个库的哪个函数——通常改参数或补 import 就能解决</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 本章验收：训练产物齐全</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>收尾验收：训练跑完 ≠ 任务完成，得确认"产物齐、可复用"。三样东西检查到位，第 7 章才能无缝续上：能用微调模型做推理测试。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>验收清单：</p>
+<table>
+<tr><th>#</th><th>产物</th><th>检查方式</th></tr>
+<tr><td>1</td><td><code>./results/</code> 检查点</td><td>目录存在、含 checkpoint-*</td></tr>
+<tr><td>2</td><td><code>./lora_model/</code> LoRA 权重</td><td>adapter_config.json + adapter_model.safetensors 在</td></tr>
+<tr><td>3</td><td><code>./logs/</code> 训练日志</td><td>events.* 文件在，tensorboard 能打开</td></tr>
+<tr><td>4</td><td>训练 loss 曲线</td><td>整体下降，eval loss 无明显反弹</td></tr>
+<tr><td>5</td><td>解码验证数据</td><td>（第5章已验）确认无脏数据残留在训练集</td></tr>
+</table>
+<p>全过 = LoRA 微调训练闭环完成。此时你的显存里已经住着一个"见过 LaMini 指令数据"的模型——下一章就用它来做推理测试、合并权重、上传 Hugging Face，完成最后交付。</p>
+<p>另外提醒：把 train 脚本整理成一个 <code>train_lora.py</code>（加载模型+配置LoRA+训练+保存全流程），后续 Unsloth / LLaMA-Factory 章节可以直接对照学习两种"更快/更省事"的替代方案。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>忘了保存 lora_model 就关了环境</td><td>权重在内存里，会话结束即失。<strong>训练一结束立刻 save</strong>（讲义顺序都是先 train 后 save），养成习惯</td></tr>
+<tr><td>results 和 lora_model 混为一谈</td><td>results 是日志/检查点（可续训的大物件），lora_model 是轻量补丁（交付物）。<strong>交付用 lora_model，训练维护看 results</strong></td></tr>
+<tr><td>只验收了"没报错"</td><td>没报错≠训得好。<strong>看 loss 曲线</strong>才算完成真实验收——这是和"照着跑完"的分界线</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>LoraConfig + get_peft_model 挂载</strong></td><td>每个参数和原理对上号，挂载成功有验证方法（lora_A/lora_B）</td></tr>
+<tr><td><strong>会翻译的 TrainingArguments</strong></td><td>batch/梯度累积/学习率三维取舍，显存不够知道怎么改</td></tr>
+<tr><td><strong>一次真实的训练体验</strong></td><td>Trainer 组装全流程，从点火到监控 loss 曲线，报错有速查表</td></tr>
+<tr><td><strong>LoRA 权重产物</strong></td><td>adapter_config + adapter_model.safetensors，轻量、可复用、交付物标准形态</td></tr>
+</table>
+<p>下一章收官：加载回微调模型 → 生成测试看效果 → merge 合并成完整模型 → 上传 Hugging Face 分享你的工作成果。</p>
+<h4>自测：能不能答上来</h4>
+<ol><li>LoraConfig 里 r=8、lora_alpha=32 的实际生效强度是多少？为什么这样配？</li><li>怎么确认 LoRA 真的挂载到模型上了？（至少一种方法）</li><li>显存 OOM 时，保持等效 batch 不变应怎么调两个参数？</li><li>Trainer 训练一次要检查哪两个主要观察对象？什么时候判定过拟合？</li><li>LoRA 训练保存的目录里有哪些核心文件？和完整模型的区别是什么？</li><li>tensorboard --logdir 指向哪个目录？打开后重点看哪两张 loss 图？</li><li>训练产物里 results 和 lora_model 的作用分别是什么？交付/续训各用哪个？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>大模型 DeepSeek 微调与应用：配置 LoRA 超参数、训练模型与保存模型</a>
+<a href="https://huggingface.co/docs/transformers/main_classes/trainer" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face Trainer 文档</a>
+<a href="https://huggingface.co/docs/peft/developer_guides/save_load" target="_blank" rel="noopener"><span class="k">官网</span>PEFT 保存/加载指南</a>
+</div>
+<div class="pager">
+<a href="05-第五章-手写LoRA微调二数据准备与预处理.html">← 第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+<a class="nxt" href="07-第七章-手写LoRA微调四测试合并与上传.html">第七章　手写 LoRA 微调（四）：测试、合并与上传 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="配置 LoRA：LoraConfig 的每个参数"><span class="n">1</span>配置 LoRA：LoraConfig 的每个参数</a>
+  <a href="#p2" title="挂载 LoRA：prepare + get_peft_model"><span class="n">2</span>挂载 LoRA：prepare + get_peft_model</a>
+  <a href="#p3" title="TrainingArguments：训练超参每个字段"><span class="n">3</span>TrainingArguments：训练超参每个字段</a>
+  <a href="#p4" title="Trainer：把一切都连起来"><span class="n">4</span>Trainer：把一切都连起来</a>
+  <a href="#p5" title="保存 LoRA 权重：model.save_pretrained + 分词器"><span class="n">5</span>保存 LoRA 权重：model.save_pretrained + 分词器</a>
+  <a href="#p6" title="训练监控：tensorboard 怎么看"><span class="n">6</span>训练监控：tensorboard 怎么看</a>
+  <a href="#p7" title="常见训练中报错速查表"><span class="n">7</span>常见训练中报错速查表</a>
+  <a href="#p8" title="本章验收：训练产物齐全"><span class="n">8</span>本章验收：训练产物齐全</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

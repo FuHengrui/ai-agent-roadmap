@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第一章　认识 OpenClaw：从&quot;会聊天&quot;到&quot;会做事&quot;的 AI 智能体 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="cur">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 14 · 小龙虾 OpenClaw 实战 › <strong>第一章</strong></div>
+<h1>第一章　认识 OpenClaw：从&quot;会聊天&quot;到&quot;会做事&quot;的 AI 智能体</h1>
+<div class="subtitle">阶段 14 · 小龙虾 OpenClaw 实战　|　平台实操　|　难度 ★★☆</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p><strong>学了十几章，为什么 AI 还是只会"聊天"？</strong> 前面阶段里你调大模型、建 RAG、学 Agent 理论，AI 都能说会道——但让它"帮我把这个文件夹整理一下""替我把这份文件转成 PDF"，它就无能为力了。问题不在模型不够聪明，而在于它没有"手和眼睛"：看不到你的屏幕，碰不到你的文件，只能困在对话框里。</p>
+<p><strong>"会聊天的 AI"和"会做事的 AI"根本分界在哪？</strong> 分界在于<strong>能不能直接操作系统</strong>。一个能动手的 AI 可以看屏幕、点按钮、改文件、跑命令、定时干活——这就是 OpenClaw 喊出的定位："一个真正会做事的 AI"（The AI that actually does things）。它把大模型从对话工具改造成能跨平台、跨应用执行复杂任务的"数字员工"。</p>
+<p>学完这一章，你能回答：<strong>OpenClaw 是什么、它为什么选择本地优先、它靠哪四项定位和七类核心功能"动起手来"</strong>。这一章全是概念、零代码，但它是整个阶段 14 的地基——后面每一章实操，都在兑现这页 PPT 上的某一行。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><span class="here">上一章（阶段 13 · 大数据处理与分布式检索技术）：你用 Spark 学会了"让海量数据跑得动、算得快"——那是数据侧的能力。本章开启全新阶段：从"会算"跨到"会做"，让 AI 直接操作用户的电脑。</span></span>
+<span class="node"><span class="here">本章 ← 你在这里：认识 OpenClaw 的定位与核心功能全景，回答"AI 凭什么从会聊天变成会做事"</span></span>
+<span class="node"><strong>下一章</strong>：OpenClaw 能做什么——基础办公自动化、跨工具协同、定制化需求等能力拆解与使用场景</span>
+<span class="node"><strong>再往后</strong>：环境部署与安装 → 接入 IM 实现"聊天即操作" → 技能（Skills）与 ClawHub 实战 → 定时任务与跨设备节点</span>
+<span class="node"><strong>阶段终点</strong>：你能用自然语言给 OpenClaw 下指令，让它跨应用完成真实任务——整理文件、生成报告、定时发送、远程调度，像指挥一名"数字员工"一样干活</span>
+</div>
+<div class="note info"><span class="t">学习提示</span>
+<p>本章是概念章，不用急着找安装包。先把一条主线想明白：<strong>本地跑、开源扩、看屏幕、聊天下令</strong>——这四句话就是整个阶段 14 所有实操的总纲。</p></div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 一个真正会做事的 AI：OpenClaw 是什么</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>你已经很熟悉"聊天式 AI"：能问答、能写作，但一说到"帮我做件事"就歇菜。这一节先建立总印象：OpenClaw 是什么、从哪来、官网在哪——它是整个阶段的主角。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 是一款<strong>2026 年初发布的开源、本地优先（Local-first）的 AI Agent 框架</strong>，官网是 https://openclaw.ai/ 。它的核心定位是"<strong>一个真正会做事的 AI</strong>"（The AI that actually does things）：将大语言模型（LLM）从"会聊天"的对话工具，转变为能够<strong>直接操作用户计算机、执行跨平台跨应用复杂任务</strong>的"数字员工"。</p>
+<p>一句话区分它和聊天机器人：</p>
+<table>
+<tr><th></th><th>聊天机器人</th><th>OpenClaw（Agent 框架）</th></tr>
+<tr><td>能力边界</td><td>生成文字回答</td><td>看屏幕、点按钮、读写文件、执行命令</td></tr>
+<tr><td>是否操作计算机</td><td>否，活在对话框里</td><td>是，直接操作你的系统和应用</td></tr>
+<tr><td>完成方式</td><td>输出答案，剩下你自己干</td><td>端到端执行，把活干完才汇报</td></tr>
+</table>
+<p>所以讲义反复强调：<strong>OpenClaw 不是一个更聪明的聊天机器人，而是一个能让 AI 动手干活的系统</strong>。它本身不是大模型，而是"驱动 LLM 动手"的框架——模型负责想，框架负责做。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为 OpenClaw 是"新一代 GPT"</td><td>OpenClaw 是 Agent 框架，靠 LLM 提供"脑子"，自己提供"手脚"。概念别混：模型负责想，框架负责做</td></tr>
+<tr><td>官网记错、搜出一堆仿冒站</td><td>讲义原文官网是 openclaw.ai，教程、仓库、文档都以它为准</td></tr>
+<tr><td>觉得"会回答"=“会做事”</td><td>回答只是生成文本；做事需要操作环境。后面所有功能都围绕"感知 + 行动"展开</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 本地优先 Local-first：数据与隐私的控制权</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>用惯云上 AI 后总有一个隐忧：对话内容、上传的文件都经过别人的服务器，<strong>数据和隐私的控制权不在自己手里</strong>，敏感文档更不敢喂给云端。需要一个"代码在自己机器上跑"的方案。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>讲义把这一条放在产品定位第一位：<strong>本地优先（Local-first）</strong>——与完全依赖云端服务的 AI 产品不同，OpenClaw 的核心程序在<strong>用户自己的硬件</strong>（个人电脑、Mac Mini 或云服务器）上运行，用户拥有对数据和隐私的<strong>最高控制权</strong>。</p>
+<p>这背后是"Local-first 软件"理念：程序主体与用户数据默认落在本地设备，云端只是可选的增强。</p>
+<table>
+<tr><th>维度</th><th>完全云端 AI</th><th>本地优先（Local-first）</th></tr>
+<tr><td>程序在哪跑</td><td>厂商服务器</td><td>你自己的设备</td></tr>
+<tr><td>数据谁持有</td><td>厂商</td><td>你自己</td></tr>
+<tr><td>断网可用性</td><td>基本不可用</td><td>本地功能照常</td></tr>
+<tr><td>敏感数据合规</td><td>难评估</td><td>数据不出设备，最可控</td></tr>
+</table>
+<p>注意边界：<strong>"本地优先"不等于"完全不联网"</strong>。它指程序和数据优先落本地，LLM 推理等重活仍可能按你的配置调用云端模型——但控制权、开关都在你手里。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为本地优先=断网单机，完全不能联网</td><td>本地优先指<strong>程序与数据默认在本地</strong>，联网能力由你配置，不是一刀切断网</td></tr>
+<tr><td>以为本地优先=永远不能远程访问</td><td>讲义明确允许把程序装在自己的<strong>云服务器</strong>上，既本地控制又远程可用</td></tr>
+<tr><td>觉得"都放本地了还谈什么隐私"</td><td>本地化只是第一步，接入哪些模型、开放哪些目录、权限怎么控仍要自己把关</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 开源与可扩展：MIT 许可证 + 技能/插件</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>闭包产品的功能由厂商说了算：你不喜欢它的边界、想要的扩展它不给，就只能干等。你需要一个<strong>可以自己改、自己加能力</strong>的开放系统。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 采用 <strong>MIT 许可证</strong>，代码完全开放。它的核心价值是提供一个<strong>强大的框架，而非封闭的产品</strong>——开发者可以通过"<strong>技能（Skills）</strong>"和插件系统无限扩展其功能。</p>
+<p>MIT 是最宽松的开源许可证之一：可自由使用、修改、再分发，甚至用于商业产品，只需保留版权声明。这意味着：</p>
+<ul><li>你可以<strong>阅读源码</strong>，搞清它每一步在干什么；</li><li>你可以<strong>改代码</strong>，定制自己的行为；</li><li>你可以<strong>加 Skills</strong>，把任何新能力教给它（第 ⑨ 点展开）。</li></ul>
+<p>一句话：<strong>你得到的不是一款成品，而是一套可以无限组装的骨架</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"开源=免费云端账号"</td><td>开源是<strong>代码开放</strong>，不等于厂商托管服务免费；两者是两回事</td></tr>
+<tr><td>以为只有程序员才能扩展</td><td>技能（Skills）以 Markdown 指令集形式存在，普通用户也能写、能装，后面章节专门实操</td></tr>
+<tr><td>以为 MIT 许可证=可以随便改名不保留版权</td><td>可以商用，但需保留版权声明。开源≠无协议，用前看一眼 LICENSE</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 通用计算机控制：打破 API 孤岛</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>传统自动化绕不开一个死穴：<strong>只能集成提供 API 的应用</strong>。银行老系统、剪辑软件、某些网页应用没有开放接口，自动化就卡死——这就是"API 孤岛"。要打通它，必须换一种思路。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 不仅仅依赖 API 进行集成，而是<strong>模拟人类使用计算机的方式</strong>：视觉识别屏幕 + 控制键盘鼠标，来操作<strong>任何图形界面应用</strong>，从而打破传统自动化的"API 孤岛"。</p>
+<p>它的工作链条其实是"看 → 想 → 动 → 验"：</p>
+<table>
+<tr><th>环节</th><th>做什么</th><th>类比</th></tr>
+<tr><td>感知</td><td>用视觉模型识别屏幕上的按钮、文本框、图标</td><td>人"看"屏幕</td></tr>
+<tr><td>规划</td><td>决定该点哪里、输入什么</td><td>人"想"下一步</td></tr>
+<tr><td>执行</td><td>模拟鼠标点击、键盘输入、滚动</td><td>人"动手"</td></tr>
+<tr><td>验证</td><td>再看一遍屏幕确认结果</td><td>人"检查"</td></tr>
+</table>
+<p>这套机制的意义：<strong>有没有 API 不再重要</strong>——只要人眼能操作的界面，它就能操作。对旧软件、无接口网页来说，这是唯一的自动化出路。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"视觉控制=提前录好固定坐标"</td><td>它是<strong>实时识别 UI 元素</strong>再决定动作，窗口移动、界面变化也能应对；固定坐标方案一改动就废</td></tr>
+<tr><td>以为有了视觉控制就不需要 API</td><td>两者互补：API 快、稳、准；视觉控制兜底"没有 API"的场景。讲义定位是"打破孤岛"，不是取代 API</td></tr>
+<tr><td>界面识别失败就以为功能坏了</td><td>识别是概率性的，界面太乱、元素过小时会失败；后面实战会用截图与日志定位，属于调优不是缺陷</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 消息驱动交互：聊天即操作</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>能做事了，但总不能在每次指挥时打开控制台敲命令、写脚本吧？门槛太高。你要的交互方式是<strong>零学习成本</strong>的——用你已经天天在用的聊天软件下指令。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 是<strong>以消息驱动的交互</strong>：用户主要通过日常使用的即时通讯工具（WhatsApp、Telegram、Slack、钉钉、微信等）与它交互，用自然语言下达指令，实现"<strong>聊天即操作</strong>"。</p>
+<p>体验上：它像一个住在你聊天软件里的"数字员工联系人"——你发一句"帮我把这个文件夹按日期整理好"，它领命执行并回你结果。<strong>消息就是指令，回复就是反馈</strong>，全程没有命令行、没有界面切换。</p>
+<p>这也是它和"网页版 AI"最大的体验差异：<strong>AI 主动进入你已有的工作流，而不是让你进入它的网页</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为用 OpenClaw 必须有编程基础</td><td>交互层就是聊天，谁都会用；编程能力是给"扩展功能"用的，不是使用门槛</td></tr>
+<tr><td>以为聊天只能"问问题"</td><td>聊天里可以下<strong>操作指令</strong>："转 PDF""发送到某群""整理文件"都是任务，不只是问答</td></tr>
+<tr><td>一上来就想把全部 IM 都接上</td><td>讲义列了一堆候选，先挑一个自己常用的走通全流程，其余按需再加，别一次性铺开</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 跨平台消息集成：在哪个聊天软件都能指挥它</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>你说"用聊天软件指挥它"，可不同团队用的工具不一样：老板用钉钉，你爱用 Slack，国外同事用 WhatsApp。<strong>必须覆盖主流 IM</strong>，让每个人在自己习惯的角落里指挥 AI。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 支持集成 <strong>WhatsApp、Telegram、Slack、Discord、iMessage、钉钉</strong>等多种主流 IM。用户可以在任何习惯的聊天应用中，<strong>像与朋友对话一样</strong>向 AI 下达指令、接收反馈。</p>
+<p>这意味着集成之后：</p>
+<ul><li>IM 里多了一个"AI 联系人"，聊天即操作（承接第 ⑤ 点）；</li><li>团队各用各的软件不影响协作——<strong>入口随便选，干活的是同一个 AI</strong>；</li><li>指令与反馈都落在聊天记录里，随时回溯。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为要专门装 OpenClaw 客户端</td><td>不需要——核心在本地跑，你用它<strong>已有的聊天软件</strong>当遥控器</td></tr>
+<tr><td>以为 IM 集成只是"让它给你发通知"</td><td>是<strong>双向交互</strong>：你下指令、它执行并回报，还能追问、中途改需求</td></tr>
+<tr><td>一个 IM 配不上就用不了</td><td>先确认常用那一个的接入方式；不同 IM 的配置步骤，实战章节会逐个走</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 计算机视觉与控制：给 AI 装上"眼睛和手"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>填表单、操作剪辑软件、管理本地文件——这些桌面软件和网页<strong>大多没有 API</strong>。为此 OpenClaw 必须能"看"屏幕并"动手"。这一节讲清楚它的"眼睛"和"手"具体有什么能力。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 能够<strong>"看到"并理解屏幕上的内容</strong>：识别按钮、文本框、图标等 UI 元素，然后<strong>模拟鼠标点击、键盘输入、滚动</strong>等操作。它的功能体系就围绕"为 AI 装上眼睛和手脚"展开——能感知（看屏幕）并行动（操作键鼠、文件、网络）。</p>
+<p>代表作场景：<strong>自动化操作任何没有提供 API 的桌面软件或网页应用</strong>——填写表单、操作剪辑软件、管理本地文件。</p>
+<p>技术上是三类能力合力：</p>
+<table>
+<tr><th>能力</th><th>干什么</th></tr>
+<tr><td>屏幕视觉理解</td><td>把像素变成"界面元素清单"（哪里是按钮、哪里是输入框）</td></tr>
+<tr><td>元素定位</td><td>在变化的位置上找到目标元素，不靠固定坐标</td></tr>
+<tr><td>键鼠模拟</td><td>把"意图"变成真实的点击、输入、滚动事件</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为它能操作一切，连安全认证环节都交给它</td><td>验证码、支付、解锁等敏感认证应本人完成。它替代的是重复劳动，不是安全边界</td></tr>
+<tr><td>识别慢就以为是坏了</td><td>视觉识别是逐帧理解，比纯 API 调用慢是正常的；优先让它处理"没有别的办法"的场景</td></tr>
+<tr><td>一次识别失败就手动接管</td><td>先确认截图里目标是否清晰；界面元素太密集时可先调整窗口再重试，这属于调优不是缺陷</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 文件与系统管理：能读写文件、能执行命令</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>大量重复劳动发生在<strong>文件系统层面</strong>：下载文件夹一团乱、几百个文件要改名、装软件、跑脚本——这些事以前要么手动点，要么写脚本。你要的是一句话搞定。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 具备<strong>读、写、编辑本地文件</strong>和<strong>执行 Shell 命令</strong>的能力。讲义给出的典型场景：整理下载文件夹、按指令批量修改文件名、安装软件、运行代码脚本。</p>
+<p>这意味着它可以：</p>
+<ul><li><strong>整理</strong>：按类型、时间把散乱文件归档；</li><li><strong>批量改</strong>：几百个文件按规则重命名；</li><li><strong>运维</strong>：安装软件、执行系统命令；</li><li><strong>执行</strong>：帮你跑一段代码脚本并反馈结果。</li></ul>
+<p>这也是"会做事"最实在的一环：<strong>文件系统是它在电脑里干活的主战场</strong>，配合视觉控制（第 ⑦ 点），既能"看界面"又能"动文件"。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>给了 Shell 权限就什么都敢让它跑</td><td>命令执行权限=破坏力。只授它需要的目录与权限，来历不明的脚本先审查再执行</td></tr>
+<tr><td>以为它只能"看看文件"</td><td>它能读能写能改，覆盖整理、改名、安装、执行一条龙，别低估也别滥用</td></tr>
+<tr><td>误删了文件找不到原因</td><td>破坏性操作前确认动作与范围；关键数据先备份，这是对"会做事的 AI"的基本纪律</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 可扩展技能系统 ClawHub：Markdown 写的"技能库"</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>框架再万能也覆盖不了所有需求：你想管智能家居、盯股票、自动回邮件——每个需求都改内核代码不现实。需要一个<strong>让 AI"现学现用新本事"</strong>的机制。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>开发者可以创建、发布和分享"<strong>技能</strong>"——以 <strong>Markdown 文件形式存在的指令集</strong>，AI 可以<strong>动态学习并使用</strong>这些技能。社区已贡献了数千种技能，涵盖日程管理、邮件处理、智能家居控制、股票交易、内容生成等，极大地丰富了它的能力。</p>
+<p>要点拆开看：</p>
+<table>
+<tr><th>概念</th><th>理解</th></tr>
+<tr><td>技能的本质</td><td>一份 Markdown 指令集，教 AI"这件事该怎么做"</td></tr>
+<tr><td>动态学习</td><td>用的时候按需加载，不需要重装程序</td></tr>
+<tr><td>来源</td><td>社区已有数千种，也可以自己写、自己发布</td></tr>
+<tr><td>意义</td><td>功能无限扩展，呼应第 ③ 点的 MIT + Skills 设计</td></tr>
+</table>
+<p>类比：如果 OpenClaw 是手机，技能就是<strong>应用商店</strong>——但更轻，它只是一个文档，AI 读了就会干。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为技能是"安装包/插件程序"</td><td>技能本质是 <strong>Markdown 指令集</strong>，不是编译好的程序；加载即阅读、阅读即生效</td></tr>
+<tr><td>以为技能必须自己开发</td><td>社区已有数千种现成的，先搜先用，不够再写；实战章节会演示一次完整流程</td></tr>
+<tr><td>装了技能就以为万事大吉</td><td>技能描述"怎么做"，效果还受模型能力和执行环境影响；跑了不对先回头读技能说明的细节</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 持久化记忆：AI 记得你，才像个员工</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>默认情况下模型每次对话都是"失忆"的：今天告诉它的偏好，明天就忘。一个记不住任何上下文的 AI 做不成"长期员工"。需要<strong>跨对话的记忆能力</strong>。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 能够<strong>记忆历史对话和任务上下文，形成长期记忆</strong>，并在后续交互中运用这些知识。典型用途：记住<strong>用户偏好、项目背景、常用联系人信息</strong>，提供更具<strong>个性化和连贯性</strong>的辅助。</p>
+<table>
+<tr><th>记忆什么</th><th>效果</th></tr>
+<tr><td>用户偏好</td><td>邮件格式、文件习惯不用每次重说</td></tr>
+<tr><td>项目背景</td><td>任务上下文自动衔接，不用重复交代</td></tr>
+<tr><td>常用联系人</td><td>说"发给老王"它就知道是谁</td></tr>
+</table>
+<p>结合本地优先（第 ② 点）：<strong>记忆数据同样存在你的设备上</strong>，个性化与隐私两不误——这是它与云端"记忆型"产品的重要差异。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为记忆=原样存聊天记录</td><td>记忆是<strong>提炼后的上下文</strong>（偏好、背景、联系人），不是聊天日志堆砌</td></tr>
+<tr><td>以为记得一次就永远正确</td><td>事实会过期（联系人离职、项目换背景）。发现它记错了及时纠正，必要时清理记忆</td></tr>
+<tr><td>忘了敏感信息也在记忆里</td><td>记忆内容受本地优先保护，但密钥、密码等敏感值仍不该写进对话让它去记，口令类信息走专门保管</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 跨设备节点系统 Node System：让另一台设备替你干活</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>你在公司，却想用家里电脑下载一个大文件；想让 AI 报一下你当前的位置。一台设备只装一个 AI 不够——需要<strong>主从式的多设备网络</strong>。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 支持<strong>跨设备节点系统（Node System）</strong>：在多个设备（Mac、Windows、iOS、Android）上安装<strong>节点</strong>，<strong>主程序可以远程调用这些节点执行任务</strong>。</p>
+<p>讲义给出的两个典型场景：</p>
+<ul><li>在<strong>办公室电脑</strong>上接收指令，调用<strong>家里的 Mac Mini</strong> 执行一项下载任务；</li><li>通过<strong>手机节点</strong>获取<strong>当前 GPS 位置</strong>。</li></ul>
+<p>一句话理解：<strong>主程序是"大脑"，各设备节点是"手足"</strong>——大脑在任何一端，手脚分散在不同设备上，指令远程下发、结果远程回收。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为每个设备各装一套互不联通的 OpenClaw</td><td>是<strong>主程序 + 节点</strong>的架构：节点负责执行、主程序统一调度，才能跨设备联动</td></tr>
+<tr><td>节点暴露出来不做访问控制</td><td>节点可被远程调用，等同给设备开了远程口子；只放信任设备，并关注鉴权配置</td></tr>
+<tr><td>以为手机节点只能收 GPS</td><td>节点能执行主程序下发的任务；GPS 只是讲义举例之一，能力取决于节点权限与安装的功能</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ 任务调度与主动行为：Cron 定时干活</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>"每天早上整理邮件"这种任务，你不想天天手动发一次指令；"股价跌破阈值就提醒我"这种，你甚至<strong>没空等它发生</strong>。需要 AI 在<strong>设定时间/条件下自己启动</strong>——主动行为。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>OpenClaw 内置 <strong>Cron 作业调度器</strong>，可以执行<strong>定时任务</strong>，或基于特定<strong>事件触发</strong>主动行为：</p>
+<ul><li>每天早上 8 点<strong>自动整理邮件并生成摘要报告</strong>；</li><li>当<strong>特定股票价格低于阈值</strong>时<strong>主动发送提醒</strong>。</li></ul>
+<p>Cron 是 Unix 系统经典的定时工具，表达式按"分 时 日 月 周"五个字段书写，例如：</p>
+<pre># 每天 8:00 执行邮件整理与摘要
+0 8 * * *  mail_summary
+# 每 30 分钟检查一次股票价格
+*/30 * * * *  check_stock_price</pre>
+<p>和"被动等待指令"不同，这条能力让 AI 从"你问我答"跨进"<strong>主动值守</strong>"——像真正的员工一样到点干活、出事汇报。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为"主动行为"是 AI 自己"想起来了"</td><td>背后是<strong>调度规则</strong>在驱动：时间或事件条件满足才触发。规则配错=行为不触发，不是 AI 偷懒</td></tr>
+<tr><td>Cron 表达式写错没反应</td><td>五个字段（分 时 日 月 周）的顺序与取值范围要核对；先设一个 1 分钟后触发的测试任务验证，再上正式任务</td></tr>
+<tr><td>时区遗忘导致"时间对不上"</td><td>定时任务按所在时区触发，跨时区使用先统一约定时区，否则 8 点会在"错误的 8 点"执行</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是<strong>四样东西</strong>：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>总定位</strong>：OpenClaw 是什么、官网、"会做事的 AI"的含义</td><td>后面所有章节的主角画像，概念不糊才能真正理解实操</td></tr>
+<tr><td><strong>四项定位</strong>：本地优先 / 开源可扩展 / 通用计算机控制 / 聊天驱动</td><td>这四句话解释了它"凭什么敢动手、凭什么能扩展"，也是选型与使用的心法</td></tr>
+<tr><td><strong>七类能力地图</strong>：消息集成、视觉控制、文件管理、技能、记忆、跨设备、定时调度</td><td>整个阶段 14 的内容骨架，之后的每个实操章节都是在兑现这七行中的某一行</td></tr>
+<tr><td><strong>边界意识</strong>：权限、隐私、敏感信息、识别失败的处理</td><td>会用"会做事的 AI"的前提，是知道哪些事碰不得、失败时怎么查</td></tr>
+</table>
+<h4>自测：能不能答上来</h4>
+<ol><li>用一句话向同事解释：OpenClaw 和"更聪明的聊天机器人"的本质区别是什么？</li><li>"本地优先（Local-first）"到底指的是什么？它和"完全离线、永不联网"是不是一回事，为什么？</li><li>什么是"API 孤岛"？通用计算机控制是怎么打破它的？</li><li>请列举 OpenClaw 七类核心功能中的任意五类，并各配一个真实使用场景。</li><li>技能（Skills）的本质是什么？为什么说它让 OpenClaw 的功能"无限扩展"？</li><li>"每天早上 8 点自动整理邮件"靠的是什么机制？Cron 五个字段的顺序是什么？</li><li>判断题：OpenClaw 的持久化记忆就是把聊天记录原样存下来，存得越全越好。</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>openclaw.pdf「认识OpenClaw」章节</a>
+<a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
+<a href="#"><span class="k">讲义</span>阶段 14 讲义源码目录（小龙虾 OpenClaw 实战）</a>
+</div>
+<div class="pager">
+<a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html">← 第十八章　阶段实战：日志统计全链路与收官复习</a>
+<a class="nxt" href="02-第二章-能做什么四大应用场景.html">第二章　能做什么：四大应用场景 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="一个真正会做事的 AI：OpenClaw 是什么"><span class="n">1</span>一个真正会做事的 AI：OpenClaw 是什么</a>
+  <a href="#p2" title="本地优先 Local-first：数据与隐私的控制权"><span class="n">2</span>本地优先 Local-first：数据与隐私的控制权</a>
+  <a href="#p3" title="开源与可扩展：MIT 许可证 + 技能/插件"><span class="n">3</span>开源与可扩展：MIT 许可证 + 技能/插件</a>
+  <a href="#p4" title="通用计算机控制：打破 API 孤岛"><span class="n">4</span>通用计算机控制：打破 API 孤岛</a>
+  <a href="#p5" title="消息驱动交互：聊天即操作"><span class="n">5</span>消息驱动交互：聊天即操作</a>
+  <a href="#p6" title="跨平台消息集成：在哪个聊天软件都能指挥它"><span class="n">6</span>跨平台消息集成：在哪个聊天软件都能指挥它</a>
+  <a href="#p7" title="计算机视觉与控制：给 AI 装上&quot;眼睛和手&quot;"><span class="n">7</span>计算机视觉与控制：给 AI 装上"眼睛和手"</a>
+  <a href="#p8" title="文件与系统管理：能读写文件、能执行命令"><span class="n">8</span>文件与系统管理：能读写文件、能执行命令</a>
+  <a href="#p9" title="可扩展技能系统 ClawHub：Markdown 写的&quot;技能库&quot;"><span class="n">9</span>可扩展技能系统 ClawHub：Markdown 写的"技能库"</a>
+  <a href="#p10" title="持久化记忆：AI 记得你，才像个员工"><span class="n">10</span>持久化记忆：AI 记得你，才像个员工</a>
+  <a href="#p11" title="跨设备节点系统 Node System：让另一台设备替你干活"><span class="n">11</span>跨设备节点系统 Node System：让另一台设备替你干活</a>
+  <a href="#p12" title="任务调度与主动行为：Cron 定时干活"><span class="n">12</span>任务调度与主动行为：Cron 定时干活</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

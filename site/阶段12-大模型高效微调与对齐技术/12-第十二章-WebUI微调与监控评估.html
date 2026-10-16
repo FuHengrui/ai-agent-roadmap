@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第十二章　WebUI 微调与监控：点按钮训练＋SwanLab 可视化 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="12-第十二章-WebUI微调与监控评估.html" class="cur">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="../阶段14-小龙虾OpenClaw实战/01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="../阶段14-小龙虾OpenClaw实战/06-第六章-多平台接入飞书QQ与小红书自动化.html" class="sub">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第十二章</strong></div>
+<h1>第十二章　WebUI 微调与监控：点按钮训练＋SwanLab 可视化</h1>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>前 11 章你练了三条腿：手写（原理）、Unsloth（提速）、LLaMA-Factory（数据侧就绪）。收官之章把 LLaMA-Factory 的 <strong>WebUI 操作</strong>走完：选模型、选数据、填超参、点开始，然后 <strong>SwanLab</strong> 把训练过程变成可视化曲线。全程不用写一行训练代码。</p>
+<p>但"点按钮"不等于"无脑点"：每个下拉框和输入框对应哪个参数（第 6 章 TrainingArguments 与第 9 章 SFTTrainer 配置的映射），训练完怎么启动 Chat 评估——这些是本章的硬功夫。</p>
+<p>学完这一章，你拥有第三条可交付能力：<strong>配置驱动的微调 + 可视化监控</strong>，与手写/Unsloth 并存备用。</p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node">上一章：LLaMA-Factory 环境与数据集注册完成</span>
+<span class="node"><span class="here">本章 ← 你在这里：启动 WebUI → 覆盖微调（QLoRA+医疗数据）→ SwanLab 监控 → 启动 Chat 评估</span></span>
+<span class="node">阶段终点：阶段 12 全部收官——手写原理、Unsloth 提速、LLaMA-Factory 提效三线齐备，产物可部署可评估</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 启动 WebUI：llamafactory-cli 一行起服务</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>LLaMA-Factory 的图形界面怎么起来？答：一条命令起本地 Web 服务，浏览器操作。这一节给出启动方式、页面结构、以及"服务起不来"的常见原因。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>启动（命令行）：</p>
+<pre>llamafactory-cli webui
+# 浏览器自动打开 http://localhost:7860</pre>
+<p>页面四个主标签（对应框架四大能力）：</p>
+<table>
+<tr><th>标签</th><th>干什么</th></tr>
+<tr><td>Train</td><td>训练（选模型/方法/数据/参数）</td></tr>
+<tr><td>Chat</td><td>加载模型对话评估</td></tr>
+<tr><td>Evaluate</td><td>跑评估指标</td></tr>
+<tr><td>Export</td><td>导出 LoRA 合并/转换</td></tr>
+</table>
+<p>起不来的排查顺序：</p>
+<ol><li>依赖装齐没（<code>llamafactory-cli --version</code>）；</li><li>端口被占（换 <code>--port</code>）；</li><li>换 Python 环境后 gradio 版本冲突（重装匹配版 gradio）。</li></ol>
+<p>另外：本机磁盘不足时后台模型加载会异常，训练前看一眼剩余空间。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>命令找不到 <code>command not found</code></td><td>没装 llama-factory 或不在当前环境。<strong>确认 pip install 成功、换到 factory_env</strong> 再试</td></tr>
+<tr><td>浏览器打不开 localhost:7860</td><td>服务没起来（看终端报错）/端口冲突。<strong>换 <code>--port 7861</code></strong> 再启动</td></tr>
+<tr><td>WebUI 打开但下载模型卡死</td><td>网络/HF 镜像问题。<strong>设 HF_ENDPOINT 镜像</strong>（第 10 章思路）或手动放模型到缓存路径</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 模型与路径设置：选模型、选量化、配保存</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>Train 页顶部"模型名称、微调方法、模型路径"是最先要填的三项。它们对应什么、QLoRA 怎么开、LoRA 权重存哪——填错一步训练启动即报错。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>Train 页关键字段（对照讲义）：</p>
+<table>
+<tr><th>字段</th><th>填什么</th><th>说明</th></tr>
+<tr><td>模型名称</td><td>下拉选（如 qwen2.5 系列）</td><td>模型家族</td></tr>
+<tr><td>微调方法</td><td>lora / qlora / full</td><td>QLoRA 是本章首选（低显存）</td></tr>
+<tr><td>模型路径</td><td>本地路径或 HF 名</td><td>没试过的先去 Chat 页验证能加载</td></tr>
+<tr><td>数据集</td><td>勾选第 11 章注册的 chinese_medical</td><td>支持多选</td></tr>
+<tr><td>附加路径</td><td>LoRA 输出目录（如 saves/medical-lora）</td><td>可含中文名</td></tr>
+<tr><td>学习率</td><td>2e-4（LoRA 常规起点）</td><td>第 6 章学过的参数现在变成填表</td></tr>
+<tr><td>训练轮数</td><td>教材示例 3~5</td><td>数据量大可 1~2</td></tr>
+</table>
+<p>量化开关：QLoRA 方法下选 4bit（或按显存选 8bit）。</p>
+<p><strong>先 Chat 后 Train</strong> 是好习惯：在 Chat 页把模型加载通、确认路径可用，再回 Train 页开训，把"模型加载失败"这类问题在训练前暴露。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>训练开始即报模型加载错</td><td>模型路径/HF 名错。<strong>先去 Chat 页验证模型能加载</strong>，别在 Train 页硬试</td></tr>
+<tr><td>数据集下拉找不到你的数据</td><td>没注册或注册后没重启 WebUI。<strong>刷新/重启 webui</strong> 让 dataset_info.json 生效</td></tr>
+<tr><td>输出路径和已存在 LoRA 重名</td><td>会被覆盖。<strong>每次实验用新目录名</strong>（如 saves/medical-lora-v2），保留历史</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 训练参数页：把学过的超参翻译成表单</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>WebUI 的"训练参数"页字段很多，但<strong>每一个都对应你学过的概念</strong>：train batch size、gradient accumulation、learning rate、warmup、logging steps……这一节给一张"表单字段 ↔ 第 6 章概念"对照表，避免瞎填。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>对照表（左：WebUI 字段；右：对应概念/推荐值）：</p>
+<table>
+<tr><th>WebUI 字段</th><th>对应概念</th><th>默认/推荐</th></tr>
+<tr><td>扇入/扇出（per_device_train_batch_size）</td><td>每卡批次</td><td>4（显存小→2）</td></tr>
+<tr><td>梯度累积</td><td>gradient_accumulation_steps</td><td>2~4（等效 batch=乘积）</td></tr>
+<tr><td>学习率</td><td>learning_rate</td><td>2e-4</td></tr>
+<tr><td>训练轮数</td><td>num_train_epochs</td><td>3</td></tr>
+<tr><td>warmup 步数</td><td>warmup_steps</td><td>5~100（按总步数）</td></tr>
+<tr><td>日志间隔</td><td>logging_steps</td><td>10~50</td></tr>
+<tr><td>最大序列长度</td><td>max_seq_length</td><td>2048</td></tr>
+<tr><td>权重衰减</td><td>weight_decay</td><td>0.01</td></tr>
+<tr><td>优化器</td><td>optim</td><td>adamw_torch / adamw_8bit</td></tr>
+</table>
+<p>填表口诀：<strong>显存不够 → 降 batch + 提累积；要更快 → 适当加大 batch（显存允许）</strong>——和第 6 章三维取舍完全一致，只是从代码变成表单。</p>
+<p>第一次跑的建议：全部用框架默认，只改"数据轮数/学习率/输出路径"三个，跑通后再微调其余——少变量更容易定位问题。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>字段看不懂就全开最大</td><td>并行度/长度开太大直接 OOM。<strong>先用默认值跑通</strong>再逐步加</td></tr>
+<tr><td>忘看"总步数"就调 warmup</td><td>warmup 和总步数要匹配（总步数少 warmup 就小）。<strong>先预览总步数</strong>（日志第一行会打印）</td></tr>
+<tr><td>把训练超参改来改去不记录</td><td>参数是实验变量。<strong>固定一套基准，每次只动一个变量</strong>，并记进实验清单</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 开始训练：队列预览、点提交、看日志</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>参数填完，界面上的"开始"怎么按、按完看什么？这一节讲 WebUI 训练的交互节奏：预览命令、提交队列、日志区三个信号，以及"卡在 0/1"的心态。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>训练侧的三个区块：</p>
+<table>
+<tr><th>区块</th><th>作用</th><th>观察点</th></tr>
+<tr><td>预览命令</td><td>点"预览命令"看将要执行的完整命令行（含全部参数翻译）</td><td>核对关键参数没填错</td></tr>
+<tr><td>训练日志</td><td>启动后滚动输出</td><td>loss/epoch/learning_rate 三行</td></tr>
+<tr><td>状态区</td><td>当前队列状态（queued/running）</td><td>是否真的在跑</td></tr>
+</table>
+<p>操作节奏：</p>
+<ol><li>填好参数 → 点"预览命令"（习惯性核对）；</li><li>点"开始" → 看日志出现 loss 行；</li><li>loss 应逐步下降，训练完成日志显示 "Training completed"。</li></ol>
+<p>"卡在 0% 很久"的两个真实原因：模型还在下载/加载（看终端下载进度）；或数据预处理大（多进程转换，dataset_num_proc 可调）。<strong>不是死机，等一等</strong>。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>预览命令和你预期不符</td><td>总比在界面上猜安全。<strong>逐项对照参数</strong>，发现错位立刻改表单</td></tr>
+<tr><td>训练中断（显存/磁盘）</td><td>检查点已自动存（按保存策略）。<strong>续训</strong>：回到 Train 页选"检查点路径"勾 resume（框架支持续训）</td></tr>
+<tr><td>日志乱跳/有 WARNING</td><td>大多是显存碎片或调度警告，非致命。<strong>看有没有 ERROR / 训练是否继续推进</strong>判断</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ SwanLab 接入：训练可视化监控（API Key 走环境变量）</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>光看终端日志不过瘾也不直观。<strong>SwanLab</strong> 是实验跟踪平台：训练曲线、超参对比、项目归档全部云端可视化。这一节完成接入——并特别示范<strong>密钥纪律</strong>：API Key 走环境变量，绝不写进代码/文档。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>SwanLab 三步接入（讲义流程）：</p>
+<pre># 2. 登录并拿 API Key（https://swanlab.cn 注册后，个人设置里生成）
+#    示例：你的密钥长这样：&lt;your_swanlab_api_key&gt;（不要抄真实值！）
+
+# 3. 本地终端（Linux/macOS）或设置面板导入环境变量
+export SWANLAB_API_KEY=&quot;&lt;your_swanlab_api_key&gt;&quot;
+# Windows 命令提示符：set SWANLAB_API_KEY=&lt;your_swanlab_api_key&gt;</pre>
+<pre># 1. 安装 SDK
+pip install swanlab
+# 4. 启动 LLaMA-Factory 训练时同时启动 swanlab 日志开关
+llamafactory-cli train config.yaml --use_swanlab</pre>
+<p>关键纪律（必读）：</p>
+<ul><li><strong>API Key 是账号钥匙</strong>；讲义示例里出现的 SwanLab 密钥是疑似真实密钥，本课程一律用 <code>&lt;your_swanlab_api_key&gt;</code> 占位；</li><li>密钥只进环境变量，<strong>不写入 .py/.yaml/.md/任何会被提交的配置</strong>；</li><li>泄露了立即去 SwanLab 设置里吊销重建。</li></ul>
+<p>WebUI 里的选项：训练参数页通常有 "use_swanlab" 开关；勾上后日志会显示 SwanLab 项目 URL，点开就是实时曲线面板。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>训练日志卡在 "Waiting for SwanLab"</td><td>Key 没配/配错。<strong>检查环境变量已 export</strong>，再重启训练</td></tr>
+<tr><td>把 Key 写进 YAML 配置并共享</td><td>配置会漂进仓库/文档，等于钥匙交给别人。<strong>只走环境变量</strong>，任何配置文件里出现真实 Key 一律视为泄露</td></tr>
+<tr><td>曲线面板开了但全是空白</td><td>训练刚启动数据未回传 / 网络问题。<strong>等前几个 step 日志回传</strong>再看；还有问题查 swanlab 官网项目页</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 训练完成：SwanLab 曲线的判读</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>训练完毕，SwanLab 面板里一堆曲线。哪些值得看、什么形态算"训好了"？这一节把"监控"落到"判断"：loss 曲线、学习率曲线、可能出现的过拟合形态。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>SwanLab 面板重点看三组：</p>
+<table>
+<tr><th>曲线</th><th>健康形态</th><th>异常形态</th></tr>
+<tr><td>train/loss</td><td>下降后趋平</td><td>不降=学习率低/数据错；陡升=爆了</td></tr>
+<tr><td>eval/loss（如有）</td><td>下降后趋平</td><td>回升=过拟合（第 6 章同款判读）</td></tr>
+<tr><td>learning_rate</td><td>按 warmup+调度变化</td><td>突变=配置错</td></tr>
+</table>
+<p>实操建议：</p>
+<ul><li>开训后<strong>定时瞄一眼</strong>（不用盯着），异常立刻停（省电省时间）；</li><li>同一个数据集不同参数跑两组，SwanLab 能<strong>对比曲线</strong>，这是它比终端日志强的地方；</li><li>把最终 loss 值和主要参数记进实验记录，作为"这版模型训得如何"的档案。</li></ul>
+<p>"完美训练"不存在的判据：看到 loss 平稳下降即可收工；追求更低 loss 属于另一阶段（数据扩容/换模型）。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只盯 train/loss 下没下降</td><td>过拟合靠 eval/loss 看出。<strong>有 eval 数据就同时看两个</strong></td></tr>
+<tr><td>curve 全绿就觉得"一定能用"</td><td>loss 低≠业务好用。<strong>最终判决看下一节 Chat 实测</strong>，监控只是第一道闸</td></tr>
+<tr><td>曲线对比时参数记混</td><td>SwanLab 面板按 run 管理。<strong>每个实验起清楚的名字</strong>（数据量_方法_参数）</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ Chat 评估：训练完立刻实测</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>训练的最终裁判不是曲线，是"问它问题它答得怎么样"。LLaMA-Factory 的 <strong>Chat 页</strong>就是干这个的：加载 LoRA 权重 → 对话实测 → 与原始模型对比，验证微调是否达到预期（第 7 章对比思路的界面版）。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>具体流程：</p>
+<pre># 方式一：命令行加载检查点
+llamafactory-cli chat --model_name_or_path Qwen2.5-7B \
+  --adapter_name_or_path saves/medical-lora</pre>
+<pre># 方式二：WebUI 的 Chat 页
+# 模型路径=底座，附加路径=你的 LoRA，点&quot;加载模型&quot;</pre>
+<p>实测三条线（每线 2~3 个问题）：</p>
+<table>
+<tr><th>线</th><th>问什么</th><th>看什么</th></tr>
+<tr><td>训练集内</td><td>数据集里类似问题</td><td>风格/知识点是否被学到</td></tr>
+<tr><td>领域泛化</td><td>未在数据里的医疗问题</td><td>是否迁移而不是死记</td></tr>
+<tr><td>通用能力</td><td>常识/闲聊</td><td>通用知识是否崩坏</td></tr>
+</table>
+<p>判定标准：<strong>领域回答有明显提升、通用能力不掉</strong> = 成功；领域提升但常识崩 = 过拟合，回第 6 章调参。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>Chat 页加载后答非所问</td><td>模板/系统提示没按模型卡配（第 10 章 TEMPLATE 同款坑）。<strong>在 Chat 页确认模板选择</strong></td></tr>
+<tr><td>只测训练集问题就宣布成功</td><td>背题不是本事。<strong>必须测训练集外的问题</strong>（第 7 章同款结论）</td></tr>
+<tr><td>微调后通用能力崩了</td><td>过拟合/数据偏科。<strong>减轮数、降学习率、扩数据</strong>三选，重跑一轮再评估</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 阶段 12 收官：三线能力总验收</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>最后一章的最后一节：整合本次阶段全部能力，给出总验收清单与"接下来去哪"。它不是复习，是<strong>毕业鉴定</strong>。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>阶段 12 总能力（三线纵横）：</p>
+<table>
+<tr><th>路线</th><th>核心产物</th><th>适用场景</th><th>章节</th></tr>
+<tr><td>手写 LoRA</td><td>train_lora.py + lora_model</td><td>学原理/定制/任意模型</td><td>4~7</td></tr>
+<tr><td>Unsloth</td><td>提速训练产物 + 对比数据</td><td>效率敏感/低显存</td><td>8~9</td></tr>
+<tr><td>LLaMA-Factory</td><td>WebUI 训练 + 监控曲线</td><td>快速迭代/多方法/团队</td><td>11~12</td></tr>
+<tr><td>部署</td><td>GGUF + Ollama + API</td><td>上线对外服务</td><td>10</td></tr>
+</table>
+<p>收官验收清单：</p>
+<table>
+<tr><th>#</th><th>能做什么</th><th>是否达成</th></tr>
+<tr><td>1</td><td>解释微调原理与三种技术路线差异</td><td>第 2 章+本阶段全程</td></tr>
+<tr><td>2</td><td>手写 LoRA 从环境到上传</td><td>第 4~7 章（含验收点）</td></tr>
+<tr><td>3</td><td>Unsloth 提速训练并对比实测</td><td>第 8~9 章</td></tr>
+<tr><td>4</td><td>LLaMA-Factory 注册数据训 LoRA</td><td>第 11 章+本章</td></tr>
+<tr><td>5</td><td>训练可视化监控与曲线判读</td><td>第 ⑥⑦ 节</td></tr>
+<tr><td>6</td><td>模型转 GGUF、Ollama 部署、API 调用</td><td>第 10 章</td></tr>
+</table>
+<p>给仍在学的人一句总纲：<strong>原理选路线、显存定参数、数据管下限、评估判结果</strong>——这四句话，就是"微调"这门手艺的全部框架。</p>
+<p>课后延伸（自选）：跑一个 DPO 偏好对齐对比实验、给部署模型写一个简单 Web 前端、用你的数据做一次 QLoRA 全流程并留下实验档案。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>学完就忘，遇到问题到处翻</td><td><strong>把三线各存一份模板</strong>（train_lora.py / unsloth notebook / 框架 config），下次直接改参数复用——模板是记忆的外置硬盘</td></tr>
+<tr><td>"都能跑通"但答不出"为什么这么配"</td><td>回到第 2/3/6 章把原理再读一遍。<strong>工具会更新，原理不过时</strong></td></tr>
+<tr><td>单线够用就否定其他两条</td><td>三线互补：手写兜底、Unsloth 提速、框架提效。<strong>按任务组合使用</strong>才是毕业姿态</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>WebUI 全流程</strong></td><td>启动→选型→填参→开训→看日志，全程不写训练代码</td></tr>
+<tr><td><strong>参数翻译能力</strong></td><td>WebUI 每个字段 ↔ 第 6 章学过的概念一一对应</td></tr>
+<tr><td><strong>SwanLab 监控</strong></td><td>API Key 走环境变量（密钥纪律示范）、曲线判读三看</td></tr>
+<tr><td><strong>Chat 评估</strong></td><td>训练集内/泛化/通用三线实测，毕业总验收</td></tr>
+</table>
+<p>至此，阶段 12「大模型高效微调与对齐技术」十二章节全部完成：原理 → 手写 → 提速 → 框架 → 部署 → 监控，闭环收官。</p>
+<h4>自测：能不能答上来</h4>
+<ol><li>启动 WebUI 的命令是什么？默认端口是多少？</li><li>WebUI 的四个主标签分别承担什么功能？</li><li>显存 8GB 机器开训 QLoRA 前，Train 页至少要确认哪三件事？</li><li>WebUI 的"学习率 2e-4、梯度累积 2"分别对应你学过的哪个概念？</li><li>SwanLab API Key 应该放哪里？为什么不能写进代码/配置？</li><li>训练曲线里 train/loss 下降但 eval/loss 回升，说明什么？怎么办？</li><li>阶段 12 收官后，四条能力线（手写/Unsloth/框架/部署）各自的核心产物是什么？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>人工智能（副本）：LLaMA-Factory WebUI 微调、SwanLab 监控与评估</a>
+<a href="https://github.com/hiyouga/LLaMA-Factory#webui" target="_blank" rel="noopener"><span class="k">官网</span>LLaMA-Factory WebUI 使用文档</a>
+<a href="https://docs.swanlab.cn/" target="_blank" rel="noopener"><span class="k">官网</span>SwanLab 官方文档（API Key 与实验管理）</a>
+</div>
+<div class="pager">
+<a href="11-第十一章-LLaMAFactory框架与数据集配置.html">← 第十一章　LLaMA-Factory 框架与数据集配置</a>
+<a class="nxt" href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html">第一章　Spark 简介：为什么需要它 →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="启动 WebUI：llamafactory-cli 一行起服务"><span class="n">1</span>启动 WebUI：llamafactory-cli 一行起服务</a>
+  <a href="#p2" title="模型与路径设置：选模型、选量化、配保存"><span class="n">2</span>模型与路径设置：选模型、选量化、配保存</a>
+  <a href="#p3" title="训练参数页：把学过的超参翻译成表单"><span class="n">3</span>训练参数页：把学过的超参翻译成表单</a>
+  <a href="#p4" title="开始训练：队列预览、点提交、看日志"><span class="n">4</span>开始训练：队列预览、点提交、看日志</a>
+  <a href="#p5" title="SwanLab 接入：训练可视化监控（API Key 走环境变量）"><span class="n">5</span>SwanLab 接入：训练可视化监控（API Key 走环境变量）</a>
+  <a href="#p6" title="训练完成：SwanLab 曲线的判读"><span class="n">6</span>训练完成：SwanLab 曲线的判读</a>
+  <a href="#p7" title="Chat 评估：训练完立刻实测"><span class="n">7</span>Chat 评估：训练完立刻实测</a>
+  <a href="#p8" title="阶段 12 收官：三线能力总验收"><span class="n">8</span>阶段 12 收官：三线能力总验收</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>

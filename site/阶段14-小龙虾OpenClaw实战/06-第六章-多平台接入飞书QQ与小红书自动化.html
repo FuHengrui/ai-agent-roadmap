@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第六章　多平台接入：飞书、QQ 与小红书自动化 · 建立知识库</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <h2>总览</h2>
+  <a href="../index.html">需求地图</a>
+  <a href="../README.html">怎么用这个知识库</a>
+  <h2>阶段 1 · 大语言模型基础与工程化实践</h2>
+  <a href="../阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html" class="sub">第一章　聊天机器人初体验</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/02-第二章-编程基本概念.html" class="sub">第二章　编程基本概念</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/03-第三章-序列.html" class="sub">第三章　序列</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/04-第四章-控制语句.html" class="sub">第四章　控制语句</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/05-第五章-函数和内存分析.html" class="sub">第五章　函数和内存分析</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/06-第六章-面向对象.html" class="sub">第六章　面向对象</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/07-第七章-异常机制.html" class="sub">第七章　异常机制</a>
+  <a href="../阶段01-大语言模型基础与工程化实践/08-第八章-模块.html" class="sub">第八章　模块</a>
+  <h2>阶段 2 · AI 智能体 Web 系统构建实战</h2>
+  <a href="../阶段02-AI智能体Web系统构建实战/01-第一章-后端服务开发FastAPI.html" class="sub">第一章　后端服务开发 FastAPI</a>
+  <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html" class="sub">第二章　FastAPI 进阶</a>
+  <h2>阶段 3 · Agent 项目启蒙</h2>
+  <a href="../阶段03-Agent项目启蒙/01-第一章-智能会议系统.html" class="sub">第一章　「第二大脑」智能会议系统：从需求到成品</a>
+  <h2>阶段 4 · 低代码 Agent 平台实战</h2>
+  <a href="../阶段04-低代码Agent平台实战/01-第一章-Coze平台入门与Bot构建.html" class="sub">第一章　Coze 平台入门与 Bot 构建</a>
+  <a href="../阶段04-低代码Agent平台实战/02-第二章-Coze工作流与多Agent.html" class="sub">第二章　Coze 工作流、对话流与多 Agent</a>
+  <h2>阶段 5 · 大模型核心原理与提示词工程</h2>
+  <a href="../阶段05-大模型核心原理与提示词工程/01-第一章-大模型核心原理.html" class="sub">第一章　大模型核心原理</a>
+  <a href="../阶段05-大模型核心原理与提示词工程/02-第二章-提示词工程.html" class="sub">第二章　提示词工程</a>
+  <h2>阶段 6 · 企业级RAG系统架构与实现</h2>
+  <a href="../阶段06-企业级RAG系统架构与实现/01-第一章-向量数据库基础.html" class="sub">第一章　向量数据库基础</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/02-第二章-Elasticsearch.html" class="sub">第二章　Elasticsearch</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/03-第三章-RAG基础理论.html" class="sub">第三章　RAG 基础理论</a>
+  <a href="../阶段06-企业级RAG系统架构与实现/04-第四章-RAG端到端快速演示.html" class="sub">第四章　RAG 端到端快速演示</a>
+  <h2>阶段 7 · 企业级RAG问答系统</h2>
+  <a href="../阶段07-企业级RAG问答系统/01-第一章-项目介绍与技术选型.html" class="sub">第一章　项目介绍与技术选型</a>
+  <a href="../阶段07-企业级RAG问答系统/02-第二章-项目搭建与文档解析.html" class="sub">第二章　项目搭建与文档解析</a>
+  <a href="../阶段07-企业级RAG问答系统/03-第三章-文本清洗与智能分块.html" class="sub">第三章　文本清洗与智能分块</a>
+  <a href="../阶段07-企业级RAG问答系统/04-第四章-嵌入模型与向量存储.html" class="sub">第四章　嵌入模型与向量存储</a>
+  <a href="../阶段07-企业级RAG问答系统/05-第五章-检索与LLM生成.html" class="sub">第五章　检索与 LLM 生成</a>
+  <a href="../阶段07-企业级RAG问答系统/06-第六章-API接口与前端联调.html" class="sub">第六章　API 接口与前端联调</a>
+  <h2>阶段 8 · AI Agent 智能体与多模态应用</h2>
+  <a href="../阶段08-AI Agent智能体与多模态应用/01-第一章-Agent智能体理论基础.html" class="sub">第一章　Agent 智能体理论基础</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/02-第二章-Agent工具系统与ToolCalling.html" class="sub">第二章　Agent 工具系统与 Tool Calling</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/03-第三章-LangChain基础模型提示词与输出控制.html" class="sub">第三章　LangChain 基础：模型、提示词与输出控制</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/04-第四章-LCEL链式调用.html" class="sub">第四章　LCEL 链式调用</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/05-第五章-LangGraph图编排.html" class="sub">第五章　LangGraph 图编排</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/06-第六章-LangGraph工具系统.html" class="sub">第六章　LangGraph 工具系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/07-第七章-LangGraph记忆系统.html" class="sub">第七章　LangGraph 记忆系统</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/08-第八章-MCP协议与企业级工具开发.html" class="sub">第八章　MCP 协议与企业级工具开发</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/09-第九章-Human-in-the-Loop人机协作.html" class="sub">第九章　Human-in-the-Loop 人机协作</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/10-第十章-Agent实战与LangSmith可观测.html" class="sub">第十章　Agent 实战与 LangSmith 可观测</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/11-第十一章-A2A跨Agent协作协议.html" class="sub">第十一章　A2A 跨 Agent 协作协议</a>
+  <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html" class="sub">第十二章　Agent Skills 技能系统</a>
+  <h2>阶段 9 · 智能运营平台</h2>
+  <a href="../阶段09-智能运营平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段09-智能运营平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段09-智能运营平台/03-第三章-后端工程搭建.html" class="sub">第三章　后端工程搭建：uv 与 FastAPI 骨架</a>
+  <a href="../阶段09-智能运营平台/04-第四章-数据模型与Aerich迁移.html" class="sub">第四章　数据模型与 Aerich 迁移</a>
+  <a href="../阶段09-智能运营平台/05-第五章-应用启动与测试API.html" class="sub">第五章　应用启动与测试 API</a>
+  <a href="../阶段09-智能运营平台/06-第六章-JWT登录与认证鉴权.html" class="sub">第六章　JWT 登录与认证鉴权</a>
+  <a href="../阶段09-智能运营平台/07-第七章-前端工程接入与联调.html" class="sub">第七章　前端工程接入与联调</a>
+  <a href="../阶段09-智能运营平台/08-第八章-Coze选题智能体打造.html" class="sub">第八章　Coze 选题智能体打造</a>
+  <a href="../阶段09-智能运营平台/09-第九章-CozeAPI调用与工作流编排.html" class="sub">第九章　Coze API 调用与工作流编排</a>
+  <a href="../阶段09-智能运营平台/10-第十章-选题生成API与数据落库.html" class="sub">第十章　选题生成 API 与数据落库</a>
+  <a href="../阶段09-智能运营平台/11-第十一章-文案创作与编辑管理.html" class="sub">第十一章　文案创作与编辑管理</a>
+  <a href="../阶段09-智能运营平台/12-第十二章-AI配图与OSS上传发布.html" class="sub">第十二章　AI 配图与 OSS 上传发布</a>
+  <h2>阶段 10 · 安康智慧健康管理平台</h2>
+  <a href="../阶段10-安康智慧健康管理平台/01-第一章-项目全景与技术选型.html" class="sub">第一章　项目全景与技术选型</a>
+  <a href="../阶段10-安康智慧健康管理平台/02-第二章-数据库设计与初始化.html" class="sub">第二章　数据库设计与初始化</a>
+  <a href="../阶段10-安康智慧健康管理平台/03-第三章-后端工程搭建与核心配置.html" class="sub">第三章　后端工程搭建与核心配置</a>
+  <a href="../阶段10-安康智慧健康管理平台/04-第四章-数据模型层与计算属性.html" class="sub">第四章　数据模型层与计算属性</a>
+  <a href="../阶段10-安康智慧健康管理平台/05-第五章-应用启动与患者管理API.html" class="sub">第五章　应用启动与患者管理 API</a>
+  <a href="../阶段10-安康智慧健康管理平台/06-第六章-血糖管理模块与统计分析.html" class="sub">第六章　血糖管理模块与统计分析</a>
+  <a href="../阶段10-安康智慧健康管理平台/07-第七章-饮食用药运动三大模块.html" class="sub">第七章　饮食用药运动三大模块</a>
+  <a href="../阶段10-安康智慧健康管理平台/08-第八章-智能饮食引擎与规则推荐.html" class="sub">第八章　智能饮食引擎与规则推荐</a>
+  <a href="../阶段10-安康智慧健康管理平台/09-第九章-健康报告与LLM客户端.html" class="sub">第九章　健康报告与 LLM 客户端</a>
+  <a href="../阶段10-安康智慧健康管理平台/10-第十章-血糖统计与健康仪表盘.html" class="sub">第十章　血糖统计与健康仪表盘</a>
+  <a href="../阶段10-安康智慧健康管理平台/11-第十一章-RAG医学知识库.html" class="sub">第十一章　RAG 医学知识库</a>
+  <a href="../阶段10-安康智慧健康管理平台/12-第十二章-LangGraph工作流与AI对话.html" class="sub">第十二章　LangGraph 工作流与 AI 对话</a>
+  <h2>阶段 11 · LegalMind 法律咨询系统</h2>
+  <a href="../阶段11-LegalMind法律咨询系统/01-第一章-LegalMind项目全景与技术选型.html" class="sub">第一章　LegalMind 项目全景与技术选型</a>
+  <a href="../阶段11-LegalMind法律咨询系统/02-第二章-开发环境与基础设施.html" class="sub">第二章　开发环境与基础设施</a>
+  <a href="../阶段11-LegalMind法律咨询系统/03-第三章-FastAPI骨架搭建.html" class="sub">第三章　FastAPI 骨架搭建</a>
+  <a href="../阶段11-LegalMind法律咨询系统/04-第四章-数据库模型与ORM.html" class="sub">第四章　数据库模型与 ORM</a>
+  <a href="../阶段11-LegalMind法律咨询系统/05-第五章-用户认证系统.html" class="sub">第五章　用户认证系统</a>
+  <a href="../阶段11-LegalMind法律咨询系统/06-第六章-LLM多供应商客户端.html" class="sub">第六章　LLM 多供应商客户端</a>
+  <a href="../阶段11-LegalMind法律咨询系统/07-第七章-文本向量化与向量库.html" class="sub">第七章　文本向量化与向量库</a>
+  <a href="../阶段11-LegalMind法律咨询系统/08-第八章-RAG检索与重排序.html" class="sub">第八章　RAG 检索与重排序</a>
+  <a href="../阶段11-LegalMind法律咨询系统/09-第九章-Agent系统与LangGraph工作流.html" class="sub">第九章　Agent 系统与 LangGraph 工作流</a>
+  <a href="../阶段11-LegalMind法律咨询系统/10-第十章-聊天与文书生成API.html" class="sub">第十章　聊天与文书生成 API</a>
+  <a href="../阶段11-LegalMind法律咨询系统/11-第十一章-前端初始化与路由.html" class="sub">第十一章　前端初始化与路由</a>
+  <a href="../阶段11-LegalMind法律咨询系统/12-第十二章-核心页面与生产部署.html" class="sub">第十二章　核心页面实现与生产部署</a>
+  <h2>阶段 12 · 大模型高效微调与对齐技术</h2>
+  <a href="../阶段12-大模型高效微调与对齐技术/01-第一章-微调全景为什么要微调大模型.html" class="sub">第一章　微调全景：为什么要微调大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/02-第二章-三大技术对比微调强化学习知识蒸馏.html" class="sub">第二章　三大技术对比：微调·强化学习·知识蒸馏</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/03-第三章-LoRA原理用低秩分解撬动大模型.html" class="sub">第三章　LoRA 原理：用低秩分解撬动大模型</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/04-第四章-手写LoRA微调一环境与模型加载.html" class="sub">第四章　手写 LoRA 微调（一）：环境与模型加载</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/05-第五章-手写LoRA微调二数据准备与预处理.html" class="sub">第五章　手写 LoRA 微调（二）：数据准备与预处理</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/06-第六章-手写LoRA微调三训练与保存.html" class="sub">第六章　手写 LoRA 微调（三）：训练与保存</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/07-第七章-手写LoRA微调四测试合并与上传.html" class="sub">第七章　手写 LoRA 微调（四）：测试、合并与上传</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/08-第八章-Unsloth高效微调懒人利器.html" class="sub">第八章　Unsloth 高效微调：懒人利器</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/09-第九章-Unsloth实战数据准备与训练.html" class="sub">第九章　Unsloth 实战：数据准备与训练</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/10-第十章-模型格式与本地部署GGUF与Ollama.html" class="sub">第十章　模型格式与本地部署：GGUF 与 Ollama</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/11-第十一章-LLaMAFactory框架与数据集配置.html" class="sub">第十一章　LLaMA-Factory 框架与数据集配置</a>
+  <a href="../阶段12-大模型高效微调与对齐技术/12-第十二章-WebUI微调与监控评估.html" class="sub">第十二章　Web UI 微调与监控评估</a>
+  <h2>阶段 13 · 大数据处理与分布式检索技术</h2>
+  <a href="../阶段13-大数据处理与分布式检索技术/01-第一章-Spark简介为什么需要它.html" class="sub">第一章　Spark 简介：为什么需要它</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/02-第二章-Spark架构与运行模式总览.html" class="sub">第二章　Spark 架构与运行模式总览</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/03-第三章-Local模式与WordCount入门.html" class="sub">第三章　Local 模式与 WordCount 入门</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/04-第四章-Standalone独立部署模式与高可用.html" class="sub">第四章　Standalone 独立部署模式与高可用</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/05-第五章-SparkOnYARN与spark-submit.html" class="sub">第五章　Spark On YARN 与 spark-submit</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/06-第六章-RDD数据抽象为什么需要与五大特性.html" class="sub">第六章　RDD 数据抽象：为什么需要与五大特性</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/07-第七章-RDD转换算子核心数据处理工具.html" class="sub">第七章　RDD 转换算子：核心数据处理工具</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/08-第八章-RDD行动算子触发计算与输出结果.html" class="sub">第八章　RDD 行动算子：触发计算与输出结果</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/09-第九章-Spark内核JobStageTask与宽窄依赖.html" class="sub">第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/10-第十章-Pipeline流水线Cache缓存与Checkpoint.html" class="sub">第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/11-第十一章-并行度广播变量与累加器.html" class="sub">第十一章　并行度、广播变量与累加器</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/12-第十二章-RDD实战UVPV统计与二次排序.html" class="sub">第十二章　RDD 实战：UV/PV 统计与二次排序</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/13-第十三章-SparkSQL与DataFrame从RDD到带表头的分布式表.html" class="sub">第十三章　SparkSQL 与 DataFrame：从 RDD 到带表头的分布式表</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/14-第十四章-SparkSQL数据源读写与SparkOnHive.html" class="sub">第十四章　SparkSQL 数据源读写与 Spark On Hive</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/15-第十五章-DSL与SQL写分析的两副笔墨.html" class="sub">第十五章　DSL 与 SQL：写分析的两副笔墨</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/16-第十六章-SparkStreaming从批到流的第一课.html" class="sub">第十六章　Spark Streaming：从批到流的第一课</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/17-第十七章-SparkStreaming实战Kafka接入与生产调优.html" class="sub">第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>
+  <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html" class="sub">第十八章　阶段实战：日志统计全链路与收官复习</a>
+  <h2>阶段 14 · 小龙虾 OpenClaw 实战</h2>
+  <a href="01-第一章-认识OpenClaw从会聊天到会做事的AI智能体.html" class="sub">第一章　认识 OpenClaw：从"会聊天"到"会做事"的 AI 智能体</a>
+  <a href="02-第二章-能做什么四大应用场景.html" class="sub">第二章　能做什么：四大应用场景</a>
+  <a href="03-第三章-云端部署阿里云服务器与WebUI.html" class="sub">第三章　云端部署：阿里云服务器与 WebUI 管理</a>
+  <a href="04-第四章-配置文件三件套AGENTS与SOUL与USER.html" class="sub">第四章　配置文件三件套：AGENTS / SOUL / USER</a>
+  <a href="05-第五章-多平台接入企业微信与钉钉.html" class="sub">第五章　多平台接入：企业微信与钉钉</a>
+  <a href="06-第六章-多平台接入飞书QQ与小红书自动化.html" class="cur">第六章　多平台接入：飞书、QQ 与小红书自动化</a>
+  <h2>阶段 15 · Hermes-Agent 自我进化的超级智能体</h2>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html" class="sub">第一章　认识自我进化的超级智能体 Hermes-Agent</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/02-第二章-环境准备与安装部署.html" class="sub">第二章　环境准备与安装部署</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/03-第三章-消息平台接入微信QQ与飞书.html" class="sub">第三章　消息平台接入：微信 / QQ / 飞书</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/04-第四章-第一个应用案例提示词让Agent完成一次完整交付.html" class="sub">第四章　第一个应用案例：提示词让 Agent 完成一次完整交付</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/05-第五章-个性化定制SOULmd身份文件.html" class="sub">第五章　个性化定制：SOUL.md 身份文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/06-第六章-工具与工具集Agent的能力清单.html" class="sub">第六章　工具与工具集：Agent 的"能力清单"</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/07-第七章-Skill技能系统从安装到实战.html" class="sub">第七章　Skill 技能系统：从安装到实战</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/08-第八章-持久记忆MEMORY与USER双文件.html" class="sub">第八章　持久记忆：MEMORY / USER 双文件</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/09-第九章-皮肤主题与外观定制.html" class="sub">第九章　皮肤主题与外观定制</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/10-第十章-MCP扩展把无限变成你的新底座.html" class="sub">第十章　MCP 扩展：把"无限"变成你的新底座</a>
+  <a href="../阶段15-Hermes-Agent自我进化的超级智能体/11-第十一章-定时任务Web仪表板与常用命令.html" class="sub">第十一章　定时任务、Web 仪表板与常用命令</a>
+  <h2>阶段 16 · Vibe Coding 实践</h2>
+  <a href="../阶段16-Vibe Coding实践/01-第一章-认识Trae从查文档到AI协作开发.html" class="sub">第一章　认识 Trae：从查文档到 AI 协作开发</a>
+  <a href="../阶段16-Vibe Coding实践/02-第二章-TraeChat模式边聊边写代码.html" class="sub">第二章　Trae Chat 模式：边聊边写代码</a>
+  <a href="../阶段16-Vibe Coding实践/03-第三章-TraeBuilder模式AI自主开发.html" class="sub">第三章　Trae Builder 模式：AI 自主开发</a>
+  <a href="../阶段16-Vibe Coding实践/04-第四章-Trae上下文Rules与自定义模型.html" class="sub">第四章　Trae 上下文、Rules 与自定义模型</a>
+  <a href="../阶段16-Vibe Coding实践/05-第五章-MCP协议与智能旅行助手实战.html" class="sub">第五章　MCP 协议与智能旅行助手实战</a>
+  <a href="../阶段16-Vibe Coding实践/06-第六章-认识Cursor与安装配置.html" class="sub">第六章　认识 Cursor 与安装配置</a>
+  <a href="../阶段16-Vibe Coding实践/07-第七章-Cursor四种模式与内联智能.html" class="sub">第七章　Cursor 四种模式与内联智能</a>
+  <a href="../阶段16-Vibe Coding实践/08-第八章-Cursor精准上下文与Rule规则体系.html" class="sub">第八章　Cursor 精准上下文与 Rule 规则体系</a>
+  <a href="../阶段16-Vibe Coding实践/09-第九章-Cursor实战Chrome插件开发.html" class="sub">第九章　Cursor 实战：Chrome 插件开发</a>
+  <a href="../阶段16-Vibe Coding实践/10-第十章-Codex简介与安装准备.html" class="sub">第十章　Codex 简介与安装准备</a>
+  <a href="../阶段16-Vibe Coding实践/11-第十一章-Codex功能模块与权限沙箱.html" class="sub">第十一章　Codex 功能模块与权限沙箱</a>
+  <a href="../阶段16-Vibe Coding实践/12-第十二章-Codex代码管理与记忆扩展.html" class="sub">第十二章　Codex 代码管理与记忆扩展</a>
+  <h2>阶段 17 · 数据科学与智能分析基础</h2>
+  <a href="../阶段17-数据科学与智能分析基础/01-第一章-Python数据科学环境Anaconda与conda虚拟环境.html" class="sub">第一章　Python 数据科学环境：Anaconda 与 conda 虚拟环境</a>
+  <a href="../阶段17-数据科学与智能分析基础/02-第二章-JupyterNotebook镜像配置与开发工具链.html" class="sub">第二章　Jupyter Notebook 镜像配置与开发工具链</a>
+  <a href="../阶段17-数据科学与智能分析基础/03-第三章-Matplotlib基础与图形定制.html" class="sub">第三章　Matplotlib 基础与图形定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/04-第四章-Matplotlib常用图表类型.html" class="sub">第四章　Matplotlib 常用图表类型</a>
+  <a href="../阶段17-数据科学与智能分析基础/05-第五章-Seaborn入门与全局定制.html" class="sub">第五章　Seaborn 入门与全局定制</a>
+  <a href="../阶段17-数据科学与智能分析基础/06-第六章-Seaborn统计图表.html" class="sub">第六章　Seaborn 统计图表</a>
+  <a href="../阶段17-数据科学与智能分析基础/07-第七章-NumPy入门与数组创建.html" class="sub">第七章　NumPy 入门与数组创建</a>
+  <a href="../阶段17-数据科学与智能分析基础/08-第八章-ndarray访问变换与拼接.html" class="sub">第八章　ndarray 访问、变换与拼接</a>
+  <a href="../阶段17-数据科学与智能分析基础/09-第九章-NumPy计算统计与进阶.html" class="sub">第九章　NumPy 计算、统计与进阶</a>
+  <a href="../阶段17-数据科学与智能分析基础/10-第十章-Pandas基础数据结构与数据读写.html" class="sub">第十章　Pandas 基础数据结构与数据读写</a>
+  <a href="../阶段17-数据科学与智能分析基础/11-第十一章-数据探查列操作与索引.html" class="sub">第十一章　数据探查、列操作与索引</a>
+  <a href="../阶段17-数据科学与智能分析基础/12-第十二章-缺失值筛选与分组.html" class="sub">第十二章　缺失值、筛选与分组</a>
+  <a href="../阶段17-数据科学与智能分析基础/13-第十三章-数据合并与时间序列.html" class="sub">第十三章　数据合并与时间序列</a>
+  <a href="../阶段17-数据科学与智能分析基础/14-第十四章-Pandas统计可视化与性能.html" class="sub">第十四章　Pandas 统计、可视化与性能</a>
+  <a href="../阶段17-数据科学与智能分析基础/15-第十五章-MySQL入门概念安装与SQL初识.html" class="sub">第十五章　MySQL 入门：概念、安装与 SQL 初识</a>
+  <a href="../阶段17-数据科学与智能分析基础/16-第十六章-MySQL库表结构数据类型与约束.html" class="sub">第十六章　MySQL 库表结构、数据类型与约束</a>
+  <a href="../阶段17-数据科学与智能分析基础/17-第十七章-MySQL数据操作与单表查询.html" class="sub">第十七章　MySQL 数据操作与单表查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/18-第十八章-MySQL函数与分组聚合.html" class="sub">第十八章　MySQL 函数与分组聚合</a>
+  <a href="../阶段17-数据科学与智能分析基础/19-第十九章-MySQL多表查询与子查询.html" class="sub">第十九章　MySQL 多表查询与子查询</a>
+  <a href="../阶段17-数据科学与智能分析基础/20-第二十章-MySQL索引事务与用户管理.html" class="sub">第二十章　MySQL 索引、事务与用户管理</a>
+  <h2>阶段 18 · 云原生开发环境与 DevOps 工具链</h2>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/01-第一章-Linux概述与版本安装.html" class="sub">第一章　Linux 概述与版本安装</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/02-第二章-虚拟机网络配置与XShell远程连接.html" class="sub">第二章　虚拟机网络配置与 XShell 远程连接</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/03-第三章-用户与用户组管理.html" class="sub">第三章　用户与用户组管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/04-第四章-文件类型与权限管理.html" class="sub">第四章　文件类型与权限管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/05-第五章-目录与文件操作命令.html" class="sub">第五章　目录与文件操作命令</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/06-第六章-打包压缩与文件查找管道.html" class="sub">第六章　打包压缩与文件查找管道</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/07-第七章-环境变量与磁盘挂载管理.html" class="sub">第七章　环境变量与磁盘挂载管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/08-第八章-软件安装与进程服务管理.html" class="sub">第八章　软件安装与进程服务管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/09-第九章-Git概述与版本控制思想.html" class="sub">第九章　Git 概述与版本控制思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/10-第十章-Git安装配置与本地仓库基础.html" class="sub">第十章　Git 安装配置与本地仓库基础</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/11-第十一章-Git文件管理日志与版本还原.html" class="sub">第十一章　Git 文件管理、日志与版本还原</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/12-第十二章-Git远程仓库与多人协作.html" class="sub">第十二章　Git 远程仓库与多人协作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/13-第十三章-Git分支管理.html" class="sub">第十三章　Git 分支管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/14-第十四章-Git标签与GitFlow工作流.html" class="sub">第十四章　Git 标签与 GitFlow 工作流</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/15-第十五章-Docker概述与容器化思想.html" class="sub">第十五章　Docker 概述与容器化思想</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/16-第十六章-Docker镜像与容器基本操作.html" class="sub">第十六章　Docker 镜像与容器基本操作</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/17-第十七章-容器数据卷管理.html" class="sub">第十七章　容器数据卷管理</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/18-第十八章-Dockerfile镜像定制.html" class="sub">第十八章　Dockerfile 镜像定制</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/19-第十九章-容器网络与联动.html" class="sub">第十九章　容器网络与联动</a>
+  <a href="../阶段18-云原生开发环境与DevOps工具链/20-第二十章-镜像仓库与Docker架构.html" class="sub">第二十章　镜像仓库与 Docker 架构</a>
+  <h2>阶段 19 · 大模型开发工具平台</h2>
+  <a href="../阶段19-大模型开发工具平台/01-第一章-ModelScope云端Notebook算力平台.html" class="sub">第一章　ModelScope 云端 Notebook 算力平台</a>
+  <a href="../阶段19-大模型开发工具平台/02-第二章-ModelScope环境配置与Conda管理.html" class="sub">第二章　ModelScope 环境配置与 Conda 管理</a>
+  <a href="../阶段19-大模型开发工具平台/03-第三章-AutoDL云GPU平台与实例创建.html" class="sub">第三章　AutoDL 云 GPU 平台与实例创建</a>
+  <a href="../阶段19-大模型开发工具平台/04-第四章-AutoDL远程开发SSH免密与IDE接入.html" class="sub">第四章　AutoDL 远程开发：SSH 免密与 IDE 接入</a>
+  <a href="../阶段19-大模型开发工具平台/05-第五章-AutoDL学术加速与网盘管理.html" class="sub">第五章　AutoDL 学术加速与网盘管理</a>
+  <h2>阶段 20 · 机器学习算法与工程实战</h2>
+  <a href="../阶段20-机器学习算法与工程实战/01-第一章-线性回归概念与损失函数.html" class="sub">第一章　线性回归概念与损失函数</a>
+  <a href="../阶段20-机器学习算法与工程实战/02-第二章-最大似然推导与解析解.html" class="sub">第二章　最大似然推导与解析解</a>
+  <a href="../阶段20-机器学习算法与工程实战/03-第三章-线性回归代码实战.html" class="sub">第三章　线性回归代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/04-第四章-梯度下降法原理.html" class="sub">第四章　梯度下降法原理</a>
+  <a href="../阶段20-机器学习算法与工程实战/05-第五章-三种梯度下降法.html" class="sub">第五章　三种梯度下降法</a>
+  <a href="../阶段20-机器学习算法与工程实战/06-第六章-梯度下降代码实战.html" class="sub">第六章　梯度下降代码实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/07-第七章-归一化与正则化.html" class="sub">第七章　归一化与正则化</a>
+  <a href="../阶段20-机器学习算法与工程实战/08-第八章-衍生回归算法与多项式升维.html" class="sub">第八章　衍生回归算法与多项式升维</a>
+  <a href="../阶段20-机器学习算法与工程实战/09-第九章-保险花销预测实战.html" class="sub">第九章　保险花销预测实战</a>
+  <a href="../阶段20-机器学习算法与工程实战/10-第十章-逻辑回归与Softmax回归.html" class="sub">第十章　逻辑回归与 Softmax 回归</a>
+  <a href="../阶段20-机器学习算法与工程实战/11-第十一章-KMeans聚类与距离度量.html" class="sub">第十一章　KMeans 聚类与距离度量</a>
+  <a href="../阶段20-机器学习算法与工程实战/12-第十二章-KMeans变体.html" class="sub">第十二章　KMeans 变体</a>
+  <a href="../阶段20-机器学习算法与工程实战/13-第十三章-密度聚类.html" class="sub">第十三章　密度聚类</a>
+  <a href="../阶段20-机器学习算法与工程实战/14-第十四章-决策树算法.html" class="sub">第十四章　决策树算法</a>
+  <a href="../阶段20-机器学习算法与工程实战/15-第十五章-集成学习与GBDT.html" class="sub">第十五章　集成学习与 GBDT</a>
+  <h2>阶段 21 · 深度学习框架与神经网络架构</h2>
+  <a href="../阶段21-深度学习框架与神经网络架构/01-第一章-深度学习与主流框架总览.html" class="sub">第一章　深度学习与主流框架总览</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/02-第二章-PyTorch核心库与GPU加速环境.html" class="sub">第二章　PyTorch 核心库与 GPU 加速环境</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/03-第三章-张量的创建与数据类型.html" class="sub">第三章　张量的创建与数据类型</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/04-第四章-张量类型转换与NumPy互转.html" class="sub">第四章　张量类型转换与 NumPy 互转</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/05-第五章-张量运算与广播机制.html" class="sub">第五章　张量运算与广播机制</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/06-第六章-张量索引形状变换与拼接.html" class="sub">第六章　张量索引、形状变换与拼接</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/07-第七章-自动微分PyTorch的核心魔法.html" class="sub">第七章　自动微分：PyTorch 的核心魔法</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/08-第八章-神经网络结构与激活函数.html" class="sub">第八章　神经网络结构与激活函数</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/09-第九章-nnModule模型构建与前向传播.html" class="sub">第九章　用 nn.Module 构建模型与前向传播</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/10-第十章-损失函数.html" class="sub">第十章　损失函数：训练的裁判标准</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/11-第十一章-梯度下降与完整训练循环.html" class="sub">第十一章　梯度下降与完整的训练循环</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/12-第十二章-优化算法.html" class="sub">第十二章　优化算法：让下山更快更稳</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/13-第十三章-正则化与过拟合.html" class="sub">第十三章　正则化与过拟合</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/14-第十四章-乳腺癌二分类实战.html" class="sub">第十四章　综合实战：乳腺癌二分类建模</a>
+  <a href="../阶段21-深度学习框架与神经网络架构/15-第十五章-FasterRCNN论文精读.html" class="sub">第十五章　精读经典论文：Faster R-CNN</a>
+  <h2>阶段 22 · 自然语言处理与Transformer架构</h2>
+  <a href="../阶段22-自然语言处理与Transformer架构/01-第一章-NLP基础与文本表示.html" class="sub">第一章　NLP基础与文本表示</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/02-第二章-jieba中文分词.html" class="sub">第二章　jieba中文分词</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/03-第三章-关键词抽取与词性标注.html" class="sub">第三章　关键词抽取与词性标注</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/04-第四章-NLTK英文文本处理.html" class="sub">第四章　NLTK英文文本处理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/05-第五章-词向量与Word2Vec.html" class="sub">第五章　词向量与Word2Vec</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/06-第六章-循环神经网络RNN原理.html" class="sub">第六章　循环神经网络RNN原理</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/07-第七章-RNN歌词生成实战.html" class="sub">第七章　RNN歌词生成实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/08-第八章-LSTM门控机制.html" class="sub">第八章　LSTM门控机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/09-第九章-GRU与双向RNN.html" class="sub">第九章　GRU与双向RNN</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/10-第十章-Seq2Seq序列到序列模型.html" class="sub">第十章　Seq2Seq序列到序列模型</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/11-第十一章-注意力机制.html" class="sub">第十一章　注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/12-第十二章-自注意力机制.html" class="sub">第十二章　自注意力机制</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/13-第十三章-多头注意力与位置编码.html" class="sub">第十三章　多头注意力与位置编码</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/14-第十四章-Transformer整体架构与机器翻译实战.html" class="sub">第十四章　Transformer整体架构与机器翻译实战</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/15-第十五章-ELMo动态词向量.html" class="sub">第十五章　ELMo动态词向量</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/16-第十六章-BERT预训练与微调.html" class="sub">第十六章　BERT预训练与微调</a>
+  <a href="../阶段22-自然语言处理与Transformer架构/17-第十七章-GPT生成式模型.html" class="sub">第十七章　GPT生成式模型</a>
+  <h2>阶段 23 · 模型压缩与高性能推理优化</h2>
+  <a href="../阶段23-模型压缩与高性能推理优化/01-第一章-模型压缩的目的与评估指标.html" class="sub">第一章　模型压缩的目的与评估指标</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/02-第二章-模型压缩方法总览与框架生态.html" class="sub">第二章　模型压缩方法总览与框架生态</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/03-第三章-神经网络剪枝基础.html" class="sub">第三章　神经网络剪枝基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/04-第四章-剪枝时机与流程.html" class="sub">第四章　剪枝时机与流程</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/05-第五章-非结构化剪枝实战掩码稀疏度与动态网络手术.html" class="sub">第五章　非结构化剪枝实战：掩码、稀疏度与动态网络手术</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/06-第六章-结构化剪枝神经元剪枝BN缩放因子与结果导向.html" class="sub">第六章　结构化剪枝：神经元剪枝、BN缩放因子与结果导向</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/07-第七章-神经网络量化基础.html" class="sub">第七章　神经网络量化基础</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/08-第八章-线性量化实战对称性校准与训练时量化.html" class="sub">第八章　线性量化实战：对称性、校准与训练时量化</a>
+  <a href="../阶段23-模型压缩与高性能推理优化/09-第九章-知识蒸馏大模型当老师.html" class="sub">第九章　知识蒸馏：大模型当老师</a>
+  <h2>阶段 24 · 大模型时代的模型运维与部署</h2>
+  <a href="../阶段24-大模型时代的模型运维与部署/01-第一章-vLLM大模型推理引擎的核心原理.html" class="sub">第一章　vLLM：大模型推理引擎的核心原理</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/02-第二章-vLLM特性总览与Ollama同台对比.html" class="sub">第二章　vLLM 特性总览：与 Ollama 同台对比</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/03-第三章-部署环境准备硬件检查与vLLM安装.html" class="sub">第三章　部署环境准备：硬件检查与 vLLM 安装</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/04-第四章-模型下载与服务启动.html" class="sub">第四章　模型下载与服务启动</a>
+  <a href="../阶段24-大模型时代的模型运维与部署/05-第五章-服务验证与基础调用curl与OpenAI-SDK.html" class="sub">第五章　服务验证与基础调用：curl 与 OpenAI SDK</a>
+</nav>
+<main class="main"><div class="wrap">
+<div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 14 · 小龙虾 OpenClaw 实战 › <strong>第六章</strong></div>
+<h1>第六章　多平台接入：飞书、QQ 与小红书自动化</h1>
+<div class="subtitle">阶段 14 · 小龙虾 OpenClaw 实战　|　平台实操　|　难度 ★★★</div>
+<div class="why"><span class="tag">这一章在解决什么问题</span>
+<p>部署好的 OpenClaw 像一台只会"思考"的机器——它有了模型、有了网关，但还没有任何入口，谁都用不上它。 <strong>同事在飞书群里想让机器人帮忙汇总日报，它怎么进群？</strong> 你想让它到小红书上自动发笔记、追热点，它凭什么能操作账号？这一章要解决的就是这两件事：把 OpenClaw 接进飞书、QQ 两个聊天平台，再给它装上能自动运营小红书的技能包。</p>
+<p><strong>为什么偏偏是这三个平台？</strong> 飞书和 QQ 代表"通道接入"：机器人挂在 IM 里收消息、回消息，这是企业协作与个人服务最常见的形态；小红书代表"技能扩展"：Agent 不再等人来聊天，而是自己上平台搜索、发布、互动、做内容运营。前者靠配置，后者靠技能包，两种完全不同的接入形态在这一章一次走完。</p>
+<p>学完这一章，你能回答：<strong>飞书机器人从注册应用到配对授权要走完哪几步？QQ 机器人的凭证去哪拿？怎么让 OpenClaw 自动运营一个小红书账号？</strong></p>
+</div>
+<div class="map"><span class="tag">这一章在整个知识库里的位置</span>
+<span class="node"><strong>上一章</strong>：OpenClaw 完成了部署与基础概念，先接入了企业微信与钉钉，走通了"内部 IM 接入"的第一课</span>
+<span class="node"><span class="here">本章 ← 你在这里：把"应用注册 → 拿凭证 → 配权限 → 连网关"这套思路在飞书、QQ 上再走一遍，并升级到内容平台——装上能自动运营小红书的技能包</span></span>
+<span class="node"><strong>下一章</strong>：多平台入口就绪后，进入真实业务编排——把飞书/QQ/小红书的能力组合成自动化工作流</span>
+<span class="node"><strong>阶段终点</strong>：OpenClaw 完成部署 + 模型与通道配置 + 企微、钉钉、飞书、QQ、小红书五平台接入，成为一个"多条腿走路"的自动化助手</span>
+</div>
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 飞书准备：开放平台注册 + 创建企业自建应用</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>OpenClaw 想"变成"飞书里的一个机器人，得先有合法身份——飞书只认在开放平台注册过的应用。这一节的任务是注册开发者账号，并创建"企业自建应用"作为机器人的载体。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>第一步：打开飞书开放平台 https://open.feishu.cn/ 并注册账号，注册流程按提示即可完成。 第二步：创建企业自建应用——这是在飞书体系里登记一个属于自己团队的"应用壳"，后面的能力、权限、机器人全部挂在这个壳上。</p>
+<table>
+<tr><th>步骤</th><th>做什么</th><th>产出</th></tr>
+<tr><td>① 注册</td><td>open.feishu.cn 按提示完成注册</td><td>可登录开放平台的开发者身份</td></tr>
+<tr><td>② 创建</td><td>创建企业自建应用</td><td>专属应用壳，准备挂机器人能力</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>用手机飞书 App 登录后没有"创建应用"入口</td><td>开发者身份要在开放平台 open.feishu.cn 注册，注册流程按提示走完才具备创建权限</td></tr>
+<tr><td>找不到"企业自建应用"选项</td><td>该应用类型需要有企业/团队主体；先创建或加入一个团队，再回来创建应用</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 获取应用凭证：App ID / App Secret</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>应用建好了，但 OpenClaw 还得能证明"我就是这个机器人"。飞书给每个应用发一对凭证：App ID（公开身份）和 App Secret（密钥）。没有它们，OpenClaw 连不上飞书。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>第三步：获取应用凭证，在应用详情页拿到两个值：</p>
+<ul><li><strong>App ID</strong>：应用的公开标识，相当于"用户名"；</li><li><strong>App Secret</strong>：应用的密钥，相当于"密码"——<strong>重要：请妥善保管 App Secret，不要分享给他人</strong>，任何人拿到它都能冒充你的机器人收发消息。</li></ul>
+<p>这步产出的凭证就是后面配置 OpenClaw 飞书通道（&lt;你的AppId&gt; 占位处的真实值）的依据。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把 App Secret 截图发群/贴进公开仓库</td><td>等于公开了机器人"密码"；尽快在开放平台重置凭证，新 Secret 只存入自己的密码管理器</td></tr>
+<tr><td>只记了 App ID 就关页面</td><td>两个值后面都要用；复制后立刻存进本地备忘录或密码管理器，别靠脑子记</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 添加应用能力 + 配置权限：聊天与群组，im 双身份全开</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>光有应用壳，机器人还是"哑巴"：飞书不知道它能否进群、能否收发消息。要给应用声明权限——聊天与群组权限，并且应用身份和用户身份两类都要。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>第四步：添加应用能力，声明这个应用提供什么功能。 第五步：配置应用权限——这里我们添加<strong>聊天与群组权限</strong>。注意<strong>应用身份权限和用户身份权限都要开通</strong>，可以搜索 im 统一选中，一次配齐。</p>
+<table>
+<tr><th>权限类别</th><th>管什么</th><th>要不要开</th></tr>
+<tr><td>应用身份权限</td><td>机器人作为应用自己收发消息</td><td>要</td></tr>
+<tr><td>用户身份权限</td><td>应用在用户授权下替用户操作</td><td>要</td></tr>
+</table>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>只开了应用身份，群里收发消息报权限不足</td><td>两类身份是不同授权面；按讲义做法搜索 im 统一选中，聊天与群组权限一次全开</td></tr>
+<tr><td>权限列表太长无从下手</td><td>按讲义路线：搜索 im，把聊天与群组相关权限统一选中，配完再进下一步启用机器人能力，顺序别反</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 启用机器人能力 + 长连接保存</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>机器人能力启用后，飞书需要知道"消息往哪里推"。OpenClaw 跑在你自己的机器上、没有公网回调地址，所以直接点保存会失败——这是讲义专门点名的坑，需要换一条路走。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>第六步：启用机器人能力。但在配置过程中<strong>点击保存会失败</strong>——缺少可访问的消息回调地址。讲义给的解法：点击保存失败时弹出的提示文本中有<strong>超链接</strong>，点进去用 <strong>Python 形式创建长连接</strong>（Long Connection），让飞书通过长连接把事件实时推到本地，从而不再需要公网地址。长连接创建成功后，再回来保存配置即可通过，飞书这一侧就绪。</p>
+<p>准备阶段记好：长连接创建时要使用应用的凭证（&lt;你的AppId&gt; 占位处填真实值），并确保和后面 OpenClaw 通道配置用的是同一个应用。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>点保存就一直报错</td><td>回调地址没配或不可公网访问；别硬填公网 URL，按讲义走长连接（点弹出文本里的超链接，用 Python 形式创建）</td></tr>
+<tr><td>长连接建好了消息还是收不到</td><td>长连接进程必须保持运行；同时确认创建长连接用的应用与后续通道配置是同一个</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 为 OpenClaw 配置模型和通道 + 启动网关</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>飞书一侧就绪了，但 OpenClaw 还不知道"用哪个模型思考、从哪个通道收发消息"。要把飞书这个 channel 配置进 OpenClaw，并让配置真正生效。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>为已经完成部署的 OpenClaw 配置模型和通道（即 OpenClaw channel，如飞书）：把飞书应用的凭证填入飞书通道配置（&lt;你的AppId&gt; 占位处换真实 App ID / App Secret），选定一个可用的大模型后保存。 然后启动并测试，分两步走：</p>
+<ul><li><strong>第一步：启动网关</strong> <code>openclaw gateway restart</code>，让模型与通道配置装载生效；</li><li><strong>第二步：发测试消息</strong> 在飞书中找到你创建的机器人，发送一条消息。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>改了模型/通道配置没有反应</td><td>必须 <code>openclaw gateway restart</code> 重启网关，配置在重启时才装载生效</td></tr>
+<tr><td>飞书里搜不到自己的机器人</td><td>确认机器人能力已启用、应用已发布（至少企业内部可见）；新建应用要发布后才能被搜到</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 配对授权：批准配对码</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>消息发出去了，机器人却不会直接答话，而是回你一个配对码——这是 OpenClaw 的安全机制：防止陌生人随便用你的机器人、白嫖你的模型额度。你要批准这个配对，机器人才会为你服务。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>默认情况下，机器人会回复一个<strong>配对码</strong>，你需要批准此代码：</p>
+<pre>su admin
+openclaw pairing approve feishu &lt;配对码&gt;</pre>
+<p>先 <code>su admin</code> 切换到部署用户（避免权限错误），再执行 <code>openclaw pairing approve feishu &lt;配对码&gt;</code>（把 &lt;配对码&gt; 换成机器人实际回复的代码）。批准后即可正常对话。</p>
+<p>配对授权相当于一份"白名单"：只有被批准的用户，机器人才会响应。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>发消息后机器人毫无反应</td><td>检查网关是否已 restart、飞书通道配置是否正确、长连接进程是否还在运行</td></tr>
+<tr><td>直接 approve 报权限错误</td><td>讲义流程是 先 <code>su admin</code> 切换用户 → 再配对，别跳过切换直接批准</td></tr>
+<tr><td>配对码输错或过期</td><td>重新向机器人发一条消息拿新配对码，再执行 approve</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ QQ 平台：手机扫码注册</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>QQ 机器人的注册方式和飞书完全不同：不用填表注册开发者账号，手机 QQ 扫码一步到位。先理解这条"扫码即注册"的路径，并完成注册进入配置页。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>前往腾讯 QQ 开放平台官网 https://q.qq.com/qqbot/openclaw/index.html ，用<strong>手机 QQ 扫描页面二维码</strong>进行注册/登录：</p>
+<ul><li>若当前尚未注册 QQ 开放平台：执行扫码后，系统会<strong>自动完成注册流程</strong>，并把扫码所用的 QQ 账号与该平台账号进行绑定；</li><li>手机 QQ 扫码后选择<strong>同意</strong>，即完成注册，进入 QQ 机器人配置页。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>用电脑浏览器直接注册找不到入口</td><td>官网主流程是手机 QQ 扫码；用页面显示的二维码扫码，别绕道网页表单</td></tr>
+<tr><td>扫错 QQ 号</td><td>绑定的是你扫码所用 QQ 账号，平台归属也随之确定；先确认扫的是自己的号再点同意</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 创建 QQBot + 获取凭证</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>注册只是拿到了平台"身份"，你还缺一个真正能用的机器人对象，以及它的凭证——AppID 和 AppSecret。OpenClaw 后续接入 QQ 时要用这对凭证。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>在 QQ 开放平台的 QQ 机器人页面，单击<strong>创建机器人</strong>，即可直接新建一个 QQ 机器人。 机器人创建完成后，在页面中找到 <strong>AppID</strong> 和 <strong>AppSecret</strong> 两个参数，分别点击右侧"复制"按钮，保存到个人记事本或备忘录中（<strong>请妥善保存勿泄露，注意数据安全</strong>），后续步骤需要使用（&lt;你的AppId&gt; 占位处填真实值）。</p>
+<p>和飞书一样：AppID 是公开标识，AppSecret 是密钥，谁拿到 Secret 谁就能控制你的机器人。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>创建完机器人找不到凭证在哪</td><td>在机器人详情页面找 AppID / AppSecret 两个参数，右侧有"复制"按钮，逐个点击复制保存</td></tr>
+<tr><td>把 AppSecret 贴进聊天记录/共享文档</td><td>属于密钥泄露；尽早去开放平台重置，新 Secret 只进自己的密码管理器</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ xiaohongshu-skills 是什么：小红书自动化 Skills</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>飞书、QQ 都是"人等机器人聊"，小红书的玩法反过来了——让 OpenClaw 主动去运营账号：搜索、发笔记、互动。官方开放接口门槛高、能力受限，讲义选了另一条路：一套基于浏览器自动化的技能包。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>xiaohongshu-skills 是<strong>小红书自动化 Skills</strong>，基于 <strong>Python CDP 浏览器自动化引擎</strong>。</p>
+<ul><li><strong>CDP（Chrome DevTools Protocol）</strong>：Chrome 浏览器提供的调试协议，外部程序通过它驱动一个真实的浏览器，像真人一样打开页面、点击、滚动、输入；</li><li>相比平台 API，CDP 方式<strong>不需要申请平台开放接口</strong>，覆盖"登录保持、页面操作、多账号切换"这类 API 难做的场景；代价是环境里要有一个可用的浏览器运行。</li></ul>
+<p>于是 OpenClaw 借这个技能包，就能像真人一样在小红书执行操作——这正是"基座模型 + 专用技能"组合思路的又一次实战。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>以为它是小红书官方 API 封装</td><td>它是基于 CDP 的浏览器自动化技能包，驱动真实浏览器操作页面，不是调官方开放平台接口</td></tr>
+<tr><td>启动技能后浏览器打不开/连不上</td><td>CDP 依赖本机浏览器环境；先按技能包说明核对环境要求（浏览器可用性等），再排查其他问题</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 技能矩阵五件套：auth / publish / explore / interact / content-ops</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>技能包一口气带了五个以 xhs- 开头的子技能，各管一摊。你需要一张"谁管什么"的能力地图，否则遇到需求时不知道该叫哪个技能。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>技能包核心能力一览（技能矩阵）：</p>
+<table>
+<tr><th>技能</th><th>说明</th><th>核心能力</th></tr>
+<tr><td>xhs-auth</td><td>认证管理</td><td>登录检查、扫码登录、多账号切换</td></tr>
+<tr><td>xhs-publish</td><td>内容发布</td><td>图文/视频/长文发布、定时发布、分步预览</td></tr>
+<tr><td>xhs-explore</td><td>内容发现</td><td>关键词搜索、笔记详情、用户主页、首页推荐</td></tr>
+<tr><td>xhs-interact</td><td>社交互动</td><td>评论、回复、点赞、收藏</td></tr>
+<tr><td>xhs-content-ops</td><td>复合运营</td><td>竞品分析、热点追踪、批量互动、内容创作</td></tr>
+</table>
+<p>记忆顺序：<strong>auth 打底 → explore / interact 动作层 → publish 产出层 → content-ops 编排层</strong>。先保证登录态，再谈发现、互动与发布；要"运营级"动作就直接找 content-ops。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>技能报"未登录/登录失效"</td><td>先走 xhs-auth 完成登录检查与扫码登录；auth 是其他所有技能的前提</td></tr>
+<tr><td>把"批量互动""竞品分析"拆成单技能硬拼</td><td>这类复合运营动作由 xhs-content-ops 直接负责，它内部会自动组合多个能力，别自己拼流水线</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p11"><div class="head"><span class="no">11</span>⑪ 复合指令串联：一句话让多个技能接力</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>五件套是"零件"，真实需求是"整机"："帮我找最火的笔记、收藏它、再总结一下讲了什么"。自己逐个记忆技能调用细节太累，要的是<strong>用一句自然语言，让 Agent 自动编排一整条操作链</strong>。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>技能包支持<strong>连贯操作</strong>：用自然语言下达复合指令，Agent 会自动串联多个技能完成任务。 讲义示例指令："搜索刺客信条最火的图文帖子，收藏它，然后告诉我讲了什么" Agent 会自动执行：<strong>搜索 → 筛选图文 → 按点赞排序 → 收藏 → 获取详情 → 总结内容</strong>。</p>
+<p>拆开看这条链：搜索与排序落在 xhs-explore，收藏落在 xhs-interact，获取详情与总结由 explore + 模型理解共同完成——一条自然语言，把"发现 → 互动 → 分析"串成完整工作流。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>复合指令太模糊，编排出的链路不对</td><td>指令里带齐对象、动作和排序标准（如"最火 = 按点赞排序"），Agent 编排才有依据</td></tr>
+<tr><td>以为复合指令是固定写死的脚本</td><td>每次执行按当前页面状态实时编排，登录态失效、页面改版都会影响结果；跑完核对是否真正完成了目标动作</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p12"><div class="head"><span class="no">12</span>⑫ 安装部署：git clone + uv sync + chown + 重启网关</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>技能包还躺在 GitHub 上，得先装进 OpenClaw 才能用。安装有四个关键动作：拉代码、装依赖、修权限、重启网关——任何一步漏掉，技能都调不起来。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>进入服务器、以 OpenClaw 部署用户身份，按讲义顺序执行：</p>
+<pre>cd /home/admin/.openclaw/workspace/skills
+git clone https://github.com/autoclaw-cc/xiaohongshu-skills.git
+cd /home/admin/.openclaw/workspace/skills/xiaohongshu-skills
+uv sync
+cd /home/admin/.openclaw/workspace/skills
+chown -R admin:admin xiaohongshu-skills
+openclaw gateway restart</pre>
+<p>拆解四步：<code>git clone</code> 把技能包下载到 skills 目录；<code>uv sync</code> 按项目安装 Python 依赖；<code>chown -R admin:admin</code> 把克隆文件属主改回 admin，网关进程才有权读取；<code>openclaw gateway restart</code> 重启网关加载新技能——最后一步必做。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td><code>uv sync</code> 报 uv 不存在</td><td>uv 是 Python 项目依赖管理工具，环境缺的话先安装 uv，再回到技能目录重跑 uv sync</td></tr>
+<tr><td>装完技能不生效</td><td>大概率忘了重启网关：openclaw gateway restart 后新技能才会被加载</td></tr>
+<tr><td>网关读技能报权限错误</td><td>克隆文件属主不对：回 skills 目录执行 chown -R admin:admin xiaohongshu-skills 后重启网关</td></tr>
+</table>
+</div>
+</div></div>
+<h2>本章小结</h2>
+<p>这一章你实际拿到的是<strong>四样东西</strong>：</p>
+<table>
+<tr><th>拿到了什么</th><th>为什么要紧</th></tr>
+<tr><td><strong>飞书机器人一条龙</strong>：注册应用 → 双凭证 → im 双身份权限 → 机器人 + 长连接 → 配对授权</td><td>平台接入的标准姿势，以后接任何 IM 都能照这套走（应用、凭证、权限、通道、配对）</td></tr>
+<tr><td><strong>QQ 机器人入口</strong>：扫码注册 + 创建 QQBot + 凭证保存</td><td>备好 AppID / AppSecret，为接入 QQ 通道攒齐材料；再次强化"凭证 = 密钥，勿泄露"的底线意识</td></tr>
+<tr><td><strong>小红书五件套技能包</strong>：auth / publish / explore / interact / content-ops</td><td>装好即具备"自动运营小红书"的能力：搜索、发布、互动、竞品分析都能做</td></tr>
+<tr><td><strong>复合指令 + CDP 认知</strong>：一句话串联多技能、理解浏览器自动化底座</td><td>组织 OpenClaw 干活的新姿势——自然语言即编排，正是"基座模型 + 专用技能"组合的实战验证</td></tr>
+</table>
+<h4>自测：能不能答上来</h4>
+<ol><li>飞书企业自建应用创建后，哪两个凭证决定了"机器人是你"？其中哪个绝对不能泄露？为什么？</li><li>配置机器人时直接点保存会失败，讲义给的解决方案是什么？为什么长连接方案不需要公网回调地址？</li><li>飞书的配对授权解决什么问题？请写出配对的两个命令（配对码用 &lt;配对码&gt; 占位）。</li><li>QQ 开放平台的注册方式和飞书有什么本质不同？扫码要用哪个 App 扫、绑定的是谁的账号？</li><li>xiaohongshu-skills 的技术底座是什么？用一句话解释 CDP 为什么能让"自动运营小红书"成为可能。</li><li>面对"搜索刺客信条最火的图文帖子，收藏它，然后告诉我讲了什么"，Agent 会自动执行哪几步？分别主要落在五件套里的哪些技能上？</li><li>安装技能包有哪四个关键步骤？最后一步为什么必须是重启网关？</li></ol>
+<div class="links"><span class="tag">本章配套资料</span>
+<a href="#"><span class="k">讲义</span>openclaw.pdf「OpenClaw多平台接入_飞书/QQ-BOT/小红书」章节</a>
+<a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
+<a href="https://open.feishu.cn/" target="_blank" rel="noopener"><span class="k">官网</span>飞书开放平台</a>
+<a href="https://github.com/autoclaw-cc/xiaohongshu-skills.git" target="_blank" rel="noopener"><span class="k">资料</span>xiaohongshu-skills 仓库</a>
+</div>
+<div class="pager">
+<a href="05-第五章-多平台接入企业微信与钉钉.html">← 第五章　多平台接入：企业微信与钉钉</a>
+<a class="nxt" href="../阶段15-Hermes-Agent自我进化的超级智能体/01-第一章-认识自我进化的超级智能体HermesAgent.html">第一章　认识自我进化的超级智能体 Hermes-Agent →</a>
+</div>
+</div></main>
+<aside class="toc">
+<div class="toc-inner">
+  <div class="toc-head">本页目录</div>
+  <a href="#p1" title="飞书准备：开放平台注册 + 创建企业自建应用"><span class="n">1</span>飞书准备：开放平台注册 + 创建企业自建应用</a>
+  <a href="#p2" title="获取应用凭证：App ID / App Secret"><span class="n">2</span>获取应用凭证：App ID / App Secret</a>
+  <a href="#p3" title="添加应用能力 + 配置权限：聊天与群组，im 双身份全开"><span class="n">3</span>添加应用能力 + 配置权限：聊天与群组，im 双身份全开</a>
+  <a href="#p4" title="启用机器人能力 + 长连接保存"><span class="n">4</span>启用机器人能力 + 长连接保存</a>
+  <a href="#p5" title="为 OpenClaw 配置模型和通道 + 启动网关"><span class="n">5</span>为 OpenClaw 配置模型和通道 + 启动网关</a>
+  <a href="#p6" title="配对授权：批准配对码"><span class="n">6</span>配对授权：批准配对码</a>
+  <a href="#p7" title="QQ 平台：手机扫码注册"><span class="n">7</span>QQ 平台：手机扫码注册</a>
+  <a href="#p8" title="创建 QQBot + 获取凭证"><span class="n">8</span>创建 QQBot + 获取凭证</a>
+  <a href="#p9" title="xiaohongshu-skills 是什么：小红书自动化 Skills"><span class="n">9</span>xiaohongshu-skills 是什么：小红书自动化 Skills</a>
+  <a href="#p10" title="技能矩阵五件套：auth / publish / explore / interact / content-ops"><span class="n">10</span>技能矩阵五件套：auth / publish / explore / interact / content-ops</a>
+  <a href="#p11" title="复合指令串联：一句话让多个技能接力"><span class="n">11</span>复合指令串联：一句话让多个技能接力</a>
+  <a href="#p12" title="安装部署：git clone + uv sync + chown + 重启网关"><span class="n">12</span>安装部署：git clone + uv sync + chown + 重启网关</a>
+</div>
+</aside>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!links.length) return;
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+  var THRESHOLD = 130;   // 距视口顶部多少像素算"读到这里了"
+  function update() {
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= THRESHOLD) idx = i;
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (j === idx) links[j].classList.add('cur');
+      else links[j].classList.remove('cur');
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+</body>
+</html>
