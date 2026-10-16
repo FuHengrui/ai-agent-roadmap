@@ -285,8 +285,8 @@
 
   <div class="why">
     <span class="tag">先说最重要的一句</span>
-    <p><strong>这东西不是拿来看完的，是拿来"配着课"用的。</strong></p>
-    <p>它假设你正在上那门课、手上有讲义、也愿意动手敲代码。<strong>它补的是课里没讲透的那一层：为什么要学这个、这东西到底在解决什么问题。</strong></p>
+    <p><strong>这不是"某一门课的笔记" —— 它是一套能独立用的材料。</strong></p>
+    <p>238 章，从「Python 是什么」一直讲到「把大模型部署成服务」。<strong>不用配合任何别的东西，打开就能学。</strong></p>
   </div>
 
   <h2>一、这是什么（30 秒看懂）</h2>
@@ -295,8 +295,8 @@
     <tr><td><strong>覆盖范围</strong></td><td>24 个阶段、238 章、2,189 个知识点</td></tr>
     <tr><td><strong>从哪到哪</strong></td><td>从「Python 是什么」一直到「把大模型部署成一个服务」</td></tr>
     <tr><td><strong>写法</strong></td><td>每个知识点先讲<strong>「它要解决什么问题」</strong>，再讲怎么做，最后说哪里会踩坑</td></tr>
-    <tr><td><strong>不是什么</strong></td><td>不是课程讲义、不是视频、不是报错大全。<strong>讲义原件在课程资料里，这里没有</strong></td></tr>
-    <tr><td><strong>和课的关系</strong></td><td><strong>配套读物</strong>：课讲"怎么做"，这里讲"为什么要这么做"</td></tr>
+    <tr><td><strong>不是什么</strong></td><td>不是视频、不是报错大全 —— <strong>它是一本书</strong></td></tr>
+    <tr><td><strong>怎么用最有效</strong></td><td>边看边动手。<strong>看懂只能到"懂"，敲一遍才到"会"</strong></td></tr>
   </table>
 
   <h2>二、从哪开始 —— 对号入座</h2>
@@ -462,21 +462,54 @@
     </p>
   </div>
 
-  <h2>八、这个知识库的边界（诚实说）</h2>
+  <h2>八、为什么没有视频（以及为什么这不算缺陷）</h2>
+
+  <p><strong>很多人打开第一反应是：「有视频吗？」</strong></p>
+  <p>没有。而且这是想过的。</p>
+
   <table>
-    <tr><th style="width:30%">它做不到</th><th>怎么办</th></tr>
-    <tr><td><strong>没有视频</strong></td><td>去看课程原视频；这里是配套读物</td></tr>
-    <tr><td><strong>没有讲义原件</strong></td><td>讲义 PDF 是课程版权内容，在课程资料里，不在这里</td></tr>
-    <tr><td><strong>界面操作没有截图</strong></td><td>这类章节会明确告诉你「开着软件边看边点」，并把"找不到入口"写进「坑在哪」</td></tr>
-    <tr><td><strong>不能替代动手</strong></td><td>看书只能到"懂"，写代码才能到"会"</td></tr>
-    <tr><td><strong>不保证覆盖全部课程细节</strong></td><td>它是<strong>重新组织</strong>过的，不是逐节复刻。以讲义为准</td></tr>
+    <tr><th style="width:26%">你可能觉得缺</th><th>其实</th></tr>
+    <tr><td><strong>视频</strong></td>
+        <td>写代码这件事，<strong>看视频的时候手是闲着的</strong> —— 看完还是不会写。这里的设计就是逼你动手</td></tr>
+    <tr><td><strong>配着讲的人</strong></td>
+        <td>每一节开头的「<strong>这一章在解决什么问题</strong>」就是干这个的</td></tr>
+    <tr><td><strong>操作截图</strong></td>
+        <td>界面类章节会明确告诉你「<strong>开着软件边看边点</strong>」，并把「找不到入口」写进「坑在哪」</td></tr>
   </table>
+
+  <h3>有几样，是视频给不了的</h3>
+  <table>
+    <tr><th style="width:36%">这里有的</th><th>视频里有吗</th></tr>
+    <tr><td><strong>5,000 多条「坑在哪」</strong></td><td>❌ 会的人不踩坑（太熟了），所以不会讲</td></tr>
+    <tr><td><strong>1,600 多道自测题</strong></td><td>❌ 没有</td></tr>
+    <tr><td><strong>全文可搜</strong></td><td>❌ 视频只能拖进度条</td></tr>
+    <tr><td><strong>看到哪停到哪</strong></td><td>❌ 视频一暂停就断</td></tr>
+    <tr><td><strong>238 章的全貌</strong></td><td>❌ 视频得连着看几十小时才知道讲到哪</td></tr>
+  </table>
+
+  <h3>如果你就是想要视频陪着手感 —— B 站够用</h3>
+  <p><strong>免费的就行，不用花几千块。</strong>建议这么配：</p>
+  <table>
+    <tr><th style="width:32%">这块内容</th><th>怎么找</th></tr>
+    <tr><td><strong>阶段 1–2</strong>（Python 基础）</td><td>搜「Python 入门」，挑播放量高的。这块 B 站资源非常足</td></tr>
+    <tr><td><strong>阶段 5 以后</strong>（AI 应用）</td><td>直接搜技术名：「LangChain 教程」「RAG 实战」「LoRA 微调」</td></tr>
+    <tr><td><strong>项目类</strong>（阶段 9–11 等）</td><td>这类完整项目 B 站比较少 —— <strong>正好按这里的章节自己走一遍</strong></td></tr>
+  </table>
+
+  <div class="note warn">
+    <span class="t">★ 如果视频讲的和这里不一样</span>
+    <p style="margin:6px 0 0">
+      <strong>以这里的为准。</strong>
+      视频录完就固定了，软件版本会变；<strong>这份文字是跟着新版本维护的</strong>。
+      视频当"看人做一遍"用，步骤照这里来。
+    </p>
+  </div>
 
   <div class="note info">
     <span class="t">最后一句</span>
     <p style="margin:6px 0 0">
-      <strong>这东西是拿来"配着课"用的。</strong>
-      课讲"怎么做"，这里讲"为什么要这么做"——两边对着看，比任何一边单独看都快。
+      <strong>别再"等准备好了再开始"。</strong>
+      打开你最感兴趣的那一章，边看边敲 —— <strong>你现在就能开始。</strong>
     </p>
   </div>
 
