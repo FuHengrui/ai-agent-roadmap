@@ -31,6 +31,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 把「Pages 开了没」传给 deploy 那个 job
+    outputs:
+      pages_enabled: ${{ steps.pages_check.outputs.enabled }}
 
     steps:
       - uses: actions/checkout@v4
@@ -55,23 +58,43 @@ jobs:
       - name: 站点自检
         run: python tools/verify_site.py
 
-      # ---- 4. 配置 Pages ----
-      # ★ 这里【不能】用 enablement: true 去自动开启 Pages ——
-      #   GitHub 的默认 GITHUB_TOKEN 没有创建 Pages 站点的权限（需要个人令牌）。
-      #   所以第一次要你手动开一次：
+      # ---- 4. 检查 Pages 开了没 ----
+      # ★ 鸡生蛋问题：GitHub 的默认 GITHUB_TOKEN 没权限【创建】Pages 站点，
+      #   所以必须手动开一次：
       #     仓库 → Settings → Pages → Source 选「GitHub Actions」
-      #   开完之后，以后每次 push 都会自动部署，全绿。
+      #
+      #   在开启之前，后面那几步会 skip，工作流显示绿色（带一条警告），
+      #   不会一直报红。开了之后自动部署。
+      - name: 检查 Pages 是否已开启
+        id: pages_check
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages")
+          if [ "$code" = "200" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            echo "Pages 已开启，继续部署"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::warning title=Pages 还没开::去 仓库 → Settings → Pages，Source 选「GitHub Actions」。开完再 push 一次即可。"
+          fi
+
+      # ---- 5. 打包站点（Pages 开了才做）----
       - name: 配置 Pages
+        if: steps.pages_check.outputs.enabled == 'true'
         uses: actions/configure-pages@v5
 
-      # ---- 5. 打包站点 ----
       - name: 上传 Pages 产物
+        if: steps.pages_check.outputs.enabled == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
   deploy:
     needs: build
+    # Pages 没开就不跑，免得报红
+    if: needs.build.outputs.pages_enabled == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
