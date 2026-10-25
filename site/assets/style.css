@@ -368,3 +368,16 @@ th { background: var(--bg-soft); font-weight: 600; }
     }
     .wrap { padding: 24px 18px 80px; }
 }
+
+
+/* ---- 访问统计（默认隐藏；把 div.stat 的 style=display:none 删掉才显示）---- */
+.stat {
+  margin: 34px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.stat span { color: var(--ink-soft); font-weight: 600; }
