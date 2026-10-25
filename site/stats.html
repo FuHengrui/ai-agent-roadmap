@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>访问数据</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+
+<main class="main"><div class="wrap">
+
+  <h1>访问数据</h1>
+  <div class="subtitle">这一页没有链接指向它 —— 只有你知道地址</div>
+
+  <div class="why">
+    <span class="tag">说明</span>
+    <p><strong>这一页只给作者看。</strong>它从网站里没有任何入口能点进来，靠地址直连。</p>
+    <p>数字来自 Vercount（不蒜子的兼容版），<strong>从 2026-10-25 装上的那一刻开始记</strong> —— 之前的访问没有记录。</p>
+  </div>
+
+  <h2>累计数据</h2>
+
+  <div class="map">
+    <span class="node" style="font-size:15px">
+      本站累计被访问
+    </span>
+    <span class="node" style="font-size:40px;font-weight:700;line-height:1.2;margin:6px 0">
+      <span id="busuanzi_value_site_pv">-</span>
+      <span style="font-size:16px;font-weight:400;color:var(--ink-soft)">次</span>
+    </span>
+    <span class="node" style="margin-top:10px">
+      来过的人（去重）
+      <strong style="font-size:22px"><span id="busuanzi_value_site_uv">-</span></strong> 位
+    </span>
+  </div>
+
+  <h2>这一页自己被打开</h2>
+  <p>
+    <span id="busuanzi_value_page_pv">-</span> 次
+    <span style="color:var(--ink-faint);font-size:13px">（含你自己现在这一次）</span>
+  </p>
+
+  <div class="note info">
+    <span class="t">怎么读这两个数</span>
+    <p style="margin:6px 0 0">
+      <strong>PV（访问次数）</strong>：同一个人刷新 10 次，就是 10。<br>
+      <strong>UV（访客人数）</strong>：同一个人来 10 次，只算 1 个。
+    </p>
+    <p style="margin:6px 0 0">
+      <strong>PV 远大于 UV</strong> → 有少数人反复在看（或者有人在刷新）。<br>
+      <strong>UV 涨得快、PV 涨得慢</strong> → 是一次性流量（朋友圈转发那种）。
+    </p>
+  </div>
+
+  <div class="note warn">
+    <span class="t">这个工具的能力边界（诚实说）</span>
+    <p style="margin:6px 0 0">
+      Vercount 只给你<strong>两个数字</strong>。它<b>不告诉</b>你：
+    </p>
+    <table style="margin-top:8px">
+      <tr><th style="width:44%">想知道</th><th>这个工具能给吗</th></tr>
+      <tr><td>总共来了多少人</td><td>✅ 能</td></tr>
+      <tr><td>哪一页被看得最多</td><td>❌ 不能（得逐页看）</td></tr>
+      <tr><td>人是从哪来的（朋友圈／搜索／直接输）</td><td>❌ 不能</td></tr>
+      <tr><td>他们在哪些页面停留多久</td><td>❌ 不能</td></tr>
+      <tr><td>来自哪个省／什么手机</td><td>❌ 不能</td></tr>
+    </table>
+  </div>
+
+  <div class="note bad">
+    <span class="t">想要上面那些，得换工具</span>
+    <p style="margin:6px 0 0">
+      要来源、停留时长、地区、设备 → 用 <strong>51.la（我要啦）</strong> 或 <strong>百度统计</strong>，
+      都免费，但要注册。换的时候把这一页的脚本替换掉就行。
+    </p>
+    <p style="margin:6px 0 0">
+      <strong>建议：先用这个把"有没有人"搞清楚。等真有流量了，再换能看来源的工具。</strong>
+    </p>
+  </div>
+
+  <h2>逐页数据怎么看</h2>
+  <p>
+    想看<strong>某一章</strong>被打开了多少次 —— 直接打开那一章，
+    <strong>在页面最底下（被隐藏的那一行）</strong>就有它的 PV。
+  </p>
+  <p style="color:var(--ink-faint);font-size:13.5px">
+    （页面底部按 <code>Ctrl + U</code> 看源码也能搜到 <code>busuanzi_value_page_pv</code> 旁边的数字。）
+  </p>
+
+  <div class="pager">
+    <a href="index.html">← 回首页</a>
+    <a class="nxt" href="README.html">怎么用这个知识库 →</a>
+  </div>
+
+</div></main>
+</div>
+
+<script defer src="https://events.vercount.one/js"></script>
+</body>
+</html>
