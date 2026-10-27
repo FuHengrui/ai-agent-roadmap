@@ -321,5 +321,5 @@ async def send_message(data: ChatMessage):
 
 @@links
 参考|安康智慧健康管理平台：糖尿病AI健康助手|#
-官网|LangGraph 官方文档|https://langchain-ai.github.io/langgraph/
-官网|LangGraph StateGraph 指南|https://langchain-ai.github.io/langgraph/concepts/low_level/
+官网|LangGraph 官方文档|https://docs.langchain.com/oss/python/langgraph/overview
+官网|LangGraph StateGraph 指南|https://docs.langchain.com/oss/python/langgraph/overview

@@ -297,6 +297,6 @@ result = app.invoke(initial_state, config={"configurable": {"thread_id": "user-0
 
 @@links
 参考|05_LLM框架实战_LangGraph.pdf|#
-官网|LangGraph 官方文档|https://langchain-ai.github.io/langgraph/
-官网|LangGraph 概念详解|https://langchain-ai.github.io/langgraph/concepts/
-官网|LangGraph 快速上手|https://langchain-ai.github.io/langgraph/tutorials/
+官网|LangGraph 官方文档|https://docs.langchain.com/oss/python/langgraph/overview
+官网|LangGraph 概念详解|https://docs.langchain.com/oss/python/langgraph/overview
+官网|LangGraph 快速上手|https://docs.langchain.com/oss/python/langgraph/quickstart

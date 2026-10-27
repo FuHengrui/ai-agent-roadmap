@@ -289,4 +289,4 @@ handler = DefaultRequestHandler(executor=MyExecutor(...))
 参考|12_LLM框架实战_A2A.pdf|#
 官方|A2A 协议文档|https://a2a-protocol.org/
 GitHub|a2a-python SDK|https://github.com/a2aproject/a2a-python
-教程|A2A 快速上手|https://a2a-protocol.org/latest/quickstart/
+教程|A2A 快速上手|https://github.com/a2aproject/A2A

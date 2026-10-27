@@ -279,5 +279,5 @@ async for chunk, metadata in workflow.astream(query=query, thread_id=session_id)
 
 @@links
 参考|LegalMind 法律咨询系统：Agent 系统与 LangGraph 工作流|#
-官网|LangGraph 官方文档|https://langchain-ai.github.io/langgraph/
-官网|LangGraph Checkpointer 文档|https://langchain-ai.github.io/langgraph/concepts/persistence/
+官网|LangGraph 官方文档|https://docs.langchain.com/oss/python/langgraph/overview
+官网|LangGraph Checkpointer 文档|https://docs.langchain.com/oss/python/langgraph/overview

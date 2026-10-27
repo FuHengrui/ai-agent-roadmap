@@ -279,6 +279,6 @@ agent = create_agent(llm, tools, checkpointer=checkpointer, store=store)
 
 @@links
 参考|07_LLM框架实战_Memory.pdf|#
-官网|LangGraph 记忆概念|https://langchain-ai.github.io/langgraph/concepts/memory/
-官网|MemorySaver 参考|https://langchain-ai.github.io/langgraph/reference/checkpoints/
-官网|LangGraph Store 参考|https://langchain-ai.github.io/langgraph/reference/store/
+官网|LangGraph 记忆概念|https://docs.langchain.com/oss/python/langgraph/overview
+官网|MemorySaver 参考|https://reference.langchain.com/python/langgraph/
+官网|LangGraph Store 参考|https://reference.langchain.com/python/langgraph/

@@ -250,4 +250,4 @@ docker-compose down         # 停止
 参考|LegalMind 法律咨询系统：项目介绍|#
 官网|FastAPI 官方文档|https://fastapi.tiangolo.com/
 官网|LangChain 官方文档|https://python.langchain.com/
-官网|LangGraph 官方文档|https://langchain-ai.github.io/langgraph/
+官网|LangGraph 官方文档|https://docs.langchain.com/oss/python/langgraph/overview

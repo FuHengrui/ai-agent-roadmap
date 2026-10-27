@@ -283,6 +283,6 @@ interrupt/Command/条件审批用哪套组合？生产里有哪些经验法则�
 
 @@links
 参考|09_LLM框架实战_HumanInTheLoop进阶.pdf|#
-官网|LangGraph HITL 概念|https://langchain-ai.github.io/langgraph/concepts/human_in_the_loop/
-官网|LangGraph Human in the Loop 教程|https://langchain-ai.github.io/langgraph/how-tos/human_in_the_loop/
-官网|interrupt 参考|https://langchain-ai.github.io/langgraph/reference/types/
+官网|LangGraph HITL 概念|https://docs.langchain.com/oss/python/langgraph/human-in-the-loop
+官网|LangGraph Human in the Loop 教程|https://docs.langchain.com/oss/python/langgraph/human-in-the-loop
+官网|interrupt 参考|https://reference.langchain.com/python/langgraph/

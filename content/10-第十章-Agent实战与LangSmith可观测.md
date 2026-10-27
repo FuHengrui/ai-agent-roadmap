@@ -290,4 +290,4 @@ Trace: ChatPromptTemplate | ChatOpenAI | ...
 参考|10_LLM框架实战_Agent实战.pdf|#
 参考|11_LLM框架实战_LangSmith.pdf|#
 官网|LangSmith 官方|https://smith.langchain.com/
-教程|LangGraph 多 Agent 教程|https://langchain-ai.github.io/langgraph/tutorials/multi_agent/
+教程|LangGraph 多 Agent 教程|#
