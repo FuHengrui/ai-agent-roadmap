@@ -286,26 +286,64 @@
 
   <div class="why">
     <span class="tag">先说这是什么</span>
-    <p><strong>这是一套按需求重写的 AI 笔记。</strong>24 个阶段、238 章，从「Python 是什么」一直讲到「把大模型部署成服务」。</p>
-    <p>每个知识点都先问<strong>「它要解决什么问题」</strong>，再讲怎么做，最后记下<strong>哪里会踩坑</strong>——所以它既能顺着读，也能当排查手册查。</p>
-    <p>没有视频：正文把该讲的讲完了，剩下的靠你动手敲一遍。</p>
+    <p><strong>这是一条从零走到「能自己做出 AI 应用」的学习路线，每一步都配了能直接读的笔记。</strong>24 个阶段、238 章，从「Python 是什么」讲到「把大模型部署成服务」。</p>
+    <p>每个知识点先问<strong>「它要解决什么问题」</strong>，再讲怎么做，最后记下<strong>哪里会踩坑</strong>——所以它既能顺着读，也能当排查手册查。</p>
+    <p>不用一次学完：<strong>按需而学</strong>，挑你现在要解决的那个问题，顺着路线往前走就行。</p>
   </div>
 
   <h2>一、这是什么（30 秒看懂）</h2>
   <table>
-    <tr><th style="width:26%">项</th><th>说明</th></tr>
+    <tr><th style="width:24%">项</th><th>说明</th></tr>
     <tr><td><strong>覆盖范围</strong></td><td>24 个阶段、238 章、2,189 个知识点</td></tr>
     <tr><td><strong>从哪到哪</strong></td><td>从「Python 是什么」一直到「把大模型部署成一个服务」</td></tr>
     <tr><td><strong>写法</strong></td><td>每个知识点先讲<strong>「它要解决什么问题」</strong>，再讲怎么做，最后说哪里会踩坑</td></tr>
     <tr><td><strong>多出来的东西</strong></td><td><strong>2,070 处「坑在哪」</strong>、1,628 道自测题 —— 都是自己踩过、自己出的</td></tr>
+    <tr><td><strong>视频 / 课程</strong></td><td>这里不配视频。值钱的是<strong>这条路线</strong>和<strong>每章的坑</strong>；某一块想听人讲，去网上搜对应课程配合着看，体验更好</td></tr>
     <tr><td><strong>怎么用最有效</strong></td><td>边看边动手。<strong>看懂只能到"懂"，敲一遍才到"会"</strong></td></tr>
   </table>
 
-  <h2>二、从哪开始 —— 对号入座</h2>
+  <h2>二、最快的用法：把链接丢给 AI</h2>
+  <p>你正在用的 AI 都行 —— DeepSeek、豆包、Kimi、通义、ChatGPT、Claude 都能干。把<strong>这一页的链接</strong>（或你要学的那一章链接）发过去，让它替你干下面这些活：</p>
+
+  <table>
+    <tr><th style="width:24%">让它干什么</th><th>怎么跟它说</th></tr>
+    <tr><td><strong>配环境</strong></td><td>「我 Windows 11、没装过 Python，按这个链接的第三章给我一步步装，每条命令先说它会改什么」</td></tr>
+    <tr><td><strong>出题 + 批改</strong></td><td>「按这章的知识点出 5 道题，先别给答案；我答完你判分，并指出我漏掉的关键点」</td></tr>
+    <tr><td><strong>排错</strong></td><td>「我在做这章的练习，报错如下：……。先判断是哪一步出的问题，再给最小修复，别重写整个项目」</td></tr>
+    <tr><td><strong>排学习计划</strong></td><td>「我要 4 周做出一个 RAG 问答系统，按这个站点的目录给我排周计划，每周说清验收标准」</td></tr>
+  </table>
+
+  <p>下面三段可以直接复制，把 <code>&lt;链接&gt;</code> 换成你要学的那一章地址：</p>
+
+  <h3>① 让它带你配环境</h3>
+<pre><code>我在学这份笔记的第三章：&lt;链接&gt;
+我的环境：Windows 11 / 内存 8GB / 没装过 Python。
+请按这一章的顺序，一步一步给我要执行的命令。每条命令先说：它会改什么、装在哪。
+我给完输出你再给下一条；遇到报错先问我，不要自己猜着往下走。</code></pre>
+
+  <h3>② 让它出题、批改</h3>
+<pre><code>下面是这一章的内容：&lt;链接&gt;
+请按知识点出 5 道题，只出题、先不给答案。
+我答完后你判分，指出我漏掉的关键点；如果我答得含糊，追问一句“为什么”。</code></pre>
+
+  <h3>③ 让它帮你排错</h3>
+<pre><code>我在做这一章的练习：&lt;链接&gt;
+报错原文（完整粘贴）：
+……
+请先判断是哪一步出的问题，再给最小修复步骤，不要重写整个项目。</code></pre>
+
+  <div class="note warn">
+    <span class="t">一个前提</span>
+    <p style="margin:6px 0 0">
+      AI 会瞎编，尤其是<strong>版本号和 API</strong>。它给的命令先看一遍再敲；内容和这一章对不上时，<strong>以这里的为准</strong>——这里的版本是跟着维护的。
+    </p>
+  </div>
+
+  <h2>三、从哪开始 —— 对号入座</h2>
   <p><strong>千万别从第一页开始往下读。</strong>先找到自己的位置：</p>
 
   <table>
-    <tr><th style="width:34%">你的情况</th><th style="width:26%">从哪进</th><th>为什么</th></tr>
+    <tr><th style="width:34%">你的情况</th><th style="width:24%">从哪进</th><th>为什么</th></tr>
     <tr>
       <td>完全零基础，Python 都没碰过</td>
       <td><a href="阶段01-大语言模型基础与工程化实践/01-第一章-聊天机器人初体验.html">阶段 1 第一章</a></td>
@@ -338,7 +376,7 @@
     </tr>
   </table>
 
-  <h2>三、一章怎么读（20 分钟）</h2>
+  <h2>四、一章怎么读（20 分钟）</h2>
   <p>每一章都是同一个骨架，第一次读照着这个顺序走：</p>
 
   <div class="point">
@@ -369,7 +407,7 @@
         <tr><th style="width:26%">段</th><th>怎么读</th></tr>
         <tr><td><strong>要解决什么</strong></td><td><strong>读两遍。</strong>这是全篇的锚——先接受"我需要它"，后面的内容才有落点</td></tr>
         <tr><td><strong>核心思路</strong></td><td>正常读。<strong>遇到看不懂的代码别停</strong>，先看它想干什么</td></tr>
-        <tr><td><strong>坑在哪</strong></td><td>★ <strong>别跳过，这是最值钱的地方</strong>（下面第五节专门说）</td></tr>
+        <tr><td><strong>坑在哪</strong></td><td>★ <strong>别跳过，这是最值钱的地方</strong>（下面第六节专门说）</td></tr>
       </table>
     </div>
   </div>
@@ -393,7 +431,7 @@
     </div>
   </div>
 
-  <h2>四、页面上那几块颜色分别是什么</h2>
+  <h2>五、页面上那几块颜色分别是什么</h2>
   <table>
     <tr><th style="width:24%">看到什么</th><th>含义</th></tr>
     <tr><td><strong>黄色框</strong></td><td>这一章在解决什么问题 —— 先读它</td></tr>
@@ -411,7 +449,7 @@
     </p>
   </div>
 
-  <h2>五、最值钱的是「坑在哪」—— 千万别跳过</h2>
+  <h2>六、最值钱的是「坑在哪」—— 千万别跳过</h2>
 
   <div class="why">
     <span class="tag">为什么它最值钱</span>
@@ -437,17 +475,17 @@
 
   <p><strong>读法建议</strong>：第一遍<strong>先扫一遍标题</strong>就够了，心里有个印象；等到你真动手、真报错了，再回来查这一块——那时候印象会深得多。</p>
 
-  <h2>六、卡住了怎么办</h2>
+  <h2>七、卡住了怎么办</h2>
   <table>
     <tr><th style="width:38%">症状</th><th>先做这个</th></tr>
     <tr><td>报了个错，不知道什么意思</td><td>用搜索框或 <code>Ctrl + F</code> 搜报错里的关键词 —— 八成就写在某个「坑在哪」里</td></tr>
-    <tr><td>代码跑不通，但不知道哪错了</td><td>把报错<strong>完整地</strong>贴给 AI（别只贴一行），让它先告诉你"哪一行出的事"</td></tr>
+    <tr><td>代码跑不通，但不知道哪错了</td><td>把报错<strong>完整地</strong>贴给 AI（别只贴一行），让它先告诉你"哪一行出的事"——第二节有现成的提示词</td></tr>
     <tr><td>这一章完全看不懂</td><td><strong>回去看「在全局框架里的位置」</strong>——十有八九是上一章没看</td></tr>
     <tr><td>环境装不起来</td><td>跳到阶段 17 / 18 / 19，那三块专门解决这个</td></tr>
     <tr><td>看懂了但不会写</td><td>正常。<strong>看和写之间隔着十遍练习</strong></td></tr>
   </table>
 
-  <h2>七、学到什么程度算学会了</h2>
+  <h2>八、学到什么程度算学会了</h2>
   <div class="map">
     <span class="node"><strong>最低标准</strong>：能答出章末自测题，而且不是靠背的</span>
     <span class="node"><strong>及格</strong>：能对着<strong>不懂的人</strong>把这个知识点的「要解决什么问题」讲清楚</span>
