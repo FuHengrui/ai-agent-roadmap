@@ -17,6 +17,7 @@
   var D = { chapters: [] };
   var MAX = 40;
   var ready = false;      // 索引到位了没
+  var full = false;       // 全文索引（不只是标题）到位了没
   var pending = null;     // 索引还没到就先记住用户输入
 
   // 中文提问里的虚词：搜之前剥掉，不然「是什么」会把结果全过滤没
@@ -127,7 +128,7 @@
         q.focus();
       });
     });
-    stat.textContent = '没有命中 —— 试着只搜一个词';
+    stat.textContent = full ? '没有命中 —— 试着只搜一个词' : '标题里也没找到；正文索引还在载入，等一下再试';
   }
 
   function render(res, total, ts) {
@@ -145,7 +146,8 @@
     hits.innerHTML = '';
     hits.appendChild(frag);
     stat.textContent = '命中 ' + total + ' 处' +
-      (total > MAX ? '，只显示前 ' + MAX + ' 处' : '') + ' —— 点一下直接跳过去';
+      (total > MAX ? '，只显示前 ' + MAX + ' 处' : '') + ' —— 点一下直接跳过去' +
+      (full ? '' : '（正文还在载入，先按标题命中）');
   }
 
   function run() {
@@ -193,21 +195,41 @@
   }
 
   q.disabled = true;
-  stat.textContent = '正在载入全文索引（约 0.8 MB，第一次会慢几秒）…';
+  stat.textContent = '正在载入索引（先出标题，正文随后补上）…';
 
-  var s = document.createElement('script');
-  s.src = 'search-index.js';
-  s.onload = function () {
-    D = window.KB_SEARCH || { chapters: [] };
+  function loadScript(src, ok, fail) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = ok;
+    s.onerror = fail;
+    document.body.appendChild(s);
+  }
+
+  function activate(d) {
+    D = d;
     ready = true;
     q.disabled = false;
-    stat.textContent = '索引就绪 —— 输入关键词，边打边出结果（Esc 清空）';
     q.focus();
-    if (pending !== null) { q.value = pending; pending = null; }
     if (q.value.trim()) run();
-  };
-  s.onerror = function () {
-    stat.textContent = '索引没加载出来：刷新一次试试（网络断了的话，本地打开 site/index.html 也能用）';
-  };
-  document.body.appendChild(s);
+  }
+
+  // 先拿轻量索引（一两百 KB，秒到）出标题结果，再在后台补全文那 2 MB。
+  // 网慢的时候这能让人立刻看到东西，而不是盯着空页面。
+  loadScript('search-index-lite.js', function () {
+    activate(window.KB_SEARCH_LITE || { chapters: [] });
+    loadScript('search-index.js', function () {
+      full = true;
+      D = window.KB_SEARCH || D;
+      if (q.value.trim()) run();
+    }, function () {
+      stat.textContent = '正文索引没加载出来，先用标题搜着（刷新可重试）';
+    });
+  }, function () {
+    loadScript('search-index.js', function () {
+      full = true;
+      activate(window.KB_SEARCH || { chapters: [] });
+    }, function () {
+      stat.textContent = '索引没加载出来：刷新一次试试（断网的话，本地打开 site/index.html 也能用）';
+    });
+  });
 })();

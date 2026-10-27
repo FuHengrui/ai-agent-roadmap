@@ -174,13 +174,24 @@ def main() -> int:
     out = SITE / "search-index.js"
     out.write_text("window.KB_SEARCH=" + payload + ";\n", encoding="utf-8", newline="\n")
 
+    # 轻量索引：只有章节标题、阶段、地址和知识点标题，没有正文 —— 一两百 KB，
+    # 秒到。页面先拿它出结果，再在后台把上面那份 2 MB 的正文索引补上。
+    lite = {"chapters": [
+        [c[0], c[1], c[2], "", [[p[0], p[1], ""] for p in c[4]]]
+        for c in chs
+    ]}
+    lite_out = SITE / "search-index-lite.js"
+    lite_out.write_text(
+        "window.KB_SEARCH_LITE=" + json.dumps(lite, ensure_ascii=False, separators=(",", ":")) + ";\n",
+        encoding="utf-8", newline="\n")
+
     page = SEARCH_HTML.format(
-        brand=SITE_TITLE, nav=sidebar_html("search.html"),
-        nch=len(chs), npt=npt,
+        brand=SITE_TITLE, nav=sidebar_html("search.html"), nch=len(chs), npt=npt,
     )
     (SITE / "search.html").write_text(page, encoding="utf-8", newline="\n")
 
-    print("  ✓ 索引 %d 章 / %d 个知识点，%.1f MB" % (len(chs), npt, out.stat().st_size / 1048576.0))
+    print("  ✓ 轻量索引（只有标题）%.0f KB" % (lite_out.stat().st_size / 1024.0))
+    print("  ✓ 全文索引 %d 章 / %d 个知识点，%.1f MB" % (len(chs), npt, out.stat().st_size / 1048576.0))
     print("  ✓ 搜索页 site/search.html")
     return 0
 
