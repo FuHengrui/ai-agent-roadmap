@@ -280,275 +280,206 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 9 · 智能运营平台 › <strong>第二章</strong></div>
 <h1>第二章　数据库设计与初始化</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★</div>
+<div class="subtitle">阶段 9 · 智能运营平台　|　实践　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>上一章画完了系统蓝图，但系统要存"患者是谁、血糖多少、吃了什么、用了什么药"——这些数据得有个家。本章解决两件事：<strong>一是设计 7 张业务表的结构</strong>（字段、类型、约束、外键），<strong>二是把建库 SQL 跑起来</strong>，让 MySQL 里真的有这 7 张表。</p>
-<p>关键认知：<strong>后面所有章节（CRUD、统计、报告、AI 对话）都建立在表结构之上</strong>。表设计错了，后面改起来伤筋动骨——比如血糖表没存测量时间，趋势分析就做不了；运动表没存运动前后血糖，bs_change 就是空中楼阁。所以本章是"地基中的地基"。</p>
+<p>后端的一切都长在表上：接口是"读写表"，权限是"谁能读哪张表"，发布记录是"往表里追加一行"。表设计错了，后面每章都要跟着改——所以<strong>动手写代码之前，先把表定死</strong>。</p>
+<p>本章要拿到的东西很具体：八张表的字段清单、它们之间的关联、建库脚本、以及让程序连上库的那一段配置。做完这章，你的 MySQL 里就该有一个能跑业务的空壳库，后面的接口全往里灌数据。</p>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
-<span class="node">上一章：项目全景与技术选型——8 大功能模块 + 12 项技术栈</span>
-<span class="node"><span class="here">本章 ← 你在这里：数据库设计与初始化——7 张业务表 + 外键关系 + 建库 SQL</span></span>
-<span class="node">下一章：后端工程搭建——uv 初始化工程、config.py 数据源配置</span>
-<span class="node">再往后：模型层 → CRUD → AI 引擎 → LangGraph → 前端</span>
-<span class="node">阶段终点：数据有处可存，服务能跑，AI 能答</span>
+<span class="node">上一章：项目全景与技术选型——四模块、三层架构、八张表的数据链</span>
+<span class="node"><span class="here">本章 ← 你在这里：把八张表真正建出来，并让程序连上</span></span>
+<span class="node">下一章：后端工程搭建——uv 初始化项目、FastAPI 骨架、把本章的配置接进去</span>
+<span class="node">再往后：模型与 Aerich 迁移（用代码定义表）→ 启动测试 → JWT → 前端联调</span>
+<span class="node">一个顺序上的提醒：本章是<strong>先建表再写模型</strong>，第 4 章才用 Aerich 把表结构搬到代码里管理。别把两件事混在一起。</span>
 </div>
-<div class="point" id="p1"><div class="head"><span class="no">1</span>① 开发环境准备：小皮 + MySQL8 + Navicat</div><div class="body">
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 为什么先定表：数据模型是后端的骨架</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>没有数据库服务，一切表设计都是纸上谈兵。先解决"MySQL 从哪来、怎么连"。</p>
+<p>搞清楚"表"在整套系统里的地位，才愿意花时间把字段想清楚。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>一套 Windows 经典组合：</p>
-<ol><li><strong>安装小皮工具（phpStudy）</strong>：一键集成了 MySQL 8.0 等环境，比单独装 MySQL 再配服务省事很多。</li><li><strong>在小皮里安装并启动 MySQL 8.0 服务</strong>：启动后小皮面板显示服务为绿色（运行中）。</li><li><strong>用 Navicat 连接 MySQL</strong>：主机 localhost、端口默认 3306、用户名 root、密码按安装时设定（示例为 root）。连接成功意味着数据库服务就绪。</li><li><strong>创建名为 <code>diabetes</code> 的数据库</strong>：字符集 utf8mb4（支持中文），排序规则对应 utf8mb4_general_ci 即可。</li></ol>
-<p>&gt; 小贴士：utf8mb4 是必须的。MySQL 的老 utf8 字符集存不了 4 字节的 emoji，而本系统会存聊天记录（患者可能发 emoji），用 utf8mb4 才能放心。</p>
+<p>一条判断标准：<strong>如果一个东西需要"以后还能查回来"，它就该进表</strong>。</p>
+<ul><li>用户输入的原始主题 → 要能复用，进表（<code>t_sections</code>）</li><li>AI 生成的一堆标题 → 要能挑、能排序、能看状态，进表（<code>t_titles</code>）</li><li>生成的正文 → 要能编辑、能再发，进表（<code>t_titles.content</code>）</li><li>配图 → 要能区分封面/正文、能排序，进表（<code>t_title_images</code>）</li><li>发布结果 → 要能复盘数据，进表（<code>t_publish_records</code>）</li></ul>
+<p>反过来，<strong>提示词、模型参数、临时对话</strong>这些不需要长期留存的东西，就别进表——它们属于配置和运行时。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>Navicat 连不上 localhost</td><td>① MySQL 服务没启动（回小皮启动）② 端口被占用（检查 3306）③ 密码不对（确认安装时密码）</td></tr>
-<tr><td>建库时字符集选错</td><td>用 utf8mb4 而不是 utf8；否则中文正常但 emoji 报错</td></tr>
+<tr><td>表建得太"扁平"，一个字段塞一坨 JSON</td><td>后面按状态筛选、统计数量时全都得全表扫描再解析；<strong>常用筛选项必须是独立字段</strong>（<code>status</code>、<code>platform</code>）</td></tr>
 </table>
 </div>
 </div></div>
-<div class="point" id="p2"><div class="head"><span class="no">2</span>② 七张表全景：一张 ER 图看懂</div><div class="body">
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 八张表的关系：一条主链 + 两张字典</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>设计数据库前先把"有哪些表、表与表什么关系"画出来，避免边写边加字段。</p>
+<p>先把表之间的关系画出来，再一张张看字段，否则容易"建完八张表还是不知道谁连谁"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>本项目所有表都挂在患者主表之下——<strong>患者是 1，其余 6 张业务表都是 N</strong>（一对多）：</p>
-<pre>                    ┌─────────────┐
-                    │  patients   │ 患者主表（1）
-                    └──────┬──────┘
-        ┌─────────┬───────┼───────┬─────────┬─────────┐
-        ▼         ▼       ▼       ▼         ▼         ▼
-┌────────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌──────────┐ ┌────────────┐
-│blood_sugar │ │diet_   │ │medi-   │ │exercise│ │health_   │ │chat_       │
-│ 血糖记录    │ │records │ │cations │ │_records│ │reports   │ │history     │
-│            │ │ 饮食记录│ │ 用药记录│ │ 运动记录│ │ 健康报告  │ │ 对话历史    │
-└────────────┘ └────────┘ └────────┘ └────────┘ └──────────┘ └────────────┘</pre>
-<p>命名规律：<strong>业务表都以复数命名</strong>（records、cations、history），与 Tortoise 模型 Meta.table 一一对应。看清楚这个星型结构，后面十章写 CRUD 时"查哪个表、join 谁"都一目了然。</p>
-</div>
-<div class="step trap"><span class="label">坑在哪</span>
-<table>
-<tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>建表名用了单数（blood_sugar_record）</td><td>与代码里的表名不一致，迁移和查询会对不上；以 <code>baizhan_</code> / 建表 SQL 中的表名为准</td></tr>
-<tr><td>忘了建外键</td><td>后面用 ORM 关联查询会报「字段不存在」；建表 SQL 必须带 FOREIGN KEY</td></tr>
-</table>
-</div>
-</div></div>
-<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 患者主表 patients：字段设计</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>患者是系统的主实体，字段要覆盖"基本信息 + 糖尿病特诊信息 + 紧急联系 + 医疗史"，AI 生成个性化建议全靠它。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<pre>CREATE TABLE IF NOT EXISTS patients (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    age INT NOT NULL,
-    gender VARCHAR(10) DEFAULT &#x27;未知&#x27;,
-    diabetes_type VARCHAR(20) DEFAULT &#x27;2型&#x27;,
-    diagnosis_date DATE,
-    height FLOAT,
-    weight FLOAT,
-    phone VARCHAR(20),
-    emergency_contact VARCHAR(50),
-    emergency_phone VARCHAR(20),
-    medical_history TEXT,
-    allergies TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
-<p>设计要点：</p>
-<table>
-<tr><th>字段</th><th>为什么这么设计</th></tr>
-<tr><td>diabetes_type 默认 '2型'</td><td>1 型/2 型治疗逻辑完全不同，AI 回答要区分；默认 2 型最普遍</td></tr>
-<tr><td>height/weight 为 FLOAT</td><td>后面要算 BMI（体重kg/身高m²），必须存数值</td></tr>
-<tr><td>diagnosis_date 可空</td><td>确诊时间不一定填，留空</td></tr>
-<tr><td>medical_history/allergies 为 TEXT</td><td>病史、过敏史可能很长，用大文本</td></tr>
-<tr><td>created_at/updated_at</td><td>审计字段，updated_at 用于"最近什么改过"</td></tr>
-</table>
-<p>这段 SQL 也是后面 Patient 模型的"翻译蓝本"——<strong>字段名、类型、默认值必须与模型一致</strong>。</p>
-</div>
-<div class="step trap"><span class="label">坑在哪</span>
-<table>
-<tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>体重身高存成 VARCHAR</td><td>BMI 算不了或类型报错；数值必须 FLOAT</td></tr>
-<tr><td>没设默认值，建患者报 NOT NULL 错误</td><td>gender / diabetes_type / created_at 等字段要么给 DEFAULT 要么设为可空</td></tr>
-</table>
-</div>
-</div></div>
-<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 血糖记录表 blood_sugar：核心指标表</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>血糖是整个系统的"心跳数据"，趋势分析、健康报告、AI 风险评估都以它为准。表设计必须支持这些分析。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<pre>CREATE TABLE IF NOT EXISTS blood_sugar (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patient_id INT NOT NULL,
-    value FLOAT NOT NULL,
-    measure_type VARCHAR(20) NOT NULL,
-    measured_at DATETIME NOT NULL,
-    note TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
-<table>
-<tr><th>字段</th><th>为什么这么设计</th></tr>
-<tr><td>value FLOAT</td><td>血糖值，单位 mmol/L（如 5.6、9.2）</td></tr>
-<tr><td>measure_type VARCHAR(20)</td><td>测量类型：空腹 / 餐后2h / 睡前 / 随机，用于区分场景</td></tr>
-<tr><td>measured_at DATETIME</td><td>测量时间——趋势分析、按天数统计全靠它</td></tr>
-<tr><td>FOREIGN KEY ... ON DELETE RESTRICT</td><td>患者被删时，若还有血糖记录则<strong>禁止删除</strong>——保护医疗数据</td></tr>
-</table>
-<p>&gt; 约束语义：<code>ON DELETE RESTRICT</code> 表示"父记录有子记录时不让删父记录"；<code>ON UPDATE CASCADE</code> 表示"父记录 id 变了，子记录自动跟着变"。医疗场景用 RESTRICT 很合适——别让一条血糖记录突然失去主人。</p>
-</div>
-<div class="step trap"><span class="label">坑在哪</span>
-<table>
-<tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>外键建不上，报 errno 150</td><td>① patients 表不存在 ② 类型不一致（patients.id 是 INT，血糖表 patient_id 也要 INT）③ 引擎/字符集不一致（都 InnoDB + utf8mb4）</td></tr>
-<tr><td>血糖值存成 INT</td><td>INT 存不了 5.6 这种小数；FLOAT</td></tr>
-</table>
-</div>
-</div></div>
-<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 饮食记录表 diet_records：营养五要素</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>智能饮食管理要推荐食谱、算碳水、查 GI，所以每顿饭要记<strong>营养五要素 + 餐次 + 时间</strong>。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<pre>CREATE TABLE IF NOT EXISTS diet_records (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patient_id INT NOT NULL,
-    food_name VARCHAR(100) NOT NULL,
-    calories FLOAT,
-    carbs FLOAT,
-    protein FLOAT,
-    fat FLOAT,
-    gi_value FLOAT,
-    portion FLOAT DEFAULT 1.0,
-    meal_type VARCHAR(20),
-    eaten_at DATETIME NOT NULL,
-    note TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
-<table>
-<tr><th>字段</th><th>为什么这么设计</th></tr>
-<tr><td>calories / carbs / protein / fat</td><td>热量、碳水、蛋白质、脂肪——每日营养统计就靠聚合这四列</td></tr>
-<tr><td>gi_value FLOAT</td><td>升糖指数（Glycemic Index）：低 GI≤55、中 GI≤70、高 GI&gt;70，AI 推荐食谱的排序依据</td></tr>
-<tr><td>portion FLOAT DEFAULT 1.0</td><td>份数/重量系数，同一食物吃 2 份时营养翻倍</td></tr>
-<tr><td>meal_type</td><td>餐次：早餐/午餐/晚餐/加餐——食谱推荐按餐次筛选</td></tr>
-<tr><td>eaten_at</td><td>进食时间——"当日营养统计"按 eaten_at 落在哪天来过滤</td></tr>
-</table>
-<p>有了这张表，DietAdvisor 就能回答"你今天碳水超标了""你早餐应该换成低 GI 食物"。</p>
-</div>
-<div class="step trap"><span class="label">坑在哪</span>
-<table>
-<tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>营养量没乘 portion</td><td>吃 2 份却按 1 份统计，营养结果偏小；统计时记得乘 portion（或前端录入时就乘好）</td></tr>
-<tr><td>gi_value 为 NULL 也被算平均 GI</td><td>mean 会跳过 None，但如果数据全是 None 就没法算；注意空值兜底</td></tr>
-</table>
-</div>
-</div></div>
-<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 用药记录表 medications：安全余量设计</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>用药管理要记录药名、剂量、频次、起止时间、是否在服、副作用——AI 才能提醒"别漏药、别重复用药"。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<pre>CREATE TABLE IF NOT EXISTS medications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patient_id INT NOT NULL,
-    drug_name VARCHAR(100) NOT NULL,
-    drug_type VARCHAR(50),
-    dosage VARCHAR(50) NOT NULL,
-    frequency VARCHAR(50),
-    timing TEXT,
-    start_date DATE NOT NULL,
-    end_date DATE,
-    is_active BOOLEAN DEFAULT 1,
-    side_effects TEXT,
-    note TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
-<p>设计三要点：</p>
-<ul><li><strong>dosage 用 VARCHAR 而不是数字</strong>：因为剂量可能是"1片""0.5mg""睡前 12 单位"这种带单位的文本，数值化反而不灵活；</li><li><strong>is_active BOOLEAN DEFAULT 1</strong>：判断"现在是否还在吃"——停药的药不删（保留记录），只置 0，历史可追溯；</li><li><strong>start_date 必填、end_date 可空</strong>：正在吃的药没有停药日期，未来停用再填。</li></ul>
-</div>
-<div class="step trap"><span class="label">坑在哪</span>
-<table>
-<tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>把 dosage 设计成 FLOAT</td><td>"12 单位胰岛素"这种带单位写法存不进去；VARCHAR 才是正确粒度</td></tr>
-<tr><td>删掉停用的药</td><td>医疗记录要留痕；改 is_active=0 而不是 DELETE</td></tr>
-</table>
-</div>
-</div></div>
-<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 运动记录表 exercise_records：前后血糖对比</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>"运动与血糖关系分析"要靠<strong>运动前后的血糖差值</strong>（bs_change），所以运动表必须留两个血糖字段。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<pre>CREATE TABLE IF NOT EXISTS exercise_records (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patient_id INT NOT NULL,
-    exercise_type VARCHAR(50) NOT NULL,
-    duration_min INT NOT NULL,
-    intensity VARCHAR(20) DEFAULT &#x27;中等&#x27;,
-    calories_burned FLOAT,
-    performed_at DATETIME NOT NULL,
-    blood_sugar_before FLOAT,
-    blood_sugar_after FLOAT,
-    note TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
-<p>亮点：<code>blood_sugar_before</code> + <code>blood_sugar_after</code> 两列是<strong>运动与血糖关系分析</strong>的数据基础——ORM 层会用计算属性 bs_change = after - before，直观看到"跑了 30 分钟后血糖降了多少"，AI 就能评估运动方案是否有效。</p>
-<p>其他字段注意点：intensity 默认 '中等'（低/中/高三档）；duration_min 是 INT（分钟）；calories_burned 是可空 FLOAT（烧了多少卡运动手环才知道）。</p>
-</div>
-<div class="step trap"><span class="label">坑在哪</span>
-<table>
-<tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>漏掉 blood_sugar_before/after</td><td>运动与血糖关联分析直接没了；建模时务必保留</td></tr>
-<tr><td>intensity 用中文存但忘记默认值</td><td>录入端没传时插入报错；DEFAULT '中等' 兜底</td></tr>
-</table>
-</div>
-</div></div>
-<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 报告表与对话表：health_reports + chat_history</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>最后两张表：健康报告（自动生成的周报/月报）和 AI 对话历史（RAG 问答上下文）。它们存储的是"系统生成物"而非"患者录入数据"。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<pre>-- 健康报告表
-CREATE TABLE IF NOT EXISTS health_reports (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patient_id INT NOT NULL,
-    report_type VARCHAR(50) NOT NULL,
-    period_start DATE NOT NULL,
-    period_end DATE NOT NULL,
-    avg_blood_sugar FLOAT,
-    blood_sugar_std FLOAT,
-    time_in_range FLOAT,
-    summary TEXT NOT NULL,
-    recommendations TEXT,
-    risk_level VARCHAR(20) DEFAULT &#x27;低&#x27;,
-    generated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+<pre>t_users ──┬─&lt; t_sections ──&lt; t_titles ──┬─&lt; t_title_images
+          │                              └─&lt; t_publish_records ──&lt; t_publish_images
+          └─&lt; t_title_images                       （引用 t_title_images）
 
--- 对话历史表
-CREATE TABLE IF NOT EXISTS chat_history (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patient_id INT NOT NULL,
-    role VARCHAR(20) NOT NULL,
-    content TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
-<p>health_reports 的三个"AI 相关"字段：</p>
-<ul><li><code>avg_blood_sugar</code> / <code>blood_sugar_std</code> / <code>time_in_range</code>：统计引擎算出的数值指标；</li><li><code>summary</code>：人类可读的健康总结（统计引擎生成）；</li><li><code>recommendations</code>：LLM 生成的个性化建议；</li><li><code>risk_level</code>：低/中/高/极高——风险评估结果。</li></ul>
-<p>chat_history 要点：<code>role</code> 只有两个取值——<code>user</code>（患者）和 <code>assistant</code>（AI），一问一答成对落库；content 是 TEXT（对话可能长）。这张表让"AI 问诊有记忆"：下次回答可以带上历史。</p>
+字典表：t_style（配图风格）、t_models（可用模型）</pre>
+<p>读法：<strong><code>1 : N</code> 用"一的一方主键 → 多的一方外键"</strong>。</p>
+<table>
+<tr><th>关系</th><th>含义</th></tr>
+<tr><td>users → sections</td><td>一个用户建多个选题组</td></tr>
+<tr><td>sections → titles</td><td>一个选题组下挂多个标题</td></tr>
+<tr><td>titles → title_images</td><td>一个标题有多张图（封面 + 正文）</td></tr>
+<tr><td>titles → publish_records</td><td>一篇内容可发多个平台，产生多条记录</td></tr>
+<tr><td>publish_records → publish_images</td><td>一次发布实际用了哪些图、什么顺序</td></tr>
+<tr><td>style / models</td><td>被配图与文案生成引用，本身不挂在主链上</td></tr>
+</table>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>chat_history 存 role 用了其他值</td><td>后续 LLM 客户端按 role 判断 user/assistant 组装消息；非约定值会被跳过，回答丢历史</td></tr>
-<tr><td>report 表没存 period_start/end</td><td>报告"哪段时间的数据"就无法追溯；两个日期都 NOT NULL</td></tr>
+<tr><td>发布记录挂在 section 上</td><td>发布的对象是"某一篇内容"（title），不是"某个方向"；挂错层会导致一条记录对应不清</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 三张主表：users / sections / titles</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>主链上的前三个节点，决定了"谁、做什么方向、具体哪篇"，字段必须一次想全。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<table>
+<tr><th>表</th><th>关键字段</th><th>设计要点</th></tr>
+<tr><td><code>t_users</code></td><td>id、username、password、name、department、created_at</td><td><code>username</code> 全局唯一；<code>password</code> 存<strong>哈希</strong>不存明文；<code>department</code> 可空（个人用户没有部门）</td></tr>
+<tr><td><code>t_sections</code></td><td>id、user_id、source_name、name、created_at、updated_at</td><td><code>source_name</code> 是用户输入的原始主题，<code>name</code> 是整理后的选题名——两者分开存，才能回溯"当初那句话是什么"</td></tr>
+<tr><td><code>t_titles</code></td><td>id、section_id、title、sort_order、content、status、view_count、like_count、created_at、updated_at</td><td><code>sort_order</code> 越小越靠前（AI 推荐的排前面）；<code>content</code> 可空（还没生成正文）；<code>status</code> 用数字码（见第 ⑥ 点）</td></tr>
+</table>
+<p>三个细节值得单独说：</p>
+<ol><li><strong><code>source_name</code> 与 <code>name</code> 分开</strong>：用户输入"AI 减肥"，你整理成"AI+健康"分类，但半年后你想知道当初他到底打了什么字——原始输入必须留。</li><li><strong><code>sort_order</code> 而不是"按创建时间倒序"</strong>：AI 出的标题有推荐顺序，这个顺序必须能被人工调整，所以要有独立字段。</li><li><strong>统计字段（view_count / like_count）先留着</strong>：现在没用，但要发数据的时候就有了；空着不影响。</li></ol>
+</div>
+</div></div>
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 图片表与风格表：t_title_images 与 t_style</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>图片是这套系统里最"重"的资源（体积大、种类多、要排序），单独建表才撑得住。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p><code>t_title_images</code> 的字段设计围绕三件事：<strong>属于谁、干什么用、多大</strong>。</p>
+<table>
+<tr><th>字段</th><th>作用</th></tr>
+<tr><td>user_id / title_id</td><td>归属：谁传的、挂在哪篇内容下</td></tr>
+<tr><td>image_url</td><td>只存 URL（图片本体在 OSS 上，见第 12 章）</td></tr>
+<tr><td>image_type</td><td>0=正文图、1=封面图、2=缩略图</td></tr>
+<tr><td>sort_order</td><td>同一篇内容里多张图的顺序（越小越靠前）</td></tr>
+<tr><td>file_size / width / height</td><td>上传时顺手记下，前端做占位图、做比例校验都要用</td></tr>
+<tr><td>created_at</td><td>只记创建时间（图片不改，不需要 updated_at）</td></tr>
+</table>
+<p><code>t_style</code> 是字典表，只有四个字段：<code>name</code>（展示名，如"扁平化海报"）、<code>fengge</code>（给模型看的完整提示词）、<code>create_time</code>。<strong>注意 <code>fengge</code> 这一列</strong>：它就是提示词模板，运营改风格 = 改这一列，不用改代码。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把图片二进制存进 MySQL</td><td>数据库会被撑爆、备份变慢；<strong>图存 OSS，库里只存 URL</strong></td></tr>
+<tr><td><code>width</code>/<code>height</code> 用字符串存</td><td>后续算比例、做裁剪都得转类型；直接 <code>int</code></td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 三张辅助表：t_models / t_publish_records / t_publish_images</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>这一组解决"用哪个模型生成"和"发到哪里、效果如何"两个问题。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<table>
+<tr><th>表</th><th>关键字段</th><th>用途</th></tr>
+<tr><td><code>t_models</code></td><td>id、name、type、version、description、status、created_at、updated_at</td><td>模型字典：<code>type</code> 区分 text / image；<code>status</code> 1=可用、0=停用。切换模型 = 改 <code>status</code>，不改代码</td></tr>
+<tr><td><code>t_publish_records</code></td><td>id、user_id、title_id、platform、publish_status、publish_time、content、view_count、like_count、comment_count、share_count、created_at、updated_at</td><td>一次发布一行；<code>platform</code> 1=小红书 / 2=抖音 / 3=快手 / 4=公众号；数据回填后就更新统计列</td></tr>
+<tr><td><code>t_publish_images</code></td><td>id、publish_id、image_id、image_type、sort_order、created_at</td><td>记录"这次发布实际用了哪几张图、什么顺序"——因为发布时可能删掉某张图，不能只看 <code>t_title_images</code></td></tr>
+</table>
+<p>为什么要多一张 <code>t_publish_images</code>？因为<strong>素材是"可变的"，发布结果是"已定格的"</strong>。素材表里删了一张图，历史发布记录不能跟着变，所以发布那一刻用哪几张图，要单独存一份快照。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>发布统计列跟 <code>t_titles</code> 里的统计列搞混</td><td><code>t_titles.view_count</code> 是"内容维度的汇总"，<code>t_publish_records.view_count</code> 是"这一条平台发布的数据"；同一条内容发三个平台，两条记录的数据不能互相覆盖</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 枚举值约定：数字码要配一张对照表</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>状态、平台、图片类型都用数字存，省空间也快，但<strong>没人记得住 2 是成功还是失败</strong>。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>八张表里一共三组枚举，先把对照关系定下来：</p>
+<table>
+<tr><th>字段</th><th>取值</th></tr>
+<tr><td><code>t_titles.status</code></td><td>0=未生成、1=已生成、2=已发布、3=已废弃</td></tr>
+<tr><td><code>t_publish_records.platform</code></td><td>1=小红书、2=抖音、3=快手、4=微信公众号</td></tr>
+<tr><td><code>t_publish_records.publish_status</code></td><td>0=待发布、1=发布中、2=成功、3=失败、4=已删除</td></tr>
+<tr><td><code>t_title_images.image_type</code></td><td>0=正文图、1=封面图、2=缩略图</td></tr>
+<tr><td><code>t_publish_images.image_type</code></td><td>1=正文图、2=封面图、3=详情图（注意与上面<strong>不是同一套编号</strong>）</td></tr>
+</table>
+<p>两个工程习惯：</p>
+<ol><li><strong>对照表写进代码注释 / 前端常量</strong>，别让前后端各自猜。</li><li><strong>枚举值只增不改</strong>：已经上线的值不要改含义，否则历史数据会集体"变义"。</li></ol>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>两张图片表的 <code>image_type</code> 编号不一致，直接复用同一套常量</td><td><code>t_title_images</code> 里 0=正文、<code>t_publish_images</code> 里 1=正文——<strong>复用会错位</strong>，必须分开定义</td></tr>
+<tr><td>用 <code>status=0</code> 同时表示"未生成"和"已废弃"</td><td>状态混淆后无法区分"还没做"和"不做了"；废弃要单独一个值</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 建库与初始化：utf8mb4、库名一致、种子数据</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>把表真正落地到一个能连的库里，并且保证后面三处配置不打架。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>四步：</p>
+<ol><li><strong>装 MySQL 8</strong>（Windows 上可用集成环境一键起服务），用 Navicat 连上。</li><li><strong>建库</strong>，字符集必须 <code>utf8mb4</code>：</li></ol>
+<pre>CREATE DATABASE ai_operation
+  DEFAULT CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;</pre>
+<ol><li><strong>导入建表脚本</strong>（八张表 + 索引）。导入后核对表数量：<code>SHOW TABLES;</code> 应该是 8 行。</li><li><strong>填种子数据</strong>：<code>t_style</code> 里放两三种风格、<code>t_models</code> 里放一个文本模型 + 一个图像模型、<code>t_users</code> 里放一个管理员。<strong>种子数据不是可选项</strong>——第 8~12 章生成时要读字典表，空的就读不出东西。</li></ol>
+<p>库名建议统一用 <code>ai_operation</code>：<strong>建库、<code>.env</code>、<code>config.py</code> 三处必须是同一个字符串</strong>，这是最常见的"明明启动了却连不上库"的原因。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>表建好了，插中文/emoji 报错</td><td>字符集用了 <code>utf8</code>（三字节老字符集）；建库建表都要 <code>utf8mb4</code></td></tr>
+<tr><td>本地能连、换台机器就连不上</td><td><code>.env</code> 里 <code>DB_HOST</code> 写了 <code>127.0.0.1</code> 但 MySQL 只监听了 localhost，或端口不是 3306；先在 Navicat 里验证同一套参数能连</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 连接配置：.env + config.py + Tortoise</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>让"凭据"和"代码"分开，同时把连接串拼成 Tortoise 认识的格式。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>第一步，凭据进 <code>.env</code>（<strong>不进仓库</strong>）：</p>
+<pre>DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=你的密码
+DB_NAME=ai_operation</pre>
+<p>第二步，<code>app/config.py</code> 读取并拼连接串：</p>
+<pre>import os
+from urllib.parse import quote_plus
+from dotenv import load_dotenv
+
+load_dotenv()
+DB_PASSWORD = os.getenv(&quot;DB_PASSWORD&quot;, &quot;&quot;)
+_encoded = quote_plus(DB_PASSWORD)          # 密码含 @ # : 必须先编码
+DATABASE_URL = (
+    f&quot;mysql://{os.getenv(&#x27;DB_USER&#x27;)}:{_encoded}&quot;
+    f&quot;@{os.getenv(&#x27;DB_HOST&#x27;)}:{os.getenv(&#x27;DB_PORT&#x27;)}/{os.getenv(&#x27;DB_NAME&#x27;)}&quot;
+    f&quot;?charset=utf8mb4&quot;
+)
+
+TORTOISE_ORM = {
+    &quot;connections&quot;: {&quot;default&quot;: DATABASE_URL},
+    &quot;apps&quot;: {&quot;models&quot;: {&quot;models&quot;: [&quot;app.models&quot;, &quot;aerich.models&quot;],
+                        &quot;default_connection&quot;: &quot;default&quot;}},
+}</pre>
+<p>三个关键点：</p>
+<ul><li><strong><code>quote_plus</code> 不能省</strong>：密码里有 <code>@</code>、<code>#</code>、<code>:</code> 时，不编码会把 URL 截断，报的错还特别像"密码错误"。</li><li><strong><code>aerich.models</code> 必须先写进列表</strong>：第 4 章用 Aerich 迁移时它要建自己的版本表，现在不写，到时候还得回头改配置。</li><li><strong><code>charset=utf8mb4</code></strong>：和建库时的字符集对齐，否则中文在某些连接下变成问号。</li></ul>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>报 <code>Access denied</code>，但 Navicat 能连</td><td>九成是密码里的特殊字符没 URL 编码；用 <code>quote_plus</code> 包一层</td></tr>
+<tr><td><code>.env</code> 提交进了 git</td><td>凭据泄露；<code>.env</code> 必须在 <code>.gitignore</code> 里，仓库里只留 <code>.env.example</code></td></tr>
 </table>
 </div>
 </div></div>
@@ -556,16 +487,17 @@ CREATE TABLE IF NOT EXISTS chat_history (
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
-<tr><td><strong>7 张表的设计图（星型结构）</strong></td><td>患者在中心、6 张业务表环绕，后面写 CRUD 和查询路径清晰</td></tr>
-<tr><td><strong>建库 SQL 与设计理由</strong></td><td>每个字段"为什么这么设计"都清楚——血糖要存 measured_at、饮食要存 GI、运动要存前后血糖、用药要留痕</td></tr>
-<tr><td><strong>建库环境链路</strong></td><td>小皮 → MySQL8 → Navicat → diabetes 库，一套可复现的搭建流程</td></tr>
+<tr><td><strong>八张表 + 一条主链</strong></td><td>「选题组 → 标题 → 图片 → 发布」的落点定了，后面接口照着表写就有</td></tr>
+<tr><td><strong>三组枚举对照表</strong></td><td>前后端不会再各猜一套数字；尤其是两张图片表的编号不同这点</td></tr>
+<tr><td><strong>能连上的库 + 配置骨架</strong></td><td><code>.env</code>、<code>config.py</code>、<code>TORTOISE_ORM</code> 三件套齐了，第 3 章直接拿来用</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li>为什么血糖表的 patient_id 外键用 <code>ON DELETE RESTRICT</code> 而不是 <code>CASCADE</code>？在医疗场景下 RESTRICT 保护了什么？</li><li>饮食表的 <code>gi_value</code> 字段为什么对"食谱推荐"这么关键？低/中/高 GI 的阈值分别是多少？</li><li>用药表的 dosage 为什么用 VARCHAR 而不是 FLOAT？请举一个 VARCHAR 才能存下的剂量例子。</li><li>运动表靠哪两个字段支撑"运动与血糖关系分析"？bs_change 在 ORM 层是怎么算的？</li><li>chat_history 的 role 字段只允许哪两个值？如果误存了第三个值，可能引发什么后果？</li><li>报告表里哪几个字段是"AI 生成的"，哪几个是"统计引擎算出来的"？</li></ol>
+<ol><li>判断"某个东西该不该进表"的标准是什么？提示词和模型参数为什么不进表？</li><li><code>t_sections.source_name</code> 与 <code>name</code> 为什么要分开存？只留一个会丢什么信息？</li><li>为什么必须有 <code>t_publish_images</code>，直接在 <code>t_publish_records</code> 里存一个图片 ID 不行吗？</li><li>两张图片表的 <code>image_type</code> 编号不一样，复用同一套常量会出什么错？</li><li>密码里含 <code>@</code> 时，不写 <code>quote_plus</code> 会报什么错？为什么这个错很难查？</li><li>种子数据为什么不是可选的？字典表为空时，第 8~12 章会发生什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
+<a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise-ORM 文档</a>
+<a href="https://github.com/tortoise/aerich" target="_blank" rel="noopener"><span class="k">官网</span>Aerich（迁移工具）</a>
 <a href="https://dev.mysql.com/doc/refman/8.0/en/" target="_blank" rel="noopener"><span class="k">官网</span>MySQL 8.0 参考手册</a>
-<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</span>
-<span class="lk"><span class="k">资料</span>建库 SQL 脚本（diabetes 数据库初始化）</span></div>
+<a href="https://github.com/theskumar/python-dotenv" target="_blank" rel="noopener"><span class="k">官网</span>python-dotenv</a>
 </div>
 <div class="pager">
 <a href="01-第一章-项目全景与技术选型.html">← 第一章　项目全景与技术选型</a>
@@ -575,14 +507,14 @@ CREATE TABLE IF NOT EXISTS chat_history (
 <aside class="toc">
 <div class="toc-inner">
   <div class="toc-head">本页目录</div>
-  <a href="#p1" title="开发环境准备：小皮 + MySQL8 + Navicat"><span class="n">1</span>开发环境准备：小皮 + MySQL8 + Navicat</a>
-  <a href="#p2" title="七张表全景：一张 ER 图看懂"><span class="n">2</span>七张表全景：一张 ER 图看懂</a>
-  <a href="#p3" title="患者主表 patients：字段设计"><span class="n">3</span>患者主表 patients：字段设计</a>
-  <a href="#p4" title="血糖记录表 blood_sugar：核心指标表"><span class="n">4</span>血糖记录表 blood_sugar：核心指标表</a>
-  <a href="#p5" title="饮食记录表 diet_records：营养五要素"><span class="n">5</span>饮食记录表 diet_records：营养五要素</a>
-  <a href="#p6" title="用药记录表 medications：安全余量设计"><span class="n">6</span>用药记录表 medications：安全余量设计</a>
-  <a href="#p7" title="运动记录表 exercise_records：前后血糖对比"><span class="n">7</span>运动记录表 exercise_records：前后血糖对比</a>
-  <a href="#p8" title="报告表与对话表：health_reports + chat_history"><span class="n">8</span>报告表与对话表：health_reports + chat_history</a>
+  <a href="#p1" title="为什么先定表：数据模型是后端的骨架"><span class="n">1</span>为什么先定表：数据模型是后端的骨架</a>
+  <a href="#p2" title="八张表的关系：一条主链 + 两张字典"><span class="n">2</span>八张表的关系：一条主链 + 两张字典</a>
+  <a href="#p3" title="三张主表：users / sections / titles"><span class="n">3</span>三张主表：users / sections / titles</a>
+  <a href="#p4" title="图片表与风格表：t_title_images 与 t_style"><span class="n">4</span>图片表与风格表：t_title_images 与 t_style</a>
+  <a href="#p5" title="三张辅助表：t_models / t_publish_records / t_publish_images"><span class="n">5</span>三张辅助表：t_models / t_publish_records / t_publish_images</a>
+  <a href="#p6" title="枚举值约定：数字码要配一张对照表"><span class="n">6</span>枚举值约定：数字码要配一张对照表</a>
+  <a href="#p7" title="建库与初始化：utf8mb4、库名一致、种子数据"><span class="n">7</span>建库与初始化：utf8mb4、库名一致、种子数据</a>
+  <a href="#p8" title="连接配置：.env + config.py + Tortoise"><span class="n">8</span>连接配置：.env + config.py + Tortoise</a>
 </div>
 </aside>
 </div>

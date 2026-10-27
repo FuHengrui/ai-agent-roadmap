@@ -280,217 +280,225 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 9 · 智能运营平台 › <strong>第一章</strong></div>
 <h1>第一章　项目全景与技术选型</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★☆</div>
+<div class="subtitle">阶段 9 · 智能运营平台　|　实践　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>一个糖尿病患者要管住四件事：<strong>测血糖、管住嘴、按时吃药、坚持运动</strong>。传统的做法是记在本子上、凭感觉吃饭、等到复诊才被医生"教育"一顿，中间三周的异常根本没人管。本章要做的系统，就是把患者的血糖、饮食、用药、运动数据全部收进一套系统里，再用 AI（大模型 + RAG + LangGraph）给出<strong>个性化</strong>的管理建议——你说"我今天早饭喝了粥血糖升到 9"它会结合你的饮食记录和医学知识库告诉你该怎么调整，而不是丢一句正确的废话。</p>
-<p>学完这一章，你手里会有一张<strong>完整信息系统蓝图</strong>：知道这个"AI 健康助手"由哪些模块组成、每个模块用什么技术、整个项目怎么分层。后面每章做的都是这张图上的一块拼图。</p>
+<p>做内容运营的人每天卡在四件事上：<strong>选题靠刷</strong>（刷热搜刷到眼花）、<strong>文案靠憋</strong>（憋一小时写出三百字）、<strong>配图靠找</strong>（图库翻半天还怕侵权）、<strong>发布靠手动</strong>（一个个平台复制粘贴）。一天最多两三篇，还容易撞选题、踩敏感词、被限流。</p>
+<p>本章要做的「智能运营平台」，把这四道手工关卡收进一条流水线：<strong>你输入一个主题或一句灵感，AI 帮你出选题、写文案、配图，最后点一下发布</strong>——原本一下午的活压到十几分钟。</p>
+<p>学完这一章，你手里会有一张<strong>完整系统蓝图</strong>：这个平台由哪几个模块组成、为什么这么选技术、数据在哪些表之间流动。后面十一章做的都是这张图上的一块拼图。</p>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
-<span class="node">上一章（阶段 9 · 智能运营平台）：FastAPI + Tortoise + Vue3 的完整全栈实战——你已经掌握了 CRUD、联调、OSS、自动发布的套路</span>
-<span class="node"><span class="here">本章 ← 你在这里：为"AI 健康助手"画全景图——功能模块 + 技术栈 + 架构分层</span></span>
-<span class="node">下一章：数据库设计与初始化——7 张业务表怎么建，外键怎么挂</span>
-<span class="node">再往后：后端 CRUD → AI 引擎（DietAdvisor / HealthAnalyzer / RAG）→ LangGraph 工作流 → 前端联调</span>
-<span class="node">阶段终点：交付一个能跑通"问诊-检索-生成-预警"全链路的糖尿病 AI 健康助手</span>
+<span class="node">上一章（阶段 8 · AI Agent 智能体与多模态应用）：你已经会用 LangChain / LangGraph 搭 Agent、接工具、管记忆</span>
+<span class="node"><span class="here">本章 ← 你在这里：看清「AI 运营平台」的全景——四个模块、八张表、一条 Agent 流水线</span></span>
+<span class="node">下一章：数据库设计与初始化——八张表怎么建、字典表怎么填、连接怎么配</span>
+<span class="node">再往后：后端骨架（uv + FastAPI）→ 数据模型与 Aerich 迁移 → JWT 登录 → 前端联调 → 接 Coze → 选题落库 → 文案创作 → 配图与发布</span>
+<span class="node">阶段终点：跑通「输入主题 → 选题 → 文案 → 配图 → 发布记录」的整条闭环</span>
 </div>
-<div class="point" id="p1"><div class="head"><span class="no">1</span>① 这个项目解决的真实痛点</div><div class="body">
+<div class="point" id="p1"><div class="head"><span class="no">1</span>① 真实痛点：内容运营的四道手工关卡</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>先搞清楚"为什么要做这个系统"，后面的技术选型才有着落——技术是为痛点服务的。</p>
+<p>先弄清楚「为什么要做这个系统」，后面的技术选型才有着落——技术是给痛点买单的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>糖尿病是典型的<strong>数据密集型慢性病</strong>：患者每天要监测血糖、记录三餐、按时用药、保持运动，但这些数据<strong>散落在不同的 App、小本子和脑子里</strong>。四大痛点：</p>
+<p>一个运营同学每天的动作，拆开看是四段，每段都在耗人：</p>
 <table>
-<tr><th>痛点</th><th>具体表现</th></tr>
-<tr><td>数据碎片化</td><td>血糖、饮食、用药、运动记录分散在不同 App 或纸质记录中，医生看不到全貌</td></tr>
-<tr><td>缺乏个性化指导</td><td>通用建议（"少吃多动"）无法针对个人血糖波动规律给出精准方案</td></tr>
-<tr><td>就医频次有限</td><td>复诊间隔数周或数月，中间的血糖异常难以及时干预</td></tr>
-<tr><td>患者依从性差</td><td>缺乏持续的督促和反馈机制，坚持不下去</td></tr>
+<tr><th>关卡</th><th>手工做法</th><th>痛在哪</th></tr>
+<tr><td>选题</td><td>刷热搜、翻同行、凭感觉</td><td>不知道哪个题能火；同一个题反复做，自己先腻了</td></tr>
+<tr><td>文案</td><td>对着空白文档憋</td><td>风格不稳定；一不小心写了敏感词，被限流还不知道为什么</td></tr>
+<tr><td>配图</td><td>图库翻找 + 自己拼</td><td>找图慢、风格不统一、版权有风险</td></tr>
+<tr><td>发布</td><td>各平台手动上传</td><td>重复劳动；发完就忘，数据也不回看</td></tr>
 </table>
-<p>系统的解法：<strong>AI Agent 技术整合多维数据 + RAG 挂载医学指南知识库 + LangGraph 编排多步 Agent 流程</strong>，为每位患者生成个性化健康管理方案和实时咨询。</p>
-</div>
-</div></div>
-<div class="point" id="p2"><div class="head"><span class="no">2</span>② 八大功能模块拆解</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>一个完整产品不可能一把梭，先把"这个系统到底有哪些能力"列清楚，后面开发才有清单。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<p>功能模块清单，就是这套系统的需求地图：</p>
-<table>
-<tr><th>模块</th><th>负载</th><th>技术落点</th></tr>
-<tr><td>📊 血糖监测与分析</td><td>记录血糖、趋势分析、高/低血糖异常预警</td><td>BloodSugar 模型 + 统计引擎</td></tr>
-<tr><td>🍽️ 智能饮食管理</td><td>根据血糖推荐食谱、计算碳水与 GI 值</td><td>DietAdvisor 引擎</td></tr>
-<tr><td>💊 用药提醒与管理</td><td>个性化用药方案、智能提醒</td><td>Medication 模型 + CRUD</td></tr>
-<tr><td>🏃 运动健康指导</td><td>推荐运动方案、运动与血糖关系分析</td><td>Exercise 模型 + bs_change</td></tr>
-<tr><td>📝 健康报告生成</td><td>定期生成健康数据报告、趋势图表</td><td>HealthAnalyzer + LLM</td></tr>
-<tr><td>🤖 AI 智能问诊</td><td>基于 RAG 的医学知识问答、症状分析、就医建议</td><td>LangGraph + RAG</td></tr>
-<tr><td>📈 数据可视化</td><td>血糖趋势图、营养分析、健康评分仪表盘</td><td>Vue3 + ECharts</td></tr>
-<tr><td>👨‍⚕️ 医患协作</td><td>数据共享给医生、远程咨询</td><td>架构预留</td></tr>
-</table>
-<p>记住这张表：<strong>前 5 个是传统 CRUD，后 3 个是 AI 与可视化</strong>——这正是阶段 9 能力之上的新增量。</p>
-</div>
-</div></div>
-<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 技术选型：全套技术栈</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>项目用什么语言、什么框架、什么数据库，需要在动手前一次性定清楚，避免中途换栈。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<p>选型清单（12 项）：</p>
-<table>
-<tr><th>#</th><th>技术</th><th>用途</th></tr>
-<tr><td>1</td><td>Windows 11</td><td>开发操作系统</td></tr>
-<tr><td>2</td><td>Cursor</td><td>AI 辅助开发工具</td></tr>
-<tr><td>3</td><td>Python 3.12</td><td>后端语言</td></tr>
-<tr><td>4</td><td>uv</td><td>Python 项目管理工具（比 pip/venv 快）</td></tr>
-<tr><td>5</td><td>MySQL 8 + Navicat</td><td>关系数据库 + 可视化客户端</td></tr>
-<tr><td>6</td><td>FastAPI</td><td>Web 框架</td></tr>
-<tr><td>7</td><td>Uvicorn</td><td>ASGI 服务器</td></tr>
-<tr><td>8</td><td>Tortoise-ORM</td><td>异步 ORM（对标阶段 9 的项目）</td></tr>
-<tr><td>9</td><td>LangGraph</td><td>AI Agent 工作流编排</td></tr>
-<tr><td>10</td><td>ChromaDB</td><td>向量数据库（RAG 检索）</td></tr>
-<tr><td>11</td><td>LangChain + OpenAI</td><td>大模型调用封装</td></tr>
-<tr><td>12</td><td>Vue 3 + TypeScript</td><td>前端框架</td></tr>
-</table>
-<p>与阶段 9 对比：<strong>后端技术栈几乎一致</strong>（FastAPI + Tortoise + MySQL + Vue3），增量是 LangChain / LangGraph / ChromaDB 三件 AI 套件——你的既有技能可以直接复用，新东西集中在 AI 层。</p>
+<p>这四段的共同点：<strong>每段都要人从头做一遍，下一篇文章还是从零开始</strong>。系统的价值不是"替人写一篇文章"，而是<strong>把经验沉淀下来</strong>——上一次的选题、文案、图、发布数据都留在库里，下一次可以复用、可以对比、可以迭代。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>Python 版本不齐，LangGraph 装不上</td><td>Python 3.12 是硬要求，低于 3.10 的语法和依赖兼容性会出问题；用 uv 统一管理解释器版本</td></tr>
-<tr><td>uv、pip 命令混着用，环境越装越乱</td><td>项目一律用 <code>uv add</code>/<code>uv run</code>，不要混用 pip 装入依赖</td></tr>
+<tr><td>一上来就想"全自动无人值守"</td><td>发布这一步涉及账号风控，全自动风险高；先做<strong>半自动</strong>（AI 出稿 + 人工确认 + 一键发布），跑顺了再谈提效</td></tr>
+<tr><td>把系统做成"AI 聊天框"</td><td>聊天框不解决问题；运营要的是<strong>结构化的产物</strong>（选题列表、文案、配图、发布记录），所以核心是表结构和流程，不是对话</td></tr>
 </table>
 </div>
 </div></div>
-<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 技术亮点：这套系统"新"在哪</div><div class="body">
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 四大功能模块拆解</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>讲清楚 AI 健康助手与普通 CRUD 系统的分水岭，也是面试/答辩最值得讲的点。</p>
+<p>一个完整产品不可能一把梭，先把「这个系统到底有哪些能力」列成清单，后面开发才有验收依据。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>四大技术亮点：</p>
-<ol><li><strong>LangGraph Agent 工作流</strong>：把健康管理拆解为「症状分析 → 知识检索 → 方案生成 → 风险评估」多步节点，用<strong>状态机</strong>编排，每一步的输出都是下一步的输入，可观测、可干预。</li><li><strong>RAG 医学知识增强</strong>：结合糖尿病医学指南、营养学知识库回答患者问题，<strong>避免 LLM 幻觉</strong>——模型不会凭空编造医学建议。</li><li><strong>个性化推荐</strong>：基于患者历史血糖、饮食数据生成个性化饮食/运动/用药方案，不是通用模板。</li><li><strong>实时预警</strong>：血糖异常自动触发预警通知（高/低血糖风险等级）。</li></ol>
-<p>价值点：<strong>普通问答机器人是"一问一答"，这个系统是"问诊工作流"</strong>——它先判断你问的是血糖还是饮食，再带上你的档案和数据去回答案。</p>
+<p>按用户的使用顺序，平台分四块：</p>
+<table>
+<tr><th>模块</th><th>具体能力</th><th>落在哪一层</th></tr>
+<tr><td>热搜灵感与选题</td><td>实时热搜检索与推荐、已有主题复用、行业热点采集、标题灵感生成</td><td>Coze 选题智能体 + 后端 API 落库</td></tr>
+<tr><td>文案编导</td><td>一键生成平台风格文案、控制情绪/语气/长度、敏感词与限流词检测、历史文案复用</td><td>大模型调用（DashScope）+ 敏感词规则</td></tr>
+<tr><td>图片生成与排版</td><td>多风格配图一键生成、封面图与内文图批量产出、尺寸与用途区分</td><td>文生图模型 + 阿里云 OSS 存储</td></tr>
+<tr><td>发布与历史管理</td><td>一键发布、多账号管理、发布记录追踪、历史笔记复用、素材库</td><td>后端发布记录表 + 前端管理页</td></tr>
+</table>
+<p>记住这张表的作用：<strong>它是需求地图</strong>。后面每章做完一件事，你都能回到这里打勾——不会写着写着忘了"我在做哪个功能"。</p>
 </div>
 </div></div>
-<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 项目架构图：三层一脑</div><div class="body">
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 技术选型：十四项，分四类看</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>动手前心里要有"系统长什么样"的静态结构图，知道每段代码摆在哪个层。</p>
+<p>技术栈要在动手前一次定清楚，避免中途换框架导致返工。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>项目的总体分层（架构图的文字化）：</p>
-<pre>┌──────────────────────────────────────────────┐
-│  Vue3 + TypeScript 前端（Element Plus + ECharts）│
-│  血糖图表 / 饮食管理 / AI 对话 / 报告页        │
-└─────────────────────┬────────────────────────┘
-                      │ HTTP /api
-┌─────────────────────▼────────────────────────┐
-│            FastAPI 应用层（routers）            │
-│  patient / blood_sugar / diet / medication    │
-│  exercise / health_report / chat              │
-└───────┬──────────────────────────┬───────────┘
-        │ Tortoise-ORM              │ 业务引擎
-┌───────▼────────┐   ┌─────────────▼───────────┐
-│   MySQL 8      │   │  AI 引擎层                │
-│  7 张业务表     │   │  DietAdvisor（饮食推荐）   │
-└────────────────┘   │  HealthAnalyzer（统计）    │
-                     │  LLMClient（大模型封装）    │
-                     │  RAGEngine（知识检索）      │
-                     │  LangGraph Agent（编排）   │
-                     └───────┬──────────────────┘
-                             │ ChromaDB 向量库
-                             │（医学知识 21 条）</pre>
-<p>关键认知：<strong>AI 不是散在各个路由里，而是集中在 core/ 层</strong>，路由只负责收发 HTTP，业务逻辑全在引擎里——方便单独测试、单独替换模型。</p>
-</div>
-</div></div>
-<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ Agent 工作流：一图看懂问诊流程</div><div class="body">
-<div class="step need"><span class="label">要解决什么</span>
-<p>系统的"大脑"是一套 LangGraph 工作流，必须先理解它的节点顺序，后面第十三章才能照着写。</p>
-</div>
-<div class="step idea"><span class="label">核心思路</span>
-<p>Agent 工作流是一条流水线（Agent 工作流程图 / 时序图的文字化）：</p>
-<pre>用户消息
-  │
-  ▼
-① classify（意图识别）→ 血糖 / 饮食 / 用药 / 其他
-  │
-  ▼
-② load_context（患者档案）→ 姓名/年龄/BMI/病史 + 近7天血糖统计
-  │
-  ▼
-③ retrieve（知识检索）→ 按意图去 ChromaDB 检索糖尿病医学知识
-  │
-  ▼
-④ generate（方案生成）→ 患者档案 + 医学知识拼成 prompt，调 LLM 生成建议
-  │
-  ▼
-⑤ assess_risk（风险评估）→ 根据血糖统计判断高风险/中风险，追加警告
-  │
-  ▼
-最终回复 = AI 建议 + 风险警告</pre>
-<p>这套编排正是 LangGraph 的 StateGraph：<strong>五个节点 + 一个共享状态对象（AgentState）</strong>，串成有向图。现在只要有印象，第十二章会逐行实现。</p>
+<p>把十四项按"干什么用"分四类，比平铺更能记住：</p>
+<table>
+<tr><th>类别</th><th>技术</th><th>用途</th></tr>
+<tr><td>语言与工程</td><td>Windows 11、Cursor / VSCode、Python 3.12、uv</td><td>开发环境与依赖管理（uv 比 pip + venv 快得多）</td></tr>
+<tr><td>Web 与数据</td><td>FastAPI、Uvicorn、Tortoise-ORM、MySQL 8 + Navicat、Aerich</td><td>接口、服务、异步 ORM、数据库、表结构迁移</td></tr>
+<tr><td>平台能力</td><td>Coze（Agent 编排）、DashScope（模型调用）、阿里云 OSS + python-multipart（文件上传）</td><td>把这几个"重能力"外包出去，不自己造</td></tr>
+<tr><td>安全与调试</td><td>JWT（登录鉴权）、Postman（接口调试）</td><td>认证与联调</td></tr>
+</table>
+<p>一句话概括选型逻辑：<strong>自己写业务和表结构，把大模型能力外包给平台</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>"Agent"听起来很玄，不知道代码写在哪</td><td>它就是一个 <code>StateGraph</code> 图对象，节点是普通 async 函数，靠共享 state 字典传数据，第十二章见真身</td></tr>
-<tr><td>把 AI 逻辑写进路由函数里</td><td>会变成一坨不可测试的代码；所有 AI 相关逻辑放 <code>app/core/</code></td></tr>
+<tr><td>依赖装了但 <code>uv run</code> 找不到</td><td>依赖必须用 <code>uv add</code> 写进 <code>pyproject.toml</code>；<code>pip install</code> 装的东西不在 uv 的环境里</td></tr>
+<tr><td>Python 版本不对，异步驱动装不上</td><td>3.12 是硬要求；<code>uv python pin 3.12</code> 固定解释器版本</td></tr>
 </table>
 </div>
 </div></div>
-<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 新增技能点 vs 复用技能点</div><div class="body">
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 架构：三层结构 + 一个"外挂大脑"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>学这个阶段前先盘点"哪些我会、哪些我不会"，合理分配精力，不重复造轮子。</p>
+<p>动手前心里得有一张静态结构图：知道哪段代码摆在哪一层，出问题去哪找。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<pre>┌─────────────────────────────────────────────┐
+│  Vue 3 前端：选题页 / 文案页 / 配图页 / 发布页 │
+└───────────────────┬─────────────────────────┘
+                    │ HTTP /api（JWT 鉴权）
+┌───────────────────▼─────────────────────────┐
+│  FastAPI 应用层（routers）                    │
+│  users / sections / titles / images / publish│
+└──────┬──────────────────────────┬───────────┘
+       │ Tortoise-ORM              │ 业务编排
+┌──────▼─────────┐   ┌────────────▼──────────┐
+│  MySQL 8       │   │  Agent 层（Coze 平台）  │
+│  8 张业务表     │   │  选题智能体 / 工作流    │
+└────────────────┘   │  文案生成 / 配图生成    │
+                     └────────────┬──────────┘
+                                  │ DashScope 模型
+                                  │ + OSS 存图</pre>
+<p>关键认知：<strong>Agent 不在你的 Python 代码里，而在 Coze 平台上</strong>。后端负责"收请求、存结果、管权限"，生成类的活交给平台，通过 API 调。这样模型换代、提示词调整都不用改后端。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>前端直接调 Coze，绕过自己的后端</td><td>会丢掉鉴权、丢掉落库、留不住历史记录；<strong>所有调用必须经后端中转</strong></td></tr>
+<tr><td>把 OSS 的 AccessKey 写进前端</td><td>等于把存储桶公开；密钥只放后端 <code>.env</code>，前端只拿后端返回的临时 URL</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 为什么接 Coze，而不是自己写一套 Agent</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>你上一阶段已经会写 LangGraph 了，那为什么这里要用平台？想清楚这个问题，才知道这套架构的取舍。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>两条路的对比：</p>
+<table>
+<tr><th>维度</th><th>自己写（LangGraph）</th><th>用 Coze 平台</th></tr>
+<tr><td>上手速度</td><td>慢，要处理重试、超时、上下文</td><td>快，可视化拖节点，提示词即改即用</td></tr>
+<tr><td>迭代成本</td><td>改逻辑要改代码、重启服务</td><td>平台上改完直接生效，不碰代码</td></tr>
+<tr><td>可观测</td><td>要自己接日志与追踪</td><td>平台自带运行记录与调试面板</td></tr>
+<tr><td>灵活性</td><td>高，任何逻辑都能写</td><td>受平台能力约束（自定义代码块有限）</td></tr>
+<tr><td>适合谁</td><td>需要深度定制、要嵌入自有系统</td><td>运营同学自己就能调提示词、换模型</td></tr>
+</table>
+<p>本阶段的定位是<strong>"业务系统 + 外挂 Agent"</strong>：业务流程（落库、权限、发布记录）自己写，创作能力（选题、文案、配图）交给平台。所以选 Coze。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>Agent 返回的 JSON 解析失败</td><td>平台输出是"自然语言 + 可能夹代码块"，后端要<strong>容错解析</strong>（去围栏、找第一个 <code>{</code> 到最后一个 <code>}</code>），并在失败时返回可读错误</td></tr>
+<tr><td>同一请求调两次，结果完全不同</td><td>生成类接口本来就不幂等；需要落库的操作用<strong>任务 ID 去重</strong>，别让前端重试把库写脏</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 数据流：一篇内容在八张表之间怎么走</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>这套系统的骨架不是代码，是<strong>表之间的一条链</strong>。先把链路想清楚，第二章建表才不会乱。</p>
+</div>
+<div class="step idea"><span class="label">核心思路</span>
+<p>一条内容从灵感到发布，经过五步、落到八张表：</p>
+<pre>① 用户提主题        → t_sections（选题组：原始主题 + 分类）
+② AI 出标题列表     → t_titles（标题、排序、状态）
+③ 生成正文          → t_titles.content + status
+④ 生成/上传配图     → t_title_images（正文图 / 封面图 / 缩略图）
+⑤ 发布并记录        → t_publish_records + t_publish_images
+                      t_style / t_models 是字典表，全程被引用</pre>
+<p>两个要点：</p>
+<ol><li><strong>选题与标题是两层</strong>：<code>t_sections</code> 是"一个方向"，下面挂多个 <code>t_titles</code>。"AI 减肥"是 section，"我靠这三个动作瘦了十斤"是 title。</li><li><strong>发布是独立的一层</strong>：同一篇内容可以发多个平台，所以发布数据不能塞进 <code>t_titles</code>，要单开 <code>t_publish_records</code>（一个 title 对多条记录）。</li></ol>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>把图片 URL 直接塞进 <code>t_titles</code></td><td>一篇内容有封面 + 多张正文图，塞一个字段必然不够；图片单独成表，用 <code>title_id</code> 关联</td></tr>
+<tr><td>发布状态和内容状态混成一个字段</td><td>内容状态（未生成/已生成/已发布/已废弃）与发布状态（待发/发布中/成功/失败）是<strong>两件事</strong>，混用后无法区分"发布失败"和"还没写"</td></tr>
+</table>
+</div>
+</div></div>
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 十二章路线图：哪些在复用、哪些是新东西</div><div class="body">
+<div class="step need"><span class="label">要解决什么</span>
+<p>先盘点"哪些我会、哪些我不会"，把精力花在增量上，别把时间浪费在重复劳动里。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <table>
-<tr><th>能力</th><th>来源</th><th>本阶段用法</th></tr>
-<tr><td>FastAPI 路由 + Schema</td><td>阶段 9 已掌握</td><td>7 个业务路由照搬套路</td></tr>
-<tr><td>Tortoise-ORM 模型</td><td>阶段 9 已掌握</td><td>7 张表建模，无 Aerich（直接用建库 SQL）</td></tr>
-<tr><td>Vue3 + axios 联调</td><td>阶段 9 已掌握</td><td>前端页面更丰富（ECharts 图表）</td></tr>
-<tr><td>LangChain ChatOpenAI</td><td>首次引入</td><td>LLMClient 封装大模型调用</td></tr>
-<tr><td>ChromaDB 向量库</td><td>首次引入</td><td>医学知识库存储与语义检索</td></tr>
-<tr><td>LangGraph 编排</td><td>首次引入</td><td>Agent 五节点工作流</td></tr>
+<tr><th>章</th><th>做什么</th><th>性质</th></tr>
+<tr><td>1</td><td>项目全景与技术选型</td><td>本章</td></tr>
+<tr><td>2</td><td>数据库设计与初始化</td><td>复用（阶段 10 之前已建过表）</td></tr>
+<tr><td>3</td><td>后端工程搭建：uv + FastAPI 骨架</td><td>半新（uv 是新工具）</td></tr>
+<tr><td>4</td><td>数据模型与 Aerich 迁移</td><td><strong>新增</strong>（Aerich 做表结构版本管理）</td></tr>
+<tr><td>5</td><td>应用启动与测试 API</td><td>复用</td></tr>
+<tr><td>6</td><td>JWT 登录与认证鉴权</td><td><strong>新增</strong>（第一次自己写鉴权）</td></tr>
+<tr><td>7</td><td>前端工程接入与联调</td><td>复用</td></tr>
+<tr><td>8</td><td>Coze 选题智能体打造</td><td><strong>新增</strong>（在平台上搭 Agent）</td></tr>
+<tr><td>9</td><td>Coze API 调用与工作流编排</td><td><strong>新增</strong>（把平台能力接进后端）</td></tr>
+<tr><td>10</td><td>选题生成 API 与数据落库</td><td>复用 + 新集成</td></tr>
+<tr><td>11</td><td>文案创作与编辑管理</td><td>复用 + 提示词工程</td></tr>
+<tr><td>12</td><td>AI 配图与 OSS 上传发布</td><td><strong>新增</strong>（对象存储 + 发布闭环）</td></tr>
 </table>
-<p>学习策略：<strong>CRUD 部分快速过（模式你已经会了），AIB 部分（DietAdvisor、HealthAnalyzer、RAG、LangGraph）逐行精读</strong>——那才是本阶段增量。</p>
+<p>学习策略：<strong>复用章节快速过，四个新增点（Aerich、JWT、Coze 接入、OSS）逐行精读</strong>——那才是这个阶段真正长本事的地方。</p>
+</div>
+<div class="step trap"><span class="label">坑在哪</span>
+<table>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
+<tr><td>跳过第 2 章的建表，直接写接口</td><td>没有表就没有模型，接口只能返回假数据；顺序不能换</td></tr>
+<tr><td>Aerich 和手写 SQL 混着用</td><td>一旦用 Aerich 管版本，表结构变更就走迁移命令（<code>aerich migrate</code> / <code>upgrade</code>），不要两边都改</td></tr>
+</table>
 </div>
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 交付物与验收标准</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>知道"做完长什么样、怎么算跑通了"，避免闷头写代码最后发现方向偏了。</p>
+<p>知道"做完长什么样、怎么算跑通"，避免闷头写完发现方向偏了。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>阶段结束时的可运行系统应满足：</p>
+<p>阶段结束时应能演示这条链路：</p>
 <table>
 <tr><th>验收项</th><th>标准</th></tr>
-<tr><td>后端服务</td><td><code>uvicorn main:app --reload</code> 启动，<code>/api</code> 下 7 组路由可用</td></tr>
-<tr><td>数据库</td><td>MySQL 建 diabets 库 + 7 张表，含示例患者</td></tr>
-<tr><td>AI 问诊</td><td>对"我早餐吃了粥血糖9"返回结合知识的个性化建议</td></tr>
-<tr><td>健康报告</td><td>能生成 7 天血糖周报（统计数据 + LLM 建议 + 风险等级）</td></tr>
-<tr><td>前端</td><td>血糖趋势图、对话页、营养统计页可交互</td></tr>
+<tr><td>后端服务</td><td><code>uv run uvicorn main:app --reload</code> 起来，<code>/docs</code> 能看到接口文档</td></tr>
+<tr><td>登录鉴权</td><td>未登录取不到数据，登录后拿到 token 才能调业务接口</td></tr>
+<tr><td>数据库</td><td>MySQL 里 8 张表齐全，字典表（风格、模型）有种子数据</td></tr>
+<tr><td>选题链路</td><td>输入主题 → 返回标题列表 → 选中的标题写进库，刷新还在</td></tr>
+<tr><td>文案与配图</td><td>能对指定标题生成文案与配图，图片存在 OSS 上、库里只存 URL</td></tr>
+<tr><td>发布记录</td><td>发布后能在列表页看到记录与状态，能按状态筛选</td></tr>
+<tr><td>前端</td><td>选题、文案、配图、发布四个页面可交互，不再是 Postman 里点</td></tr>
 </table>
-<p>难度系数：★★☆（★★ 来自 AI 三件套，CRUD 部分已经是熟练工）。</p>
-</div>
-<div class="step trap"><span class="label">坑在哪</span>
-<table>
-<tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>系统能跑但 AI 回答像通用模板</td><td>检查是否真的走了 RAG 检索（看回复里有没有"[参考N]"标注的来源）；没走检索说明知识库没初始化</td></tr>
-<tr><td>数据库名拼错（diabets/diabetes）</td><td>建库、.env、config.py 三处必须一致，建议统一 <code>diabetes</code></td></tr>
-</table>
+<p>难度系数：★★★（★★ 来自要串起"平台 + 后端 + 存储"三处外部依赖，★ 来自它的业务链条比纯 CRUD 长）。</p>
 </div>
 </div></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
-<tr><td><strong>完整需求地图（8 模块）</strong></td><td>后面 11 章每章都能对号入座，不会"做着做着忘了为什么做"</td></tr>
-<tr><td><strong>技术选型（12 项技术 + AI 三件套）</strong></td><td>知道增量在哪：LangChain / ChromaDB / LangGraph，CRUD 技能可复用</td></tr>
-<tr><td><strong>Agent 工作流心智模型（5 节点）</strong></td><td>先有流程图再写代码，第十三章实现时不会迷路</td></tr>
+<tr><td><strong>四模块需求地图</strong></td><td>后面十一章都能对号入座，做完一块回来打一个勾</td></tr>
+<tr><td><strong>三层架构 + 外挂 Agent 的分工</strong></td><td>知道哪段代码该放哪、为什么生成能力要外包给 Coze</td></tr>
+<tr><td><strong>八张表的数据链</strong></td><td>「提主题 → 出标题 → 写正文 → 配图 → 发布」的落点想清楚了，第二章建表就不会漏</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li>这个系统要解决的四大痛点是什么？AI 分别是如何应对"缺乏个性化指导"和"就医频次有限"的？</li><li>八大功能模块里，哪三个是靠"传统 CRUD"就能实现，哪三个必须依赖 AI/向量库？</li><li>技术选型里，与阶段 9 完全重复的技术有哪些？本阶段的三个增量技术分别负责什么？</li><li>Agent 工作流的五个节点按顺序是什么？为什么"风险评估"要放在最后而不是最前？</li><li>为什么 AI 相关代码要集中在 <code>app/core/</code> 而不是散在各路由里？</li></ol>
+<ol><li>内容运营的四道手工关卡分别是什么？为什么说这个系统的价值不是"替人写一篇文章"？</li><li>四大功能模块里，哪一块必须落到"表 + 权限 + 发布记录"，而不能只靠大模型？</li><li>十四项技术里，为什么要用 uv 而不是 pip + venv？<code>pip install</code> 装的包为什么在 <code>uv run</code> 里找不到？</li><li>自己写 LangGraph 和用 Coze 平台的取舍分别在哪？这个阶段为什么选平台？</li><li>一个 title 为什么要能对应多条 <code>t_publish_records</code>？如果只有一个字段会出什么问题？</li><li>十二个章节里，哪四个是"新增技能"？为什么第 2 章不能跳过？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 官方文档</a>
-<a href="https://langchain-ai.github.io/langgraph/" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 官方文档</a>
-<a href="https://docs.trychroma.com/" target="_blank" rel="noopener"><span class="k">官网</span>ChromaDB 文档</a>
-<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</span>
-<span class="lk"><span class="k">资料</span>糖尿病AI健康助手前端源码（Vue3+TS）</span></div>
+<a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise-ORM 文档</a>
+<a href="https://github.com/tortoise/aerich" target="_blank" rel="noopener"><span class="k">官网</span>Aerich 文档</a>
+<a href="https://www.coze.cn/" target="_blank" rel="noopener"><span class="k">官网</span>Coze 扣子</a>
+<a href="https://help.aliyun.com/zh/model-studio/" target="_blank" rel="noopener"><span class="k">官网</span>阿里云百炼（DashScope）</a>
+<a href="https://www.aliyun.com/product/oss" target="_blank" rel="noopener"><span class="k">官网</span>阿里云 OSS</a>
 </div>
 <div class="pager">
 <a href="../阶段08-AI Agent智能体与多模态应用/12-第十二章-AgentSkills技能系统.html">← 第十二章　Agent Skills 技能系统</a>
@@ -500,13 +508,13 @@
 <aside class="toc">
 <div class="toc-inner">
   <div class="toc-head">本页目录</div>
-  <a href="#p1" title="这个项目解决的真实痛点"><span class="n">1</span>这个项目解决的真实痛点</a>
-  <a href="#p2" title="八大功能模块拆解"><span class="n">2</span>八大功能模块拆解</a>
-  <a href="#p3" title="技术选型：全套技术栈"><span class="n">3</span>技术选型：全套技术栈</a>
-  <a href="#p4" title="技术亮点：这套系统&quot;新&quot;在哪"><span class="n">4</span>技术亮点：这套系统"新"在哪</a>
-  <a href="#p5" title="项目架构图：三层一脑"><span class="n">5</span>项目架构图：三层一脑</a>
-  <a href="#p6" title="Agent 工作流：一图看懂问诊流程"><span class="n">6</span>Agent 工作流：一图看懂问诊流程</a>
-  <a href="#p7" title="新增技能点 vs 复用技能点"><span class="n">7</span>新增技能点 vs 复用技能点</a>
+  <a href="#p1" title="真实痛点：内容运营的四道手工关卡"><span class="n">1</span>真实痛点：内容运营的四道手工关卡</a>
+  <a href="#p2" title="四大功能模块拆解"><span class="n">2</span>四大功能模块拆解</a>
+  <a href="#p3" title="技术选型：十四项，分四类看"><span class="n">3</span>技术选型：十四项，分四类看</a>
+  <a href="#p4" title="架构：三层结构 + 一个&quot;外挂大脑&quot;"><span class="n">4</span>架构：三层结构 + 一个"外挂大脑"</a>
+  <a href="#p5" title="为什么接 Coze，而不是自己写一套 Agent"><span class="n">5</span>为什么接 Coze，而不是自己写一套 Agent</a>
+  <a href="#p6" title="数据流：一篇内容在八张表之间怎么走"><span class="n">6</span>数据流：一篇内容在八张表之间怎么走</a>
+  <a href="#p7" title="十二章路线图：哪些在复用、哪些是新东西"><span class="n">7</span>十二章路线图：哪些在复用、哪些是新东西</a>
   <a href="#p8" title="交付物与验收标准"><span class="n">8</span>交付物与验收标准</a>
 </div>
 </aside>
