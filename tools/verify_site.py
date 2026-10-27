@@ -13,7 +13,10 @@ import re
 import sys
 from pathlib import Path
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:  # noqa: BLE001 —— 被重定向到管道／文件时可能不支持
+    pass
 
 D = Path(__file__).resolve().parent.parent / "site"
 # 这个工具页自带的 style 是内联的，链接是 JS 模板串，跳过检查

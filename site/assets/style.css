@@ -381,3 +381,36 @@ th { background: var(--bg-soft); font-weight: 600; }
   font-variant-numeric: tabular-nums;
 }
 .stat span { color: var(--ink-soft); font-weight: 600; }
+
+/* ---------------- 全站搜索 ---------------- */
+.search-form { display: flex; gap: 10px; margin: 22px 0 6px; }
+.search-form input[type="search"] {
+    flex: 1; min-width: 0; padding: 12px 14px; font-size: 16px; font-family: inherit;
+    color: var(--ink); background: var(--bg-soft);
+    border: 1px solid var(--line); border-radius: var(--radius); outline: none;
+}
+.search-form input[type="search"]:focus {
+    border-color: var(--accent); background: var(--bg);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.search-form button {
+    padding: 12px 20px; font-size: 15px; font-family: inherit; font-weight: 600;
+    cursor: pointer; color: #fff; background: var(--accent);
+    border: none; border-radius: var(--radius);
+}
+.search-form button:hover { filter: brightness(1.06); }
+
+.search-stat { margin: 12px 0 18px; font-size: 14px; color: var(--ink-faint); }
+.hits { display: flex; flex-direction: column; gap: 10px; }
+.hit {
+    display: block; padding: 14px 16px; text-decoration: none; color: inherit;
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: var(--radius); transition: border-color .15s, background .15s;
+}
+.hit:hover { border-color: var(--accent); background: var(--accent-bg); }
+.hit-ch { font-size: 12.5px; color: var(--ink-faint); margin-bottom: 4px; }
+.hit-t { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+.hit-s { font-size: 14.5px; color: var(--ink-soft); line-height: 1.7; }
+.hit mark { background: #fff3b0; color: inherit; padding: 0 2px; border-radius: 3px; }
+.search-hint { margin-top: 26px; font-size: 13.5px; color: var(--ink-faint); }
+.home-search { margin: 26px 0 10px; }

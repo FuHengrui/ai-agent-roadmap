@@ -69,7 +69,10 @@ import re
 import sys
 from pathlib import Path
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:  # noqa: BLE001 —— 被重定向到管道／文件时可能不支持
+    pass
 
 # --- 路径：全部相对仓库根目录，clone 下来就能跑 ---
 ROOT = Path(__file__).resolve().parent.parent
@@ -401,7 +404,8 @@ def nav_html(cur_idx: int) -> str:
          '  <h2>总览</h2>',
          '  <a href="%s"%s>需求地图</a>' % (link_root(cur_idx, "index.html"),
                                             ' class="cur"' if cur_idx < 0 else ""),
-         '  <a href="%s">怎么用这个知识库</a>' % link_root(cur_idx, "README.html")]
+         '  <a href="%s">怎么用这个知识库</a>' % link_root(cur_idx, "README.html"),
+         '  <a href="%s">搜索</a>' % link_root(cur_idx, "search.html")]
     last_stage = None
     for i, c in enumerate(NAV):
         if c.get("stage") and c["stage"] != last_stage:

@@ -21,7 +21,10 @@ import sys
 from collections import OrderedDict
 from pathlib import Path
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:  # noqa: BLE001 —— 被重定向到管道／文件时可能不支持
+    pass
 
 # --- 路径：全部相对仓库根目录，clone 下来就能跑 ---
 ROOT = Path(__file__).resolve().parent.parent
@@ -56,7 +59,8 @@ def sidebar_html(cur: str = "index.html") -> str:
     L = ['  <div class="brand">%s<small>%s</small></div>' % (SITE_TITLE, SITE_SUB),
          '  <h2>总览</h2>',
          '  <a href="index.html"%s>需求地图</a>' % cls("index.html"),
-         '  <a href="README.html"%s>怎么用这个知识库</a>' % cls("README.html")]
+         '  <a href="README.html"%s>怎么用这个知识库</a>' % cls("README.html"),
+         '  <a href="search.html"%s>搜索</a>' % cls("search.html")]
     last = None
     for i, c in enumerate(NAV):
         if c["stage"] != last:

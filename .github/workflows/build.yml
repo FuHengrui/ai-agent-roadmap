@@ -2,7 +2,7 @@ name: 构建并部署
 
 # 每次 push 自动做六件事：
 #   1. 内容质检（结构 / need 覆盖率 / ★ 密钥泄露 / 个人信息）
-#   2. 重新构建站点
+#   2. 重新构建站点（含全站搜索索引）
 #   3. 发布前扫描（全仓：违禁词 / 密钥 / 不该提交的文件）
 #   4. 站点一致性（site/ 必须和 content/ 重建结果一致）
 #   5. 站点自检（死链 / 样式）
@@ -54,6 +54,7 @@ jobs:
       - name: 构建站点
         run: |
           python tools/build_site.py
+          python tools/build_search.py
           python tools/sync_index.py
 
       # ---- 3. 发布前扫描 ----
@@ -69,7 +70,7 @@ jobs:
         run: |
           git add -A site/
           if ! git diff --cached --quiet; then
-            echo "::error title=site/ 没重建::仓库里的 site/ 与 content/ 重建结果不一致，请本地跑 python tools/build_site.py && python tools/sync_index.py 后一起提交。"
+            echo "::error title=site/ 没重建::仓库里的 site/ 与 content/ 重建结果不一致，请本地跑 python tools/build_site.py && python tools/build_search.py && python tools/sync_index.py 后一起提交。"
             git diff --cached --stat | tail -20
             exit 1
           fi
