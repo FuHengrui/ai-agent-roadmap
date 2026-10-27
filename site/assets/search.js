@@ -11,11 +11,13 @@
  * 页面只改了一行小字，看起来像卡住了。
  */
 (function () {
-  var D = window.KB_SEARCH || { chapters: [] };
-  var MAX = 40;
   var q = document.getElementById('q');
   var hits = document.getElementById('hits');
   var stat = document.getElementById('stat');
+  var D = { chapters: [] };
+  var MAX = 40;
+  var ready = false;      // 索引到位了没
+  var pending = null;     // 索引还没到就先记住用户输入
 
   // 中文提问里的虚词：搜之前剥掉，不然「是什么」会把结果全过滤没
   var STOP = /(是什么|是啥|为什么|为啥|怎么回事|怎么办|怎么样|怎么|如何|哪些|哪个|什么是|什么|介绍|讲讲|教我|请问|一下|能不能|可以|需要|有没有|的|了|吗|呢|啊|呀)/g;
@@ -171,16 +173,41 @@
   var timer = null;
   q.addEventListener('input', function () {
     clearTimeout(timer);
-    timer = setTimeout(run, 120);
+    timer = setTimeout(function () {
+      if (ready) run();
+      else pending = q.value;      // 索引还在路上，先记着
+    }, 120);
   });
   q.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { q.value = ''; run(); }
+    if (e.key === 'Escape') { q.value = ''; if (ready) run(); }
   });
 
+  // ---- 启动：先把索引异步拉下来，别让 2 MB 的解析卡住页面 ----
+  // 之前是 <script src="search-index.js"> 直接写在页面里，网慢的时候整页要等它，
+  // 用户敲了字却半天没反应 —— 看着就像「卡住了」。
+  var want = '';
   var m = /[?&]q=([^&]*)/.exec(location.search);
   if (m) {
-    q.value = decodeURIComponent(m[1].replace(/\+/g, ' '));
-    run();
+    want = decodeURIComponent(m[1].replace(/\+/g, ' '));
+    q.value = want;
   }
-  q.focus();
+
+  q.disabled = true;
+  stat.textContent = '正在载入全文索引（约 0.8 MB，第一次会慢几秒）…';
+
+  var s = document.createElement('script');
+  s.src = 'search-index.js';
+  s.onload = function () {
+    D = window.KB_SEARCH || { chapters: [] };
+    ready = true;
+    q.disabled = false;
+    stat.textContent = '索引就绪 —— 输入关键词，边打边出结果（Esc 清空）';
+    q.focus();
+    if (pending !== null) { q.value = pending; pending = null; }
+    if (q.value.trim()) run();
+  };
+  s.onerror = function () {
+    stat.textContent = '索引没加载出来：刷新一次试试（网络断了的话，本地打开 site/index.html 也能用）';
+  };
+  document.body.appendChild(s);
 })();
