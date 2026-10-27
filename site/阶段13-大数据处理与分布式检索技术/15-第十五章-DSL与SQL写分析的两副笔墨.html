@@ -612,10 +612,10 @@ spark.sql(&quot;EXPLAIN SELECT ...&quot;)                    // SQL 方式</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>DSL 和 SQL 哪个更快？什么场景推荐用 SQL？</li><li><code>withColumn</code> 会修改原 DataFrame 吗？不接返回值会怎样？</li><li>count(*) 和 count(col) 区别是什么？sum 遇到整列 null 的结果是什么？</li><li>数据 [100, 90, 90, 80] 降序时 row_number/rank/dense_rank 结果分别是什么？分组 TopN 该用哪个？</li><li>UDF 为什么比内置函数慢？Python UDF 性能补救方案是什么？</li><li>UDAF 的四个钩子 update/merge/initialize/evaluate 分别对应聚合的哪个阶段？</li><li>判断题：UDF 可以直接用闭包里的 Driver 变量，性能不受影响。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>SparkSQL （第 5 章：DSL 与 SQL）</a>
-<a href="#"><span class="k">参考</span>SparkSQL （第 6 章：开窗函数与 UDF/UDAF）</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-functions.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark SQL 函数库（内置）</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-functions-udf-scalar.html" target="_blank" rel="noopener"><span class="k">官网</span>UDF/UDAF 官方文档</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>SparkSQL （第 5 章：DSL 与 SQL）</span>
+<span class="lk"><span class="k">参考</span>SparkSQL （第 6 章：开窗函数与 UDF/UDAF）</span></div>
 </div>
 <div class="pager">
 <a href="14-第十四章-SparkSQL数据源读写与SparkOnHive.html">← 第十四章　SparkSQL 数据源读写与 Spark On Hive</a>

@@ -540,9 +540,9 @@ model.push_to_hub(repo_name)</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么加载 LoRA 权重要"先底座、后补丁"两步？直接载 lora_model 会发生什么？</li><li>merge_and_unload() 在数学上做了什么操作？合并前后的模型有什么区别？</li><li>generate_text 里 <code>skip_special_tokens=True</code> 和 <code>torch.no_grad()</code> 各起什么作用？</li><li>验证微调效果时，"只拿训练集问题测"错在哪里？正确做法是什么？</li><li>上传 Hugging Face 的仓库名格式是什么？push 前要确认什么？</li><li>写出关键词生成的密钥纪律（至少三条）。</li><li>从环境到上传的完整流水线按顺序写出来（八步）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：测试微调后的模型、模型上传 Hugging Face</a>
 <a href="https://huggingface.co/docs/hub/models-uploading" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face Hub 文档（上传/令牌）</a>
 <a href="https://huggingface.co/docs/peft/conceptual_guides/memory" target="_blank" rel="noopener"><span class="k">官网</span>PEFT 显存优化指南（合并/卸载）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>大模型 DeepSeek 微调与应用：测试微调后的模型、模型上传 Hugging Face</span></div>
 </div>
 <div class="pager">
 <a href="06-第六章-手写LoRA微调三训练与保存.html">← 第六章　手写 LoRA 微调（三）：训练与保存</a>

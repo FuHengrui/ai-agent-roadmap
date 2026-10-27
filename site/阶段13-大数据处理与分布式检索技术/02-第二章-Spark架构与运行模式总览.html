@@ -495,10 +495,10 @@ INFO DAGScheduler: Job 0 finished: reduce at ...         ← 一个 Job 干完</
 <h4>自测：能不能答上来</h4>
 <ol><li>用一句话说清 Driver、Executor、Task 三者的关系（可以打比方）。</li><li>一份 Spark 程序里有 3 个 <code>collect()</code>，一共有几个 Job？为什么？</li><li>Executor 的内存分哪两片？只 cache 不清缓存为什么可能导致任务反而变慢？</li><li>你现在只有一台笔记本，想跑一个 200MB 的练习任务，该选什么模式？<code>local[*]</code> 和 <code>local[2]</code> 的区别是什么？</li><li>判断题：Spark 的 Cluster Manager 会参与数据的计算与聚合。</li><li><code>repartition(8)</code> 和 <code>coalesce(2)</code> 的适用场景分别是什么？</li><li>日志里出现 <code>DAGScheduler: Job 0 finished</code> 说明哪个环节完成了？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 分布式计算框架介绍（docx）：架构与运行模式节</a>
-<a href="#"><span class="k">参考</span>01-Spark 分布式计算框架基础（第 2 章：架构）</a>
 <a href="https://spark.apache.org/docs/latest/cluster-overview.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark 集群模式概览</a>
-<a href="#"><span class="k">资料</span>配套源码目录 sparkdemo.zip</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 分布式计算框架介绍（docx）：架构与运行模式节</span>
+<span class="lk"><span class="k">参考</span>01-Spark 分布式计算框架基础（第 2 章：架构）</span>
+<span class="lk"><span class="k">资料</span>配套源码目录 sparkdemo.zip</span></div>
 </div>
 <div class="pager">
 <a href="01-第一章-Spark简介为什么需要它.html">← 第一章　Spark 简介：为什么需要它</a>

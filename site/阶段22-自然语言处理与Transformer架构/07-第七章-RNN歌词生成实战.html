@@ -496,9 +496,9 @@ print(generate(model, &quot;明月&quot;, 30))</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>字符级文本生成中，模型每一步的输入输出分别是什么？"自回归"指什么？</li><li>数据切样本时为什么要"右移一位"生成目标？</li><li>画出 CharRNN 的三层结构，说明每层各自的作用。</li><li>训练时为什么要 <code>reshape(-1, ...)</code> 算损失？梯度裁剪起什么作用？</li><li>temperature 的高与低分别会对生成结果产生什么影响？你会怎么选取？</li><li>生成质量差时，按影响力排序，你首先会检查什么？</li><li>这一章的 generate() 和 GPT 的对话生成，原理上有什么异同？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>RNN歌词生成实战</a>
 <a href="https://pytorch.org/tutorials/intermediate/char_rnn_generation_tutorial.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 文本生成教程（官方）</a>
 <a href="https://pytorch.org/docs/stable/generated/torch.nn.RNN.html" target="_blank" rel="noopener"><span class="k">文档</span>nn.RNN API 文档</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>RNN歌词生成实战</span></div>
 </div>
 <div class="pager">
 <a href="06-第六章-循环神经网络RNN原理.html">← 第六章　循环神经网络RNN原理</a>

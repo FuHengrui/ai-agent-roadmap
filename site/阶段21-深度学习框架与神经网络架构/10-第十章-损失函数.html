@@ -490,8 +490,8 @@ criterion2 = nn.BCEWithLogitsLoss(pos_weight=torch.tensor(90.0))</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>损失函数在训练中扮演哪两个角色？为什么"损失选错训练白费"？</li><li>MSE 的公式是什么？为什么它对离群点敏感？</li><li>MAE 与 MSE 的梯度特性有什么区别？什么场景优先 Huber？</li><li>nn.CrossEntropyLoss 的输入要求是什么？标签应该传什么形式？</li><li>为什么说"手动 softmax 后再喂 CrossEntropyLoss"是双重 softmax bug？</li><li>BCEWithLogitsLoss 相对 BCELoss 的优势是什么？</li><li>多标签分类（一个样本可同时属于多个类）应该用什么损失？为什么不能用普通多分类 CE？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>神经网络基础(1)（损失函数部分）</a>
 <a href="https://pytorch.org/docs/stable/nn.html#loss-functions" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 损失函数官方文档</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>神经网络基础(1)（损失函数部分）</span></div>
 </div>
 <div class="pager">
 <a href="09-第九章-nnModule模型构建与前向传播.html">← 第九章　用 nn.Module 构建模型与前向传播</a>

@@ -547,10 +547,10 @@ for (i &lt;- 1 to 100) {
 <h4>自测：能不能答上来</h4>
 <ol><li>Pipeline 是什么？它要求 Stage 内算子满足什么条件才能生效？</li><li><code>rdd.cache()</code> 之后为什么 Storage Tab 还是空的？什么时候才真正缓存？</li><li>MEMORY_ONLY 与 MEMORY_AND_DISK 的内存不够时各自行为是什么？</li><li>checkpoint 和 persist(DISK_ONLY) 的三点本质区别是什么？</li><li>一条 25 步算子的价值链被两个 Job 各自使用，选 cache+checkpoint 组合还是单一手段？为什么？</li><li>判断题：checkpoint 之后该 RDD 的血缘链被截断，重算时直接从检查点开始。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 内核进阶（第 3 章：Pipeline 计算）</a>
-<a href="#"><span class="k">参考</span>Spark 内核进阶（第 4 章：Cache 与 CheckPoint）</a>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence" target="_blank" rel="noopener"><span class="k">官网</span>RDD 持久化官方文档</a>
 <a href="https://spark.apache.org/docs/latest/configuration.html#memory-management" target="_blank" rel="noopener"><span class="k">官网</span>Spark 配置（内存相关）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 内核进阶（第 3 章：Pipeline 计算）</span>
+<span class="lk"><span class="k">参考</span>Spark 内核进阶（第 4 章：Cache 与 CheckPoint）</span></div>
 </div>
 <div class="pager">
 <a href="09-第九章-Spark内核JobStageTask与宽窄依赖.html">← 第九章　Spark 内核：Job、Stage、Task 与宽窄依赖</a>

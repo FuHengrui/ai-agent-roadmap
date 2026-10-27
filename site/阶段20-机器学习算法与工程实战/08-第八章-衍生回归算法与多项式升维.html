@@ -466,9 +466,9 @@ x_poly = poly.fit_transform(x)   # 把 [x1, x2] 变成 [x1, x2, x1², x1·x2, x2
 <h4>自测：能不能答上来</h4>
 <ol><li>Ridge、Lasso、ElasticNet 的损失函数分别长什么样？</li><li>为什么说"Ridge 自带修好不可逆矩阵"的副作用？</li><li>Lasso 的 coef_ 里有大量 0 意味着什么？这带来什么工程价值？</li><li>ElasticNet 的 l1_ratio 两个端点对应什么？</li><li>SGDRegressor 的 penalty 参数可选哪些值？它和 Ridge 的本质区别是什么？</li><li>PolynomialFeatures(degree=2, include_bias=False) 会把 2 个特征变成几个？</li><li>include_bias=True 和模型自带截距叠加会怎样？</li><li>为什么"高 degree + 强正则"是常见组合？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>梯度下降（衍生算法与多项式升维 10 页）</a>
 <a href="https://scikit-learn.org/stable/modules/linear_model.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn linear_model 总览</a>
 <a href="https://scikit-learn.org/stable/auto_examples/linear_model/plot_polynomial_interpolation.html" target="_blank" rel="noopener"><span class="k">文档</span>polynomial features 官方示例</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>梯度下降（衍生算法与多项式升维 10 页）</span></div>
 </div>
 <div class="pager">
 <a href="07-第七章-归一化与正则化.html">← 第七章　归一化与正则化</a>

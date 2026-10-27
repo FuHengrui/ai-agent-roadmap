@@ -575,10 +575,10 @@ val firstPass = pass.map(r =&gt; (r.gateId, r.time, r.plate))
 <h4>自测：能不能答上来</h4>
 <ol><li>一个统计程序要算 PV、UV、分页 PV 三个指标，日志 RDD 为什么要先 cache？cache 放在哪个位置最合理？</li><li>UV 统计用 <code>distinct().count()</code> 和 <code>map((_,1)).reduceByKey(_+_).count()</code> 有什么区别？哪个更省 shuffle 数据量？</li><li>为什么 <code>rdd.sortBy(a).sortBy(b)</code> 不能得到二次排序？正确做法是什么？</li><li>数据 <code>("10","9")</code> 按字符串排和按数字排结果分别是什么？为什么日志字段要转类型再排序？</li><li>要求"次数降序、次数相同按页面名升序"取 Top5，写出 RDD 代码（用元组取负或 Ordering 任一）。</li><li>判断题：groupBy 之后用 mapValues(_.toList.sorted) 取组内最早记录，这一步属于"组内排序"，不需要额外 shuffle。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 12 章：实战 UV/PV）</a>
-<a href="#"><span class="k">参考</span>Spark 内核进阶（第 7 章：二次排序与卡口统计）</a>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations" target="_blank" rel="noopener"><span class="k">官网</span>排序与 takeOrdered 示例</a>
-<a href="#"><span class="k">资料</span>sparkdemo.zip（本章全部案例源码）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 分布式计算框架基础（第 12 章：实战 UV/PV）</span>
+<span class="lk"><span class="k">参考</span>Spark 内核进阶（第 7 章：二次排序与卡口统计）</span>
+<span class="lk"><span class="k">资料</span>sparkdemo.zip（本章全部案例源码）</span></div>
 </div>
 <div class="pager">
 <a href="11-第十一章-并行度广播变量与累加器.html">← 第十一章　并行度、广播变量与累加器</a>

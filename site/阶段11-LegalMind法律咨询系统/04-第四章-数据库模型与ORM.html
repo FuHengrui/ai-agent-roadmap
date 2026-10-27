@@ -518,9 +518,9 @@ messages = await ChatMessageRecord.filter(chat_session=session).order_by(&quot;c
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么主键选 UUID 不用自增 int？至少举两个生产场景的理由。</li><li><code>laws = fields.JSONField(default=list)</code> 底层是什么？怎么判断数组"包含某个法条"？</li><li>ForeignKeyField 的 related_name 是干嘛的？<code>user.sessions.all()</code> 返回什么？</li><li><code>update_or_create</code> 的"幂等"体现在哪里？判断更新目标要什么前提？</li><li>写会话列表接口时，为什么要 order_by + limit 一起用？</li><li>一个用户的文书数据隔离是怎么实现的（字段与查询层面分别说明）？</li><li>Tortoise 的 <code>filter(court__icontains="北京")</code> 里的 <code>__icontains</code> 是什么语法？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>LegalMind 法律咨询系统：数据库模型与 ORM</a>
 <a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise ORM 官方文档</a>
 <a href="https://www.postgresql.org/docs/current/datatype-json.html" target="_blank" rel="noopener"><span class="k">官网</span>PostgreSQL JSONB 文档</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>LegalMind 法律咨询系统：数据库模型与 ORM</span></div>
 </div>
 <div class="pager">
 <a href="03-第三章-FastAPI骨架搭建.html">← 第三章　FastAPI 骨架搭建</a>

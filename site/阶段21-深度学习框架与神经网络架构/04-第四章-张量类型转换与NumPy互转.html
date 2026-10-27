@@ -482,9 +482,9 @@ result_np = result.cpu().numpy()          # 结果回 NumPy 可视化</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>打印一个张量的数据类型应该用哪个属性？常见浮点类型的别名有哪些？</li><li>.to()、.type()、.type_as() 三种方法各自最典型的用法是什么？它们会原地修改张量吗？</li><li>类型转换可能带来哪四类后果？请各举一个例子。</li><li>GPU 上的张量为什么不能直接 .numpy()？正确步骤是什么？</li><li>tensor.numpy() 之后修改数组，原张量会变化吗？怎么避免？</li><li>torch.from_numpy 与 torch.tensor(ndarray) 在内存行为上有什么区别？各自适合什么场景？</li><li>请写出"NumPy 数据 → GPU 张量 → 模型推理 → NumPy 结果"的完整代码骨架（含必要的 import）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>PyTorch入门（张量类型转换与NumPy互转）</a>
 <a href="https://numpy.org/doc/stable/" target="_blank" rel="noopener"><span class="k">文档</span>NumPy 官方文档</a>
 <a href="https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch tensor 转换相关文档</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>PyTorch入门（张量类型转换与NumPy互转）</span></div>
 </div>
 <div class="pager">
 <a href="03-第三章-张量的创建与数据类型.html">← 第三章　张量的创建与数据类型</a>

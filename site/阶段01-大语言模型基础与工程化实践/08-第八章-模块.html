@@ -1100,9 +1100,9 @@ pipeline.llm = FakeLLM()          # 注入假客户端，零成本调试</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li><code>import utils</code> 和 <code>from utils import clean</code> 各有什么优劣？为什么 <code>import *</code> 不推荐？</li><li><code>if __name__ == "__main__":</code> 的作用是什么？为什么几乎每个文件都有它？</li><li>为什么把 <code>json.py</code> 放进项目目录会让标准库的 <code>json</code> 用不了？</li><li>什么是包？<code>__init__.py</code> 有什么作用？为什么要用它"把子模块提上来"？</li><li>虚拟环境解决什么问题？不用它会怎样？</li><li>Novel 项目里，为什么 API Key 要放 <code>.env</code> 而不是 yaml 或代码里？</li><li>Schema（数据类）在这个项目里起什么作用？为什么说"先定 schema 是工程化思维的第一步"？</li><li>为什么 LLM 客户端要封成一个类？换成另一个模型供应商时，需要改哪些文件？</li><li>pipeline 里"单章失败不中断整体"是怎么做的？为什么这一点很重要？</li><li>什么是"依赖注入"？它在测试里怎么帮你省下真金白银？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>模块</a>
-<a href="#"><span class="k">参考</span>Novel 自动化生成系统</a>
 <a href="https://docs.python.org/zh-cn/3/tutorial/modules.html" target="_blank" rel="noopener"><span class="k">官网</span>Python 官方教程 · 模块</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>模块</span>
+<span class="lk"><span class="k">参考</span>Novel 自动化生成系统</span></div>
 </div>
 <div class="pager">
 <a href="07-第七章-异常机制.html">← 第七章　异常机制</a>

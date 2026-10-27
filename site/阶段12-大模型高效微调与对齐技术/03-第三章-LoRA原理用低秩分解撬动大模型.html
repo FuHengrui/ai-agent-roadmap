@@ -491,9 +491,9 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>用你自己的话解释 LoRA 的"低秩"：为什么两个小矩阵的乘积能代表"ΔW"？</li><li>W 是 4096×4096，r=8 时 LoRA 新增参数是多少？比全量减少了百分之多少？</li><li>ΔW=A×B 里 A、B 的初始值分别是什么？为什么这样设置？</li><li>lora_alpha 和 r 的关系是什么？为什么训练阶段要乘 α/r？</li><li>LoRA 省显存省在哪些部分？哪部分它省不掉？</li><li>target_modules 填 <code>["q_proj","v_proj"]</code> 和填 <code>all</code> 的区别是什么？什么场景选哪个？</li><li>为什么说"LoRA 是高效不是万能"？至少举一个它解决不了的场景。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：高效微调 LoRA（原理与参数量对比）</a>
 <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener"><span class="k">论文</span>LoRA: Low-Rank Adaptation of Large Language Models</a>
 <a href="https://huggingface.co/docs/peft/conceptual_guides/lora" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face PEFT LoRA 指南</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>大模型 DeepSeek 微调与应用：高效微调 LoRA（原理与参数量对比）</span></div>
 </div>
 <div class="pager">
 <a href="02-第二章-三大技术对比微调强化学习知识蒸馏.html">← 第二章　三大技术对比：微调·强化学习·知识蒸馏</a>

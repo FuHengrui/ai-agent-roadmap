@@ -549,10 +549,10 @@ kill -9 &lt;node1 Master PID&gt;
 <h4>自测：能不能答上来</h4>
 <ol><li>Standalone 模式里 Master 和 Worker 分别负责什么？Master 自己算数据吗？</li><li>配置文件 <code>spark-env.sh</code> 和 <code>workers</code> 分别管什么？改完配置为什么不生效？</li><li>一个任务一直 Pending 不跑，最可能的原因是什么？去哪确认？</li><li>为什么没有 ZooKeeper 时不能同时开两个 Master？（提示：脑裂）</li><li>高可用演练的正确动作顺序是什么？（起 ZK → 双 Master → 杀主 Master → 观察备胎上位）</li><li>判断题：高可用（Master 自动切换）能保证正在运行的 Task 不丢。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 4 章：Standalone 模式）</a>
-<a href="#"><span class="k">软件</span>spark-3.2.1-bin-hadoop3.2.tgz</a>
 <a href="https://spark.apache.org/docs/latest/spark-standalone.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark Standalone 模式文档</a>
-<a href="#"><span class="k">资料</span>部署脚本与示例配置</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 分布式计算框架基础（第 4 章：Standalone 模式）</span>
+<span class="lk"><span class="k">软件</span>spark-3.2.1-bin-hadoop3.2.tgz</span>
+<span class="lk"><span class="k">资料</span>部署脚本与示例配置</span></div>
 </div>
 <div class="pager">
 <a href="03-第三章-Local模式与WordCount入门.html">← 第三章　Local 模式与 WordCount 入门</a>

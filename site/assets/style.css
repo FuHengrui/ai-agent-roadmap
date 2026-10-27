@@ -414,3 +414,17 @@ th { background: var(--bg-soft); font-weight: 600; }
 .hit mark { background: #fff3b0; color: inherit; padding: 0 2px; border-radius: 3px; }
 .search-hint { margin-top: 26px; font-size: 13.5px; color: var(--ink-faint); }
 .home-search { margin: 26px 0 10px; }
+/* ---- 「本章配套资料」里没有公开链接的条目 ---- */
+.links-off {
+    margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line);
+}
+.links-off .tag2 {
+    display: block; font-size: 11.5px; font-weight: 700; color: var(--ink-faint);
+    letter-spacing: .06em; margin-bottom: 8px;
+}
+.links-off .lk {
+    display: inline-block; margin: 3px 8px 3px 0;
+    border: 1px dashed var(--line); border-radius: 20px;
+    padding: 5px 12px; font-size: 13.5px; color: var(--ink-faint);
+}
+.links-off .lk .k { font-size: 11.5px; margin-right: 5px; opacity: .85; }

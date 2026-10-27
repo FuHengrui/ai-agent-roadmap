@@ -499,10 +499,10 @@ asyncio.run(main())</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么 SQL 的 LIKE 匹配做不了语义检索？举例说明"字面不同语义相近"。</li><li>BGE-small-zh 输出多少维向量？<code>normalize_embeddings=True</code> 的作用是什么？</li><li>ChromaDB 的 page_content 和 metadata 分别存什么？过滤查询靠哪个？</li><li>build_index.py 的幂等是怎么做的？为什么必须先跑 seed_cases？</li><li>为什么纯向量检索在案号/法条编号上会失效？混合检索怎么补？</li><li>RAG_SCORE_THRESHOLD=0.7 的含义？调太低/太高会有什么后果？</li><li>向量库为什么用单例 + lifespan 初始化？直接每次 new 一个会怎样？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>LegalMind 法律咨询系统：文本向量化和向量数据库</a>
 <a href="https://huggingface.co/BAAI/bge-small-zh" target="_blank" rel="noopener"><span class="k">官网</span>BAAI/bge-small-zh 模型页</a>
 <a href="https://docs.trychroma.com/" target="_blank" rel="noopener"><span class="k">官网</span>ChromaDB 文档</a>
 <a href="https://python.langchain.com/docs/integrations/vectorstores/chroma/" target="_blank" rel="noopener"><span class="k">官网</span>LangChain Chroma 集成</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>LegalMind 法律咨询系统：文本向量化和向量数据库</span></div>
 </div>
 <div class="pager">
 <a href="06-第六章-LLM多供应商客户端.html">← 第六章　LLM 多供应商客户端</a>

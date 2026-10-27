@@ -540,8 +540,8 @@ async def recommend_meal(patient_id: int, meal_type: str):
 <h4>自测：能不能答上来</h4>
 <ol><li>什么场景应该用规则引擎而不是大模型？本项目两者如何分工？</li><li>RECOMMENDED_FOODS 的 meal 字段为什么用 "午餐/晚餐" 这种写法？</li><li>半开区间 [start, start+1天) 的结束端为什么用 __lt 而不是 __lte？</li><li>total_calories 用 <code>or 0</code> 与 avg_gi 用 <code>if not None</code> 过滤，两种空值处理各适用什么场景？</li><li>血糖 &gt;8.0 与正常时，推荐逻辑分别如何取舍（排序与条数）？</li><li>找出示例代码里 "最近一次血糖" 写法的隐患，并写出正确写法。</li><li>为什么 get_daily_nutrition 必须 async 而 recommend_meal 不需要？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</a>
 <a href="https://baike.baidu.com/item/血糖生成指数" target="_blank" rel="noopener"><span class="k">百科</span>升糖指数（GI）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</span></div>
 </div>
 <div class="pager">
 <a href="07-第七章-饮食用药运动三大模块.html">← 第七章　饮食用药运动三大模块</a>

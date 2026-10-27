@@ -557,10 +557,10 @@ clean.foreach { row =&gt;
 <h4>自测：能不能答上来</h4>
 <ol><li>并行度由哪 4 个因素决定？shuffle 后默认分区数由哪个配置决定？</li><li>repartition 和 coalesce 的区别是什么？"输出前想只留 1 个文件"该用哪个？</li><li>为什么闭包引用一个大维表会导致每个 Task 都带一份？量级差多少？</li><li>广播变量的正确使用方式是什么？它和闭包变量的本质区别在哪？</li><li>累加器为什么在转换算子里用会导致计数翻倍？正确放哪里？</li><li>判断题：广播变量的值可以在任务执行期间被修改并立即生效。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 内核进阶（第 5 章：并行度与分区）</a>
-<a href="#"><span class="k">参考</span>Spark 内核进阶（第 6 章：广播变量与累加器）</a>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#shared-variables" target="_blank" rel="noopener"><span class="k">官网</span>共享变量官方文档</a>
 <a href="https://spark.apache.org/docs/latest/tuning.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark 性能调优指南</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 内核进阶（第 5 章：并行度与分区）</span>
+<span class="lk"><span class="k">参考</span>Spark 内核进阶（第 6 章：广播变量与累加器）</span></div>
 </div>
 <div class="pager">
 <a href="10-第十章-Pipeline流水线Cache缓存与Checkpoint.html">← 第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</a>

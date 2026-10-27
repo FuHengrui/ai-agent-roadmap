@@ -532,9 +532,9 @@ curl http://localhost:8000/api/chat/sessions \
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么数据库不能存明文密码？bcrypt 相比普通哈希（如 MD5）强在哪？</li><li>JWT 的 payload 里存了什么？服务端如何确认 token 没被篡改？</li><li>注册接口为什么返回 token？生成 token 需要哪些入参？</li><li>登录接口对"用户不存在"和"密码错误"为什么返回同一个 401 文案？</li><li>get_current_user 的校验顺序是什么？为什么最后还要查一次数据库？</li><li>前端 token 存在哪？axios 在哪个环节自动加 Authorization 头？</li><li>前端路由守卫能代替后端鉴权吗？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>LegalMind 法律咨询系统：用户认证系统</a>
 <a href="https://python-jose.readthedocs.io/" target="_blank" rel="noopener"><span class="k">官网</span>python-jose 文档</a>
 <a href="https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/" target="_blank" rel="noopener"><span class="k">官网</span>OAuth2 with Password and Bearer (FastAPI 官方教程)</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>LegalMind 法律咨询系统：用户认证系统</span></div>
 </div>
 <div class="pager">
 <a href="04-第四章-数据库模型与ORM.html">← 第四章　数据库模型与 ORM</a>

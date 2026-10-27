@@ -525,9 +525,9 @@ print(model)</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么 torch 要单独用 <code>--index-url .../cu126</code> 安装，而不是直接 <code>pip install torch</code>？</li><li><code>torch.cuda.is_available()</code> 返回 False，按顺序排查哪三件事？</li><li><code>device_map="auto"</code> 和 <code>torch_dtype=torch.float16</code> 分别解决什么问题？</li><li>DeepSeek-R1-Distill-Qwen-1.5B 里 "Distill" 是什么意思？这和第二章哪个技术对应？</li><li>从打印出的模型结构里，你能说出哪几个可作 LoRA target_modules 的模块名？</li><li>为什么说"print(model) 不只是看看"？</li><li>显存只有 4GB 想微调 1.5B 模型，按本章建议怎么降负担？（至少说三层）</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：配置环境与加载预训练模型</a>
 <a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face 模型页：DeepSeek-R1-Distill-Qwen-1.5B</a>
 <a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener"><span class="k">官网</span>PyTorch 安装（CUDA 版本选择）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>大模型 DeepSeek 微调与应用：配置环境与加载预训练模型</span></div>
 </div>
 <div class="pager">
 <a href="03-第三章-LoRA原理用低秩分解撬动大模型.html">← 第三章　LoRA 原理：用低秩分解撬动大模型</a>

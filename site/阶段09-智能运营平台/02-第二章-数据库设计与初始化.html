@@ -563,9 +563,9 @@ CREATE TABLE IF NOT EXISTS chat_history (
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么血糖表的 patient_id 外键用 <code>ON DELETE RESTRICT</code> 而不是 <code>CASCADE</code>？在医疗场景下 RESTRICT 保护了什么？</li><li>饮食表的 <code>gi_value</code> 字段为什么对"食谱推荐"这么关键？低/中/高 GI 的阈值分别是多少？</li><li>用药表的 dosage 为什么用 VARCHAR 而不是 FLOAT？请举一个 VARCHAR 才能存下的剂量例子。</li><li>运动表靠哪两个字段支撑"运动与血糖关系分析"？bs_change 在 ORM 层是怎么算的？</li><li>chat_history 的 role 字段只允许哪两个值？如果误存了第三个值，可能引发什么后果？</li><li>报告表里哪几个字段是"AI 生成的"，哪几个是"统计引擎算出来的"？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</a>
-<a href="#"><span class="k">资料</span>建库 SQL 脚本（diabetes 数据库初始化）</a>
 <a href="https://dev.mysql.com/doc/refman/8.0/en/" target="_blank" rel="noopener"><span class="k">官网</span>MySQL 8.0 参考手册</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</span>
+<span class="lk"><span class="k">资料</span>建库 SQL 脚本（diabetes 数据库初始化）</span></div>
 </div>
 <div class="pager">
 <a href="01-第一章-项目全景与技术选型.html">← 第一章　项目全景与技术选型</a>

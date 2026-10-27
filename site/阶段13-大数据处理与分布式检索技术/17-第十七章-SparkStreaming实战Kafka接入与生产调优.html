@@ -597,10 +597,10 @@ query.awaitTermination()</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>Kafka 的 Topic/Partition/Consumer Group/Offset 分别指什么？</li><li>Direct 模式相比 Receiver 模式的三点优势是什么？并行度由什么决定？</li><li>createDirectStream 得到的是 DStream[ConsumerRecord]，取业务数据要做什么操作？</li><li>消费三种语义（at-most-once / at-least-once / exactly-once）各自含义？生产常用哪种+什么配套？</li><li>优雅关闭为什么不能直接 kill -9？stopGracefully=true 的语义是什么？</li><li>背压（backpressure）解决什么问题？处理耗时超过批间隔时按什么顺序调优？</li><li>判断题：Structured Streaming 的 API 与静态 DataFrame 完全不同，需要另学一套算子。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>SparkStreaming （第 5 章：Kafka 整合）</a>
-<a href="#"><span class="k">参考</span>SparkStreaming （第 6 章：优雅关闭与调优）</a>
 <a href="https://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark Streaming + Kafka 集成指南</a>
 <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank" rel="noopener"><span class="k">官网</span>Structured Streaming 编程指南</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>SparkStreaming （第 5 章：Kafka 整合）</span>
+<span class="lk"><span class="k">参考</span>SparkStreaming （第 6 章：优雅关闭与调优）</span></div>
 </div>
 <div class="pager">
 <a href="16-第十六章-SparkStreaming从批到流的第一课.html">← 第十六章　Spark Streaming：从批到流的第一课</a>

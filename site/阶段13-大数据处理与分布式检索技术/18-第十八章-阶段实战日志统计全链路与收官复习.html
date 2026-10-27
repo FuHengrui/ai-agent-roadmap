@@ -602,10 +602,10 @@ val result = partial.map { case ((k, _), v) =&gt; (k, v) }
 <h4>自测：能不能答上来</h4>
 <ol><li>批流两套实现同一指标，最核心的验证动作是什么？第一疑犯通常是哪个因素？</li><li>数据倾斜的本质是什么？"加盐两阶段聚合"为什么能缓解（画一下数据流）？</li><li>画出一张从"RDD 读入"到"输出"的 8 个关键节点链路图（不查书）。</li><li>reduceByKey 为什么比 groupByKey 快？"map 端预聚合"减少的是什么？</li><li>cache 和 checkpoint 各自解决什么问题？什么场景用哪个？</li><li>Direct 模式相比 Receiver 的三点优势是什么？offset 管理三种方式分别是什么？</li><li>判断题：两阶段聚合（加盐）在任何数据量下都比不分盐快。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 12 章整合）</a>
-<a href="#"><span class="k">参考</span>SparkSQL （第 7 章：实战案例）</a>
 <a href="https://github.com/apache/spark/tree/master/examples" target="_blank" rel="noopener"><span class="k">官网</span>Spark 官方示例（examples 目录）</a>
-<a href="#"><span class="k">资料</span>sparkdemo.zip / sparksql.zip / sparkstreaming.zip（全套源码）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 分布式计算框架基础（第 12 章整合）</span>
+<span class="lk"><span class="k">参考</span>SparkSQL （第 7 章：实战案例）</span>
+<span class="lk"><span class="k">资料</span>sparkdemo.zip / sparksql.zip / sparkstreaming.zip（全套源码）</span></div>
 </div>
 <div class="pager">
 <a href="17-第十七章-SparkStreaming实战Kafka接入与生产调优.html">← 第十七章　Spark Streaming 实战：Kafka 接入与生产调优</a>

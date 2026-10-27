@@ -534,10 +534,10 @@ rdd.sortByKey(false, 1)                    // 降序，且结果全局有序 1 �
 <h4>自测：能不能答上来</h4>
 <ol><li><code>collect()</code> 为什么在小数据上安全、大数据上危险？"想看结果"的正确第一选择是什么算子？</li><li><code>top(3)</code> 和 <code>takeOrdered(3)</code> 默认分别取的是最小还是最大的 3 个？想要"最大 3 个"各该怎么写？</li><li>数据 1..9 分 3 个分区，<code>fold(10)(_+_)</code> 的结果是多少？为什么不是 10+sum？</li><li>有一段逻辑"把 RDD 每行写入 MySQL"，应该用 foreach 还是 foreachPartition？为什么？</li><li>saveAsTextFile 生成的文件数量由什么决定？想只输出一个文件该怎么处理？</li><li>判断题：countByKey 统计的是每个 key 的 value 之和。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 10 章：行动算子 1）</a>
-<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 11 章：行动算子 2）</a>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#actions" target="_blank" rel="noopener"><span class="k">官网</span>RDD API 文档（Action 部分）</a>
-<a href="#"><span class="k">资料</span>sparkdemo.zip（本章行动算子示例源码）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 分布式计算框架基础（第 10 章：行动算子 1）</span>
+<span class="lk"><span class="k">参考</span>Spark 分布式计算框架基础（第 11 章：行动算子 2）</span>
+<span class="lk"><span class="k">资料</span>sparkdemo.zip（本章行动算子示例源码）</span></div>
 </div>
 <div class="pager">
 <a href="07-第七章-RDD转换算子核心数据处理工具.html">← 第七章　RDD 转换算子：核心数据处理工具</a>

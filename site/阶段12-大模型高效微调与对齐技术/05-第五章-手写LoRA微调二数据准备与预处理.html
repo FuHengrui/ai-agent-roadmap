@@ -526,9 +526,9 @@ print(tokenizer.decode(sample[&quot;labels&quot;]))  # 应看到原 response</pr
 <h4>自测：能不能答上来</h4>
 <ol><li>LaMini-instruction 的字段名是什么？加载后第一件事应该做什么？</li><li><code>train_test_split(test_size=0.1, seed=42)</code> 中 seed 的作用是什么？不设会怎样？</li><li>为什么 labels 用 response 的 token 而不是 instruction 的 token？</li><li><code>datasets</code> 的 <code>map(..., batched=True)</code> 有什么好处？batched 模式下函数收到的 examples 长什么样？</li><li>用 30 秒写出发自这一章的"肉眼验收三步"是什么？</li><li>"训练用 A 模板、测试用 B 模板"会造成什么问题？正确做法是什么？</li><li>预处理产出空 labels 样本会导致什么？怎么提前预防？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：加载数据集与数据预处理</a>
 <a href="https://huggingface.co/docs/datasets/" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face Datasets 文档（map/加载）</a>
 <a href="https://huggingface.co/datasets/MBZUAI/LaMini-instruction" target="_blank" rel="noopener"><span class="k">数据集</span>MBZUAI/LaMini-instruction</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>大模型 DeepSeek 微调与应用：加载数据集与数据预处理</span></div>
 </div>
 <div class="pager">
 <a href="04-第四章-手写LoRA微调一环境与模型加载.html">← 第四章　手写 LoRA 微调（一）：环境与模型加载</a>

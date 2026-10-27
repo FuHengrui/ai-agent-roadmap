@@ -488,10 +488,10 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>lifespan 里 yield 之前和之后的代码分别做什么？为什么初始化都放这里而非模块顶层？</li><li>init_db 里 <code>modules={"models": [...]}</code> 漏了某个模型模块会发生什么？</li><li>CORS 报错是前端还是后端的问题？修在哪一端？</li><li>include_router 的 prefix 加在哪里？chat.py 里 <code>@router.post("/stream")</code> 对外路径是什么？</li><li>Windows 上为什么需要 <code>WindowsSelectorEventLoopPolicy</code>？只设 policy 在 uvicorn 新版够吗？</li><li><code>generate_schemas(safe=True)</code> 的 safe 参数解决了什么问题？</li><li>如何用一条命令验证后端真的起来了？自动化文档地址是多少？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>LegalMind 法律咨询系统：FastAPI 应用骨架</a>
 <a href="https://fastapi.tiangolo.com/advanced/events/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI Lifespan 文档</a>
 <a href="https://fastapi.tiangolo.com/tutorial/cors/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI CORS 文档</a>
 <a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise ORM 文档</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>LegalMind 法律咨询系统：FastAPI 应用骨架</span></div>
 </div>
 <div class="pager">
 <a href="02-第二章-开发环境与基础设施.html">← 第二章　开发环境与基础设施</a>

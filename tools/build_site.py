@@ -316,15 +316,26 @@ def render(src: Path, idx: int):
         elif k == "quiz":
             parts.append('<h4>自测：能不能答上来</h4>\n' + body(bd))
         elif k == "links":
-            items = []
+            items, offs = [], []
             for x in bd:
                 x = x.strip()
                 if not x or "|" not in x:
                     continue
                 k2, t2, u2 = (x.split("|") + ["", ""])[:3]
-                tgt = ' target="_blank" rel="noopener"' if u2.startswith("http") else ""
+                url = u2.strip()
+                if url in ("", "#"):
+                    # ★ 占位行：这类行本来就点不开（238 章里还有 301 行），
+                    #   渲染成 <a href="#"> 是骗点击，跳回页首更让人困惑。
+                    #   改成灰色不可点标签，信息留着、假链接没了。
+                    offs.append('<span class="lk"><span class="k">%s</span>%s</span>'
+                                % (inline(k2.strip()), inline(t2.strip())))
+                    continue
+                tgt = ' target="_blank" rel="noopener"' if url.startswith("http") else ""
                 items.append('<a href="%s"%s><span class="k">%s</span>%s</a>'
-                             % (H.escape(u2.strip(), quote=True), tgt, inline(k2.strip()), inline(t2.strip())))
+                             % (H.escape(url, quote=True), tgt, inline(k2.strip()), inline(t2.strip())))
+            if offs:
+                items.append('<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备">'
+                             '<span class="tag2">未收录</span>%s</div>' % "\n".join(offs))
             parts.append('<div class="links"><span class="tag">本章配套资料</span>\n%s\n</div>' % "\n".join(items))
 
     page = TEMPLATE.format(

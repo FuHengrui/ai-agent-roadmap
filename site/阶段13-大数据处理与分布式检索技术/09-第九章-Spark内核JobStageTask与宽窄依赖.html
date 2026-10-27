@@ -546,10 +546,10 @@ Executor（执行器）── 在 Worker 节点上
 <h4>自测：能不能答上来</h4>
 <ol><li>一个程序里有 3 个行动算子，会产生几个 Job？为什么？</li><li>判断下面算子是窄依赖还是宽依赖：map、filter、reduceByKey、union、join、distinct，并说明判断标准。</li><li>为什么窄依赖算子（如 map→filter→map）可以合并成一个 Stage 连续执行？</li><li>5 个上游分区 + 8 个下游分区，Map 端会产生多少个 shuffle 文件（不做合并时）？</li><li>DAGScheduler 和 TaskScheduler 各自的职责是什么？它们分别在哪个进程里？</li><li>一个 Job 含 2 次 shuffle，会切成几个 Stage？</li><li>判断题：窄依赖一定会触发 shuffle；宽依赖一定不会。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">参考</span>Spark 内核进阶（第 1 章：DAG 与 Stage 划分）</a>
-<a href="#"><span class="k">参考</span>Spark 内核进阶（第 2 章：宽窄依赖与 Shuffle）</a>
 <a href="https://spark.apache.org/docs/latest/job-scheduling.html" target="_blank" rel="noopener"><span class="k">官网</span>Job Scheduling 官方文档</a>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistenc" target="_blank" rel="noopener"><span class="k">官网</span>RDD 编程指南（容错章节）</a>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 内核进阶（第 1 章：DAG 与 Stage 划分）</span>
+<span class="lk"><span class="k">参考</span>Spark 内核进阶（第 2 章：宽窄依赖与 Shuffle）</span></div>
 </div>
 <div class="pager">
 <a href="08-第八章-RDD行动算子触发计算与输出结果.html">← 第八章　RDD 行动算子：触发计算与输出结果</a>
