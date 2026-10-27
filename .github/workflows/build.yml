@@ -1,8 +1,8 @@
 name: 构建并部署
 
 # 每次 push 自动做六件事：
-#   1. 内容质检（结构 / need 覆盖率 / ★ 密钥泄露 / 个人信息）
-#   2. 重新构建站点（含全站搜索索引）
+#   1. 内容质检（六块结构 / need 覆盖率 / ★ 密钥泄露 / 个人信息 / 目录与正文一致性 / README 数字）
+#   2. 重新构建站点（含搜索索引、sitemap、robots）
 #   3. 发布前扫描（全仓：违禁词 / 密钥 / 不该提交的文件）
 #   4. 站点一致性（site/ 必须和 content/ 重建结果一致）
 #   5. 站点自检（死链 / 样式）
@@ -48,13 +48,17 @@ jobs:
       # ★ 这一步会抓 API Key 泄露。
       # 让 AI 写代码示例，它真会把讲义里的真 Key 抄进去 —— 这道闸门救命。
       - name: 内容质检
-        run: python tools/check_content.py
+        run: |
+          python tools/check_content.py
+          python tools/check_consistency.py
+          python tools/stats.py --check
 
       # ---- 2. 重新构建 ----
       - name: 构建站点
         run: |
           python tools/build_site.py
           python tools/build_search.py
+          python tools/build_sitemap.py
           python tools/sync_index.py
 
       # ---- 3. 发布前扫描 ----

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fuhengrui.github.io/ai-agent-roadmap/sitemap.xml
