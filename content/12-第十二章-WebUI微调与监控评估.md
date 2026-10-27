@@ -1,5 +1,5 @@
 @@h1 第十二章　WebUI 微调与监控：点按钮训练＋SwanLab 可视化
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★
 
 @@why 这一章在解决什么问题
 前 11 章你练了三条腿：手写（原理）、Unsloth（提速）、LLaMA-Factory（数据侧就绪）。收官之章把 LLaMA-Factory 的 **WebUI 操作**走完：选模型、选数据、填超参、点开始，然后 **SwanLab** 把训练过程变成可视化曲线。全程不用写一行训练代码。
@@ -53,7 +53,7 @@ llamafactory-cli webui
 Train 页顶部"模型名称、微调方法、模型路径"是最先要填的三项。它们对应什么、QLoRA 怎么开、LoRA 权重存哪——填错一步训练启动即报错。
 
 @@idea 核心思路
-Train 页关键字段（对照讲义）：
+Train 页关键字段：
 
 | 字段 | 填什么 | 说明 |
 |---|---|---|
@@ -138,7 +138,7 @@ WebUI 的"训练参数"页字段很多，但**每一个都对应你学过的概�
 光看终端日志不过瘾也不直观。**SwanLab** 是实验跟踪平台：训练曲线、超参对比、项目归档全部云端可视化。这一节完成接入——并特别示范**密钥纪律**：API Key 走环境变量，绝不写进代码/文档。
 
 @@idea 核心思路
-SwanLab 三步接入（讲义流程）：
+SwanLab 三步接入：
 
 ```bash
 # 2. 登录并拿 API Key（https://swanlab.cn 注册后，个人设置里生成）
@@ -157,7 +157,7 @@ llamafactory-cli train config.yaml --use_swanlab
 ```
 
 关键纪律（必读）：
-- **API Key 是账号钥匙**；讲义示例里出现的 SwanLab 密钥是疑似真实密钥，本课程一律用 `<your_swanlab_api_key>` 占位；
+- **API Key 是账号钥匙**；示例里出现过的 SwanLab Key 可能是真实密钥，这里一律用 `<your_swanlab_api_key>` 占位；
 - 密钥只进环境变量，**不写入 .py/.yaml/.md/任何会被提交的配置**；
 - 泄露了立即去 SwanLab 设置里吊销重建。
 
@@ -259,7 +259,7 @@ llamafactory-cli chat --model_name_or_path Qwen2.5-7B \
 
 给仍在学的人一句总纲：**原理选路线、显存定参数、数据管下限、评估判结果**——这四句话，就是"微调"这门手艺的全部框架。
 
-课后延伸（自选）：跑一个 DPO 偏好对齐对比实验、给部署模型写一个简单 Web 前端、用你的数据做一次 QLoRA 全流程并留下实验档案。
+延伸练习（自选）：跑一个 DPO 偏好对齐对比实验、给部署模型写一个简单 Web 前端、用你的数据做一次 QLoRA 全流程并留下实验档案。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -290,6 +290,6 @@ llamafactory-cli chat --model_name_or_path Qwen2.5-7B \
 7. 阶段 12 收官后，四条能力线（手写/Unsloth/框架/部署）各自的核心产物是什么？
 
 @@links
-讲义|人工智能（副本）：LLaMA-Factory WebUI 微调、SwanLab 监控与评估|#
+参考|人工智能（副本）：LLaMA-Factory WebUI 微调、SwanLab 监控与评估|#
 官网|LLaMA-Factory WebUI 使用文档|https://github.com/hiyouga/LLaMA-Factory#webui
 官网|SwanLab 官方文档（API Key 与实验管理）|https://docs.swanlab.cn/

@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第二章</strong></div>
 <h1>第二章　Spark 架构与运行模式总览</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章你知道了 Spark 能把一堆机器组织起来一起算。但"组织"到底怎么组织？你在笔记本上写一个 <code>sc.textFile(...)</code>，然后它凭什么让 100 台机器动起来、算完的结果又是怎么回到你面前的？如果完全没有概念，后面看日志、调参数、排查报错都会像看天书——<strong>"Driver"“Executor”“Task"这些词你会反复见到，但不知道谁是谁</strong>。</p>
 <p>这一章把 Spark 的<strong>骨架</strong>装进你脑子：集群里有哪几种角色、各管什么事、一份代码从提交到出结果的完整路径。学完再去碰部署模式（Local/Standalone/YARN），你会发现它们只是"谁当老板"的区别而已。</p>
@@ -494,10 +494,10 @@ INFO DAGScheduler: Job 0 finished: reduce at ...         ← 一个 Job 干完</
 <h4>自测：能不能答上来</h4>
 <ol><li>用一句话说清 Driver、Executor、Task 三者的关系（可以打比方）。</li><li>一份 Spark 程序里有 3 个 <code>collect()</code>，一共有几个 Job？为什么？</li><li>Executor 的内存分哪两片？只 cache 不清缓存为什么可能导致任务反而变慢？</li><li>你现在只有一台笔记本，想跑一个 200MB 的练习任务，该选什么模式？<code>local[*]</code> 和 <code>local[2]</code> 的区别是什么？</li><li>判断题：Spark 的 Cluster Manager 会参与数据的计算与聚合。</li><li><code>repartition(8)</code> 和 <code>coalesce(2)</code> 的适用场景分别是什么？</li><li>日志里出现 <code>DAGScheduler: Job 0 finished</code> 说明哪个环节完成了？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Spark 分布式计算框架课程介绍（docx）：架构与运行模式节</a>
-<a href="#"><span class="k">讲义</span>01-Spark 分布式计算框架基础（第 2 章：架构）</a>
+<a href="#"><span class="k">参考</span>Spark 分布式计算框架介绍（docx）：架构与运行模式节</a>
+<a href="#"><span class="k">参考</span>01-Spark 分布式计算框架基础（第 2 章：架构）</a>
 <a href="https://spark.apache.org/docs/latest/cluster-overview.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark 集群模式概览</a>
-<a href="#"><span class="k">资料</span>讲义源码目录 sparkdemo.zip</a>
+<a href="#"><span class="k">资料</span>配套源码目录 sparkdemo.zip</a>
 </div>
 <div class="pager">
 <a href="01-第一章-Spark简介为什么需要它.html">← 第一章　Spark 简介：为什么需要它</a>

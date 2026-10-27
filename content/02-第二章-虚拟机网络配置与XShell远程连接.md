@@ -119,7 +119,7 @@ NAT（网络地址转换）= VMware 的虚拟网络服务**扮演一台路由器
 - 虚拟机**不能访问外网**，外网更进不来；
 - 用途：隔离环境练实验、不让虚拟机联网乱下载、调试只涉及主机的网络问题。
 
-讲义结论（直接记）：NAT 和仅主机**都不占用局域网 IP**、都只能和本机互通；唯一区别是 **NAT 能出外网，仅主机完全不能**。所以三道网络模式里"最安全"的是仅主机模式。
+结论（直接记）：NAT 和仅主机**都不占用局域网 IP**、都只能和本机互通；唯一区别是 **NAT 能出外网，仅主机完全不能**。所以三道网络模式里"最安全"的是仅主机模式。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -283,7 +283,7 @@ XShell 是 Windows 上常用的 SSH 客户端（同类还有 MobaXterm、FinalSh
 5. 改了网卡配置忘了重启网卡会怎样？
 6. XShell 报 "Connection refused" 和 "timeout" 分别说明哪一层出了问题？
 @@links
-讲义|Linux入门与实战讲义（159 页）|#
+参考|Linux入门与实战（159 页）|#
 官网|XShell 下载|https://www.netsarang.com/
 文档|VMware 网络配置文档|https://docs.vmware.com/
 文档|OpenSSH 官方文档|https://www.openssh.com/

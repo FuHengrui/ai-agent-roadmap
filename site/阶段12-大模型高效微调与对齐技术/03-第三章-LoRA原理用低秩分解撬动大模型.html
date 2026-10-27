@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第三章</strong></div>
 <h1>第三章　LoRA 原理：用低秩分解撬动大模型</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　1.5 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章你知道了"高效微调"能省钱，但心里一定有个大问号：<strong>只改一点点参数，凭什么能达到接近全量微调的效果？</strong> 如果只是想"少调参数"，那随机挑几个层冻结不就行了？——答案是：这里面有个数学直觉叫<strong>低秩</strong>，弄懂它，你才算真正掌握高效微调，而不是"照着教程抄代码"。</p>
 <p>这章用大白话拆开 LoRA（Low-Rank Adaptation，低秩适配）：传统微调的问题 → LoRA 的核心思想 → 为什么省 99% 参数还管用 → 数学上它到底改了什么。<strong>这一章是手写 LoRA（第 4~7 章）的理论地基</strong>，公式不多，但每个都管用。</p>
@@ -296,7 +296,7 @@
 <p>理解 LoRA 的起点是搞明白"全量微调到底贵在哪"。假设模型里有个线性层权重矩阵 W，它有多大？——一个 4096×4096 的矩阵就有 <strong>1677 万个参数</strong>，而这种矩阵在模型里有一大堆。全量微调意味着每一个都要更新、都要存梯度、都要做反传。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给的核心事实：</p>
+<p>核心事实：</p>
 <p>$$Y = WX$$</p>
 <ul><li>W 是形状为 d×k 的权重矩阵（如 4096×4096）；</li><li>全量微调意味着要训练并更新<strong>整个 W</strong>，1677 万个参数只是<strong>一个层</strong>；</li><li>模型有几十上百个层，全更新 = 显存里除了模型还要存梯度、优化器状态（Adam 再翻几倍）→ 一张普通显卡根本装不下。</li></ul>
 <p>于是自然的问题：<strong>我们真的需要更新 W 的每一个数吗？</strong> 还是只更新"它的某个缩略版本"就够了？——这就是 LoRA 切入的破绽。</p>
@@ -314,7 +314,7 @@
 <p>既然不更新整个 W，那 LoRA 到底"调"什么？答案是：<strong>它不动 W 本身，而是给 W 旁边挂两个很小的新矩阵，用它们的乘积模拟"W 应该发生的改变"</strong>。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义原话拆解：</p>
+<p>拆解一下：</p>
 <p>&gt; LoRA 不直接学习 W'，而是引入两个小矩阵： &gt; - A 矩阵（形状 d×r） &gt; - B 矩阵（形状 r×k）</p>
 <p>让权重的变化 ΔW 由两个小矩阵相乘得到：</p>
 <p>$$\Delta W = A \times B$$</p>
@@ -333,10 +333,10 @@
 </div></div>
 <div class="point" id="p3"><div class="head"><span class="no">3</span>③ 为什么省参数：算一笔账就懂</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>"两个小矩阵"到底有多小？光说"参数少"没感觉——用讲义的数字算一遍，你才会有"哇，真的少 99.6%"的实感。</p>
+<p>"两个小矩阵"到底有多小？光说"参数少"没感觉——用具体数字算一遍，你才会有"哇，真的少 99.6%"的实感。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的计算：</p>
+<p>具体算一遍：</p>
 <table>
 <tr><th>对象</th><th>形状</th><th>参数量</th></tr>
 <tr><td>原始 W</td><td>4096×4096</td><td>16,777,216（约 1677 万）</td></tr>
@@ -390,7 +390,7 @@
 <tr><td>优化器状态（Adam 动量×2）</td><td>按 W 大小×3 倍</td><td>按 A、B 大小算</td><td><strong>大省</strong></td></tr>
 <tr><td>激活值（前向中间结果）</td><td>全量</td><td>可用梯度检查点再省</td><td>部分可省</td></tr>
 </table>
-<p>所以 Lora 省的是"训练负担"：<strong>要更新、要存梯度和动量的东西从 1677 万降到 6.4 万</strong>，显卡压力断崖式下降——这就是 4GB 显存也能跑 LoRA 微调的原因。讲义总结为：<strong>显存优化（只需调整少量参数）+ 计算效率（训练负担更轻）+ 灵活性（与各种预训练模型轻松结合）</strong>。</p>
+<p>所以 Lora 省的是"训练负担"：<strong>要更新、要存梯度和动量的东西从 1677 万降到 6.4 万</strong>，显卡压力断崖式下降——这就是 4GB 显存也能跑 LoRA 微调的原因。一句话总结：<strong>显存优化（只需调整少量参数）+ 计算效率（训练负担更轻）+ 灵活性（与各种预训练模型轻松结合）</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -413,7 +413,7 @@
 <tr><td>lora_dropout</td><td>补丁层随机失活率</td><td>常用 0.05~0.1，防过拟合</td></tr>
 <tr><td>task_type</td><td>任务类型</td><td><code>TaskType.CAUSAL_LM</code>（因果语言模型）</td></tr>
 </table>
-<p>参考资料：<strong>注意力里的 q_proj/k_proj/v_proj/o_proj 是微调的主战场</strong>，挂它们就能明显改行为；MLP 的 gate/up/down 挂了信息量更大但负担更重。教学版通常只挂 q/v（讲义示例即如此），追求上限时挂全线性层（Unsloth 默认更全）。</p>
+<p>参考资料：<strong>注意力里的 q_proj/k_proj/v_proj/o_proj 是微调的主战场</strong>，挂它们就能明显改行为；MLP 的 gate/up/down 挂了信息量更大但负担更重。教学版通常只挂 q/v（本书示例即如此），追求上限时挂全线性层（Unsloth 默认更全）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -461,7 +461,7 @@
 <p>前面吹了一路的省，现在浇一盆冷水：LoRA 不是万能的。知道它的三个边界，你才不会在错误场景里白折腾——这也是"懂原理"和"会抄教程"的分水岭。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>三个边界，讲义 + 实践综合：</p>
+<p>三个边界，实践中最常撞到：</p>
 <table>
 <tr><th>边界</th><th>说明</th><th>规避</th></tr>
 <tr><td>能力上限受底座约束</td><td>LoRA 调整的是"行为/风格/任务适配"，底座不会的推理，补丁也变不出来</td><td>先确认底座能力足够，再微调</td></tr>
@@ -490,7 +490,7 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>用你自己的话解释 LoRA 的"低秩"：为什么两个小矩阵的乘积能代表"ΔW"？</li><li>W 是 4096×4096，r=8 时 LoRA 新增参数是多少？比全量减少了百分之多少？</li><li>ΔW=A×B 里 A、B 的初始值分别是什么？为什么这样设置？</li><li>lora_alpha 和 r 的关系是什么？为什么训练阶段要乘 α/r？</li><li>LoRA 省显存省在哪些部分？哪部分它省不掉？</li><li>target_modules 填 <code>["q_proj","v_proj"]</code> 和填 <code>all</code> 的区别是什么？什么场景选哪个？</li><li>为什么说"LoRA 是高效不是万能"？至少举一个它解决不了的场景。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>大模型 DeepSeek 微调与应用：高效微调 LoRA（原理与参数量对比）</a>
+<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：高效微调 LoRA（原理与参数量对比）</a>
 <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener"><span class="k">论文</span>LoRA: Low-Rank Adaptation of Large Language Models</a>
 <a href="https://huggingface.co/docs/peft/conceptual_guides/lora" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face PEFT LoRA 指南</a>
 </div>

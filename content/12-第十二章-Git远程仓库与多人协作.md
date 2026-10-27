@@ -22,7 +22,7 @@ Git 只是工具，远程仓库得有个"服务器"来放。自己搭一台服�
 | **Gitee（码云）** | 服务器在国内，访问快、中文界面 | 国内团队、学校作业、网络不稳定的场景 |
 | **GitLab** | 开源、可私有部署 | 公司内部自建、需要强管控的场景 |
 
-选择逻辑：**图快选 Gitee，图生态选 GitHub，公司自建选 GitLab**。本课程用 Gitee 或 GitHub 都行，命令完全一样。
+选择逻辑：**图快选 Gitee，图生态选 GitHub，公司自建选 GitLab**。这里用 Gitee 或 GitHub 都行，命令完全一样。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -48,7 +48,7 @@ git remote add origin https://gitee.com/yourname/my-project.git
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 直接照抄讲义/教程里的地址 | 那是别人的仓库！**改成你自己平台的仓库地址**再执行 |
+| 直接照抄网上教程里的地址 | 那是别人的仓库！**改成你自己平台的仓库地址**再执行 |
 | 配错地址想改 | `git remote set-url origin 新地址` 覆盖；或 `git remote rm origin` 删掉重加 |
 | remote add 报 "already exists" | 已经配过 origin 了；用 `git remote -v` 查看，再决定改还是删 |
 
@@ -284,7 +284,7 @@ ssh -T git@gitee.com       # 显示欢迎语（如 "Hi yourname!"）即成功
 6. HTTPS 和 SSH 各要什么认证？为什么推荐 SSH？
 
 @@links
-讲义|Git版本控制管理讲义（86 页）|#
+参考|Git版本控制管理（86 页）|#
 文档|Git 基础 · 远程仓库的使用|https://git-scm.com/book/zh/v2/Git-基础-远程仓库的使用
 文档|SSH 公钥配置（GitHub）|https://docs.github.com/zh/authentication/connecting-to-github-with-ssh
 文档|Git 官方文档|https://git-scm.com/doc

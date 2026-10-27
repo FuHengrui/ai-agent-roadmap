@@ -1,5 +1,5 @@
 @@h1 第三章　Local 模式与 WordCount 入门
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★☆
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
 上一章你有了架构图，但还没见过 Spark 长什么样。**理论和代码之间隔着一道坎**：环境怎么搭、第一个程序怎么写、跑通了怎么确认"我确实在用分布式计算"？本章用最轻量的 Local 模式，让你在自己电脑上把第一个 Spark 程序（WordCount）跑通——它是编程界的"Hello World"，也是后续 15 章所有代码的起跑线。
@@ -14,7 +14,7 @@
 阶段终点：你能独立用 Spark 处理 TB 级数据的全套流程
 
 @@note info 环境说明
-本章基于课程配套 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8+ 并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。
+本章基于 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8+ 并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。
 
 @@point ① 环境准备：JDK、Spark 解压与目录结构
 @@need 要解决什么
@@ -50,7 +50,7 @@ PATH 追加 %SPARK_HOME%\bin
 |---|---|
 | `java -version` 有输出但 Spark 报"JAVA_HOME is not set" | 说明系统 Java 通过别的方式可用，但环境变量 JAVA_HOME 没配。**必须设 JAVA_HOME 变量**，指向 JDK 安装根目录（不是 bin 目录） |
 | Windows 上 spark-shell 一闪而过/乱码 | 双击脚本是坑。在命令行里跑 `spark-shell.cmd`；中文乱码可设 `PYTHONIOENCODING=utf-8` 或用 cmd 的 `chcp 65001` |
-| 下载的 spark 版本和 Hadoop 版本对不上 | 包名里的 `-bin-hadoop3.2` 表示配套 Hadoop 3.2。版本错了运行时会出现奇怪的类加载错误。课程用的是 hadoop3.2 的包，跟课程走 |
+| 下载的 spark 版本和 Hadoop 版本对不上 | 包名里的 `-bin-hadoop3.2` 表示配套 Hadoop 3.2。版本错了运行时会出现奇怪的类加载错误。配套的就是 hadoop3.2 的包，照着来 |
 
 @@point ② Local 模式启动：spark-shell 与 pyspark
 @@need 要解决什么
@@ -61,7 +61,7 @@ PATH 追加 %SPARK_HOME%\bin
 
 | 入口 | 命令 | 谁用 |
 |---|---|---|
-| Scala | `spark-shell --master local[2]` | 教程、源码讲解常用（课程讲义用 Scala） |
+| Scala | `spark-shell --master local[2]` | 教程、源码讲解常用（示例用 Scala） |
 | Python | `pyspark --master local[2]` | Python 开发者，PySpark 也是主流 |
 
 ```cmd
@@ -248,27 +248,27 @@ for row in rdd.take(5):
 | 4040 被占用 | 报 `Port 4040 is already in use` 时，下一个任务会自动用 4041。也可以 `--conf spark.ui.port=4050` 指定 |
 | 集群模式下 4040 看不到 | 集群上 UI 在 **Driver 所在机器**，需要看 driver 的 web UI 地址（YARN 里点 application 的 tracking URL） |
 
-@@point ⑧ 版本选择：Spark 3.2.1 与课程配套
+@@point ⑧ 版本选择：为什么锁定 Spark 3.2.1
 @@need 要解决什么
-网上教程用 2.x 的、3.5 的、4.x 预览版的都有，代码写法差异不小（旧 API 已废弃）。你跟着课程学，**就该用课程配套版本**，避免"教程能跑我跑不了"。本点讲版本意识。
+网上教程用 2.x 的、3.5 的、4.x 预览版的都有，代码写法差异不小（旧 API 已废弃）。**所以一律用配套的同一版本**，避免"教程能跑我跑不了"。本点讲版本意识。
 
 @@idea 核心思路
-课程配套 **Spark 3.2.1**（Spark 3.x 系列），资料「软件」目录有 `spark-3.2.1-bin-hadoop3.2.tgz`。为什么强调版本：
+配套版本是 **Spark 3.2.1**（Spark 3.x 系列），资料「软件」目录有 `spark-3.2.1-bin-hadoop3.2.tgz`。为什么强调版本：
 
-| 版本差异点 | Spark 2.x | Spark 3.x（课程用） |
+| 版本差异点 | Spark 2.x | Spark 3.x（本书用） |
 |---|---|---|
 | SparkSession | 需手动配置 | 默认入口，整合 sc/sql 上下文 |
 | DataFrame API | 老 API | 统一、更简洁 |
 | 性能 | — | 3.x 引入动态分区裁剪、AQE 等 | 
 | 学习资料 | 大量旧博客 | 建议认准 3.x |
 
-你应该做的是：**解压课程配套包 → 跟着讲义版本跑**。遇到网上教程代码跑不通，先看它是不是 2.x 的老写法（比如 `SQLContext`、`HiveContext` 早已整合进 SparkSession）。
+你应该做的是：**解压配套包 → 按同一版本跑**。遇到网上教程代码跑不通，先看它是不是 2.x 的老写法（比如 `SQLContext`、`HiveContext` 早已整合进 SparkSession）。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 网上教程用了 `SQLContext`/`HiveContext`，你抄下来报错 | 那是 Spark 2.x 老写法，3.x 已整合成 `SparkSession`。`spark.sql(...)` 直接可用，不用再单独建上下文 |
-| 用 PySpark 时 `pip install pyspark` 装了最新版 | pip 默认装最新（例 3.5），和课程 3.2.1 可能有 API 差异。要么 `pip install pyspark==3.2.1`，要么用课程自带包的环境 |
+| 用 PySpark 时 `pip install pyspark` 装了最新版 | pip 默认装最新（例 3.5），和 3.2.1 可能有 API 差异。要么 `pip install pyspark==3.2.1`，要么用配套包自带的环境 |
 | 以为"大版本一样就能混" | Spark 2.4 → 3.x 有 API 破坏性变更（如 `Dataset` 行为）。跨大版本抄代码，先查对应版本的迁移说明 |
 
 @@summary
@@ -289,7 +289,7 @@ for row in rdd.take(5):
 6. 一个任务报了 Web UI 4040 打不开，可能的原因有哪些（至少两条）？
 
 @@links
-讲义|Spark 分布式计算框架基础（第 3 章：Local 模式与 WordCount）|#
+参考|Spark 分布式计算框架基础（第 3 章：Local 模式与 WordCount）|#
 软件|spark-3.2.1-bin-hadoop3.2.tgz|#
 官网|Spark 快速入门（Quick Start）|https://spark.apache.org/docs/latest/quick-start.html
 资料|sparkdemo.zip（本章 WordCount 源码）|#

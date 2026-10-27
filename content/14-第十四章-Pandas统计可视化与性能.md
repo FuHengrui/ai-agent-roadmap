@@ -390,6 +390,6 @@ df['等级'] = np.where(df['成绩'] >= 60, '及格', '不及格')
 6. hist 与 bar 的本质区别（从数据类型上讲）是什么？
 7. %time 与 %timeit 的区别是什么？脚本文件里没有这两个魔法该怎么办？
 @@links
-讲义|Pandas 讲义（145 页）|#
+参考|Pandas （145 页）|#
 工具|Pandas 官网|https://pandas.pydata.org/
 文档|Pandas 可视化|https://pandas.pydata.org/docs/user_guide/visualization.html

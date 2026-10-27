@@ -341,7 +341,7 @@
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>维度不校验就混存</td><td>换模型后维度变了（768→1024），<strong>新旧向量没法比相似度</strong>。入库前必须 <code>get_dimension()</code> 校验并记录模型版本</td></tr>
-<tr><td>一条条调用 <code>embed_text</code></td><td>慢且费网络请求。<strong>批量 <code>embed_batch</code> 一次送几十条</strong>，讲义里分块入库就是这么玩的</td></tr>
+<tr><td>一条条调用 <code>embed_text</code></td><td>慢且费网络请求。<strong>批量 <code>embed_batch</code> 一次送几十条</strong>，分块入库就是这么玩的</td></tr>
 <tr><td>在线嵌入不处理失败</td><td>API 会限流/超时。项目里要加重试（tenacity 这类），否则入库跑到一半断掉</td></tr>
 </table>
 </div>
@@ -525,8 +525,8 @@ class ChromaStore(BaseVectorStore):
 <ol><li>DocumentStore 里"文档元数据表"和"向量库"的关系是？</li></ol>
 <p>A. 只用一个就够　　B. 向量库管"像不像"，元数据表管"是谁"，配合才能溯源和管理　　C. 两者存同样的数据　　D. 向量库包含元数据表</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>章节5_嵌入模型.pdf</a>
-<a href="#"><span class="k">讲义</span>章节6_向量存储.pdf</a>
+<a href="#"><span class="k">参考</span>章节5_嵌入模型.pdf</a>
+<a href="#"><span class="k">参考</span>章节6_向量存储.pdf</a>
 <a href="#"><span class="k">源码</span>rag_project/src/embeddings 与 src/database（完整实现）</a>
 <a href="https://docs.trychroma.com" target="_blank" rel="noopener"><span class="k">官网</span>Chroma 向量库</a>
 <a href="https://github.com/huggingface/sentence-transformers" target="_blank" rel="noopener"><span class="k">官网</span>sentence-transformers</a>

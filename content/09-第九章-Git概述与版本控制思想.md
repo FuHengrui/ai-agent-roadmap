@@ -180,6 +180,6 @@ SVN"服务器一挂全组瘫痪"的问题怎么破？思路翻转一下：**与�
 5. 有人说"GitHub 就是 Git"，这句话错在哪里？
 
 @@links
-讲义|Git版本控制管理讲义（86 页）|#
+参考|Git版本控制管理（86 页）|#
 文档|Git 官方文档|https://git-scm.com/doc
 文档|Git 起步（关于版本控制）|https://git-scm.com/book/zh/v2/起步-关于版本控制

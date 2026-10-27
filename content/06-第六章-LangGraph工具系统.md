@@ -273,7 +273,7 @@ ToolNode(tools, handle_tool_errors=True)   # 工具抛异常时自动包装为 T
    A. 自动重试直到成功　　B. 包装成可读结果返回，让 Agent 如实告知用户，不自动重试　　C. 忽略　　D. 抛出异常中断
 
 @@links
-讲义|06_LLM框架实战_Tools.pdf|#
+参考|06_LLM框架实战_Tools.pdf|#
 官网|LangGraph 工具调用教程|https://langchain-ai.github.io/langgraph/tutorials/workflows
 官网|create_agent 参考|https://langchain-ai.github.io/langgraph/reference/prebuilt/
 官网|LangChain 工具概念|https://python.langchain.com/docs/concepts/tools/

@@ -455,6 +455,6 @@ RUN rm -rf /etc/yum.repos.d/* && \
 6. `docker build -t tomcat:1.0 .` 里每个部分是什么意思？
 7. 为什么要把多条 RUN 用 && 合并成一条？
 @@links
-讲义|Docker技术应用与实战讲义（76 页）|#
+参考|Docker技术应用与实战（76 页）|#
 文档|Dockerfile 官方参考|https://docs.docker.com/engine/reference/builder/
 文档|Dockerfile 最佳实践|https://docs.docker.com/develop/develop-images/dockerfile_best-practices/

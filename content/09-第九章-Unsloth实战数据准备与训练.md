@@ -1,5 +1,5 @@
 @@h1 第九章　Unsloth 实战：加载模型、数据与训练
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 环境就绪了，现在真刀真枪：用 Unsloth 完整跑一遍 DeepSeek-R1-1.5B 的 LoRA 微调——加载模型、配 LoRA 参数、准备 Alpaca 数据、SFTTrainer 训练、和手写基线对比。
@@ -20,7 +20,7 @@
 手写时用 AutoModelForCausalLM 加载，Unsloth 用 FastLanguageModel——它比 Auto 版多做了什么事？加载时 4bit 量化、max_seq_length 怎么设？
 
 @@idea 核心思路
-讲义代码（整理为可运行版）：
+示例代码（整理为可运行版）：
 
 ```python
 from unsloth import FastLanguageModel
@@ -57,10 +57,10 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 @@point ② Unsloth 的 LoraConfig：target_modules 全线性
 @@need 要解决什么
-手写时 target_modules 只挂 q_proj/v_proj。Unsloth 加载后，讲义用了一套"更狠"的配置：**r=16 且 target_modules='all-linear'**——什么意思？为什么这样反而更省显存？
+手写时 target_modules 只挂 q_proj/v_proj。Unsloth 加载后，用了一套"更狠"的配置：**r=16 且 target_modules='all-linear'**——什么意思？为什么这样反而更省显存？
 
 @@idea 核心思路
-讲义代码（整理为可运行版）：
+示例代码（整理为可运行版）：
 
 ```python
 from peft import LoraConfig
@@ -88,16 +88,16 @@ model = FastLanguageModel.get_peft_model(
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 'all-linear' 报错（很老版本的 PEFT 不认识） | 该字符串是 PEFT 新特性。**升级 peft** 或升级代码里把 7 个模块名写全（讲义同时给了展开写法） |
+| 'all-linear' 报错（很老版本的 PEFT 不认识） | 该字符串是 PEFT 新特性。**升级 peft** 或升级代码里把 7 个模块名写全（也给了展开写法） |
 | 担心"全线性层都挂 = 显存爆炸" | 实测结论：结合 4bit + 梯度检查点，**总显存并不上升**——这正是 Unsloth 省显存的表现，别凭直觉放弃 |
-| dropout=0 心里发虚 | 讲义和官方都这么建议；过拟合用"早停/数据集质量"管，别在 Unsloth 场景硬加 dropout。**跟随官方推荐**再谈自定义 |
+| dropout=0 心里发虚 | 官方文档也这么建议；过拟合用"早停/数据集质量"管，别在 Unsloth 场景硬加 dropout。**跟随官方推荐**再谈自定义 |
 
 @@point ③ 数据集格式：Alpaca 长这样
 @@need 要解决什么
 第 5 章手写版用了 LaMini 数据，这一章出现新面孔：**Alpaca 格式**（instruction/input/output 三字段）。它长什么样、怎么构造对话/提示模板、和手写版有什么区别？
 
 @@idea 核心思路
-Alpaca 数据三条记录示例（讲义风格）：
+Alpaca 数据三条记录示例：
 
 ```python
 example = {
@@ -116,21 +116,21 @@ Alpaca 与 LaMini 的异同：
 - Alpaca 显式区分 instruction/input 两字段；LaMini 常直接给整句 QA；
 - 训练时把 instruction(+input) 拼成 prompt（系统+用户），output 是标签——**模板和训练一致**这条纪律不变（第 5 章 trap 依然有效）。
 
-构造 prompt 时注意：**DeepSeek-R1 系模型带特殊系统提示**（让模型先想再答），需要用数据集的模板原样拼接，否则训练风格错乱。具体模板字符串以讲义/模型卡为准。
+构造 prompt 时注意：**DeepSeek-R1 系模型带特殊系统提示**（让模型先想再答），需要用数据集的模板原样拼接，否则训练风格错乱。具体模板字符串以模型卡为准。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 数据只有两列（Q/A），套 Alpaca 报错 | Alpaca 结构要求三字段。**两列数据改成 LaMini/ShareGPT 路线**（第 11 章有 ShareGPT），别硬套模板 |
 | input 字段全填了长文本，token 超长 | input 是"附加上下文"，别把整篇资料塞进去。**短 input（或不填）**，长文档走 RAG 路线 |
-| 拼接 prompt 时漏掉系统提示 | R1 系模型没系统提示会"答非所问/风格漂移"。**用模型卡的 System Prompt 模板**拼接（讲义里有现成常量） |
+| 拼接 prompt 时漏掉系统提示 | R1 系模型没系统提示会"答非所问/风格漂移"。**用模型卡的 System Prompt 模板**拼接（代码里有现成常量） |
 
 @@point ④ 复制 5 条数据做起跑：小数据先验证链路
 @@need 要解决什么
 上来就全量数据训练，错一个 bug 要等一小时。正确姿势：**先取几十条数据跑通全链路**，再放开全量。这一节讲这招和它的判断标准。
 
 @@idea 核心思路
-讲义做法（整理）：
+做法（整理）：
 
 ```python
 # 数据集已有 dataset["train"] 后，先小样跑通
@@ -160,7 +160,7 @@ trainer.train()
 数据准备好了，Unsloth 版的训练器叫 **SFTTrainer**（trl 库），比手写 Trainer 更省事——数据集格式、长度截断、模板拼接它大半自动处理。这一节把训练参数配置讲清楚。
 
 @@idea 核心思路
-讲义典型配置（整理为可运行版）：
+典型配置（整理为可运行版）：
 
 ```python
 from trl import SFTTrainer
@@ -239,7 +239,7 @@ trainer.train()
 验证 Unsloth 价值最硬的方式：同硬件、同数据，分别跑手写版和 Unsloth 版，记录**时间与显存**两点。这一节给出对比方法和保存产物的要求。
 
 @@idea 核心思路
-对比实验设计（讲义风格）：
+对比实验设计：
 
 | 维度 | 手写基线 | Unsloth |
 |---|---|---|
@@ -321,6 +321,6 @@ tokenizer.save_pretrained("lora_model_uns")
 7. 对比 Unsloth 与手写基线时，必须控制的两个变量是什么？
 
 @@links
-讲义|大模型 DeepSeek 微调与应用：Unsloth 加载模型与训练、数据集准备、保存与对比|#
+参考|大模型 DeepSeek 微调与应用：Unsloth 加载模型与训练、数据集准备、保存与对比|#
 官网|Unsloth 官方教程（1.5B 起步）|https://github.com/unslothai/unsloth
 官网|TRL SFTTrainer 文档|https://huggingface.co/docs/trl/main/en/sft_trainer

@@ -248,7 +248,7 @@ infrastructure → 技术：ORM 模型、Mapper、仓储实现（可替换）
 
 @@point ⑤ DDD 工程总览：一个真实项目的骨架
 @@need 要解决什么
-理论说完了，看落地。课程配套的 `ddd/` 工程用**用户注册、登录、查订单**三个业务，把完整 DDD 架构跑通。先看整体结构，你才会知道每层文件是干嘛的。
+理论说完了，看落地。配套的 `ddd/` 工程用**用户注册、登录、查订单**三个业务，把完整 DDD 架构跑通。先看整体结构，你才会知道每层文件是干嘛的。
 @@idea 核心思路
 **工程目录与职责**（对照代码包）：
 
@@ -764,9 +764,8 @@ settings = Settings()
 10. 从"能跑的脚本"到"能长大的工程"，这一章的两个关键武器是什么？什么情况下 DDD 反而是过度设计？
 
 @@links
-讲义|FastAPI 进阶讲义|#
+参考|FastAPI 进阶|#
 代码|DI1~DI6 依赖注入演示代码|#
 代码|ddd 分层架构示例工程|#
 官网|FastAPI 依赖注入官方文档|https://fastapi.tiangolo.com/zh/tutorial/dependencies/
 官网|FastAPI 进阶-全局依赖|https://fastapi.tiangolo.com/zh/tutorial/dependencies/global-dependencies/
-资源|阶段 2 资料合集入口|#

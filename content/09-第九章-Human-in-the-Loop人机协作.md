@@ -282,7 +282,7 @@ interrupt/Command/条件审批用哪套组合？生产里有哪些经验法则�
    A. 越短越好　　B. 说清楚要做什么、影响是什么　　C. 用英文　　D. 不显示
 
 @@links
-讲义|09_LLM框架实战_HumanInTheLoop进阶.pdf|#
+参考|09_LLM框架实战_HumanInTheLoop进阶.pdf|#
 官网|LangGraph HITL 概念|https://langchain-ai.github.io/langgraph/concepts/human_in_the_loop/
 官网|LangGraph Human in the Loop 教程|https://langchain-ai.github.io/langgraph/how-tos/human_in_the_loop/
 官网|interrupt 参考|https://langchain-ai.github.io/langgraph/reference/types/

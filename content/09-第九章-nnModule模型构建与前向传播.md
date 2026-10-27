@@ -273,6 +273,6 @@ torch.save({"epoch": 10, "model": model.state_dict(),
 7. model.train() 与 model.eval() 分别影响哪些层？预测前忘记 eval() 会观察到什么现象？
 
 @@links
-讲义|神经网络基础(1)讲义（模型构建与初始化部分）|#
+参考|神经网络基础(1)（模型构建与初始化部分）|#
 文档|PyTorch nn.Module 官方文档|https://pytorch.org/docs/stable/generated/torch.nn.Module.html
 文档|PyTorch 参数初始化函数集合|https://pytorch.org/docs/stable/nn.init.html

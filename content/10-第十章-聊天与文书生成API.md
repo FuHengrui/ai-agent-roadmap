@@ -1,5 +1,5 @@
 @@h1 第十章　聊天与文书生成 API
-@@sub 阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★★
+@@sub 阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 Agent 工作流是最强大脑，但用户够不着它——浏览器只认 HTTP 接口。本章把大脑装进 API 外壳：**聊天接口**（流式/非流式、会话列表、历史消息、删除会话）和**文书生成接口**（模板列表、生成、流式生成），全部带上鉴权、落库、SSE 推流。
@@ -118,7 +118,7 @@ async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
         full_text = ""
         try:
             # 1. 流式走工作流，只收集 qa_generation 节点的 token
-…（以下省略 25 行，完整代码见讲义/仓库对应位置）
+…（以下省略 25 行，完整代码见仓库对应位置）
                 yield f"data: {json.dumps({'sources': sources}, ensure_ascii=False)}\n\n"
             yield "data: [DONE]\n\n"
 
@@ -174,7 +174,7 @@ async def list_sessions(user=Depends(get_current_user)):
         last_msg = await ChatMessageRecord.filter(
             chat_session=s, role="user"
         ).order_by("created_at").first()
-…（以下省略 4 行，完整代码见讲义/仓库对应位置）
+…（以下省略 4 行，完整代码见仓库对应位置）
         })
     return {'sessions': result}
 
@@ -207,7 +207,7 @@ class DocumentGenerateRequest(BaseModel):
 async def get_templates():
     return {"templates": [
         {"type": "起诉状", "description": "民事起诉状"},
-…（以下省略 9 行，完整代码见讲义/仓库对应位置）
+…（以下省略 9 行，完整代码见仓库对应位置）
     references = []
     if request.use_references:
         references = await RetrievalAgent().retrieve(query=request.query, top_k=3)
@@ -242,7 +242,7 @@ export function streamSendMessage(message, sessionId) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-…（以下省略 22 行，完整代码见讲义/仓库对应位置）
+…（以下省略 22 行，完整代码见仓库对应位置）
         if (payload === '[DONE]') { yield { done: true }; return }
         try { yield JSON.parse(payload) } catch { /* 忽略脏行 */ }
       }
@@ -272,6 +272,6 @@ export function streamSendMessage(message, sessionId) {
 7. 会话列表的"标题"怎么生成？空会话显示什么？
 
 @@links
-讲义|LegalMind 法律咨询系统：聊天与文书生成 API|#
+参考|LegalMind 法律咨询系统：聊天与文书生成 API|#
 官网|FastAPI StreamingResponse 文档|https://fastapi.tiangolo.com/advanced/custom-response/
 官网|SSE 协议规范|https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events

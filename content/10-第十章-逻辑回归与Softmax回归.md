@@ -11,7 +11,7 @@
 更妙的是，这两个算法**都能从线性回归的故乡——广义线性模型（GLM）——一步步推导出来**，第二、四章学的"似然→损失→求解"链条在这里原样复用。学完你会形成一条贯穿始终的主线：**所有线性家族模型 = 线性组合 + 激活函数 + 概率解释**。
 
 @@map 上一章→本章→下一章
-上一章回归项目收官。**本章（讲义3 全部 7 节）走完"逻辑回归推导 → 损失函数 → 求解 → 多分类 → Softmax → 音乐分类实战"完整链路**。下一章起转入无监督学习：KMeans 聚类（物以类聚，不带标签学习）。
+上一章回归项目收官。**本章走完"逻辑回归推导 → 损失函数 → 求解 → 多分类 → Softmax → 音乐分类实战"完整链路**。下一章起转入无监督学习：KMeans 聚类（物以类聚，不带标签学习）。
 
 @@point ① 卡巴斯基不是司机：名字的骗局
 @@need 要解决什么
@@ -234,7 +234,7 @@ print(model_multi.score(X_test_s, y_test))
 
 @@point ⑩ 代码实战二：音乐风格分类器（频谱特征版）
 @@need 要解决什么
-小数据集验证完毕，来一个"真实感"的分类项目：按音乐音频特征预测风格。讲义用一个音频数据集演示完整流程（特征提取 + 模型 + 评估）。
+小数据集验证完毕，来一个"真实感"的分类项目：按音乐音频特征预测风格。本章用一个音频数据集演示完整流程（特征提取 + 模型 + 评估）。
 
 @@idea 核心思路
 流程（与保险实战同构，只是目标从连续值变成类别）：
@@ -243,7 +243,7 @@ print(model_multi.score(X_test_s, y_test))
 3. **训练**：LogisticRegression 多分类（Softmax/OvA 均演示）。
 4. **评估**：accuracy + 混淆矩阵（confusion matrix，看"哪种风格互相混淆得厉害"）。
 
-实战注意（讲义代码的盘符路径属于演示环境、不具备可移植性）：
+实战注意（示例代码的盘符路径属于演示环境、不具备可移植性）：
 - 数据目录、音频文件路径一律用**相对路径/占位符**（如 `data_dir/`、`sample_song.wav`、`trainset/sample/`），不要写死本机绝对路径（`D:/xxx`、`C:\\xxx`）——换机器即崩。
 - sox（音频处理命令行工具）若有需要，记录其作用即可，不写死其本机安装路径。
 - 训练集/测试集的文件列表要分别放在不同目录（如 `trainset/`、`testset/`），避免泄漏。
@@ -286,7 +286,7 @@ print(model_multi.score(X_test_s, y_test))
 8. 音乐分类实战中，为什么不能用本机绝对路径写死数据位置？
 
 @@links
-讲义|逻辑回归和 Softmax 讲义（24 页）|#
+参考|逻辑回归和 Softmax （24 页）|#
 文档|sklearn LogisticRegression 文档|https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
 文档|GLM 与 logit 链接（维基）|https://en.wikipedia.org/wiki/Generalized_linear_model
 文档|Softmax 函数（维基）|https://en.wikipedia.org/wiki/Softmax_function

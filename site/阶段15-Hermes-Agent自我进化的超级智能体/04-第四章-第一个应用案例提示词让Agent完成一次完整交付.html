@@ -282,7 +282,7 @@
 <div class="subtitle">阶段 15 · Hermes-Agent 自我进化的超级智能体　|　实战案例　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>第 2 章装好、第 3 章接通，<strong>但你还没真正见过 Hermes-Agent 完整干一次活</strong>。书上说的"会进化、会做事"到底是包装还是真本事，干一次真实的活就知道了。</p>
-<p><strong>一个"完整交付"难在哪？</strong> 它同时考验 Agent 五件事：听懂复杂自然语言指令（多步骤、含格式要求）、调度多个工具（搜索、写文档、生成网页）、自己拆解任务并管理进度、遇到危险命令会请求审批、最后把产物落到你能找到的地方。讲义用一条经典提示词，串起了以上全部场景——从"搜索热门 Agent"到"生成科技感静态页面并在本地启动"。</p>
+<p><strong>一个"完整交付"难在哪？</strong> 它同时考验 Agent 五件事：听懂复杂自然语言指令（多步骤、含格式要求）、调度多个工具（搜索、写文档、生成网页）、自己拆解任务并管理进度、遇到危险命令会请求审批、最后把产物落到你能找到的地方。下面这条经典提示词，串起了以上全部场景——从"搜索热门 Agent"到"生成科技感静态页面并在本地启动"。</p>
 <p>学完这一章，你能回答：<strong>一条"一句话需求"如何被拆解成完整工序、Agent 干活时界面上的每行日志在说什么、危险命令审批怎么处理、产物放在哪、以及"找不到文件"这种真实事故 Agent 如何补救</strong>。这是阶段 15 的第一场"真刀真枪"。</p>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
@@ -299,7 +299,7 @@
 <p>案例的起点是一条自然语言提示词。要理解这场"完整交付"，先拆解这条提示词里到底藏了多少约束条件——这决定了 Agent 要同时满足什么。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的原始提示词（原文含个别笔误，逻辑如下）：</p>
+<p>原始提示词（含个别笔误，逻辑如下）：</p>
 <p>&gt; 帮我上网看看最近比较火的 Agent 有哪些？然后总结成文档，注意文档中要附上和技术相关的重要链接（官网、重要博客、GitHub 等）。接着，帮我生成一个静态页面，专门用来展示这个文档。网页要有科技感。完成后，告诉我资源存放在哪里，帮我再本地启动这个前端页面。</p>
 <p>拆解这条提示词，它实际上是<strong>五个任务的叠加</strong>：</p>
 <table>
@@ -326,7 +326,7 @@
 <p>Agent 收到复杂需求后的第一反应是什么？是直接闷头干，还是先确认理解？这决定了后续过程是否可控。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义展示的 Agent 开场白：</p>
+<p>Agent 的开场白：</p>
 <p>&gt; "好的！让我一步步来。先上网搜索最近热门的 AI Agent，然后整理成文档，再生成一个科技感十足的静态页面。"</p>
 <p>注意它的行为模式：<strong>复述任务 + 预告步骤</strong>。这样做有两个好处：</p>
 <ol><li><strong>对齐预期</strong>：用户能立刻发现 Agent 理解偏没偏（"等等，我不是要整理，是要对比……"）；</li><li><strong>自我规划</strong>：它把"搜索 → 文档 → 页面"的顺序说出来，等于给自己立了执行计划。</li></ol>
@@ -368,7 +368,7 @@
 <p>日志显示：Agent 的命令触发了 <strong>Dangerous command requires approval（危险命令需要审批）</strong>，安全扫描给出的原因是：</p>
 <p>&gt; [HIGH] Pipe to interpreter: curl | python3 —— 把 curl 下载的内容直接管道给解释器执行，<strong>下载的内容会在未经检查的情况下被执行</strong>。</p>
 <p>这正是"下载即执行"经典漏洞模式（供应链攻击路径之一）。Hermes-Agent 的安全闸门会：</p>
-<ol><li>识别高危命令模式；</li><li>给出风险说明与更安全的替代建议（讲义提示了 tirith / vet 等检查工具）；</li><li>等用户决策：<code>/approve</code>（本次执行）/ <code>/approve session</code>（本会话放行）/ <code>/approve always</code>（永久放行）/ <code>/deny</code>（拒绝）。</li></ol>
+<ol><li>识别高危命令模式；</li><li>给出风险说明与更安全的替代建议（可参考 tirith / vet 等检查工具）；</li><li>等用户决策：<code>/approve</code>（本次执行）/ <code>/approve session</code>（本会话放行）/ <code>/approve always</code>（永久放行）/ <code>/deny</code>（拒绝）。</li></ol>
 <p><strong>审批权在用户手里，这是"本地 Agent"安全模型的关键</strong>——模型再聪明，危险操作也要人来拍板。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -424,7 +424,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>看到 iteration 计数上涨就焦虑</td><td>迭代上限（90）是保护机制不是故障；计数在涨=任务在推进</td></tr>
-<tr><td>任务耗时超过想象就判定"异常"</td><td>复杂任务 15-20 分钟正常（案例从 3 分钟干到 21 分钟）；这个课程的案例本身就是长任务</td></tr>
+<tr><td>任务耗时超过想象就判定"异常"</td><td>复杂任务 15-20 分钟正常（案例从 3 分钟干到 21 分钟）；这个案例本身就是长任务</td></tr>
 <tr><td>以为所有子任务都一次成功</td><td>案例里子任务超时被父任务接管重做——<strong>失败处理也是 Agent 能力的一部分</strong></td></tr>
 </table>
 </div>
@@ -574,7 +574,7 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>案例提示词一共包含哪五个子任务？请用自己的话复述一遍（不要求逐字）。</li><li>Agent 的日志 "Still working... (3 min — iteration 2/90, running: delegate_task)" 中，2/90 和 delegate_task 分别代表什么？</li><li>curl 输出直接管道给 python3 为什么会触犯安全扫描？Hermes 提供了哪四种审批/拒绝方式？</li><li>案例中"Google 被墙了，我用浏览器直接搜索""搜索结果不太对，让我换到国际版"体现了 Agent 的什么能力？请举出案例中另一个"失败自纠"的例子。</li><li>Agent 的最终汇报包含哪三块信息？用户说找不到文件时，Agent 用了哪两个手段补救？</li><li>从案例中总结"自主 Agent 的七环节交付链"是哪七个环节？</li><li>请写出一条符合"五要素框架"的任务提示词（自己设计一个小任务，包含动作、对象、输出格式、增值要求和交付方式）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 16-21 页，第一个应用案例）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 16-21 页，第一个应用案例）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://hn.algolia.com/api" target="_blank" rel="noopener"><span class="k">参考</span>Hacker News 搜索 API（案例调用的服务）</a>
 </div>

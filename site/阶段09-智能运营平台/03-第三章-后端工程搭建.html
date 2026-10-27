@@ -353,7 +353,7 @@ dependencies = [
     &quot;uvicorn&gt;=0.3x&quot;,
     ...
 ]</pre>
-<p>注意：Aerich 的数据库配置（TORTOISE_ORM 指向 config.py）两种写法都行——写在 pyproject <code>[tool.aerich]</code> 或直接在 aerich init 时指定。讲义采用标准做法：<strong>config.py 里导出 TORTOISE_ORM，Aerich 通过导入该配置工作</strong>（下一章揭晓）。</p>
+<p>注意：Aerich 的数据库配置（TORTOISE_ORM 指向 config.py）两种写法都行——写在 pyproject <code>[tool.aerich]</code> 或直接在 aerich init 时指定。标准做法是：<strong>config.py 里导出 TORTOISE_ORM，Aerich 通过导入该配置工作</strong>（下一章揭晓）。</p>
 </div>
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ .env：五类凭据的分组与读取</div><div class="body">
@@ -429,11 +429,11 @@ TORTOISE_ORM = {
 </div></div>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ pydantic-settings 与 .env 的另一种姿势</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>有些工程用 pydantic-settings 把配置封装成 Settings 类。讲义用 dotenv + os.getenv 的轻量方案——理解两者差异，读源码才不困惑。</p>
+<p>有些工程用 pydantic-settings 把配置封装成 Settings 类。本书配套工程用 dotenv + os.getenv 的轻量方案——理解两者差异，读源码才不困惑。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>两种方案：</p>
-<ul><li><strong>轻量派（讲义采用）</strong>：<code>load_dotenv()</code> + <code>os.getenv</code>，看不懂设置类、无校验，但直白好调。</li><li><strong>工程派（pydantic-settings）</strong>：<code>class Settings(BaseSettings)</code> 字段带默认值与类型校验，配置即模型。</li></ul>
+<ul><li><strong>轻量派（本书采用）</strong>：<code>load_dotenv()</code> + <code>os.getenv</code>，看不懂设置类、无校验，但直白好调。</li><li><strong>工程派（pydantic-settings）</strong>：<code>class Settings(BaseSettings)</code> 字段带默认值与类型校验，配置即模型。</li></ul>
 <p>取舍：小项目/教学用轻量派足够；生产项目建议 Settings 类（类型校验 + 自动忽略未知字段的坑更少）。源码里两套风格可能混存（pyproject 装了 pydantic-settings），读代码时以实际 import 为准。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -485,7 +485,7 @@ TORTOISE_ORM = {
 </div>
 </div></div>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>智能运营平台.pdf</a>
+<a href="#"><span class="k">参考</span>智能运营平台.pdf</a>
 <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener"><span class="k">官方</span>uv 指南</a>
 <a href="https://github.com/theskumar/python-dotenv" target="_blank" rel="noopener"><span class="k">官方</span>python-dotenv 文档</a>
 </div>

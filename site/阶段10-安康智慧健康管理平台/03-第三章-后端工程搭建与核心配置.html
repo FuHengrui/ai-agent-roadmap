@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第三章</strong></div>
 <h1>第三章　后端工程搭建与核心配置</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章我们在 MySQL 里把 7 张表建好了，但 Python 代码还不认识数据库——连接串在哪、ORM 怎么配、工程目录怎么摆，全是空白。本章解决两件事：<strong>一是用 uv 建起 FastAPI 工程</strong>（目录结构、依赖安装），<strong>二是写好 config.py 数据源配置</strong>，让应用能找到 MySQL。</p>
 <p>关键认知：<strong>配置是"一处错误、处处躺枪"的重灾区</strong>——数据库密码里带特殊符号会拆了连接串、<code>.env</code> 没加载应用读不到 Key、Tortoise 扫描的模型路径写错直接不建表。本章把这些坑一次踩平。</p>
@@ -296,7 +296,7 @@
 <p>为什么用 uv 而不是 pip？怎么从零拉起一个可运行的后端工程？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>uv 是新一代 Python 项目管理工具，安装依赖比 pip 快一个数量级，还能直接管理 Python 版本。讲义流程：</p>
+<p>uv 是新一代 Python 项目管理工具，安装依赖比 pip 快一个数量级，还能直接管理 Python 版本。安装流程：</p>
 <pre># 1. 退出 conda 环境（避免环境冲突）
 conda deactivate
 
@@ -331,7 +331,7 @@ uv add &quot;fastapi&gt;=0.115.6&quot; &quot;uvicorn[standard]&gt;=0.34.0&quot; 
 <p>代码文件多了之后，目录散乱会让人找不到"路由在哪个文件、模型在哪定义"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义采用的分层目录（标准 FastAPI 工程骨架）：</p>
+<p>本项目采用的分层目录（标准 FastAPI 工程骨架）：</p>
 <pre>diabetes_assistant/
 ├── main.py                 # 应用入口：创建 app、挂路由、注册数据库
 ├── .env                    # 环境变量（数据库/LLM Key 都在这）
@@ -440,7 +440,7 @@ DATABASE_URL = (
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>密码含 @ 连接报 "Access denied for user"</td><td>密码没 URL 编码；加 <code>from urllib.parse import quote_plus</code> 处理</td></tr>
-<tr><td>load_dotenv 没生效，读到的全是 None</td><td>.env 文件必须与运行目录同级；或在 config.py 显式 <code>load_dotenv()</code>（讲义做了）</td></tr>
+<tr><td>load_dotenv 没生效，读到的全是 None</td><td>.env 文件必须与运行目录同级；或在 config.py 显式 <code>load_dotenv()</code>（本项目做了）</td></tr>
 </table>
 </div>
 </div></div>
@@ -478,7 +478,7 @@ TORTOISE_ORM = {
 <p>常有人问"建了模型还要手写 SQL 吗"？这涉及 Tortoise 的 <code>generate_schemas</code> 参数。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Tortoise 提供 <code>generate_schemas=True</code> 可自动建表，但<strong>本项目讲义明确不用它自动建表</strong>，而是手动执行建库 SQL。原因：</p>
+<p>Tortoise 提供 <code>generate_schemas=True</code> 可自动建表，但<strong>本项目明确不用它自动建表</strong>，而是手动执行建库 SQL。原因：</p>
 <ol><li><strong>SQL 已在上章手工执行</strong>，表结构以 SQL 为准；</li><li>医疗系统表结构要<strong>精确可控</strong>（外键约束、默认值、索引），自动建表的行为不可预期；</li><li>与阶段 9 不同（用 Aerich 迁移），本项目直接用 SQL 脚本初始化，简单直接。</li></ol>
 <p>正确流程：<strong>表由 SQL 建好 → 模型与之对齐（字段名/类型/表名一致）→ 服务只做 CRUD</strong>。模型与 SQL 不一致时，以"能跑通查询"为对齐目标，两边要同步修改。</p>
 </div>
@@ -519,13 +519,13 @@ netstat -ano | findstr :3306
 </table>
 </div>
 </div></div>
-<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 讲义环境的复现要点</div><div class="body">
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 环境复现要点</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>技术选型里的环境（Windows11/Cursor/Python3.12）踩过哪些细节坑，提前说清。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <table>
-<tr><th>项</th><th>讲义口径</th><th>复现要点</th></tr>
+<tr><th>项</th><th>本项目口径</th><th>复现要点</th></tr>
 <tr><td>操作系统</td><td>Windows 11</td><td>小皮、Navicat 都是 Windows 软件；Linux 需换方案</td></tr>
 <tr><td>开发工具</td><td>Cursor</td><td>本质是 VS Code 分支，装 Python/uv 插件即可；别纠结编辑器</td></tr>
 <tr><td>Python</td><td>3.12</td><td>uv 可自动下载指定版本：<code>uv python install 3.12</code></td></tr>
@@ -553,7 +553,7 @@ netstat -ano | findstr :3306
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么安装 Tortoise-ORM 时必须用 <code>tortoise-orm[asyncmy]</code>？缺了 asyncmy 会怎样？</li><li>数据库密码是 <code>ab@cd#ef</code>，直接拼进 <code>mysql://user:pwd@host/db</code> 会有什么问题？<code>quote_plus</code> 怎么解决？</li><li>TORTOISE_ORM 配置中 <code>"models": ["app.models"]</code> 告诉 Tortoise 什么？为什么 <code>models/__init__.py</code> 必须导出所有模型？</li><li>本项目为什么不用 <code>generate_schemas=True</code> 自动建表？表结构管理靠什么？</li><li>环境自检清单包含哪 5 项？其中哪两项是"网络/服务层"检验？</li><li>改了 .env 里的 API Key 后为什么有时不生效？怎么解决？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>安康智慧健康管理平台：糖尿病AI健康助手讲义</a>
+<a href="#"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</a>
 <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener"><span class="k">官网</span>uv 官方文档</a>
 <a href="https://tortoise.github.io/setup.html" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise-ORM 配置文档</a>
 </div>
@@ -572,7 +572,7 @@ netstat -ano | findstr :3306
   <a href="#p5" title="TORTOISE_ORM 配置：注册模型与连接"><span class="n">5</span>TORTOISE_ORM 配置：注册模型与连接</a>
   <a href="#p6" title="model 定义能直接建表吗：generate_schemas 的取舍"><span class="n">6</span>model 定义能直接建表吗：generate_schemas 的取舍</a>
   <a href="#p7" title="环境验证：启动前自检清单"><span class="n">7</span>环境验证：启动前自检清单</a>
-  <a href="#p8" title="讲义环境的复现要点"><span class="n">8</span>讲义环境的复现要点</a>
+  <a href="#p8" title="环境复现要点"><span class="n">8</span>环境复现要点</a>
 </div>
 </aside>
 </div>

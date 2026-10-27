@@ -27,14 +27,14 @@
 - **百炼返回的 URL 是"临时/限时"的**——直接存它的 URL 会过期失效，所以必须"转存"；
 - **OSS 的 URL 常驻可访问**——这才是入库的 image_url（500 长度的字段就是放它）。
 
-⚠️ 前端轮询：文生图接口是异步（提交任务 → 轮询结果），后端要对百炼的异步结果做封装，前端只需一次请求。讲义也演示了"阻塞等待到底"的直连写法（可跑但慢，生产走异步轮询）。
+⚠️ 前端轮询：文生图接口是异步（提交任务 → 轮询结果），后端要对百炼的异步结果做封装，前端只需一次请求。也给了"阻塞等待到底"的直连写法（可跑但慢，生产走异步轮询）。
 
 @@point ② 提示词工程：把标题翻译成画面
 @@need 要解决什么
 "给 AI 一句话生成封面"和"生成小红书合格封面"之间差一个结构化提示词。qwen_agent 的核心是拼一个好的文生图提示词。
 
 @@idea 核心思路
-generate_cover_prompt 的逻辑（讲义实录）：
+generate_cover_prompt 的逻辑：
 ```
 f"{style 风格描述（来自 t_style.fengge）}"
 + 主体："主体是{title}（或主题词）"
@@ -90,7 +90,7 @@ url = resp.output.choices[0].message.content[0].image   # 取生成的图片 URL
 
 @@idea 核心思路
 ```python
-import oss2  # 兼容层/新SDK形态，讲义源码用 v2 形态：
+import oss2  # 兼容层/新SDK形态，旧版 SDK 用 v2 形态：
 from alibabacloud_oss_v2 import config as oss_config
 from alibabacloud_oss_v2 import credentials, oss
 
@@ -140,7 +140,7 @@ if resp.status_code == 200:
 
 @@point ⑥ 发布体系：记录先行，脚本跟进
 @@need 要解决什么
-平台真正的交付是"能发出去"。讲义先做**发布记录管理**（t_publish_records），并提供**小红书自动发布脚本**（puppeteer）作为发布执行器。
+平台真正的交付是"能发出去"。先做**发布记录管理**（t_publish_records），并提供**小红书自动发布脚本**（puppeteer）作为发布执行器。
 
 @@idea 核心思路
 发布记录 API（records 相关）：创建发布任务（platform/publish_status=0 待发布）→ 推进状态 0→1→2/3 → 数据表现回填（view/like/comment/share_count）。状态机与第 2 章定义一致：
@@ -155,7 +155,7 @@ if resp.status_code == 200:
 - 注入账号 Cookie（前端 xiaohongshu.js 里 localStorage 配置了多账号 Cookie）；
 - 填标题、正文、传图、点发布。
 
-⚠️ 边界要讲清：**"自动发布"依赖账号 Cookie 有效与平台页面结构**——Cookie 过期必须人工重新获取；页面改版脚本就失效。所以发布脚本是"执行器辅助"，真实发布动作当前仍建议人工确认（讲义定位为能力演示）。
+⚠️ 边界要讲清：**"自动发布"依赖账号 Cookie 有效与平台页面结构**——Cookie 过期必须人工重新获取；页面改版脚本就失效。所以发布脚本是"执行器辅助"，真实发布动作当前仍建议人工确认（定位为能力演示）。
 
 @@trap 坑在哪
 | 现象 | 原因 |
@@ -166,7 +166,7 @@ if resp.status_code == 200:
 
 @@point ⑦ 安全红线：密钥与 Cookie 的终检
 @@need 要解决什么
-项目收尾时要跑一遍"凭据排查"——源码/讲义里出现过的真实密钥，绝不能以明文出现在任何交付物里。
+项目收尾时要跑一遍"凭据排查"——源码与文档里出现过的真实密钥，绝不能以明文出现在任何交付物里。
 
 @@idea 核心思路
 检查清单（本项目必备，对照自查）：
@@ -228,7 +228,7 @@ if resp.status_code == 200:
    A. sk- / pat_ / LTAI / Signature=　　B. 只扫 password　　C. 不需要扫　　D. 只扫 token
 
 @@links
-讲义|智能运营平台.pdf|#
+参考|智能运营平台.pdf|#
 官方|阿里云百炼文生图 API|https://help.aliyun.com/zh/dashscope/
 官方|OSS Python SDK (v2)|https://help.aliyun.com/zh/oss/developer-reference/
 官方|Puppeteer 文档|https://pptr.dev/

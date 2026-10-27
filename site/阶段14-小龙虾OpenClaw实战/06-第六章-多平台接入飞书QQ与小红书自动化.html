@@ -343,23 +343,23 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>只开了应用身份，群里收发消息报权限不足</td><td>两类身份是不同授权面；按讲义做法搜索 im 统一选中，聊天与群组权限一次全开</td></tr>
-<tr><td>权限列表太长无从下手</td><td>按讲义路线：搜索 im，把聊天与群组相关权限统一选中，配完再进下一步启用机器人能力，顺序别反</td></tr>
+<tr><td>只开了应用身份，群里收发消息报权限不足</td><td>两类身份是不同授权面；按平台做法搜索 im 统一选中，聊天与群组权限一次全开</td></tr>
+<tr><td>权限列表太长无从下手</td><td>正确路线：搜索 im，把聊天与群组相关权限统一选中，配完再进下一步启用机器人能力，顺序别反</td></tr>
 </table>
 </div>
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ 启用机器人能力 + 长连接保存</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>机器人能力启用后，飞书需要知道"消息往哪里推"。OpenClaw 跑在你自己的机器上、没有公网回调地址，所以直接点保存会失败——这是讲义专门点名的坑，需要换一条路走。</p>
+<p>机器人能力启用后，飞书需要知道"消息往哪里推"。OpenClaw 跑在你自己的机器上、没有公网回调地址，所以直接点保存会失败——这是实际操作中最常见的坑，需要换一条路走。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>第六步：启用机器人能力。但在配置过程中<strong>点击保存会失败</strong>——缺少可访问的消息回调地址。讲义给的解法：点击保存失败时弹出的提示文本中有<strong>超链接</strong>，点进去用 <strong>Python 形式创建长连接</strong>（Long Connection），让飞书通过长连接把事件实时推到本地，从而不再需要公网地址。长连接创建成功后，再回来保存配置即可通过，飞书这一侧就绪。</p>
+<p>第六步：启用机器人能力。但在配置过程中<strong>点击保存会失败</strong>——缺少可访问的消息回调地址。解法：点击保存失败时弹出的提示文本中有<strong>超链接</strong>，点进去用 <strong>Python 形式创建长连接</strong>（Long Connection），让飞书通过长连接把事件实时推到本地，从而不再需要公网地址。长连接创建成功后，再回来保存配置即可通过，飞书这一侧就绪。</p>
 <p>准备阶段记好：长连接创建时要使用应用的凭证（&lt;你的AppId&gt; 占位处填真实值），并确保和后面 OpenClaw 通道配置用的是同一个应用。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>点保存就一直报错</td><td>回调地址没配或不可公网访问；别硬填公网 URL，按讲义走长连接（点弹出文本里的超链接，用 Python 形式创建）</td></tr>
+<tr><td>点保存就一直报错</td><td>回调地址没配或不可公网访问；别硬填公网 URL，改用长连接（点弹出文本里的超链接，用 Python 形式创建）</td></tr>
 <tr><td>长连接建好了消息还是收不到</td><td>长连接进程必须保持运行；同时确认创建长连接用的应用与后续通道配置是同一个</td></tr>
 </table>
 </div>
@@ -395,7 +395,7 @@ openclaw pairing approve feishu &lt;配对码&gt;</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>发消息后机器人毫无反应</td><td>检查网关是否已 restart、飞书通道配置是否正确、长连接进程是否还在运行</td></tr>
-<tr><td>直接 approve 报权限错误</td><td>讲义流程是 先 <code>su admin</code> 切换用户 → 再配对，别跳过切换直接批准</td></tr>
+<tr><td>直接 approve 报权限错误</td><td>正确流程是 先 <code>su admin</code> 切换用户 → 再配对，别跳过切换直接批准</td></tr>
 <tr><td>配对码输错或过期</td><td>重新向机器人发一条消息拿新配对码，再执行 approve</td></tr>
 </table>
 </div>
@@ -434,7 +434,7 @@ openclaw pairing approve feishu &lt;配对码&gt;</pre>
 </div></div>
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ xiaohongshu-skills 是什么：小红书自动化 Skills</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>飞书、QQ 都是"人等机器人聊"，小红书的玩法反过来了——让 OpenClaw 主动去运营账号：搜索、发笔记、互动。官方开放接口门槛高、能力受限，讲义选了另一条路：一套基于浏览器自动化的技能包。</p>
+<p>飞书、QQ 都是"人等机器人聊"，小红书的玩法反过来了——让 OpenClaw 主动去运营账号：搜索、发笔记、互动。官方开放接口门槛高、能力受限，这里走另一条路：一套基于浏览器自动化的技能包。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>xiaohongshu-skills 是<strong>小红书自动化 Skills</strong>，基于 <strong>Python CDP 浏览器自动化引擎</strong>。</p>
@@ -478,7 +478,7 @@ openclaw pairing approve feishu &lt;配对码&gt;</pre>
 <p>五件套是"零件"，真实需求是"整机"："帮我找最火的笔记、收藏它、再总结一下讲了什么"。自己逐个记忆技能调用细节太累，要的是<strong>用一句自然语言，让 Agent 自动编排一整条操作链</strong>。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>技能包支持<strong>连贯操作</strong>：用自然语言下达复合指令，Agent 会自动串联多个技能完成任务。 讲义示例指令："搜索刺客信条最火的图文帖子，收藏它，然后告诉我讲了什么" Agent 会自动执行：<strong>搜索 → 筛选图文 → 按点赞排序 → 收藏 → 获取详情 → 总结内容</strong>。</p>
+<p>技能包支持<strong>连贯操作</strong>：用自然语言下达复合指令，Agent 会自动串联多个技能完成任务。 示例指令："搜索刺客信条最火的图文帖子，收藏它，然后告诉我讲了什么" Agent 会自动执行：<strong>搜索 → 筛选图文 → 按点赞排序 → 收藏 → 获取详情 → 总结内容</strong>。</p>
 <p>拆开看这条链：搜索与排序落在 xhs-explore，收藏落在 xhs-interact，获取详情与总结由 explore + 模型理解共同完成——一条自然语言，把"发现 → 互动 → 分析"串成完整工作流。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -494,7 +494,7 @@ openclaw pairing approve feishu &lt;配对码&gt;</pre>
 <p>技能包还躺在 GitHub 上，得先装进 OpenClaw 才能用。安装有四个关键动作：拉代码、装依赖、修权限、重启网关——任何一步漏掉，技能都调不起来。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>进入服务器、以 OpenClaw 部署用户身份，按讲义顺序执行：</p>
+<p>进入服务器、以 OpenClaw 部署用户身份，按顺序执行：</p>
 <pre>cd /home/admin/.openclaw/workspace/skills
 git clone https://github.com/autoclaw-cc/xiaohongshu-skills.git
 cd /home/admin/.openclaw/workspace/skills/xiaohongshu-skills
@@ -523,9 +523,9 @@ openclaw gateway restart</pre>
 <tr><td><strong>复合指令 + CDP 认知</strong>：一句话串联多技能、理解浏览器自动化底座</td><td>组织 OpenClaw 干活的新姿势——自然语言即编排，正是"基座模型 + 专用技能"组合的实战验证</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li>飞书企业自建应用创建后，哪两个凭证决定了"机器人是你"？其中哪个绝对不能泄露？为什么？</li><li>配置机器人时直接点保存会失败，讲义给的解决方案是什么？为什么长连接方案不需要公网回调地址？</li><li>飞书的配对授权解决什么问题？请写出配对的两个命令（配对码用 &lt;配对码&gt; 占位）。</li><li>QQ 开放平台的注册方式和飞书有什么本质不同？扫码要用哪个 App 扫、绑定的是谁的账号？</li><li>xiaohongshu-skills 的技术底座是什么？用一句话解释 CDP 为什么能让"自动运营小红书"成为可能。</li><li>面对"搜索刺客信条最火的图文帖子，收藏它，然后告诉我讲了什么"，Agent 会自动执行哪几步？分别主要落在五件套里的哪些技能上？</li><li>安装技能包有哪四个关键步骤？最后一步为什么必须是重启网关？</li></ol>
+<ol><li>飞书企业自建应用创建后，哪两个凭证决定了"机器人是你"？其中哪个绝对不能泄露？为什么？</li><li>配置机器人时直接点保存会失败，正确的解决方案是什么？为什么长连接方案不需要公网回调地址？</li><li>飞书的配对授权解决什么问题？请写出配对的两个命令（配对码用 &lt;配对码&gt; 占位）。</li><li>QQ 开放平台的注册方式和飞书有什么本质不同？扫码要用哪个 App 扫、绑定的是谁的账号？</li><li>xiaohongshu-skills 的技术底座是什么？用一句话解释 CDP 为什么能让"自动运营小红书"成为可能。</li><li>面对"搜索刺客信条最火的图文帖子，收藏它，然后告诉我讲了什么"，Agent 会自动执行哪几步？分别主要落在五件套里的哪些技能上？</li><li>安装技能包有哪四个关键步骤？最后一步为什么必须是重启网关？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>openclaw.pdf「OpenClaw多平台接入_飞书/QQ-BOT/小红书」章节</a>
+<a href="#"><span class="k">参考</span>openclaw.pdf「OpenClaw多平台接入_飞书/QQ-BOT/小红书」章节</a>
 <a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
 <a href="https://open.feishu.cn/" target="_blank" rel="noopener"><span class="k">官网</span>飞书开放平台</a>
 <a href="https://github.com/autoclaw-cc/xiaohongshu-skills.git" target="_blank" rel="noopener"><span class="k">资料</span>xiaohongshu-skills 仓库</a>

@@ -252,6 +252,6 @@ async def load(theme: str, user_id: int = Depends(get_current_user_id)):
    A. 转成拼音　　B. URL 编码　　C. 改为 POST　　D. 放请求体
 
 @@links
-讲义|智能运营平台.pdf|#
+参考|智能运营平台.pdf|#
 官方|Tortoise 查询集参考|https://tortoise.github.io/query.html
 官方|MDN URL 编码|https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent

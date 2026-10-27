@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 2 · AI 智能体 Web 系统构建实战 › <strong>第一章</strong></div>
 <h1>第一章　后端服务开发 FastAPI</h1>
-<div class="subtitle">阶段 2 · AI 智能体 Web 系统构建实战　|　71 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 2 · AI 智能体 Web 系统构建实战　|　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一阶段你训练出了能对话的模型，但<strong>模型住在哪、别人怎么调用它，还没着落</strong>。只靠 Python 命令行自己玩，模型就永远走不出你的电脑。</p>
 <p>这一章做两件事：</p>
@@ -293,7 +293,7 @@
 <span class="node">阶段终点：一个能对外的、结构清晰的智能体 Web 系统</span>
 </div>
 <div class="note info"><span class="t">为什么先学数据库再学 FastAPI 也成立</span>
-<p>课程把 MySQL（24 课时）排在 FastAPI（47 课时）之前，讲义也配套了 <code>Mysql.pdf</code>。因为<strong>后端接口十有八九是操作数据</strong>：注册就是往用户表插一行，登录就是查一行。先懂"数据长什么样"，写接口时才知道自己在干什么。本章先沉淀数据库概念和 SQL 基础，再进入 FastAPI 主线，后半部分 ORM 会直接用上它。</p></div>
+<p>为什么先讲数据库再讲 FastAPI？因为<strong>后端接口十有八九是操作数据</strong>：注册就是往用户表插一行，登录就是查一行。先懂"数据长什么样"，写接口时才知道自己在干什么。本章先沉淀数据库概念和 SQL 基础，再进入 FastAPI 主线，后半部分 ORM 会直接用上它。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① FastAPI 是什么：为什么 AI 后端都选它</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>你写了个函数，怎么让外面的程序调用它？最原始的办法是开一个 TCP 端口自己解析请求——但每个请求长什么样、怎么解析、怎么回，全要自己写，一个接口都要几百行。FastAPI 就是来解决这个的：<strong>把"函数"变成"网上可调用的接口"，你只管写逻辑。</strong></p>
@@ -320,11 +320,11 @@ async def hello():
 <div class="cmd"><span class="c"># CGI（最初）：来一个请求，启动一个进程 → 太慢</span>
 <span class="c"># WSGI（之后）：进程常驻，但同步处理 → 一个请求卡住，全队等</span>
 <span class="c"># ASGI（现在）：进程常驻 + 异步 → FastAPI 就在这层</span></div>
-<p><strong>性能感受</strong>（课程里的压测数据，量级感受即可）： FastAPI 约 <strong>3000 请求/秒</strong>，Flask 约 1000，Django 约 800。不是说你必须用它，而是异步 + 轻量让它特别适合做 AI 服务的对外层。</p>
+<p><strong>性能感受</strong>（实测数据，量级感受即可）： FastAPI 约 <strong>3000 请求/秒</strong>，Flask 约 1000，Django 约 800。不是说你必须用它，而是异步 + 轻量让它特别适合做 AI 服务的对外层。</p>
 <p><strong>和 AI 的关系</strong>：你现在学的这条路线上，FastAPI 几乎就是"模型服务的标准出口"——把模型包装成一个接口，任何客户端都能来调。</p>
 </div>
 <div class="step trap"><span class="label">把 AI 生成的代码当黑盒</span>
-<p>课程专门有一节讲"AI 生成代码的局限性与核心能力"。用 AI 帮你写接口<strong>没问题</strong>，但你得能看懂它生成了什么：路由装饰器、参数类型、返回结构。不然报错时既说不清问题，也没法让 AI 修得对。<strong>AI 是乘法器，不是替代品——你懂核心，它才有用。</strong></p>
+<p>用 AI 帮你写接口<strong>没问题</strong>，但你得能看懂它生成了什么：路由装饰器、参数类型、返回结构。不然报错时既说不清问题，也没法让 AI 修得对。<strong>AI 是乘法器，不是替代品——你懂核心，它才有用。</strong></p>
 </div>
 </div></div>
 <div class="point" id="p2"><div class="head"><span class="no">2</span>② 第一个 API：环境搭建与启动</div><div class="body">
@@ -567,7 +567,7 @@ async def list_items(
 <table>
 <tr><th>ORM</th><th>特点</th><th>适合</th></tr>
 <tr><td><strong>SQLAlchemy</strong></td><td>约 80% 企业首选，成熟完备</td><td>传统企业项目</td></tr>
-<tr><td><strong>Tortoise-ORM</strong></td><td>全异步、语法像 Django ORM</td><td>异步优先的 FastAPI 项目（本课程选择）</td></tr>
+<tr><td><strong>Tortoise-ORM</strong></td><td>全异步、语法像 Django ORM</td><td>异步优先的 FastAPI 项目（本书选择）</td></tr>
 <tr><td>GINO</td><td>轻量，基于 SQLAlchemy Core</td><td>追求极致性能的小服务</td></tr>
 </table>
 <p><strong>提示：FastAPI 官方不绑定任何 ORM，Tortoise 只是异步生态里趁手的一把。</strong></p>
@@ -876,7 +876,7 @@ app.include_router(main_router)</pre>
 </div></div>
 <div class="point" id="p13"><div class="head"><span class="no">13</span>⑬ MySQL 基础：数据库长什么样，SQL 怎么说</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>ORM 替你写 SQL，但<strong>你总得知道它在替你写什么</strong>：表、行、列、主键、约束、增删改查……不懂这些，你在数据库层查不出 bug，也没法跟 DBA 对话。课程用 24 课时把 MySQL 从零讲到 SQL 函数，这里是压缩版主干。</p>
+<p>ORM 替你写 SQL，但<strong>你总得知道它在替你写什么</strong>：表、行、列、主键、约束、增删改查……不懂这些，你在数据库层查不出 bug，也没法跟 DBA 对话。本节把 MySQL 从零讲到 SQL 函数，这里是压缩版主干。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>四层概念</strong>（从大到小）：</p>
@@ -952,10 +952,8 @@ SELECT DISTINCT city FROM student;                -- 去重</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>FastAPI 说到底是把"函数"变成了什么？它的自动校验和自动文档靠哪两个核心机制？</li><li>路径参数、查询参数、请求体分别适合传什么数据？各自怎么声明必填/可选？</li><li><code>Query(1, ge=1)</code> 里的 <code>ge</code> 管什么？校验失败时 FastAPI 返回什么状态码？</li><li>为什么 AI 接口要写成 <code>async def</code>？在异步函数里调用同步阻塞库会发生什么？</li><li><code>response_model</code> 解决什么问题？分页列表响应一般封装哪几个字段？</li><li>ORM 的价值是什么？Tortoise-ORM 和 Aerich 各自负责什么？</li><li><code>filter(name__contains="张")</code> 的两个下划线叫什么语法？不写它会怎样？</li><li>一张"学生-课程"表要表示"一个学生选多门课"，用哪种关系字段？中间表用来干嘛？</li><li>中间件和 CORS 分别解决什么问题？生产环境 <code>allow_origins</code> 该填 <code>*</code> 还是白名单，为什么？</li><li>SQL 的 WHERE、GROUP BY、HAVING 的执行顺序是什么？DELETE 不写 WHERE 会发生什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>FastAPI 文档</a>
-<a href="#"><span class="k">讲义</span>MySQL 讲义</a>
-<a href="#"><span class="k">资料</span>后端服务开发 FastAPI 章节资料</a>
-<a href="#"><span class="k">资料</span>数据库基础章节资料</a>
+<a href="#"><span class="k">参考</span>FastAPI 文档</a>
+<a href="#"><span class="k">参考</span>MySQL</a>
 <a href="https://fastapi.tiangolo.com/zh/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 官方文档</a>
 <a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise-ORM 文档</a>
 <a href="https://dev.mysql.com/doc/" target="_blank" rel="noopener"><span class="k">官网</span>MySQL 官方文档</a>

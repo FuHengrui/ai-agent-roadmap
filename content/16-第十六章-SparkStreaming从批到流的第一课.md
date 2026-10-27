@@ -1,5 +1,5 @@
 @@h1 第十六章　Spark Streaming：从"批"到"流"的第一课
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　8 课时　|　难度 ★★★★
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★
 
 @@why 这一章在解决什么问题
 前面的分析都是"一次算完一批"（批处理）：昨天的日志今天算。但**实时世界等不了**：双 11 大屏的实时成交额、风控对每笔交易的即时判断、推荐系统对刚发生的点击立刻响应——数据**一到就要算**。这就是流处理。
@@ -364,7 +364,7 @@ Streaming 的"心跳"是批间隔（batch interval）——每多久收一批新
 7. 判断题：DStream 的窗口参数可以是任意秒数，不必是批间隔的整数倍。
 
 @@links
-讲义|SparkStreaming 讲义（第 1-2 章：架构与 DStream）|#
-讲义|SparkStreaming 讲义（第 3-4 章：有状态与窗口）|#
+参考|SparkStreaming （第 1-2 章：架构与 DStream）|#
+参考|SparkStreaming （第 3-4 章：有状态与窗口）|#
 官网|Spark Streaming 编程指南|https://spark.apache.org/docs/latest/streaming-programming-guide.html
 官网|Spark Streaming 性能调优|https://spark.apache.org/docs/latest/streaming-programming-guide.html#performance-tuning

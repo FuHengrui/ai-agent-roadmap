@@ -262,7 +262,7 @@ def search_product(keyword: str, limit: int = 10, category: str = "") -> str:
    A. 模型太笨　　B. 工具 description 写得含混，边界不清　　C. 参数太多　　D. 网络慢
 
 @@links
-讲义|02Agent工具系统.pdf|#
+参考|02Agent工具系统.pdf|#
 官网|OpenAI Function Calling 文档|https://platform.openai.com/docs/guides/function-calling
 官网|Pydantic 官方文档|https://docs.pydantic.dev/
 官网|LangChain 工具概念|https://python.langchain.com/docs/concepts/tools

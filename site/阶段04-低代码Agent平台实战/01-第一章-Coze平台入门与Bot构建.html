@@ -322,7 +322,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>人设与回复逻辑，就是<strong>系统提示词（System Prompt）</strong>。它在每次对话前悄悄"告诉"模型：你是谁、什么能做、什么不能做、按什么格式回。</p>
-<p>以讲义里的"星座运势解读助手"为例，一段好的人设包含四层：</p>
+<p>以"星座运势解读助手"为例，一段好的人设包含四层：</p>
 <pre># 核心人设
 你是专业的星座运势解读师&quot;星语&quot;，拥有10年占星研究经验。
 
@@ -413,7 +413,7 @@ def handler(args: Args[Input]) -&gt; Output:
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>两步：<strong>把本地服务暴露到公网（ngrok）→ 把公网 API 配置成 Coze 插件。</strong></p>
-<p>以讲义里的"获取当前时间"服务为例，先用 Flask 写一个简单 API（支持时区参数，返回日期、时间、星期、农历）：</p>
+<p>以"获取当前时间"服务为例，先用 Flask 写一个简单 API（支持时区参数，返回日期、时间、星期、农历）：</p>
 <pre>from flask import Flask, request, jsonify
 import pytz
 from datetime import datetime
@@ -595,7 +595,7 @@ ngrok http 8000</div>
 <h4>自测：能不能答上来</h4>
 <ol><li>在 Coze 平台中，AI Agent 被称为什么？它和"应用"的区别是什么？</li><li>Coze 的人设与回复逻辑相当于智能体里的哪个部分？用 Markdown 写有什么好处？</li><li>为什么"天气助手"第一次测试查不到天气？怎么解决的？</li><li>想让 Bot 调用公司已有的订单查询 API，应该选哪种插件创建方式？前提条件是什么？</li><li>知识库为什么要"切片"？切片太大或太小分别有什么问题？</li><li>Coze 记忆模块的四个功能（变量、数据库、长期记忆、文件盒子）各自的适用场景是什么？</li><li>一句话总结：一个合格的 Bot，至少由哪几部分拼装而成？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Coze 平台实战</a>
+<a href="#"><span class="k">参考</span>Coze 平台实战</a>
 <a href="#"><span class="k">资料</span>游戏助手知识库素材（不落魔锋/焰峰凰姬介绍）</a>
 <a href="#"><span class="k">源码</span>nowtime.ipynb（基于已有服务创建插件的 Flask 服务）</a>
 <a href="https://ngrok.com" target="_blank" rel="noopener"><span class="k">工具</span>ngrok 内网穿透工具</a>

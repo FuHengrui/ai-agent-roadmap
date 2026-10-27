@@ -1,5 +1,5 @@
 @@h1 第九章　Spark 内核：Job / Stage / Task 与宽窄依赖
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　8 课时　|　难度 ★★★★
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★
 
 @@why 这一章在解决什么问题
 前面的章节你学会了写算子，但 Spark **内部究竟怎么把你的代码跑起来的**——没人跟你说过。这也是"能写但不会调优"的分水岭：看到报错不知道卡在哪、两个数据源 join 慢成狗不知道为什么、缓存到底该 cache 还是 checkpoint……
@@ -323,7 +323,7 @@ Executor（执行器）── 在 Worker 节点上
 7. 判断题：窄依赖一定会触发 shuffle；宽依赖一定不会。
 
 @@links
-讲义|Spark 内核进阶（第 1 章：DAG 与 Stage 划分）|#
-讲义|Spark 内核进阶（第 2 章：宽窄依赖与 Shuffle）|#
+参考|Spark 内核进阶（第 1 章：DAG 与 Stage 划分）|#
+参考|Spark 内核进阶（第 2 章：宽窄依赖与 Shuffle）|#
 官网|Job Scheduling 官方文档|https://spark.apache.org/docs/latest/job-scheduling.html
 官网|RDD 编程指南（容错章节）|https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistenc

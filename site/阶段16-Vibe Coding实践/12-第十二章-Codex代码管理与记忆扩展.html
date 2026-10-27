@@ -406,7 +406,7 @@ git switch main        # 随时切回主线</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>插件（Plugin）/自动化扩展</strong>：给 Codex 增加<strong>工具与自动化能力</strong>的机制。</p>
-<p>典型用途（讲义思路）：</p>
+<p>典型用途（一种思路）：</p>
 <ul><li>扩展命令集：为 Codex 增加自定义命令（工作流类操作一键触发）；</li><li>自动化流程：把"构建→测试→提交"这类固定流程封装，Codex 一键执行；</li><li>集成外部工具：接入代码分析、部署脚本等第三方工具。</li></ul>
 <p><strong>插件形态的提示（重要）</strong>：Codex 的插件通过在其环境中<strong>注册/配置</strong>使用；<strong>安装前看清来源与权限</strong>——插件可能包含执行能力，别装来源不明的。</p>
 <pre>示例（概念）：定义一条自定义流程
@@ -451,15 +451,15 @@ build → test → lint → git commit
 </div></div>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ AGENTS.md 写作清单：该写什么、别写什么</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>AGENTS.md 到底写什么？写太多是"长篇文档"、太少又约束不住 AI——讲义给了一份明确的"适合/不适合"清单。</p>
+<p>AGENTS.md 到底写什么？写太多是"长篇文档"、太少又约束不住 AI——这里有一份明确的"适合/不适合"清单。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 19 页对 AGENTS.md 的内容边界给了权威说明：</p>
+<p>AGENTS.md 的内容边界有一条明确说明：</p>
 <p><strong>适合写进去的内容</strong>：</p>
 <ul><li>项目使用的包管理器、测试命令、构建命令；</li><li>修改代码后<strong>必须执行的验证步骤</strong>；</li><li><strong>不能触碰的目录、密钥、生成文件或外部系统</strong>（风险边界）；</li><li>团队约定的代码风格和提交前检查；</li><li>特定子目录的例外规则（如后端/前端/脚本目录各自的验证命令）。</li></ul>
 <p><strong>不适合写进去的内容</strong>：</p>
 <ul><li>大段产品背景、历史会议纪要、完整 API 文档；</li><li>会频繁变化的临时任务列表；</li><li>密钥、账号、Token 或只能给人看的内部凭证（<strong>红线：密钥绝不进规则文件</strong>）；</li><li>可以通过命令自动发现的信息（例如完整文件树）。</li></ul>
-<p><strong>还可以让 AI 帮你写</strong>：让 Codex"通读当前项目，把学到的项目信息保存到 AGENTS.md 文件里，用中文、格式清晰"——AI 自动沉淀项目知识（讲义第 19 页演示了这一步）。</p>
+<p><strong>还可以让 AI 帮你写</strong>：让 Codex"通读当前项目，把学到的项目信息保存到 AGENTS.md 文件里，用中文、格式清晰"——AI 自动沉淀项目知识。</p>
 <p><strong>核心判断标准</strong>：AGENTS.md 不是越长越好，它该写"<strong>Codex 做事前必须知道的规则</strong>"，而不是把所有项目文档复制进去。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -473,11 +473,11 @@ build → test → lint → git commit
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 插件与自动化实例：GitHub + Gmail 组合拳</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>插件和自动化到底怎么用？讲义给了一个完整的组合实战——让 Codex 自动"查 GitHub 项目 + 发邮件给自己"。</p>
+<p>插件和自动化到底怎么用？看一个完整的组合实战——让 Codex 自动"查 GitHub 项目 + 发邮件给自己"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 21 页的完整实例：</p>
-<p><strong>插件是什么（讲义定义）</strong>：插件是<strong>第三方服务器为 Codex 编写的软件包</strong>，第三方把自己的能力用插件形式注入 Codex；目前 Codex 的插件市场已经非常丰富。<strong>连接 GitHub、Gmail 等第三方服务时，需要进行授权操作。</strong></p>
+<p>完整实例：</p>
+<p><strong>插件是什么</strong>：插件是<strong>第三方服务器为 Codex 编写的软件包</strong>，第三方把自己的能力用插件形式注入 Codex；目前 Codex 的插件市场已经非常丰富。<strong>连接 GitHub、Gmail 等第三方服务时，需要进行授权操作。</strong></p>
 <p><strong>组合实战流程</strong>：</p>
 <pre>1. 安装/连接 GitHub 插件（授权）
 2. 安装/连接 Gmail 插件（授权）
@@ -512,7 +512,7 @@ build → test → lint → git commit
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么在让 AI 动手前必须先做 Git 初始化并提交基线？推荐的多长时间提交一次？</li><li>Git 回滚的三种姿势分别是什么命令？各适合什么场景？</li><li>reset --hard 使用前必须做什么确认？为什么？</li><li>分叉（branch）与工作树（worktree）的区别是什么？各适合什么场景？</li><li>AGENTS.md 是什么？为什么说它是"Codex 的长期记忆"？写出它内容的三个写入方向。</li><li>Codex 插件（自动化）能做什么？安装插件前要注意什么？</li><li>Skills 与 MCP 分别是什么？用"规矩 / 招式 / 通道"的口诀说明 AGENTS.md、Skills、MCP 的分工。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Codex 讲义</a>
+<a href="#"><span class="k">参考</span>Codex</a>
 <a href="https://developers.openai.com/codex/" target="_blank" rel="noopener"><span class="k">参考</span>OpenAI Codex 官方文档</a>
 <a href="https://agents.md/" target="_blank" rel="noopener"><span class="k">参考</span>AGENTS.md 规范</a>
 <a href="11-第十一章-Codex功能模块与权限沙箱.html"><span class="k">上一章</span>Codex 功能与权限沙箱</a>

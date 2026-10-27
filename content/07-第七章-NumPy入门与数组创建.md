@@ -367,6 +367,6 @@ mask = y > np.median(y)                        # 高于中位数的掩码
 6. empty 数组里的值为什么"诡异"？为什么练习时不用它？
 7. eye(3) 和 ones((3,3)) 的区别是什么？
 @@links
-讲义|numpy 讲义（68 页）|#
+参考|numpy （68 页）|#
 工具|NumPy 官网|https://numpy.org/
 文档|NumPy 数组创建教程|https://numpy.org/doc/stable/user/absolute_beginners.html

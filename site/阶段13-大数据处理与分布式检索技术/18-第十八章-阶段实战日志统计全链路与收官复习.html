@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十八章</strong></div>
 <h1>第十八章　阶段实战：日志统计全链路（批 + 流）与收官复习</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　10 课时　|　难度 ★★★★</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>17 章的知识点散在各处，你需要一次<strong>把零碎打成整体</strong>的实战：一个真实业务「网站访问日志分析」——从<strong>批处理全链路</strong>（读 HDFS 日志 → 清洗 → 宽表 → 指标 → 落数仓）做到<strong>同一需求的流式版本</strong>（Kafka 实时消费 → 实时大屏指标）。跑完这个项目，你才真正完成"大数据处理与分布式检索"从懂到会。</p>
 <p>收官章同时做三件事：<strong>① 一个可复现的综合案例 ② 阶段知识地图串讲 ③ 学习路径与延伸方向</strong>。它是你阶段验收的"模拟考"。</p>
@@ -287,7 +287,7 @@
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">前 17 章：RDD → 内核 → SparkSQL → Streaming 全覆盖</span>
 <span class="node"><span class="here">本章 ← 你在这里：综合实战（同一需求批+流两版）+ 全阶段收官</span></span>
-<span class="node">阶段终点：为后续课程（如检索/推荐/数仓方向）提供"Spark 基本功"底座</span>
+<span class="node">阶段终点：为后续方向（如检索/推荐/数仓）提供"Spark 基本功"底座</span>
 </div>
 <div class="note info"><span class="t">学习提示</span>
 <p>建议动手跑代码（本地 <code>local[*]</code> 就能跑），每步对照前三章知识说"这里用了哪个概念"。跑不通再看答案，收获最大。</p></div>
@@ -348,7 +348,7 @@ val clean = raw
 // 写 DWD 分区表（按 dt 分区）
 clean.write.mode(&quot;overwrite&quot;).partitionBy(&quot;dt&quot;).saveAsTable(&quot;dwd.log_clean&quot;)</pre>
 <p><strong>两个要点</strong>：</p>
-<ol><li><strong>解析与兜底成对出现</strong>：<code>to_date</code> 解析失败返回 null → 用 <code>isNotNull</code> 过滤；时间格式先 <code>dt</code> 探一列确认格式串</li><li><strong>写分区表自动建目录</strong>：<code>partitionBy("dt")</code> + <code>saveAsTable</code> 一步到位；Hive 老师/BI 直接能查</li></ol>
+<ol><li><strong>解析与兜底成对出现</strong>：<code>to_date</code> 解析失败返回 null → 用 <code>isNotNull</code> 过滤；时间格式先 <code>dt</code> 探一列确认格式串</li><li><strong>写分区表自动建目录</strong>：<code>partitionBy("dt")</code> + <code>saveAsTable</code> 一步到位；Hive/BI 直接能查</li></ol>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -547,7 +547,7 @@ val result = partial.map { case ((k, _), v) =&gt; (k, v) }
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>什么都想学结果什么都没学深</td><td>先选一条路（结合业务/面试需求），跑通 2-3 个真项目再横向扩展</td></tr>
-<tr><td>只刷视频不写代码</td><td>每方向配一个"能落地的真项目"，动手才内化。本地 4G 小机器也能跑 local 模式</td></tr>
+<tr><td>只看教程不写代码</td><td>每方向配一个"能落地的真项目"，动手才内化。本地 4G 小机器也能跑 local 模式</td></tr>
 <tr><td>放弃底层原理只背 API</td><td>面试和疑难排查都靠原理（shuffle/Stage/内存模型）。API 可查文档，原理查不到</td></tr>
 <tr><td>低估数据量经验</td><td>多看"百万/亿级"的实际案例心得（倾斜、GC、OOM），这是花了钱才有的经验——社区博客/USer 案例值得刷</td></tr>
 </table>
@@ -586,7 +586,7 @@ val result = partial.map { case ((k, _), v) =&gt; (k, v) }
 <tr><td>自查有 3 项不过就"回头全看"</td><td>针对不过的那几章回炉（地图定位），不要从第 1 章重来——聚焦短板</td></tr>
 <tr><td>面试题背答案但讲不出推理</td><td>每题用"为什么"串一遍（如 reduceByKey 为什么省：map 端合并后网络少传）。背推理不背句子</td></tr>
 <tr><td>毕业作品只贴代码无文档</td><td>补：README（架构图+口径+运行方式）+ 对账结果。文档和质量一样重要</td></tr>
-<tr><td>阶段结束就放羊</td><td>间隔 2-3 天重跑一遍项目（不看书），能独立跑通才叫会了。此后进入下一阶段课程无缝衔接</td></tr>
+<tr><td>阶段结束就放羊</td><td>间隔 2-3 天重跑一遍项目（不看书），能独立跑通才叫会了。此后进入下一阶段无缝衔接</td></tr>
 </table>
 </div>
 </div></div>
@@ -601,8 +601,8 @@ val result = partial.map { case ((k, _), v) =&gt; (k, v) }
 <h4>自测：能不能答上来</h4>
 <ol><li>批流两套实现同一指标，最核心的验证动作是什么？第一疑犯通常是哪个因素？</li><li>数据倾斜的本质是什么？"加盐两阶段聚合"为什么能缓解（画一下数据流）？</li><li>画出一张从"RDD 读入"到"输出"的 8 个关键节点链路图（不查书）。</li><li>reduceByKey 为什么比 groupByKey 快？"map 端预聚合"减少的是什么？</li><li>cache 和 checkpoint 各自解决什么问题？什么场景用哪个？</li><li>Direct 模式相比 Receiver 的三点优势是什么？offset 管理三种方式分别是什么？</li><li>判断题：两阶段聚合（加盐）在任何数据量下都比不分盐快。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Spark 分布式计算框架基础（第 12 章整合）</a>
-<a href="#"><span class="k">讲义</span>SparkSQL 讲义（第 7 章：实战案例）</a>
+<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 12 章整合）</a>
+<a href="#"><span class="k">参考</span>SparkSQL （第 7 章：实战案例）</a>
 <a href="https://github.com/apache/spark/tree/master/examples" target="_blank" rel="noopener"><span class="k">官网</span>Spark 官方示例（examples 目录）</a>
 <a href="#"><span class="k">资料</span>sparkdemo.zip / sparksql.zip / sparkstreaming.zip（全套源码）</a>
 </div>

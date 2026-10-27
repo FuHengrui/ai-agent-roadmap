@@ -45,7 +45,7 @@
 
 @@point ② 环境准备：uv 一脚蹬
 @@need 要解决什么
-Python 项目最烦人的是环境：装错版本、依赖打架、换台机器跑不起来。课程的 Demo 用 **uv**（新一代 Python 包管理器）解决这事——一条命令装依赖，一条命令跑程序。
+Python 项目最烦人的是环境：装错版本、依赖打架、换台机器跑不起来。这一章的 Demo 用 **uv**（新一代 Python 包管理器）解决这事——一条命令装依赖，一条命令跑程序。
 
 @@idea 核心思路
 ```bash
@@ -459,7 +459,7 @@ uv run streamlit run 07_Web界面.py
    A. 直接写进代码方便复制　　B. 放环境变量（os.environ）读，代码只留占位　　C. 写进 git 仓库备份　　D. 放进 Prompt 让模型保管
 
 @@links
-讲义|章节3_RAG端到端快速演示.pdf|#
+参考|章节3_RAG端到端快速演示.pdf|#
 源码|rag_demo（7 个 Python 文件全量源码）|#
 官网|uv 包管理器|https://docs.astral.sh/uv/
 官网|sentence-transformers（BGE 模型）|https://github.com/huggingface/sentence-transformers

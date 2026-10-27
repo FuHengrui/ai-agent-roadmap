@@ -300,7 +300,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>MCP（Model Context Protocol，模型上下文协议）</strong> 由 <strong>Anthropic 在 2024 年 11 月底推出</strong>，是一种开放标准，旨在<strong>统一大模型与外部数据源和工具之间的通信协议</strong>。</p>
-<p>讲义给了一个非常形象的比喻：<strong>MCP 可以被比喻为 AI 应用领域的 USB-C 接口</strong>。</p>
+<p>有个非常形象的比喻：<strong>MCP 可以被比喻为 AI 应用领域的 USB-C 接口</strong>。</p>
 <p>为什么是 USB-C？因为 USB-C 的特点是"<strong>一个接口，万物可插</strong>"：鼠标、硬盘、显示器、充电器，统统一个口搞定。MCP 同理——<strong>不同数据源和工具（数据库、网页接口、脚本、天气、票务……）用同一套协议接入 AI，AI 就能即插即用地"认识外部世界"</strong>。没有 MCP 之前，每个工具都要单独给 AI 写一套接入代码；有了 MCP，接入成本大幅下降，生态开始爆发。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -386,7 +386,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为这是"官方出品"的应用</td><td>它是讲义演示的<strong>开发案例</strong>，用 Trae + 三个 MCP 服务搭建，不是预装应用；你要照着做</td></tr>
+<tr><td>以为这是"官方出品"的应用</td><td>它是一个<strong>开发案例</strong>，用 Trae + 三个 MCP 服务搭建，不是预装应用；你要照着做</td></tr>
 <tr><td>三个 MCP 服务分不清</td><td>高德=地图/天气/导航；12306=火车票；飞常准（Variflight）=航班/天气/航班舒适度</td></tr>
 </table>
 </div>
@@ -450,7 +450,7 @@
 <p>服务接好了，但 AI 怎么"知道"自己是旅行规划师、该按什么步骤输出？——靠提示词。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义用一份完整提示词把 AI 定位成"经验丰富的智能旅行行程规划师"。核心内容分两层：</p>
+<p>做法是用一份完整提示词把 AI 定位成"经验丰富的智能旅行行程规划师"。核心内容分两层：</p>
 <p><strong>先给角色与能力清单</strong>：</p>
 <pre>你是一个经验丰富的智能旅行行程规划师，基于智能集成平台（MCP）开发，拥有以下能力：
 - 实时天气查询（高德地图MCP）
@@ -466,7 +466,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>提示词写太泛（"帮我规划一下"）</td><td>要按讲义格式写<strong>角色+能力+六区结构+技术规范</strong>，AI 才有据可依</td></tr>
+<tr><td>提示词写太泛（"帮我规划一下"）</td><td>要按上面的格式写<strong>角色+能力+六区结构+技术规范</strong>，AI 才有据可依</td></tr>
 <tr><td>提示词里承诺了 MCP 提供不了的数据</td><td>能力清单必须与实际接入的 MCP 工具一致，别让 AI"硬编"不存在的余票数据</td></tr>
 <tr><td>一个提示词塞太多要求</td><td>分步下发：先"角色+能力+六区结构"，再"网页生成技术规范"，再"地图/图表细节"，AI 逐轮吸收更稳</td></tr>
 </table>
@@ -477,7 +477,7 @@
 <p>提示词写好了，最后一步：怎么"用起来"？真实请求长什么样，预期产出是什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>配置完成、提示词就位后，直接向 Trae 发出需求（讲义原文示例）：</p>
+<p>配置完成、提示词就位后，直接向 Trae 发出需求（示例）：</p>
 <p>&gt; <strong>国庆正好七天，请帮我安排一个旅行计划在杭州玩七天</strong></p>
 <p>预期是 AI 调用已接入的三个 MCP 服务，产出：</p>
 <ul><li>结合实时天气/余票/车次/航班的<strong>完整七日行程</strong>；</li><li>按提示词要求的<strong>六区结构</strong>组织内容；</li><li>可预览/可打开的<strong>可视化网页</strong>（行程路线、时间轴、门票余量图表、地图标注）。</li></ul>
@@ -527,9 +527,9 @@
 </table>
 <p>一句话记住本章：<strong>MCP 是 AI 世界的 USB-C——让 AI 从"只能想"变成"能查能调"；智能旅行助手就是"Trae + 三个 MCP 服务 + 一份好提示词"拼出的真实 Agent 应用。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>MCP 全称是什么？由哪家公司于何时推出？为什么被比喻为"AI 应用领域的 USB-C"？</li><li>MCP 的三大核心功能是什么？用一句话概括它的本质。</li><li>写出 MCP 三个核心组件及各自职责（可用类比）。</li><li>MCP 的两种通信机制分别是什么？各适合什么场景？官方推荐哪种？</li><li>智能旅行助手集成了哪三个 MCP 服务？它们分别提供什么能力？</li><li>配置 MCP 服务的主要入口（广场）是哪个网站？简述配置流程。</li><li>写一份 MCP Agent 提示词需要包含哪些要素？讲义中旅行助手提示词的"六区结构"是哪六区？</li></ol>
+<ol><li>MCP 全称是什么？由哪家公司于何时推出？为什么被比喻为"AI 应用领域的 USB-C"？</li><li>MCP 的三大核心功能是什么？用一句话概括它的本质。</li><li>写出 MCP 三个核心组件及各自职责（可用类比）。</li><li>MCP 的两种通信机制分别是什么？各适合什么场景？官方推荐哪种？</li><li>智能旅行助手集成了哪三个 MCP 服务？它们分别提供什么能力？</li><li>配置 MCP 服务的主要入口（广场）是哪个网站？简述配置流程。</li><li>写一份 MCP Agent 提示词需要包含哪些要素？旅行助手提示词的"六区结构"是哪六区？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Trae 讲义（38 页）</a>
+<a href="#"><span class="k">参考</span>Trae （38 页）</a>
 <a href="https://www.trae.com.cn/" target="_blank" rel="noopener"><span class="k">工具</span>Trae 官网</a>
 <a href="https://modelscope.cn/mcp" target="_blank" rel="noopener"><span class="k">广场</span>魔塔 MCP 广场</a>
 <a href="04-第四章-Trae上下文Rules与自定义模型.html"><span class="k">上一章</span>Trae 上下文与 Rules</a>

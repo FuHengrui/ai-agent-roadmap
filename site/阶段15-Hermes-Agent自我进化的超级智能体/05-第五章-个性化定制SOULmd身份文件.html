@@ -299,7 +299,7 @@
 <p>"给 AI 设性格"听起来玄，总得有个具体的落点。这个落点在哪？改哪个文件？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p><strong>SOUL.md 是 Agent 的主要身份——它是系统提示词的第一部分，定义了 Agent 是谁</strong>（讲义第 22 页）。</p>
+<p><strong>SOUL.md 是 Agent 的主要身份——它是系统提示词的第一部分，定义了 Agent 是谁</strong>。</p>
 <p>具体机制：Hermes-Agent 的默认身份是硬编码的内置提示词；而 <strong>SOUL.md 是一个持久角色文件，位于 HERMES_HOME 目录（默认 ~/.hermes/SOUL.md），在系统提示词中占据位置 #1，取代硬编码的默认身份</strong>。</p>
 <p>它为什么重要？因为<strong>系统提示词的第一位置 = 模型最先看到、权重最高的指令</strong>。你写的"你是一位务实的资深工程师，名字叫：红豆"会被模型当作第一准则执行——这是"人格"真正生效的物理位置。</p>
 </div>
@@ -328,7 +328,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为 SOUL 内容会出现在上下文文件部分重复出现</td><td>不会——它只在身份位置出现一次，上下文文件部分不含它（讲义明确：不会重复出现）</td></tr>
+<tr><td>以为 SOUL 内容会出现在上下文文件部分重复出现</td><td>不会——它只在身份位置出现一次，上下文文件部分不含它（不会重复出现）</td></tr>
 <tr><td>以为系统提示词顺序无所谓</td><td>LLM 对开头指令遵循度更高，SOUL 在 #1 位是"人格优先"的刻意设计</td></tr>
 <tr><td>写了 SOUL 却总觉得没生效</td><td>检查是否<strong>逐字注入成功</strong>：SOUL 有内容则注入；为空/无法加载则回退内置默认身份（见第 ⑨ 点）</td></tr>
 </table>
@@ -339,7 +339,7 @@
 <p>自己手写 SOUL.md 之前，得先搞清 Hermes 对它的"管辖规则"：它会擅自改我的文件吗？我从网上学的"放当前目录"的用法对它有效吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出 SOUL.md 的<strong>五条管理规则</strong>，每一条都是实践里会踩的坑：</p>
+<p>SOUL.md 的<strong>五条管理规则</strong>，每一条都是实践里会踩的坑：</p>
 <table>
 <tr><th>规则</th><th>内容</th></tr>
 <tr><td>自动生成</td><td>如果 SOUL.md 尚不存在，Hermes 会自动创建一个初始版本</td></tr>
@@ -364,7 +364,7 @@
 <p>第一次写 SOUL.md，最怕"不知道写什么"。需要一份"该放清单"，明确哪些内容值得进身份文件。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义明确 SOUL.md 用来定义<strong>持久的语气和个性指导</strong>，重点五类：</p>
+<p>SOUL.md 用来定义<strong>持久的语气和个性指导</strong>，重点五类：</p>
 <table>
 <tr><th>该放</th><th>示例</th></tr>
 <tr><td>语调</td><td>直接、温和、冷静……</td></tr>
@@ -389,7 +389,7 @@
 <p>明白了"放什么"，还得知道"什么样算好"。写得太泛没个性、写得太细又僵化——平衡点在哪？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出"好 SOUL"的四条标准，堪称"人格文件验收规范"：</p>
+<p>"好 SOUL"的四条标准，堪称"人格文件验收规范"：</p>
 <table>
 <tr><th>标准</th><th>解读</th></tr>
 <tr><td><strong>在不同上下文中保持稳定</strong></td><td>换任务、换场景，性格不漂移</td></tr>
@@ -410,10 +410,10 @@
 </div></div>
 <div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 完整示例：一个"红豆"式的 SOUL.md</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>理论一堆，不如一个真实示例有说服力。讲义给了一份可直接套用的 SOUL.md 模板，拆开看它的结构技巧。</p>
+<p>理论一堆，不如一个真实示例有说服力。下面这份 SOUL.md 模板可直接套用，拆开看它的结构技巧。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 24 页有一份完整 SOUL.md（以"红豆"为例）：</p>
+<p>这里有一份完整 SOUL.md（以"红豆"为例）：</p>
 <pre># 个性
 你是一位务实的资深工程师，名字叫：红豆，品味很高。
 你优先考虑真实性、清晰度和实用性，而非礼貌的客套。
@@ -448,10 +448,10 @@
 </div></div>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 用 vim 编辑 SOUL.md：第一步实操</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>知道了写什么、怎么写，接下来得动手改文件。讲义推荐用 vim 编辑，新手第一次碰 vim 会手足无措，需要手把手把"编辑-保存-退出"讲清楚。</p>
+<p>知道了写什么、怎么写，接下来得动手改文件。推荐用 vim 编辑，新手第一次碰 vim 会手足无措，需要手把手把"编辑-保存-退出"讲清楚。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义原话："这里我们可以使用 vim 编辑文件，复制进来之后，保存退出 :wq"。三步走：</p>
+<p>一句话："这里我们可以使用 vim 编辑文件，复制进来之后，保存退出 :wq"。三步走：</p>
 <pre># 1. 打开文件（在 HERMES_HOME 下）
 vim ~/.hermes/SOUL.md
 
@@ -464,7 +464,7 @@ vim ~/.hermes/SOUL.md
 <tr><td>保存退出</td><td><code>Esc</code> 后 <code>:wq</code></td><td>write（存盘）+ quit（退出）</td></tr>
 <tr><td>只退出不存</td><td><code>Esc</code> 后 <code>:q!</code></td><td>放弃修改并退出</td></tr>
 </table>
-<p>不会 vim 也没关系：SOUL.md 就是普通文本文件，<strong>用任何编辑器（记事本、VS Code 等）改都可以</strong>，vim 只是讲义演示的工具。</p>
+<p>不会 vim 也没关系：SOUL.md 就是普通文本文件，<strong>用任何编辑器（记事本、VS Code 等）改都可以</strong>，vim 只是演示用的工具。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -499,7 +499,7 @@ vim ~/.hermes/SOUL.md
 <p>SOUL.md 的加载有各种边界情况（不存在、为空、损坏、变来变去），提前知道 Hermes 会怎么处理，才能放心折腾。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>整合讲义规则，SOUL.md 边界情况一览：</p>
+<p>SOUL.md 的边界情况一览：</p>
 <table>
 <tr><th>情况</th><th>Hermes 行为</th></tr>
 <tr><td>文件不存在</td><td>自动创建初始版本</td></tr>
@@ -524,7 +524,7 @@ vim ~/.hermes/SOUL.md
 <p>改完 SOUL 你可能还会听到"皮肤（skin）"这个词——改皮肤也算改性格吗？这俩是不是一回事？先把概念分开，别后面学乱。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 40 页专门澄清：<strong>对话风格和视觉风格是两个独立的概念</strong>。</p>
+<p>这里专门澄清：<strong>对话风格和视觉风格是两个独立的概念</strong>。</p>
 <table>
 <tr><th>概念</th><th>管什么</th><th>改哪</th></tr>
 <tr><td><strong>个性（SOUL.md）</strong></td><td>Agent 的<strong>语气措辞</strong>——说话方式、风格、立场</td><td>~/.hermes/SOUL.md</td></tr>
@@ -599,9 +599,9 @@ vim ~/.hermes/SOUL.md
 </table>
 <p>一句话记住本章：<strong>SOUL.md 是 Agent 的身份证，写在系统提示词第一行——"只写'它是什么人'，不写'这次干什么'；改完重启会话再见分晓。"</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>SOUL.md 是什么？它位于哪个目录、在系统提示词中占据什么位置？</li><li>请至少说出 SOUL.md 五条管理规则中的四条，并解释"只从 HERMES_HOME 加载、不在当前工作目录寻找"意味着什么操作习惯。</li><li>SOUL.md 应该包含哪五类内容？哪些内容属于"不该放进 SOUL"的？请各举两个例子。</li><li>"好的 SOUL.md"的四条标准是什么？用你自己的话解释"专注于沟通和身份，而不是特定任务的指令"。</li><li>请基于讲义示例，写出一个"三段式" SOUL.md 的骨架（身份/风格/要避免什么各写一行示例即可）。</li><li>用 vim 编辑 SOUL.md 的完整操作序列是什么（打开→编辑→保存退出）？如果你不熟悉 vim，还有什么替代方式？</li><li>个性（personality）和皮肤（skin）的区别是什么？SOUL / USER / AGENTS 三个配置文件各自管什么？</li></ol>
+<ol><li>SOUL.md 是什么？它位于哪个目录、在系统提示词中占据什么位置？</li><li>请至少说出 SOUL.md 五条管理规则中的四条，并解释"只从 HERMES_HOME 加载、不在当前工作目录寻找"意味着什么操作习惯。</li><li>SOUL.md 应该包含哪五类内容？哪些内容属于"不该放进 SOUL"的？请各举两个例子。</li><li>"好的 SOUL.md"的四条标准是什么？用你自己的话解释"专注于沟通和身份，而不是特定任务的指令"。</li><li>请参考本章示例，写出一个"三段式" SOUL.md 的骨架（身份/风格/要避免什么各写一行示例即可）。</li><li>用 vim 编辑 SOUL.md 的完整操作序列是什么（打开→编辑→保存退出）？如果你不熟悉 vim，还有什么替代方式？</li><li>个性（personality）和皮肤（skin）的区别是什么？SOUL / USER / AGENTS 三个配置文件各自管什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 22-24、39-40 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 22-24、39-40 页）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://vim.rtorr.com/lang/zh_cn/" target="_blank" rel="noopener"><span class="k">参考</span>Vim 基本操作速查</a>
 </div>

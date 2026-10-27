@@ -268,6 +268,6 @@ def translate(model, src, max_len=50):
 7. 训练循环与推理循环在输入上有什么本质区别？BLEU 指标的局限性是什么？
 
 @@links
-讲义|Transformer整体架构与翻译实战讲义|#
+参考|Transformer整体架构与翻译实战|#
 文档|Attention Is All You Need|https://arxiv.org/abs/1706.03762
 文档|PyTorch Transformer 官方教程|https://pytorch.org/tutorials/beginner/translation_transformer.html

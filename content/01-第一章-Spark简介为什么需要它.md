@@ -1,5 +1,5 @@
 @@h1 第一章　Spark 简介：为什么需要它
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★☆
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
 你手里可能攒了几年的数据：网站的访问日志一天几亿条、电商订单表一次导出几十 GB、还有一堆"想算但算不动"的指标——比如"每个省份昨天卖得最好的商品 top 10"。用 Excel 崩，用 Python 跑一天，靠 SQL 单机数据库更是直接卡死。
@@ -216,7 +216,7 @@ Local / Standalone / YARN 三种模式**唯一的代码区别就是 `spark-submi
 5. 判断题：Spark 的所有中间结果永远不落盘，所以它永远比 MapReduce 快。
 
 @@links
-讲义|Spark 分布式计算框架课程介绍（docx）|#
-讲义|01-Spark 分布式计算框架基础（第 1 章：Spark 简介）|#
+参考|Spark 分布式计算框架介绍（docx）|#
+参考|01-Spark 分布式计算框架基础（第 1 章：Spark 简介）|#
 官网|Apache Spark 官方文档|https://spark.apache.org/docs/latest/
-资料|讲义源码目录 sparkdemo.zip|#
+资料|源码目录 sparkdemo.zip|#

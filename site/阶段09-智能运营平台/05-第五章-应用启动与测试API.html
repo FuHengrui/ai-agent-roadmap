@@ -307,7 +307,7 @@ app = FastAPI(title=&quot;智能运营平台&quot;, version=&quot;1.0.0&quot;)
 # 1) CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[&quot;*&quot;],          # 讲义写法：通配；生产必须收紧
+    allow_origins=[&quot;*&quot;],          # 通配写法；生产必须收紧
     allow_credentials=True,
     allow_methods=[&quot;*&quot;],
     allow_headers=[&quot;*&quot;],
@@ -341,7 +341,7 @@ if __name__ == &quot;__main__&quot;:
 <p>浏览器同源策略下，<strong>跨域请求前先发 OPTIONS 预检</strong>，后端要回复允许的源/方法/头。CORSMiddleware 参数对应：</p>
 <table>
 <tr><th>参数</th><th>含义</th><th>本项目</th></tr>
-<tr><td>allow_origins</td><td>允许的来源列表</td><td>讲义场景用 ["*"]；联调建议写 ["http://127.0.0.1:5173"]</td></tr>
+<tr><td>allow_origins</td><td>允许的来源列表</td><td>练习环境用 ["*"]；联调建议写 ["http://127.0.0.1:5173"]</td></tr>
 <tr><td>allow_credentials</td><td>是否允许携带 Cookie/Authorization</td><td>True（JWT 走 Authorization 头）</td></tr>
 <tr><td>allow_methods</td><td>允许的 HTTP 方法</td><td>["*"] 即 GET/POST/PUT/DELETE/OPTIONS</td></tr>
 <tr><td>allow_headers</td><td>允许的请求头</td><td>["*"] 含自定义头如 Authorization</td></tr>
@@ -507,7 +507,7 @@ python -c &quot;from main import app&quot;                      # 应用层</pre
 </div>
 </div></div>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>智能运营平台.pdf</a>
+<a href="#"><span class="k">参考</span>智能运营平台.pdf</a>
 <a href="https://fastapi.tiangolo.com/tutorial/cors/" target="_blank" rel="noopener"><span class="k">官方</span>FastAPI CORS 文档</a>
 <a href="https://tortoise.github.io/contrib/fastapi.html" target="_blank" rel="noopener"><span class="k">官方</span>Tortoise FastAPI 集成</a>
 </div>

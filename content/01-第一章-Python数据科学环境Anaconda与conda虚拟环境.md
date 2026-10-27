@@ -257,7 +257,7 @@ conda config --set auto_activate_base true    # 恢复
 7. conda 卸载包和 pip 卸载包的命令分别是什么？`pip remove` 对不对？
 
 @@links
-讲义|Anaconda 开发环境讲义（34 页）|#
+参考|Anaconda 开发环境（34 页）|#
 工具|Anaconda 官网|https://www.anaconda.com/
 工具|Miniconda（清华镜像）|https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/
 文档|conda 官方文档|https://docs.conda.io/

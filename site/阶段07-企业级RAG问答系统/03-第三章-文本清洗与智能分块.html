@@ -328,7 +328,7 @@
         # 4. 连续空行/空白过多的行
         ...
         return text</pre>
-<p><strong>判据是"这一行的长相"</strong>：<code>^第?\s*\d+\s*页?$</code> 匹配"纯页码行"，<code>^\s*[-=*]{3,}\s*$</code> 匹配"分隔线"，<code>^\s*$</code> 匹配"纯空行"。清洗器<strong>引用讲义源码里的 matches 列表</strong>：它维护一组"判死规则"，每一行逐个过规则，命中即删。</p>
+<p><strong>判据是"这一行的长相"</strong>：<code>^第?\s*\d+\s*页?$</code> 匹配"纯页码行"，<code>^\s*[-=*]{3,}\s*$</code> 匹配"分隔线"，<code>^\s*$</code> 匹配"纯空行"。清洗器<strong>靠一个 <code>matches</code> 列表</strong>：它维护一组"判死规则"，每一行逐个过规则，命中即删。</p>
 <p>注意：<strong>规则必须保守</strong>。<code>matches</code> 里是"确定是噪音"的模式，宁可漏删也不误删正文——因为正文删错一条就是知识丢失，而噪音漏几条，分块检索时影响有限。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -367,7 +367,7 @@
 <p>"切成小块"说起来简单，切法大有讲究：按标题切、按段落切、按固定字数切、还是按语义切？<strong>不同文档结构适合不同切法</strong>，项目用 <code>ChunkStrategy</code> 枚举统一管理。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义里枚举出四种策略，各管一类文档：</p>
+<p>四种策略，各管一类文档：</p>
 <table>
 <tr><th>策略</th><th>怎么切</th><th>适合场景</th><th>特点</th></tr>
 <tr><td><strong>语义/结构切分</strong></td><td>按文档结构（如 <code>##</code> 标题、分页符）切</td><td>有清晰层级的制度、手册</td><td>块之间语义内聚最好</td></tr>
@@ -396,7 +396,7 @@ chunk1: [..............]
 chunk2:        [..............]
 chunk3:               [..............]</pre>
 <p>比如块长 500 字、重叠 50 字：块1 含 1-500，块2 从 450 开始到 950。<strong>切缝处的语义被至少一个块完整包含</strong>，检索命中率显著提升。代价是多占一点存储——但这点开销换检索质量，值。</p>
-<p>讲义里强调：重叠窗口是"小切口大收益"的工程细节，新手最容易忽略，但<strong>少了它，固定大小分块在长句多的中文文档上几乎必然切坏语义</strong>。</p>
+<p>要强调：重叠窗口是"小切口大收益"的工程细节，新手最容易忽略，但<strong>少了它，固定大小分块在长句多的中文文档上几乎必然切坏语义</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -482,7 +482,7 @@ block 列表（每块带 doc_id、序号、来源）
 <ol><li>分块时需要同步记录哪些元数据？</li></ol>
 <p>A. 只有文本本身　　B. 来源文档、块序号、位置信息　　C. 用户 ID　　D. 不用记录</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>章节4_数据处理模块.pdf</a>
+<a href="#"><span class="k">参考</span>章节4_数据处理模块.pdf</a>
 <a href="#"><span class="k">源码</span>rag_project/src/parsers（cleaner.py / chunker.py）</a>
 <a href="https://python.langchain.com/docs/how_to/#text-splitters" target="_blank" rel="noopener"><span class="k">官网</span>LangChain 文本分割器参考</a>
 <a href="https://docs.llamaindex.ai/en/stable/" target="_blank" rel="noopener"><span class="k">官网</span>Llamaindex 节点解析（Node Parser）</a>

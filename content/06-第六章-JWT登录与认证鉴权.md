@@ -53,14 +53,14 @@ def _make_token(user_id: int) -> str:
     payload = {
         "sub": str(user_id),
         "iat": int(time.time()),
-        "exp": int(time.time()) + JWT_ACCESS_EXPIRE_SECONDS,  # 讲义默认7天
+        "exp": int(time.time()) + JWT_ACCESS_EXPIRE_SECONDS,  # 默认 7 天
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)  # HS256
 
 @router.post("/login")
 async def login(username: str, password: str):
     user = await User.filter(username=username).first()
-    # 讲义实现：密码明文比对
+    # 示例实现：密码明文比对
     if not user or user.password != password:
         raise HTTPException(status_code=401, detail="用户名或密码错误")
     token = _make_token(user.id)
@@ -71,13 +71,13 @@ async def login(username: str, password: str):
 要点：
 - **payload 用 sub 存用户 id**（JWT 标准字段），iat/exp 用 Unix 时间戳。
 - 登录接口是**白名单**——不需要鉴权；其余业务接口统一上锁。
-- 讲义为教学清晰用了**明文密码比对**，生产必须换哈希（见下方坑位）。
+- 这一版为教学清晰用了**明文密码比对**，生产必须换哈希（见下方坑位）。
 
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
 | 数据库有用户但登录总失败 | password 比对细节：字段裁剪、空格、转义；或密码字段读的是旧列。先 SELECT 出来对比 |
-| 明文密码入库 | 讲义为教学显式简化；生产必须 bcrypt/argon2 哈希 + 加盐，密码字段 255 长度就是为此预留 |
+| 明文密码入库 | 为教学做了显式简化；生产必须 bcrypt/argon2 哈希 + 加盐，密码字段 255 长度就是为此预留 |
 | 登录接口也被锁 | 鉴权依赖对 login 例外处理；把鉴权依赖只加在需保护的路由组上，别全局套 |
 
 @@point ③ 校验令牌：HTTPBearer 与依赖注入
@@ -163,7 +163,7 @@ async def get_current_user_id(
 教学版能跑即可，但上线前这些洞必须补——列个清单，逐个说明为什么。
 
 @@idea 核心思路
-| 问题 | 现状(讲义) | 生产要求 |
+| 问题 | 现状(示例版) | 生产要求 |
 |---|---|---|
 | 密码存储 | 明文比对 | bcrypt/argon2 哈希 + 每用户盐 |
 | JWT_SECRET | 明文在 .env、示例值 | 32+ 随机字节、环境变量注入，永不入库 |
@@ -195,7 +195,7 @@ async def get_current_user_id(
    A. 效率低　　B. 它本身就是白名单，挂了无法登录　　C. 语法不支持　　D. 数据库限制
 5. 令牌过期时应该返回？
    A. HTTP 200　　B. HTTP 401（登录已过期）　　C. HTTP 403　　D. HTTP 500
-6. 讲义中密码比对方式是什么？生产建议是？
+6. 示例中密码比对方式是什么？生产建议是？
    A. 明文比对；哈希+加盐　　B. 哈希比对；明文　　C. AES 加密；base64　　D. 不作比对
 7. 前端请求如何携带 token？
    A. URL 参数　　B. Authorization: Bearer <token> 头　　C. Cookie 无头　　D. 请求体
@@ -226,6 +226,6 @@ print(payload)   # {'sub': '1', 'iat': 1710..., 'exp': 1710..., ...}
 | 拆开 token 内容有敏感信息 | JWT payload 只 base64 编码**不加密**——别往 payload 放密码等敏感数据 |
 
 @@links
-讲义|智能运营平台.pdf|#
+参考|智能运营平台.pdf|#
 官方|PyJWT 文档|https://pyjwt.readthedocs.io/
 官方|FastAPI Security 教程|https://fastapi.tiangolo.com/tutorial/security/

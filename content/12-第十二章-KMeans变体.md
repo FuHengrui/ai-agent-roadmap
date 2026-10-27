@@ -15,7 +15,7 @@
 学完这一章，你对"算法发展史"会有深刻体会：**没有完美的算法，每个变体都是在时间、空间、稳定性、精度之间做一选择**。这也是机器学习工程化的常态——不是"哪个最好"，而是"现在卡在哪，选哪个解"。
 
 @@map 上一章→本章→下一章
-上一章学完 KMeans 主体（流程/距离/SSE/肘部法）并列出五条软肋。**本章（讲义5 全部 6 页）逐个解决：KMedoids → 二分 KMeans → KMeans++ → elkan → Mini-Batch**。下一章（讲义6）接最后一块拼图：KMeans 家族搞不定的"任意形状"数据，交给密度聚类（DBSCAN/OPTICS/MeanShift）。
+上一章学完 KMeans 主体（流程/距离/SSE/肘部法）并列出五条软肋。**本章逐个解决：KMedoids → 二分 KMeans → KMeans++ → elkan → Mini-Batch**。下一章接最后一块拼图：KMeans 家族搞不定的"任意形状"数据，交给密度聚类（DBSCAN/OPTICS/MeanShift）。
 
 @@point ① KMeans 家族的技术谱系：先看全局
 @@need 要解决什么
@@ -240,6 +240,6 @@ print("SSE++:", km_pp.inertia_, " SSE random:", km_rd.inertia_)
 7. 数据是环形结构，这五个变体该不该用？为什么？
 
 @@links
-讲义|KMeans 聚类变形讲义（6 页）|#
+参考|KMeans 聚类变形（6 页）|#
 文档|sklearn KMeans init/algorithm 参数说明|https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
 文档|sklearn MiniBatchKMeans 文档|https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html

@@ -300,7 +300,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Hermes Agent 是 <strong>Nous Research 开源的自主 AI Agent 框架</strong>，于 <strong>2026 年 2 月底发布</strong>，上线不到两个月 <strong>GitHub 星标就 12 万+</strong>（GitHub 地址：https://github.com/nousresearch/hermes-agent ，官网：https://hermes-agent.nousresearch.com/ ）。从功能上看它类似于上一阶段的 OpenClaw，但凭什么更火？</p>
-<p>讲义用一句话回答：<strong>别的 AI 工具是"金鱼记忆"，Hermes Agent 是"会进化的伙伴"</strong>。</p>
+<p>一句话回答：<strong>别的 AI 工具是"金鱼记忆"，Hermes Agent 是"会进化的伙伴"</strong>。</p>
 <table>
 <tr><th></th><th>普通 AI 工具</th><th>Hermes Agent</th></tr>
 <tr><td>记忆</td><td>换会话就忘（金鱼记忆）</td><td>跨会话持久记忆</td></tr>
@@ -313,9 +313,9 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为 Hermes Agent 是"又一个 ChatGPT"</td><td>它是 Agent 框架：模型负责想，框架负责做+记+长。概念别混</td></tr>
-<tr><td>以为它和 OpenClaw 完全一样，二选一就行</td><td>讲义原文是"功能类似于 OpenClaw"，但核心创新完全不同——最强差别在"自学习循环"，本章第 ⑤ 点展开</td></tr>
-<tr><td>官网、仓库记混</td><td>官网 hermes-agent.nousresearch.com；仓库 github.com/nousresearch/hermes-agent，以讲义原文为准</td></tr>
-<tr><td>觉得"12 万星"夸张</td><td>是讲义原文说法：2026 年 2 月底发布、上线不到两个月 12 万+。理解它"火"即可，不必纠结精确数字</td></tr>
+<tr><td>以为它和 OpenClaw 完全一样，二选一就行</td><td>它"功能类似于 OpenClaw"，但核心创新完全不同——最强差别在"自学习循环"，本章第 ⑤ 点展开</td></tr>
+<tr><td>官网、仓库记混</td><td>官网 hermes-agent.nousresearch.com；仓库 github.com/nousresearch/hermes-agent，以官方域名和仓库地址为准</td></tr>
+<tr><td>觉得"12 万星"夸张</td><td>是公开数据：2026 年 2 月底发布、上线不到两个月 12 万+。理解它"火"即可，不必纠结精确数字</td></tr>
 </table>
 </div>
 </div></div>
@@ -343,7 +343,7 @@
 <p>市面上的 AI 工具用起来总有种"失忆感"：上午教它的约定，下午它就忘；昨天让它学会的流程，今天就归零。你想知道：Hermes Agent 到底靠什么摆脱这种"金鱼记忆"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义把普通 AI 工具和 Hermes Agent 的差距浓缩成一句话：<strong>别的 AI 工具是"金鱼记忆"，Hermes Agent 是"会进化的伙伴"</strong>。两者的本质差异在三个层面：</p>
+<p>普通 AI 工具和 Hermes Agent 的差距可以浓缩成一句话：<strong>别的 AI 工具是"金鱼记忆"，Hermes Agent 是"会进化的伙伴"</strong>。两者的本质差异在三个层面：</p>
 <table>
 <tr><th>层面</th><th>金鱼记忆的 AI</th><th>会进化的 Hermes Agent</th></tr>
 <tr><td>记忆</td><td>会话结束就清空</td><td>跨会话持久化，且在系统提示词中注入（第 8 章）</td></tr>
@@ -366,7 +366,7 @@
 <p>网上对 AI Agent 的称呼五花八门，容易把 Hermes Agent 和 ChatGPT、代码补全插件混为一谈。需要先划清边界：它到底是什么、不是什么。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义明确排除了两个误认：<strong>"不是聊天机器人，不是代码补全工具"</strong>，而是一个"住在你机器上、每天都在变聪明的智能体"。</p>
+<p>先排除两个误认：<strong>"不是聊天机器人，不是代码补全工具"</strong>，而是一个"住在你机器上、每天都在变聪明的智能体"。</p>
 <p>把它和三类产品放一起对比：</p>
 <table>
 <tr><th>产品类型</th><th>在干嘛</th><th>谁来干活</th></tr>
@@ -390,7 +390,7 @@
 <p>前面说它"会进化"，但"进化"到底是营销话术还是真实机制？需要看到具体的循环链路，才能判断这个产品到底值不值得投入。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义点出 Hermes Agent 的核心创新：<strong>它不是简单地调用 LLM，而是通过内置的学习循环不断优化自身</strong>。这个循环拆开看是四步：</p>
+<p>Hermes Agent 的核心创新是：<strong>它不是简单地调用 LLM，而是通过内置的学习循环不断优化自身</strong>。这个循环拆开看是四步：</p>
 <table>
 <tr><th>环节</th><th>内容</th><th>对应章节</th></tr>
 <tr><td>自动生成 Skill（技能）</td><td>从交互中沉淀可复用能力</td><td>第 7 章</td></tr>
@@ -403,7 +403,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为"自动生成技能"= 用户不用写任何技能</td><td>自动沉淀针对的是复用性强的行为；复杂的专业技能仍可手工编写（讲义第 31 页就演示了手写天气 Skill）</td></tr>
+<tr><td>以为"自动生成技能"= 用户不用写任何技能</td><td>自动沉淀针对的是复用性强的行为；复杂的专业技能仍可手工编写（这里就演示了手写天气 Skill）</td></tr>
 <tr><td>以为学习循环是实时的</td><td>它是<strong>使用驱动</strong>的：沉淀发生在任务执行过程中，不是装完就自带</td></tr>
 <tr><td>以为"自学习"=模型自己在后台偷偷变</td><td>学的都是你的项目、偏好、约定，且以文件形式可查可控，不涉及隐私上传到外部厂商</td></tr>
 </table>
@@ -414,7 +414,7 @@
 <p>"你的 AI 在哪儿跑"决定了数据的归属和可控性。想要一个能托付长期记忆和技能的智能体，部署位置是关键决策。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义强调 Hermes Agent <strong>部署在你的服务器上</strong>（个人电脑、云服务器皆可），这是"伙伴"定位的前提：</p>
+<p>要强调：Hermes Agent <strong>部署在你的服务器上</strong>（个人电脑、云服务器皆可），这是"伙伴"定位的前提：</p>
 <ul><li><strong>数据在自己手里</strong>：记忆、技能、对话记录都存在你的机器（~/.hermes/ 下），不依赖厂商托管；</li><li><strong>稳定在线</strong>：部署在服务器（或常开设备）上，配合消息网关才能随时触达——你发微信它就能回；</li><li><strong>长期积累</strong>：只有"同一份安装在持续运行"，记忆和技能才能跨会话累积。</li></ul>
 <p>这也决定了它的运行平台要求：官方支持 <strong>Linux、macOS 和 WSL2</strong>；<strong>原生 Windows 仍处于实验阶段</strong>（第 2 章会专门讲 WSL2 安装）。</p>
 </div>
@@ -440,7 +440,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为接入=无门槛放权</td><td>从扫码到配对审批、从 DM 策略到群聊白名单有很多安全选项，建议按讲义推荐走，别图省事全 Yes</td></tr>
+<tr><td>以为接入=无门槛放权</td><td>从扫码到配对审批、从 DM 策略到群聊白名单有很多安全选项，建议按官方推荐的默认选项走，别图省事全 Yes</td></tr>
 <tr><td>以为一个网关只能接一个平台</td><td>可同时接入多个平台，但<strong>先跑通一个</strong>再扩，别一上来全铺开</td></tr>
 <tr><td>接入失败就怀疑安装有问题</td><td>微信/飞书有配对环节，漏了配对是接入失败最常见原因（第 3 章有完整命令）</td></tr>
 </table>
@@ -451,7 +451,7 @@
 <p>"帮你干活"和"学习你的项目"是两回事——前者按指令执行，后者需要理解项目结构、约定和环境。需要明确它如何"学习项目"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义把 Hermes Agent 的"项目学习"拆成两层能力：</p>
+<p>把它的"项目学习"拆开看是两层能力：</p>
 <ul><li><strong>学习你的项目</strong>：通过读取文件、执行命令、观察工作流，把项目结构、技术栈、约定沉淀进记忆（MEMORY.md），下次不用重新解释；</li><li><strong>自动构建技能</strong>：当它发现"这个流程你反复在用"，就把它封装成 Skill（操作手册），复用不再重新摸索。</li></ul>
 <p>这两层配合"自学习循环"，就是"伙伴"式体验的来源：<strong>第一次帮你干活是工作；第 N 次帮你干活是本能</strong>。</p>
 </div>
@@ -459,7 +459,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为它会主动扫描你整个硬盘学习</td><td>它学的是<strong>你让它干活过程中暴露的项目与约定</strong>，不是后台翻你全部文件</td></tr>
-<tr><td>以为"自动构建技能"一次就成型</td><td>技能会<strong>持续迭代</strong>：用得多、发现问题多，Skill 更新越快（讲义原话"在使用中持续迭代技能"）</td></tr>
+<tr><td>以为"自动构建技能"一次就成型</td><td>技能会<strong>持续迭代</strong>：用得多、发现问题多，Skill 更新越快（原话是"在使用中持续迭代技能"）</td></tr>
 <tr><td>以为学习的内容不可控</td><td>学到的偏好进 USER.md、环境知识进 MEMORY.md，都是本地文件，可查可改</td></tr>
 </table>
 </div>
@@ -469,7 +469,7 @@
 <p>阶段 14 刚学完 OpenClaw，现在又来一个"功能类似"的 Hermes Agent，两者到底怎么取舍？需要给出清晰的定位关系。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义原文很直接：Hermes Agent"<strong>功能类似于之前的 OpenClaw</strong>"。两者同时满足"本地部署 + 消息驱动 + 动手做事"这类 Agent 框架共性。但内核定位不同：</p>
+<p>说法很直接：Hermes Agent"<strong>功能类似于之前的 OpenClaw</strong>"。两者同时满足"本地部署 + 消息驱动 + 动手做事"这类 Agent 框架共性。但内核定位不同：</p>
 <table>
 <tr><th>维度</th><th>OpenClaw（阶段 14）</th><th>Hermes Agent（阶段 15）</th></tr>
 <tr><td>主打</td><td>跨平台 IM 接入、技能系统、多应用操作</td><td>自学习循环、持久记忆、自动沉淀技能</td></tr>
@@ -493,8 +493,8 @@
 <p>概念清楚了，就该问：要用它，我机器上得先有什么？避免装到一半发现缺这个缺那个。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的准备清单非常克制：<strong>唯一的前提条件是 Git</strong>，其他组件（uv、Python 3.11、Node.js v22、ripgrep、ffmpeg）都由安装程序自动检测并安装。</p>
-<ul><li><strong>Git</strong>：下载 https://git-scm.com/ （中文页面）安装即可；</li><li><strong>平台</strong>：Linux / macOS 直接装；<strong>Windows 需先装 WSL2</strong>（管理员 PowerShell 跑 <code>wsl --install</code>）；</li><li><strong>网络</strong>：无需翻墙（讲义特别提醒"非要翻墙，请你自重"；若实在下载不动再考虑）。</li></ul>
+<p>准备清单非常克制：<strong>唯一的前提条件是 Git</strong>，其他组件（uv、Python 3.11、Node.js v22、ripgrep、ffmpeg）都由安装程序自动检测并安装。</p>
+<ul><li><strong>Git</strong>：下载 https://git-scm.com/ （中文页面）安装即可；</li><li><strong>平台</strong>：Linux / macOS 直接装；<strong>Windows 需先装 WSL2</strong>（管理员 PowerShell 跑 <code>wsl --install</code>）；</li><li><strong>网络</strong>：无需翻墙（特别提醒"非要翻墙，请你自重"；若实在下载不动再考虑）。</li></ul>
 <p>把 Git 装好、Windows 用户把 WSL2 准备好，就满足前置条件了——剩下的交给一键安装脚本。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -502,7 +502,7 @@
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为要手动装 Python/Node/ripgrep/ffmpeg</td><td>安装程序自动处理，<strong>只需要保证 Git 可用</strong>；手动乱装反而可能引入版本冲突</td></tr>
 <tr><td>Windows 用户直接装（跳过 WSL2）</td><td>原生 Windows 实验性，安装/运行会踩坑；按第 2 章先装 WSL2</td></tr>
-<tr><td>配了 pip/npm 国内镜像还奇怪安装失败</td><td>讲义专门警告：<strong>装之前请把 pip 镜像和 npm 镜像还原</strong>，"问就是坑，大坑，天坑"（第 2 章详述）</td></tr>
+<tr><td>配了 pip/npm 国内镜像还奇怪安装失败</td><td>这里专门警告：<strong>装之前请把 pip 镜像和 npm 镜像还原</strong>，"问就是坑，大坑，天坑"（第 2 章详述）</td></tr>
 </table>
 </div>
 </div></div>
@@ -511,7 +511,7 @@
 <p>学习一个开源项目，第一件事是拿到"官方信息入口"——官网、仓库、安装脚本，避免搜到仿冒站和过期教程。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给了三个官方入口，全部背下来：</p>
+<p>三个官方入口，全部背下来：</p>
 <table>
 <tr><th>入口</th><th>地址</th><th>用途</th></tr>
 <tr><td>官网</td><td>https://hermes-agent.nousresearch.com/</td><td>产品介绍、更新公告</td></tr>
@@ -523,8 +523,8 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>搜"hermes agent"出来一堆无关/仿冒内容</td><td>Hermes 是希腊神名，业务系统重名多；以讲义给的官方域名+官方仓库地址为准</td></tr>
-<tr><td>从第三方博客找安装命令</td><td>可能引用过时脚本；安装命令一律用讲义原文：`curl -fsSL https://hermes-agent.nousresearch.com/install.sh \</td><td>bash`</td></tr>
+<tr><td>搜"hermes agent"出来一堆无关/仿冒内容</td><td>Hermes 是希腊神名，业务系统重名多；以官方域名+官方仓库地址为准</td></tr>
+<tr><td>从第三方博客找安装命令</td><td>可能引用过时脚本；安装命令一律以官方为准：`curl -fsSL https://hermes-agent.nousresearch.com/install.sh \</td><td>bash`</td></tr>
 <tr><td>官网打不开就判定项目凉了</td><td>海外站点偶有访问波动，可稍后重试或走 GitHub 仓库；别据此下结论</td></tr>
 </table>
 </div>
@@ -554,7 +554,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>想直接跳到第 10 章 MCP 图新鲜</td><td>MCP 依赖 <code>hermes tools</code>、配置文件等前序知识，跳课容易卡壳；按顺序学</td></tr>
+<tr><td>想直接跳到第 10 章 MCP 图新鲜</td><td>MCP 依赖 <code>hermes tools</code>、配置文件等前序知识，跳着看容易卡壳；按顺序学</td></tr>
 <tr><td>概念章觉得"没干货"就跳过</td><td>第 1 章的定位、第 6 章的工具集概念是后续所有实操的判断依据，跳了会"知其然不知其所以然"</td></tr>
 <tr><td>每个功能都想立刻试</td><td>建议以<strong>跑通第 4 章端到端案例</strong>为第一个里程碑，再逐章扩展能力</td></tr>
 </table>
@@ -574,7 +574,7 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>Hermes Agent 由哪家公司/机构开源？它 2026 年 2 月底发布后，不到两个月 GitHub 星标达到多少？</li><li>它的核心定位一句话是什么？这一章用什么比喻对比它和普通 AI 工具？</li><li>内置"自学习循环"包含哪四个环节？分别大致对应阶段 15 的哪些章节？</li><li>Hermes Agent "不是聊天机器人，不是代码补全工具"——那它是什么？请用一句话概括。</li><li>它和上一阶段的 OpenClaw 是什么关系？两者最本质的差异化能力是什么？</li><li>使用 Hermes Agent 唯一必需的前置软件是什么？Windows 用户还额外需要准备什么？</li><li>官方官网、GitHub 仓库、安装脚本三个入口分别是什么地址？（写错一个都不行）</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（56 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （56 页）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://github.com/nousresearch/hermes-agent" target="_blank" rel="noopener"><span class="k">仓库</span>Hermes-Agent GitHub 仓库</a>
 <a href="https://git-scm.com/?hl=zh-cn" target="_blank" rel="noopener"><span class="k">前置</span>Git 官方下载（中文）</a>

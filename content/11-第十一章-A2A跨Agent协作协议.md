@@ -286,7 +286,7 @@ handler = DefaultRequestHandler(executor=MyExecutor(...))
    A. 完全一样　　B. MCP 连接 Agent与工具/数据，A2A 连接 Agent与Agent　　C. A2A 已取代 MCP　　D. 与工具无关
 
 @@links
-讲义|12_LLM框架实战_A2A.pdf|#
+参考|12_LLM框架实战_A2A.pdf|#
 官方|A2A 协议文档|https://a2a-protocol.org/
 GitHub|a2a-python SDK|https://github.com/a2aproject/a2a-python
 教程|A2A 快速上手|https://a2a-protocol.org/latest/quickstart/

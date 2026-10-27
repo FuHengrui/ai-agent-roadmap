@@ -431,7 +431,7 @@ docker run 镜像名 /bin/echo &amp;quot;hello world&amp;quot;</div>
 docker run -t -i centos /bin/bash
 <span class="c"># 进去后会看到 root@容器ID:/# 这样的提示符，可以随意敲命令了</span></div>
 <h5>退出容器有两种方式，别搞混</h5>
-<ul><li><code>exit</code>：退出并<strong>停止容器</strong>（容器里主进程 bash 结束了）；</li><li><code>Ctrl + p</code> 再 <code>Ctrl + q</code>（讲义里写作 Ctrl+p+q）：退出终端但<strong>容器保持运行</strong>——适合你暂时走开、容器里的进程还要继续跑的场景。</li></ul>
+<ul><li><code>exit</code>：退出并<strong>停止容器</strong>（容器里主进程 bash 结束了）；</li><li><code>Ctrl + p</code> 再 <code>Ctrl + q</code>（也写作 Ctrl+p+q）：退出终端但<strong>容器保持运行</strong>——适合你暂时走开、容器里的进程还要继续跑的场景。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -552,7 +552,7 @@ docker restart 容器ID   # 重启：stop 再 start，一步到位
 <span class="c"># 删除容器（注意是 rm 不是 rmi——rm 删容器，rmi 删镜像）</span>
 docker rm 容器ID
 docker rm -f 容器ID     # -f 强制删除运行中的容器</div>
-<p>讲义还提了两个贴心的历史参数：<code>-l</code> 只删容器间的连接，<code>-V</code> 连它挂载的数据卷一起删（第 17 章会用到）。 <strong>口诀：镜像用 rmi 删，容器用 rm 删，stop 只是"熄火"不是"报废"。</strong></p>
+<p>还有两个贴心的历史参数：<code>-l</code> 只删容器间的连接，<code>-V</code> 连它挂载的数据卷一起删（第 17 章会用到）。 <strong>口诀：镜像用 rmi 删，容器用 rm 删，stop 只是"熄火"不是"报废"。</strong></p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -662,7 +662,7 @@ docker ps
 <h4>自测：能不能答上来</h4>
 <ol><li>不写 tag 直接 docker pull 会拉到什么版本？生产环境为什么建议写死 tag？</li><li>docker run 一条命令背后做了哪几件事？容器为什么"命令执行完就退出"？</li><li>-it、-d、-p 9090:8080、--name 四个参数各是干什么的？</li><li>exit 和 Ctrl+p+q 退出容器的区别是什么？</li><li>docker rm 和 docker rmi 有什么区别？各自负责什么对象？</li><li>容器启动失败了，你第一步应该做什么？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Docker技术应用与实战讲义（76 页）</a>
+<a href="#"><span class="k">参考</span>Docker技术应用与实战（76 页）</a>
 <a href="https://docs.docker.com/" target="_blank" rel="noopener"><span class="k">文档</span>Docker 官方文档</a>
 <a href="https://docs.docker.com/engine/reference/run/" target="_blank" rel="noopener"><span class="k">文档</span>docker run 参考</a>
 </div>

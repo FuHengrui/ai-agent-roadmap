@@ -289,7 +289,7 @@ git tag v0.1.1 && git push origin v0.1.1
 7. IDEA 里"Commit"和"Push"是两个动作，什么时候需要用 Push？
 
 @@links
-讲义|Git版本控制管理讲义（86 页）|#
+参考|Git版本控制管理（86 页）|#
 文档|Git 基础 · 打标签|https://git-scm.com/book/zh/v2/Git-基础-打标签
 文档|Git Flow 成功分支模型（原文）|https://nvie.com/posts/a-successful-git-branching-model/
 文档|Git 官方文档|https://git-scm.com/doc

@@ -261,7 +261,7 @@ git commit --amend                          # 配合 git add 可以顺便补提�
 6. `git commit --amend` 能改哪一次提交？对已推送的提交使用会有什么后果？
 
 @@links
-讲义|Git版本控制管理讲义（86 页）|#
+参考|Git版本控制管理（86 页）|#
 文档|Git 安装|https://git-scm.com/book/zh/v2/起步-安装-Git
 文档|Git 初次运行前的配置|https://git-scm.com/book/zh/v2/起步-初次运行-Git-前的配置
 文档|Git 官方文档|https://git-scm.com/doc

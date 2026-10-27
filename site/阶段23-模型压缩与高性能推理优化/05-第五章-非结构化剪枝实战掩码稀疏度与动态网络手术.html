@@ -392,10 +392,10 @@
 </div></div>
 <div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 剪枝的 Tips：稀疏度与训练步数</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>讲义里提到的剪枝 engineering tips 有哪些？</p>
+<p>剪枝有哪些 engineering tips？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义在剪枝实操上给出几条关键经验：</p>
+<p>剪枝实操上有几条关键经验：</p>
 <ol><li><strong>稀疏度要"渐进式"提高</strong>：不要一次剪到位，逐渐从低稀疏度升到高稀疏度（Sparse Training 风格）。</li><li><strong>开始剪枝的步数</strong>：通常在训练前期（部分 epoch 后）开始剪，给模型先学点基础；起步太早结构未成形、太晚则回旋余地小。</li><li><strong>微调/恢复训练步数</strong>：剪枝后要给足微调步数，让剩余权重重新适应；步数不足精度回不来。</li><li><strong>分阶段多轮剪枝</strong>：剪→微调→再剪→再微调，比单轮大剪更稳。</li></ol>
 <p>这些"步数/比例"属于工程经验，具体值随模型与数据集走，需要用验证集试探。</p>
 </div>
@@ -463,9 +463,9 @@
 </table>
 <p>一句话记住本章：<strong>非结构化剪枝的实操三件套——用掩码锁定（前向反向都乘Mask，权重永不复活）、按重要性判据（权重幅度或梯度幅度）排序剪掉、稀疏度渐进提高并给足微调步数；高级玩法"动态网络手术"支持误剪复活；但铁律是"落地必须配稀疏算子/硬件"，否则理论收益在普通GPU上兑现不了，就要转向结构化剪枝。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>掩码（Mask）在训练中是如何起作用的？为什么反向传播时也要乘掩码？</li><li>稀疏度应该怎么确定？为什么不能一步剪到位？</li><li>Weight Magnitude 判据的核心思想是什么？有什么注意事项？</li><li>Gradient Magnitude 判据为什么是"动态"的？它适合哪种剪枝时机？</li><li>动态网络手术（DNS）的核心创新是什么？它解决了静态剪枝的什么问题？</li><li>讲义提到的剪枝 engineering tips 有哪些？</li><li>为什么非结构化剪枝在普通 GPU 上"剪了等于白剪"？该怎么做选型决策？</li></ol>
+<ol><li>掩码（Mask）在训练中是如何起作用的？为什么反向传播时也要乘掩码？</li><li>稀疏度应该怎么确定？为什么不能一步剪到位？</li><li>Weight Magnitude 判据的核心思想是什么？有什么注意事项？</li><li>Gradient Magnitude 判据为什么是"动态"的？它适合哪种剪枝时机？</li><li>动态网络手术（DNS）的核心创新是什么？它解决了静态剪枝的什么问题？</li><li>剪枝有哪些 engineering tips？</li><li>为什么非结构化剪枝在普通 GPU 上"剪了等于白剪"？该怎么做选型决策？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>模型优化讲义（章节1）</a>
+<a href="#"><span class="k">参考</span>模型优化（章节1）</a>
 <a href="https://arxiv.org/abs/1708.04619" target="_blank" rel="noopener"><span class="k">文档</span>Dynamic Network Surgery</a>
 <a href="https://arxiv.org/abs/1506.02626" target="_blank" rel="noopener"><span class="k">文档</span>Learning both Weights and Connections</a>
 </div>

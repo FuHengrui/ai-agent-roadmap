@@ -204,6 +204,6 @@ vLLM = 大模型推理引擎（UC Berkeley, 2023开源）
 7. "吞吐提升10倍"应如何准确理解？它对应的是哪种场景？
 
 @@links
-讲义|部署讲义（章节1-2）|#
+参考|部署（章节1-2）|#
 文档|vLLM: Easy, Fast, and Cheap LLM Serving|https://arxiv.org/abs/2309.06180
 站点|vLLM 官方文档|https://docs.vllm.ai

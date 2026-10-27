@@ -277,6 +277,6 @@ print(Counter(clean_text(text)))
 7. 想抽取文本中的多词专有名词（如 New York），应该怎么做？
 
 @@links
-讲义|NLTK英文处理讲义|#
+参考|NLTK英文处理|#
 文档|NLTK 官方文档与教程|https://www.nltk.org/
 文档|NLTK Book（在线教材）|https://www.nltk.org/book/

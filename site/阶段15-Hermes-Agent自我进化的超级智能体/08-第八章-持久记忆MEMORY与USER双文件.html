@@ -323,7 +323,7 @@
 <p>MEMORY.md 到底记什么？它和 USER.md 有什么本质区别？这是记忆系统最容易记混的核心分界。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 34 页定义：<strong>MEMORY.md：关于你（指挥者）的希望、目标和事实</strong>。</p>
+<p>定义：<strong>MEMORY.md：关于你（指挥者）的希望、目标和事实</strong>。</p>
 <p>也就是——<strong>MEMORY.md 记的是"关于 Agent 的指挥者/使用者"的事</strong>：</p>
 <table>
 <tr><th>该记</th><th>示例</th></tr>
@@ -347,14 +347,14 @@
 <p>MEMORY.md 已经记"关于你的事实"了，USER.md 又记一遍，两个文件怕不是重复？它们到底怎么分工？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义定义：<strong>USER.md：关于你（用户）的偏好和细节</strong>。</p>
+<p>定义：<strong>USER.md：关于你（用户）的偏好和细节</strong>。</p>
 <p>两者都关于"你"，但分工在<strong>侧重点</strong>：</p>
 <table>
 <tr><th>文件</th><th>侧重点</th><th>例子</th></tr>
 <tr><td><strong>MEMORY.md</strong></td><td>希望、目标、事实（较宏观）</td><td>目标：做知识库；期望：回答直接</td></tr>
 <tr><td><strong>USER.md</strong></td><td>偏好、细节（较微观）</td><td>喜欢表格；讨厌长篇大论；常驻城市</td></tr>
 </table>
-<p><strong>记忆工具会把"你明确告诉它的"拆到对应文件</strong>（讲义第 35 页示例：关于用户的信息进 USER.md，关于目标/期望的进 MEMORY.md）。对使用者来说，你不需要记住"哪条该进哪个文件"——<strong>用 memory 工具写入，框架自动归类</strong>；你只需要记住"记忆由两个文件共同承载"。</p>
+<p><strong>记忆工具会把"你明确告诉它的"拆到对应文件</strong>（示例：关于用户的信息进 USER.md，关于目标/期望的进 MEMORY.md）。对使用者来说，你不需要记住"哪条该进哪个文件"——<strong>用 memory 工具写入，框架自动归类</strong>；你只需要记住"记忆由两个文件共同承载"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -370,7 +370,7 @@
 <p>记忆文件不是手写的，是通过 memory 工具操作。它有哪些动作？每个动作具体做什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 35 页：memory 工具支持增、查、改、删四类操作：</p>
+<p>memory 工具支持增、查、改、删四类操作：</p>
 <table>
 <tr><th>操作</th><th>作用</th><th>类比</th></tr>
 <tr><td><strong>add</strong></td><td>向记忆文件添加一条新的事实</td><td>记事本新写一行</td></tr>
@@ -394,10 +394,10 @@
 </div></div>
 <div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 配额与基准：2200 和 1375 是"让你注意"的信号</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>讲义出现两个数字：MEMORY.md 2200 字符、USER.md 1375 字符——这代表什么？是硬性上限吗？</p>
+<p>有两个数字：MEMORY.md 2200 字符、USER.md 1375 字符——这代表什么？是硬性上限吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>这两个数字是<strong>实例中记忆文件的实际大小</strong>（讲义说"约占上限的 % 表示还有多少空间"），说明：</p>
+<p>这两个数字是<strong>实例中记忆文件的实际大小</strong>（界面上写着"约占上限的 %"，表示还有多少空间），说明：</p>
 <ul><li>记忆文件<strong>有大小管理逻辑</strong>：不能无限膨胀（否则每轮都占大量上下文 token）；</li><li>2200/1375 这类数值提示"<strong>到量后该清理了</strong>"。</li></ul>
 <p>两个含义：<strong>① 记忆是有配额的资源</strong>（类似 SOUL 截断机制）；<strong>② 配额提示你定期 review 记忆，合并冗余、删除过时</strong>。Hermes 文档常见指引"如果达到上限，重新组织和删除陈旧条目"。</p>
 <table>
@@ -421,7 +421,7 @@
 <p>一目了然地知道记忆文件存哪、长什么样，方便直接查看和备份。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给的信息：</p>
+<p>关键信息：</p>
 <table>
 <tr><th>项</th><th>值</th></tr>
 <tr><td>目录</td><td><code>~/.hermes/memories/</code></td></tr>
@@ -603,9 +603,9 @@ hermes memory delete &lt;id&gt;     # 按返回的条目 ID 删除</pre>
 </table>
 <p>一句话记住本章：<strong>MEMORY.md 管"你的目标与事实"、USER.md 管"你的偏好细节"，memory 工具增查改删、session_search 翻旧账；定期清理配额，新会话验生效——记得住，才谈得上进化。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>Hermes 记忆系统分哪两层？各自用什么载体？（请说明长期记忆和情景记忆各管什么）</li><li>MEMORY.md 和 USER.md 的职责差异是什么？请各给出两个"该写进去"的例子。</li><li>memory 工具的四个操作分别是什么？如果一条记忆写错了，应该用哪两个操作组合来修正？</li><li>讲义中 MEMORY.md 2200 字符、USER.md 1375 字符这两个数字代表什么？记忆文件接近上限时应该怎么办？</li><li>session_search 的作用是什么？它和 memory search 的使用场景有什么区别？请各举一个"该用哪个"的问法例子。</li><li>为什么说"API Key 绝不能写进记忆文件"？正确的存放方式是？（结合技能章节的规则回答）</li><li>请完整默写"记忆完整生命周期"的流程图（获取→写盘→持久→读取→运用→更新六步），并说明记忆主要在哪一步之后对行为产生实际影响。</li></ol>
+<ol><li>Hermes 记忆系统分哪两层？各自用什么载体？（请说明长期记忆和情景记忆各管什么）</li><li>MEMORY.md 和 USER.md 的职责差异是什么？请各给出两个"该写进去"的例子。</li><li>memory 工具的四个操作分别是什么？如果一条记忆写错了，应该用哪两个操作组合来修正？</li><li>MEMORY.md 2200 字符、USER.md 1375 字符这两个数字代表什么？记忆文件接近上限时应该怎么办？</li><li>session_search 的作用是什么？它和 memory search 的使用场景有什么区别？请各举一个"该用哪个"的问法例子。</li><li>为什么说"API Key 绝不能写进记忆文件"？正确的存放方式是？（结合技能章节的规则回答）</li><li>请完整默写"记忆完整生命周期"的流程图（获取→写盘→持久→读取→运用→更新六步），并说明记忆主要在哪一步之后对行为产生实际影响。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 34-35 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 34-35 页）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://www.sqlite.org/fts5.html" target="_blank" rel="noopener"><span class="k">参考</span>SQLite FTS5 全文检索文档</a>
 </div>

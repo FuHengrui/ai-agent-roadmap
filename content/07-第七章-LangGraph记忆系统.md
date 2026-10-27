@@ -278,7 +278,7 @@ agent = create_agent(llm, tools, checkpointer=checkpointer, store=store)
    A. 短期 Checkpointer　　B. 长期 Store（带 namespace）　　C. 系统日志　　D. 提示词里
 
 @@links
-讲义|07_LLM框架实战_Memory.pdf|#
+参考|07_LLM框架实战_Memory.pdf|#
 官网|LangGraph 记忆概念|https://langchain-ai.github.io/langgraph/concepts/memory/
 官网|MemorySaver 参考|https://langchain-ai.github.io/langgraph/reference/checkpoints/
 官网|LangGraph Store 参考|https://langchain-ai.github.io/langgraph/reference/store/

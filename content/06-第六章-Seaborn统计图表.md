@@ -407,6 +407,6 @@ g.map(sns.scatterplot, 'total_bill', 'tip')                # 每个格子画散�
 7. jointplot、pairplot、FacetGrid 三个多图函数分别适合什么场景？
 
 @@links
-讲义|Seaborn 讲义（index.md，39 页）|#
+参考|Seaborn （index.md，39 页）|#
 工具|Seaborn 官网|https://seaborn.pydata.org/
 文档|Seaborn 示例画廊|https://seaborn.pydata.org/examples/index.html

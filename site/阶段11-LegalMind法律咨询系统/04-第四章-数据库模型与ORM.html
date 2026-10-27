@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 11 · LegalMind 法律咨询系统 › <strong>第四章</strong></div>
 <h1>第四章　数据库模型与 ORM 层</h1>
-<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章骨架跑起来了，Postgres 里却一张表都没有。没有表，用户注册没地方存、案例没地方放、聊天记录没地方写。本章用 <strong>Tortoise ORM</strong>（Python 原生 async ORM）把第一章蓝图里的四张核心表落成代码：<code>User</code>（用户）、<code>Case</code>（案例）、<code>ChatSession/ChatMessage</code>（会话与消息）、<code>GeneratedDocument</code>（文书）。 重点是搞懂三件事：<strong>UUID 主键怎么选</strong>、<strong>Postgres 数组（法条列表）在 ORM 里怎么表达</strong>、<strong>外键关系怎么挂</strong>。学完本章，数据库里会有完整表结构，第 9 章的聊天接口和第 3 章的建表逻辑全部打通。</p>
 </div>
@@ -351,7 +351,7 @@ class Case(Model):
     case_type = fields.CharField(max_length=50)       # 民事/刑事/行政/劳动争议
     summary = fields.TextField()                      # 裁判要旨/案情摘要
     content = fields.TextField(null=True)             # 裁判文书全文（详情页用）
-…（以下省略 6 行，完整代码见讲义/仓库对应位置）
+…（以下省略 6 行，完整代码见仓库对应位置）
             &quot;title&quot;: self.title,
             &quot;case_number&quot;: self.case_number,
             &quot;court&quot;: self.court,
@@ -517,7 +517,7 @@ messages = await ChatMessageRecord.filter(chat_session=session).order_by(&quot;c
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么主键选 UUID 不用自增 int？至少举两个生产场景的理由。</li><li><code>laws = fields.JSONField(default=list)</code> 底层是什么？怎么判断数组"包含某个法条"？</li><li>ForeignKeyField 的 related_name 是干嘛的？<code>user.sessions.all()</code> 返回什么？</li><li><code>update_or_create</code> 的"幂等"体现在哪里？判断更新目标要什么前提？</li><li>写会话列表接口时，为什么要 order_by + limit 一起用？</li><li>一个用户的文书数据隔离是怎么实现的（字段与查询层面分别说明）？</li><li>Tortoise 的 <code>filter(court__icontains="北京")</code> 里的 <code>__icontains</code> 是什么语法？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>LegalMind 法律咨询系统：数据库模型与 ORM</a>
+<a href="#"><span class="k">参考</span>LegalMind 法律咨询系统：数据库模型与 ORM</a>
 <a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise ORM 官方文档</a>
 <a href="https://www.postgresql.org/docs/current/datatype-json.html" target="_blank" rel="noopener"><span class="k">官网</span>PostgreSQL JSONB 文档</a>
 </div>

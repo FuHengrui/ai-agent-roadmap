@@ -9,7 +9,7 @@
 这一章学三件事：①KMeans 的完整流程（四步）；②它凭什么"聚得好"（距离度量 + 目标函数）；③K 怎么选（肘部法）。它是后面 KMeans 变体、密度聚类的地基。
 
 @@map 上一章→本章→下一章
-上一章结束监督学习的线性家族。**本章转入无监督：理解聚类任务、KMeans 四步流程、欧氏/余弦距离、SSE 目标与肘部法选 K（讲义4 全部 10 页）**。下一章讲 KMeans 的五个改良变体（KMedoids、二分 KMeans、KMeans++、elkan、Mini-Batch，讲义5），再下一章讲能聚"任意形状"的密度聚类（讲义6）。
+上一章结束监督学习的线性家族。**本章转入无监督：理解聚类任务、KMeans 四步流程、欧氏/余弦距离、SSE 目标与肘部法选 K**。下一章讲 KMeans 的五个改良变体（KMedoids、二分 KMeans、KMeans++、elkan、Mini-Batch），再下一章讲能聚"任意形状"的密度聚类。
 
 @@point ① 聚类的任务定义：无监督的"分堆"
 @@need 要解决什么
@@ -272,6 +272,6 @@ KMeans 全貌：
 8. 假设你接手一个用户分群任务，写出从数据到结果的完整步骤（含预处理、选 K、验收）。
 
 @@links
-讲义|KMeans 聚类讲义（10 页）|#
+参考|KMeans 聚类（10 页）|#
 文档|sklearn KMeans 文档|https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
 文档|K-means 聚类（维基）|https://en.wikipedia.org/wiki/K-means_clustering

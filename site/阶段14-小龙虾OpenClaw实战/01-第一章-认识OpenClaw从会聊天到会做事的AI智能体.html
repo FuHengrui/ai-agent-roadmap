@@ -307,13 +307,13 @@
 <tr><td>是否操作计算机</td><td>否，活在对话框里</td><td>是，直接操作你的系统和应用</td></tr>
 <tr><td>完成方式</td><td>输出答案，剩下你自己干</td><td>端到端执行，把活干完才汇报</td></tr>
 </table>
-<p>所以讲义反复强调：<strong>OpenClaw 不是一个更聪明的聊天机器人，而是一个能让 AI 动手干活的系统</strong>。它本身不是大模型，而是"驱动 LLM 动手"的框架——模型负责想，框架负责做。</p>
+<p>所以要强调：<strong>OpenClaw 不是一个更聪明的聊天机器人，而是一个能让 AI 动手干活的系统</strong>。它本身不是大模型，而是"驱动 LLM 动手"的框架——模型负责想，框架负责做。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为 OpenClaw 是"新一代 GPT"</td><td>OpenClaw 是 Agent 框架，靠 LLM 提供"脑子"，自己提供"手脚"。概念别混：模型负责想，框架负责做</td></tr>
-<tr><td>官网记错、搜出一堆仿冒站</td><td>讲义原文官网是 openclaw.ai，教程、仓库、文档都以它为准</td></tr>
+<tr><td>官网记错、搜出一堆仿冒站</td><td>官网是 openclaw.ai，教程、仓库、文档都以它为准</td></tr>
 <tr><td>觉得"会回答"=“会做事”</td><td>回答只是生成文本；做事需要操作环境。后面所有功能都围绕"感知 + 行动"展开</td></tr>
 </table>
 </div>
@@ -323,7 +323,7 @@
 <p>用惯云上 AI 后总有一个隐忧：对话内容、上传的文件都经过别人的服务器，<strong>数据和隐私的控制权不在自己手里</strong>，敏感文档更不敢喂给云端。需要一个"代码在自己机器上跑"的方案。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义把这一条放在产品定位第一位：<strong>本地优先（Local-first）</strong>——与完全依赖云端服务的 AI 产品不同，OpenClaw 的核心程序在<strong>用户自己的硬件</strong>（个人电脑、Mac Mini 或云服务器）上运行，用户拥有对数据和隐私的<strong>最高控制权</strong>。</p>
+<p>这一条在产品定位里排第一位：<strong>本地优先（Local-first）</strong>——与完全依赖云端服务的 AI 产品不同，OpenClaw 的核心程序在<strong>用户自己的硬件</strong>（个人电脑、Mac Mini 或云服务器）上运行，用户拥有对数据和隐私的<strong>最高控制权</strong>。</p>
 <p>这背后是"Local-first 软件"理念：程序主体与用户数据默认落在本地设备，云端只是可选的增强。</p>
 <table>
 <tr><th>维度</th><th>完全云端 AI</th><th>本地优先（Local-first）</th></tr>
@@ -338,7 +338,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为本地优先=断网单机，完全不能联网</td><td>本地优先指<strong>程序与数据默认在本地</strong>，联网能力由你配置，不是一刀切断网</td></tr>
-<tr><td>以为本地优先=永远不能远程访问</td><td>讲义明确允许把程序装在自己的<strong>云服务器</strong>上，既本地控制又远程可用</td></tr>
+<tr><td>以为本地优先=永远不能远程访问</td><td>官方明确允许把程序装在自己的<strong>云服务器</strong>上，既本地控制又远程可用</td></tr>
 <tr><td>觉得"都放本地了还谈什么隐私"</td><td>本地化只是第一步，接入哪些模型、开放哪些目录、权限怎么控仍要自己把关</td></tr>
 </table>
 </div>
@@ -382,7 +382,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为"视觉控制=提前录好固定坐标"</td><td>它是<strong>实时识别 UI 元素</strong>再决定动作，窗口移动、界面变化也能应对；固定坐标方案一改动就废</td></tr>
-<tr><td>以为有了视觉控制就不需要 API</td><td>两者互补：API 快、稳、准；视觉控制兜底"没有 API"的场景。讲义定位是"打破孤岛"，不是取代 API</td></tr>
+<tr><td>以为有了视觉控制就不需要 API</td><td>两者互补：API 快、稳、准；视觉控制兜底"没有 API"的场景。它的定位是"打破孤岛"，不是取代 API</td></tr>
 <tr><td>界面识别失败就以为功能坏了</td><td>识别是概率性的，界面太乱、元素过小时会失败；后面实战会用截图与日志定位，属于调优不是缺陷</td></tr>
 </table>
 </div>
@@ -401,7 +401,7 @@
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为用 OpenClaw 必须有编程基础</td><td>交互层就是聊天，谁都会用；编程能力是给"扩展功能"用的，不是使用门槛</td></tr>
 <tr><td>以为聊天只能"问问题"</td><td>聊天里可以下<strong>操作指令</strong>："转 PDF""发送到某群""整理文件"都是任务，不只是问答</td></tr>
-<tr><td>一上来就想把全部 IM 都接上</td><td>讲义列了一堆候选，先挑一个自己常用的走通全流程，其余按需再加，别一次性铺开</td></tr>
+<tr><td>一上来就想把全部 IM 都接上</td><td>IM 候选有一堆，先挑一个自己常用的走通全流程，其余按需再加，别一次性铺开</td></tr>
 </table>
 </div>
 </div></div>
@@ -452,7 +452,7 @@
 <p>大量重复劳动发生在<strong>文件系统层面</strong>：下载文件夹一团乱、几百个文件要改名、装软件、跑脚本——这些事以前要么手动点，要么写脚本。你要的是一句话搞定。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>OpenClaw 具备<strong>读、写、编辑本地文件</strong>和<strong>执行 Shell 命令</strong>的能力。讲义给出的典型场景：整理下载文件夹、按指令批量修改文件名、安装软件、运行代码脚本。</p>
+<p>OpenClaw 具备<strong>读、写、编辑本地文件</strong>和<strong>执行 Shell 命令</strong>的能力。典型场景：整理下载文件夹、按指令批量修改文件名、安装软件、运行代码脚本。</p>
 <p>这意味着它可以：</p>
 <ul><li><strong>整理</strong>：按类型、时间把散乱文件归档；</li><li><strong>批量改</strong>：几百个文件按规则重命名；</li><li><strong>运维</strong>：安装软件、执行系统命令；</li><li><strong>执行</strong>：帮你跑一段代码脚本并反馈结果。</li></ul>
 <p>这也是"会做事"最实在的一环：<strong>文件系统是它在电脑里干活的主战场</strong>，配合视觉控制（第 ⑦ 点），既能"看界面"又能"动文件"。</p>
@@ -520,7 +520,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>OpenClaw 支持<strong>跨设备节点系统（Node System）</strong>：在多个设备（Mac、Windows、iOS、Android）上安装<strong>节点</strong>，<strong>主程序可以远程调用这些节点执行任务</strong>。</p>
-<p>讲义给出的两个典型场景：</p>
+<p>两个典型场景：</p>
 <ul><li>在<strong>办公室电脑</strong>上接收指令，调用<strong>家里的 Mac Mini</strong> 执行一项下载任务；</li><li>通过<strong>手机节点</strong>获取<strong>当前 GPS 位置</strong>。</li></ul>
 <p>一句话理解：<strong>主程序是"大脑"，各设备节点是"手足"</strong>——大脑在任何一端，手脚分散在不同设备上，指令远程下发、结果远程回收。</p>
 </div>
@@ -529,7 +529,7 @@
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为每个设备各装一套互不联通的 OpenClaw</td><td>是<strong>主程序 + 节点</strong>的架构：节点负责执行、主程序统一调度，才能跨设备联动</td></tr>
 <tr><td>节点暴露出来不做访问控制</td><td>节点可被远程调用，等同给设备开了远程口子；只放信任设备，并关注鉴权配置</td></tr>
-<tr><td>以为手机节点只能收 GPS</td><td>节点能执行主程序下发的任务；GPS 只是讲义举例之一，能力取决于节点权限与安装的功能</td></tr>
+<tr><td>以为手机节点只能收 GPS</td><td>节点能执行主程序下发的任务；GPS 只是举例之一，能力取决于节点权限与安装的功能</td></tr>
 </table>
 </div>
 </div></div>
@@ -568,9 +568,9 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>用一句话向同事解释：OpenClaw 和"更聪明的聊天机器人"的本质区别是什么？</li><li>"本地优先（Local-first）"到底指的是什么？它和"完全离线、永不联网"是不是一回事，为什么？</li><li>什么是"API 孤岛"？通用计算机控制是怎么打破它的？</li><li>请列举 OpenClaw 七类核心功能中的任意五类，并各配一个真实使用场景。</li><li>技能（Skills）的本质是什么？为什么说它让 OpenClaw 的功能"无限扩展"？</li><li>"每天早上 8 点自动整理邮件"靠的是什么机制？Cron 五个字段的顺序是什么？</li><li>判断题：OpenClaw 的持久化记忆就是把聊天记录原样存下来，存得越全越好。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>openclaw.pdf「认识OpenClaw」章节</a>
+<a href="#"><span class="k">参考</span>openclaw.pdf「认识OpenClaw」章节</a>
 <a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
-<a href="#"><span class="k">讲义</span>阶段 14 讲义源码目录（小龙虾 OpenClaw 实战）</a>
+<a href="#"><span class="k">参考</span>阶段 14 源码目录（小龙虾 OpenClaw 实战）</a>
 </div>
 <div class="pager">
 <a href="../阶段13-大数据处理与分布式检索技术/18-第十八章-阶段实战日志统计全链路与收官复习.html">← 第十八章　阶段实战：日志统计全链路与收官复习</a>

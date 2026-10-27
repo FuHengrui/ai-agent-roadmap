@@ -223,6 +223,6 @@ ELMo（2018，AllenAI）是**预训练范式的发令枪**：
 7. ELMo 在双向性、架构、迁移方式上分别有什么局限？这些局限如何引出 BERT？
 
 @@links
-讲义|ELMo动态词向量讲义|#
+参考|ELMo动态词向量|#
 文档|Deep contextualized word representations（ELMo 原文）|https://arxiv.org/abs/1802.05365
 文档|NLP 预训练模型发展简史|https://thegradient.pub/nlp-imagenet/

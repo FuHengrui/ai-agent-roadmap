@@ -1,5 +1,5 @@
 @@h1 第九章　Agent 系统与 LangGraph 工作流
-@@sub 阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★★
+@@sub 阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 前几章攒了一堆零件：意图识别、案例检索、法律问答、文书生成——但**谁来决定先用哪个、怎么串起来**？写死 if-else 只能处理"能预测的顺序"，可用户的真实请求千变万化：有人问问题（问答）、有人要写诉状（文书）、有人想查判例（检索）。顺序是**运行时由意图决定的**。
@@ -75,7 +75,7 @@ def _build_graph(self) -> StateGraph:
     workflow.add_node("document_generation", self._document_node)
     workflow.add_node("final_output", self._output_node)
 
-…（以下省略 11 行，完整代码见讲义/仓库对应位置）
+…（以下省略 11 行，完整代码见仓库对应位置）
         "qa": "qa_generation",
         "search": "final_output",
     })
@@ -121,7 +121,7 @@ async def _retrieval_node(self, state: AgentState) -> dict:
     cases = await self.retrieval_agent.retrieve(query=state.get("query"), top_k=5)
     return {"retrieved_cases": cases}
 
-…（以下省略 14 行，完整代码见讲义/仓库对应位置）
+…（以下省略 14 行，完整代码见仓库对应位置）
 async def _document_node(self, state: AgentState) -> dict:
     response = await self.document_agent.generate(
         document_type=state.get("document_type", "起诉状"),
@@ -176,7 +176,7 @@ _checkpointer: AsyncPostgresSaver | None = None
 async def init_checkpointer():
     """lifespan 启动时调用：建连接池 + 幂等建表"""
     global _pool, _checkpointer
-…（以下省略 4 行，完整代码见讲义/仓库对应位置）
+…（以下省略 4 行，完整代码见仓库对应位置）
     _checkpointer = AsyncPostgresSaver(conn=_pool)
     await _checkpointer.setup()      # 自动创建 checkpoints 表
     return _checkpointer
@@ -278,6 +278,6 @@ async for chunk, metadata in workflow.astream(query=query, thread_id=session_id)
 7. 为什么图要"懒编译"？在模块顶层直接编译会触发什么问题？
 
 @@links
-讲义|LegalMind 法律咨询系统：Agent 系统与 LangGraph 工作流|#
+参考|LegalMind 法律咨询系统：Agent 系统与 LangGraph 工作流|#
 官网|LangGraph 官方文档|https://langchain-ai.github.io/langgraph/
 官网|LangGraph Checkpointer 文档|https://langchain-ai.github.io/langgraph/concepts/persistence/

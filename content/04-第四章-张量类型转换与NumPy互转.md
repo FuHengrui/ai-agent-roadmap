@@ -225,6 +225,6 @@ result_np = result.cpu().numpy()          # 结果回 NumPy 可视化
 7. 请写出"NumPy 数据 → GPU 张量 → 模型推理 → NumPy 结果"的完整代码骨架（含必要的 import）。
 
 @@links
-讲义|PyTorch入门讲义（张量类型转换与NumPy互转）|#
+参考|PyTorch入门（张量类型转换与NumPy互转）|#
 文档|NumPy 官方文档|https://numpy.org/doc/stable/
 文档|PyTorch tensor 转换相关文档|https://pytorch.org/docs/stable/generated/torch.Tensor.numpy.html

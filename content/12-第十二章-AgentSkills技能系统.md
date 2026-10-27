@@ -169,7 +169,7 @@ description: 为iwen餐厅生成符合品牌调性的物料设计创意，当用
 "造轮子"前先看看生态——很多高频技能别人已经做好了，直接装。
 
 @@idea 核心思路
-课程推荐的必用技能：
+推荐的必用技能：
 
 | 技能 | 用途 |
 |---|---|
@@ -257,7 +257,7 @@ Skill 的意义：
    A. 直接写进脚本　　B. 用环境变量占位符（os.getenv）　　C. 写进 SKILL.md　　D. 无所谓
 
 @@links
-讲义|skills.pdf|#
+参考|skills.pdf|#
 官方|Claude Code Skills 文档|https://docs.anthropic.com/en/docs/claude-code/skills
 聚合|SkillsMP（11万+技能）|https://skillsmp.com/
 社区|Skills Directory|https://www.reddit.com/r/ClaudeAI/comments/1ll7yzq/

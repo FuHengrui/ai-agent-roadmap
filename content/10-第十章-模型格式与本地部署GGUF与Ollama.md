@@ -1,5 +1,5 @@
 @@h1 第十章　模型格式与部署：GGUF、Safetensors 与 Ollama
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 模型训练/微调再牛，如果不能"被业务调用"，价值就是零。部署第一课是**认清模型格式**：`safetensors`、`gguf`、`onnx`、`bin` 到底什么区别？为什么 Ollama 只认 GGUF？微调完的模型怎么变成 Ollama 能跑的东西？
@@ -50,7 +50,7 @@
 第 7 章学会了 merge_and_unload 合并；这一章要一步到位：**合并 + 导出 GGUF**。Unsloth 提供了 `save_pretrained_gguf` 一条龙，参数少、坑也少。这一节讲用法与量化级别选择。
 
 @@idea 核心思路
-讲义/Unsloth 代码（整理为可运行版）：
+示例代码（整理为可运行版）：
 
 ```python
 from unsloth import FastLanguageModel
@@ -116,7 +116,7 @@ GGUF 三大法宝（对照普通 safetensors）：
 GGUF 有了，接下来是部署入口：装 Ollama、把模型"倒入"它、然后就能聊。这一节走通"下载→导入→跑"三步，重点交代换成你自己模型的导入方法。
 
 @@idea 核心思路
-步骤（讲义流程，具体命令以官网为准）：
+步骤（具体命令以官网为准）：
 
 ```bash
 # 1. 安装 Ollama（Windows/macOS/Linux 官网下载）
@@ -194,7 +194,7 @@ print(resp.json()["response"])
 碎片步骤走完，需要一张总图：LoRA 补丁 → 合并 → GGUF → Ollama → API，每一环的输入输出是什么、在哪一环最容易卡。这张图就是你给别人讲"微调后怎么上线"的提纲。
 
 @@idea 核心思路
-完整部署链路（对应讲义与本章各节）：
+完整部署链路（对应本章各节）：
 
 ```
 lora_model_uns（补丁，几百MB）
@@ -301,6 +301,6 @@ Ollama 服务（localhost:11434）
 7. 部署报错"connection refused"最可能的原因是什么？怎么解？
 
 @@links
-讲义|大模型 DeepSeek 微调与应用：模型格式、GGUF 导出与 Ollama 部署|#
+参考|大模型 DeepSeek 微调与应用：模型格式、GGUF 导出与 Ollama 部署|#
 官网|Ollama 官方文档（Modelfile/API）|https://github.com/ollama/ollama
 官网|Unsloth GGUF 导出指南|https://github.com/unslothai/unsloth/wiki/GGUF

@@ -429,6 +429,6 @@ LIMIT ...        -- 7. 分页
 6. 判断某列为空为什么不能用 = NULL？正确写法是什么？
 7. LIKE '张%'、LIKE '%三%'、LIKE '张_' 分别匹配什么样的字符串？
 @@links
-讲义|MySQL 讲义（158 页）|#
+参考|MySQL （158 页）|#
 文档|MySQL INSERT 语法|https://dev.mysql.com/doc/refman/8.0/en/insert.html
 文档|MySQL SELECT 语法|https://dev.mysql.com/doc/refman/8.0/en/select.html

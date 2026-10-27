@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第八章</strong></div>
 <h1>第八章　Unsloth 入门：把微调提速 2~5 倍</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>手写 LoRA 教会你原理，但真跑起来它"又慢又费显存"——4GB 显存装 1.5B 模型都勉强。Unsloth 就是"LoRA 的涡轮增压"：<strong>训练快 2~5 倍、显存省最多 70%</strong>，代码却几乎一样（还是用你学会的 LoraConfig + SFTTrainer）。</p>
 <p>这一章回答三件事：</p>
@@ -299,7 +299,7 @@
 <p>"快 2~5 倍、省 70% 显存"听着像营销话术。它是怎么做到的？会不会改乱了模型？——这一节把 Unsloth 的工作方式讲明白，消除"黑魔法"疑虑。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Unsloth 的核心手段（讲义表述），一句话说就是：</p>
+<p>Unsloth 的核心手段，一句话说就是：</p>
 <p><strong>它没有改写模型结构，只替换了 PyTorch 的运行内核（kernels）与注意力实现</strong>：</p>
 <table>
 <tr><th>传统方式</th><th>Unsloth 方式</th></tr>
@@ -326,17 +326,17 @@
 <p>装任何库第一关是"我机器能不能跑"。Unsloth 对显卡、驱动、Python 版本有明确要求——先对照清单自检，避免装完报错再返工。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义系统要求（整理为清单）：</p>
+<p>系统要求（整理为清单）：</p>
 <table>
 <tr><th>项目</th><th>要求</th></tr>
 <tr><td>显卡</td><td>NVIDIA GPU，<strong>8GB 显存</strong>以上（Q4 量化微调）</td></tr>
 <tr><td>驱动</td><td>已装 NVIDIA 驱动 + CUDA 可用</td></tr>
-<tr><td>Python</td><td>3.10~3.12（讲义环境以 3.11 为例）</td></tr>
+<tr><td>Python</td><td>3.10~3.12（示例环境以 3.11 为例）</td></tr>
 <tr><td>PyTorch</td><td>2.3.0+（CUDA 版本）</td></tr>
 <tr><td>bitsandbytes</td><td>有它支持 QLoRA 4bit 量化微调</td></tr>
 </table>
 <p>补充说明：</p>
-<ul><li>显存不够 8GB？→ 用 <strong>QLoRA（4bit 量化 + LoRA）</strong>，同样模型显存再降约 70%，4GB 卡也能玩转 1.5B~7B 模型；</li><li>纯 CPU / AMD / Mac？→ Unsloth 支持有限，本课程以 NVIDIA CUDA 为主线（讲义环境为 Colab T4 ~15GB 显存，够跑 7B 量化微调）。</li></ul>
+<ul><li>显存不够 8GB？→ 用 <strong>QLoRA（4bit 量化 + LoRA）</strong>，同样模型显存再降约 70%，4GB 卡也能玩转 1.5B~7B 模型；</li><li>纯 CPU / AMD / Mac？→ Unsloth 支持有限，本书以 NVIDIA CUDA 为主线（示例环境为 Colab T4 ~15GB 显存，够跑 7B 量化微调）。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -352,7 +352,7 @@
 <p>环境要求过关了，安装就一句话的事。但要注意：装 unsloth 必须和 torch 版本匹配，别在旧的 lora_env 里硬装导致冲突。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义安装命令（Linux/WSL2/Colab）：</p>
+<p>安装命令（Linux/WSL2/Colab）：</p>
 <pre>pip uninstall unsloth -y          # 如果有旧版，先卸
 pip install --upgrade pip
 pip install &quot;unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git&quot;</pre>
@@ -373,12 +373,12 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ 模型选择：DeepSeek-R1-1.5B 为什么是"起步标配"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>Unsloth 支持几十个模型，选哪个跑第一遍？这一节给三条选择标准，并解释为什么课程选 <strong>DeepSeek-R1-1.5B</strong> 作为全程示范。</p>
+<p>Unsloth 支持几十个模型，选哪个跑第一遍？这一节给三条选择标准，并解释为什么选 <strong>DeepSeek-R1-1.5B</strong> 作为全程示范。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <table>
 <tr><th>模型</th><th>显存需求（Q4 LoRA）</th><th>特点</th><th>适合谁</th></tr>
-<tr><td>DeepSeek-R1-1.5B</td><td>~1.8GB</td><td>轻、快、推理风格强</td><td>课程示范 / 起步期</td></tr>
+<tr><td>DeepSeek-R1-1.5B</td><td>~1.8GB</td><td>轻、快、推理风格强</td><td>全书示范 / 起步期</td></tr>
 <tr><td>Qwen2.5-7B</td><td>~5GB</td><td>中文强、通用</td><td>中文任务主力</td></tr>
 <tr><td>Llama-8B</td><td>~6GB</td><td>通用强</td><td>英文任务主力</td></tr>
 </table>
@@ -400,8 +400,8 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <p>本地显卡不够格怎么办？——Colab 免费 T4（15GB 显存）直接能跑 7B 量化微调。这一节说清 Colab 路线：怎么开、怎么装、怎么传数据，适合"硬件不够但想上强度"的场景。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Colab 使用的要点（讲义流程）：</p>
-<ol><li>打开 [colab.research.google.com] → 新建笔记本 → 选 T4 GPU 运行时；</li><li>前三格运行讲义给出的安装代码（含 unsloth 一键装）；</li><li>后续代码格按第 9 章流程走：加载模型 → 数据 → SFTTrainer → 训练；</li><li>数据/结果文件用 Colab 的"上传/下载"或挂载 Google Drive 存取。</li></ol>
+<p>Colab 使用的要点：</p>
+<ol><li>打开 [colab.research.google.com] → 新建笔记本 → 选 T4 GPU 运行时；</li><li>前三格运行上面的安装代码（含 unsloth 一键装）；</li><li>后续代码格按第 9 章流程走：加载模型 → 数据 → SFTTrainer → 训练；</li><li>数据/结果文件用 Colab 的"上传/下载"或挂载 Google Drive 存取。</li></ol>
 <p>Colab + T4 的典型能力边界：</p>
 <table>
 <tr><th>配置</th><th>可跑的极限</th></tr>
@@ -423,7 +423,7 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <p>DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（model family）概念——理解它，你就能判断"某个模型 Unsloth 支不支持"，并能套用同一套代码。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>关键认知（讲义明确提示）：</p>
+<p>关键认知：</p>
 <p><strong>DeepSeek-R1-Distill-Qwen-1.5B 的架构 = Qwen 架构</strong>（蒸馏自 R1 但骨架是 Qwen），同理 R1-Distill-Llama-8B 就是 Llama 架构。</p>
 <p>影响：</p>
 <ul><li>Unsloth 的优化按<strong>架构族</strong>做（"llama" 开头的优化，通吃所有 llama 架构模型）；</li><li>加载代码几乎一样：<code>FastLanguageModel.from_pretrained(模型名)</code>，Unsloth 自动识别架构并套对应优化；</li><li>你不需要为"马甲模型"单独查"是否支持"——<strong>认架构族即可</strong>。</li></ul>
@@ -449,7 +449,7 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <p>有人觉得"会用 Unsloth 就不用手写 LoRA 了"——这是误解。Unsloth 快在哪里、能替代什么、替代不了什么？把边界划清，你才知道什么时候该用工具、什么时候该回到底层。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>对比表（Unsloth vs 手写基线，基于讲义与原理）：</p>
+<p>对比表（Unsloth vs 手写基线，基于原理）：</p>
 <table>
 <tr><th>维度</th><th>手写 LoRA 基线</th><th>Unsloth</th></tr>
 <tr><td>训练速度</td><td>标准</td><td>快 2~5 倍</td></tr>
@@ -460,7 +460,7 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <tr><td>教学价值</td><td><strong>理解本质</strong></td><td>生产效率</td></tr>
 </table>
 <p>结论：<strong>Unsloth 优化的是性能层，不是理论层</strong>。如果第 6~7 章你理解了什么在训练，Unsloth 只是让它跑得更快；如果直接上来用 Unsloth，遇到报错你连"它在优化哪里"都不知道。</p>
-<p>先手写、后工具——这就是课程的顺序逻辑。</p>
+<p>先手写、后工具——这就是本书的顺序逻辑。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -510,7 +510,7 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <h4>自测：能不能答上来</h4>
 <ol><li>Unsloth 加速的核心机制是什么？（一句话）</li><li>Windows 原生装 Unsloth 常遇什么问题？推荐的替代环境是什么？</li><li>选微调模型的三原则是什么？</li><li>DeepSeek-R1-Distill-Qwen-1.5B 属于哪个架构族？判断依据是什么？</li><li>为什么说"先手写 LoRA、再用 Unsloth"？换个模型遇到报错，谁兜底？</li><li>Colab 免费版的两个典型限制是什么？对应解法？</li><li>本章验收清单里最关键的显存相关检查是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>大模型 DeepSeek 微调与应用：Unsloth 介绍与系统要求、模型选择、Colab 使用</a>
+<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：Unsloth 介绍与系统要求、模型选择、Colab 使用</a>
 <a href="https://github.com/unslothai/unsloth" target="_blank" rel="noopener"><span class="k">官网</span>Unsloth 官方仓库（模型支持名单）</a>
 <a href="https://colab.research.google.com/signup" target="_blank" rel="noopener"><span class="k">官网</span>Colab 免费版说明</a>
 </div>

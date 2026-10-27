@@ -37,6 +37,8 @@ ROOT = Path(__file__).resolve().parent.parent
 #    它们是中文内容里通用的示例人名，会满屏误报。
 #
 BANNED: dict[str, str] = {
+    "课程来源站": "itbaizhan",
+    "课程品牌":   "百战",
     # "真名":       "你的名字",
     # "设备型号":    "你的笔记本型号",
     # "手机序列号":  "adb devices 查出来的那串",

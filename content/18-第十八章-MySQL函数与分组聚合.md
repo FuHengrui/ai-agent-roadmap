@@ -323,6 +323,6 @@ ORDER BY avg_score DESC;
 6. CASE WHEN 判断 90/80/60 三个挡位时，为什么 90 的判断要写在最前面？
 7. COUNT(*) 和 COUNT(phone) 的结果可能不同，为什么？
 @@links
-讲义|MySQL 讲义（158 页）|#
+参考|MySQL （158 页）|#
 文档|MySQL 函数索引|https://dev.mysql.com/doc/refman/8.0/en/functions.html
 文档|GROUP BY 优化|https://dev.mysql.com/doc/refman/8.0/en/group-by-optimization.html

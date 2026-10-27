@@ -279,20 +279,20 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 1 · 大语言模型基础与工程化实践 › <strong>第八章</strong></div>
 <h1>第八章　模块</h1>
-<div class="subtitle">阶段 1 · 大语言模型基础与工程化实践　|　34 课时　|　难度 ★★★</div>
+<div class="subtitle">阶段 1 · 大语言模型基础与工程化实践　|　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>到上一章为止，你的代码全在一个 <code>.py</code> 文件里。<strong>但一个真实的项目不可能这样。</strong></p>
 <p>想一想：配置从哪读？提示词写在哪？调用大模型的代码放哪？怎么保证换个模型不用改一百个地方？</p>
 <p>如果全塞在一个文件里，那个文件会长到 <strong>2000 行</strong>——改一个功能得滚动半天，两个人同时改必然冲突。</p>
 <p>这一章解决<strong>最后一个层次的组织问题：把代码拆成多个文件，并且让它们互相调用。</strong></p>
-<p>而且这一章不只是讲语法——<strong>最后 12 节课是一个完整的项目（Novel 自动化生成系统）</strong>。你会看到一个真实的 AI 应用是怎么搭起来的：<strong>配置、Schema、提示词、LLM 客户端、导出、pipeline、入口</strong>。</p>
+<p>而且这一章不只是讲语法——<strong>最后一大块是一个完整的项目（Novel 自动化生成系统）</strong>。你会看到一个真实的 AI 应用是怎么搭起来的：<strong>配置、Schema、提示词、LLM 客户端、导出、pipeline、入口</strong>。</p>
 <p><strong>这是阶段 1 的收官，也是你从"会写 Python"走到"能搭 AI 应用"的那一步。</strong></p>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">第七章：让程序在出错时能活下去</span>
 <span class="node"><span class="here">本章 ← 你在这里：把代码拆成模块和包，并做一个完整的 AI 应用</span></span>
-<span class="node">├─ 前半：模块化的理念与工具（7 课时）</span>
-<span class="node">└─ 后半：<strong>Novel 自动化生成系统实战</strong>（12 课时）★</span>
+<span class="node">├─ 前半：模块化的理念与工具</span>
+<span class="node">└─ 后半：<strong>Novel 自动化生成系统实战</strong> ★</span>
 <span class="node">阶段 2 —— 把这个项目升级成 Web 服务（FastAPI + 数据库）</span>
 <span class="node">后续阶段 —— RAG、Agent、部署</span>
 </div>
@@ -313,7 +313,7 @@
 <tr><td><strong>能复用</strong></td><td>这个项目写的 <code>llm_client.py</code>，下个项目直接拷过去</td></tr>
 <tr><td><strong>改一处不惊动全局</strong></td><td>换模型只改 <code>llm_client.py</code>，业务代码一动不动</td></tr>
 </table>
-<p><strong>讲义说的"设计和实现分离"</strong>就是这个意思：</p>
+<p><strong>所谓的"设计和实现分离"</strong>就是这个意思：</p>
 <div class="cmd"><span class="c">#  ✗ 设计和实现混在一起</span>
 <span class="c">#  main.py 里既写着&amp;quot;用哪个模型&amp;quot;（设计），</span>
 <span class="c">#           又写着&amp;quot;怎么发请求&amp;quot;（实现）</span>
@@ -408,7 +408,7 @@ if __name__ == &quot;__main__&quot;:
 <tr><td><strong>被导入</strong> <code>import utils</code></td><td><code>"utils"</code></td></tr>
 </table>
 <p><strong>这让你能"既当模块用、又能单独测试"</strong>——是 Python 项目里的标准写法，几乎每个文件都有这一段。</p>
-<p><strong>动态导入</strong>（讲义提到 <code>importlib</code>）——按字符串导入模块：</p>
+<p><strong>动态导入</strong>（用 <code>importlib</code>）——按字符串导入模块：</p>
 <pre>import importlib
 mod = importlib.import_module(&quot;collectors.zhaopin&quot;)
 klass = getattr(mod, &quot;ZhaopinCollector&quot;)</pre>
@@ -1076,7 +1076,7 @@ if __name__ == &quot;__main__&quot;:
     sys.exit(main())</pre>
 </div>
 <div class="step trap"><span class="label">测试与调试的三条经验</span>
-<p><strong>① 先跑最小规模</strong>——先生成 1 章，确认流程通了，再跑 3 章、10 章。<strong>别一上来就跑 100 章。</strong>（这门课的费用是按 token 算的）</p>
+<p><strong>① 先跑最小规模</strong>——先生成 1 章，确认流程通了，再跑 3 章、10 章。<strong>别一上来就跑 100 章。</strong>（这个项目的费用是按 token 算的）</p>
 <p><strong>② 每一步的产物都存下来</strong>——人物、大纲、正文都写文件。出问题时能看是哪一步的产物不对。</p>
 <p><strong>③ 先用假数据测流程</strong>——把 <code>LLMClient.chat</code> 临时替换成返回固定字符串的函数，能在<strong>不花钱</strong>的情况下把流程跑通：</p>
 <pre>class FakeLLM:
@@ -1099,10 +1099,8 @@ pipeline.llm = FakeLLM()          # 注入假客户端，零成本调试</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li><code>import utils</code> 和 <code>from utils import clean</code> 各有什么优劣？为什么 <code>import *</code> 不推荐？</li><li><code>if __name__ == "__main__":</code> 的作用是什么？为什么几乎每个文件都有它？</li><li>为什么把 <code>json.py</code> 放进项目目录会让标准库的 <code>json</code> 用不了？</li><li>什么是包？<code>__init__.py</code> 有什么作用？为什么要用它"把子模块提上来"？</li><li>虚拟环境解决什么问题？不用它会怎样？</li><li>Novel 项目里，为什么 API Key 要放 <code>.env</code> 而不是 yaml 或代码里？</li><li>Schema（数据类）在这个项目里起什么作用？为什么说"先定 schema 是工程化思维的第一步"？</li><li>为什么 LLM 客户端要封成一个类？换成另一个模型供应商时，需要改哪些文件？</li><li>pipeline 里"单章失败不中断整体"是怎么做的？为什么这一点很重要？</li><li>什么是"依赖注入"？它在测试里怎么帮你省下真金白银？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>模块</a>
-<a href="#"><span class="k">讲义</span>Novel 自动化生成系统</a>
-<a href="#"><span class="k">资料</span>本章资料下载地址</a>
-<a href="#"><span class="k">资料</span>本章资料下载地址（Novel 项目）</a>
+<a href="#"><span class="k">参考</span>模块</a>
+<a href="#"><span class="k">参考</span>Novel 自动化生成系统</a>
 <a href="https://docs.python.org/zh-cn/3/tutorial/modules.html" target="_blank" rel="noopener"><span class="k">官网</span>Python 官方教程 · 模块</a>
 </div>
 <div class="pager">

@@ -345,7 +345,7 @@ uv run uvicorn src.api.main:app --reload</pre>
 </div></div>
 <div class="point" id="p3"><div class="head"><span class="no">3</span>③ 配置与密钥：<code>.env</code> 是唯一允许放密钥的地方</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>项目要接智谱/通义两家 API，就要配两个 Key。<strong>Key 一旦写进代码或提交进 git，等于把钱包贴在代码里</strong>——教程里就发现过讲师真实 Key（<code>sk-...</code>）躺在 <code>.env</code> 里。企业项目的红线：密钥和配置必须和代码分离。</p>
+<p>项目要接智谱/通义两家 API，就要配两个 Key。<strong>Key 一旦写进代码或提交进 git，等于把钱包贴在代码里</strong>——现实项目里就发现过真实 Key（<code>sk-...</code>）躺在 <code>.env</code> 里。企业项目的红线：密钥和配置必须和代码分离。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>做法是 <strong><code>.env</code> 文件 + 环境变量读取</strong>：</p>
@@ -361,7 +361,7 @@ api_key = os.getenv(&quot;ZHIPU_API_KEY&quot;)   # 读不到就报错，而不�
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td>跟着教程抄，把示例 Key 直接用了</td><td>示例 Key 是<strong>别人（讲师）的、可能还在生效</strong>，抄了是在花别人的钱。一律换成 <code>os.environ[...]</code> 占位，用自己的 Key</td></tr>
+<tr><td>跟着示例抄，把示例 Key 直接用了</td><td>示例 Key 是<strong>别人（原作者）的、可能还在生效</strong>，抄了是在花别人的钱。一律换成 <code>os.environ[...]</code> 占位，用自己的 Key</td></tr>
 <tr><td>把 <code>.env</code> 提交进 git</td><td>一旦推送，Key 就进了代码历史，删都删不干净。<code>git log</code> 里永久留存。必须立即从 git 移除并轮换 Key</td></tr>
 <tr><td>在代码里 <code>print</code> 或写日志打 Key</td><td>日志也会泄露密钥。Key 只在"读取时"出现，之后只存在内存变量里</td></tr>
 </table>
@@ -388,7 +388,7 @@ api_key = os.getenv(&quot;ZHIPU_API_KEY&quot;)   # 读不到就报错，而不�
 <p>PDF 是文档库里最难的格式：有的是文字版、有的是扫描图片、有的一页里嵌套表格、有的页眉页脚一页一页重复。<strong>Python 生态里 PDF 解析库有一堆，选错了要么表格乱、要么扫描件读不出字。</strong></p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义先比对了三种轻量方案，再给出进阶方案：</p>
+<p>这里先比对三种轻量方案，再给出进阶方案：</p>
 <table>
 <tr><th>方案</th><th>特长</th><th>短板</th><th>本项目判断</th></tr>
 <tr><td><strong>PyMuPDF</strong>（fitz）</td><td>快，纯文本提取</td><td>表格、版面、扫描件处理弱</td><td>简单 PDF 够用</td></tr>
@@ -504,16 +504,16 @@ def parse_document(file_path: str) -&gt; str:
 <ol><li>项目为什么按"能力"而不是按"文件类型"组织目录？</li></ol>
 <p>A. 看起来整齐　　B. 功能内聚，改动只动一个包，加/换能力不影响其它层　　C. Python 要求　　D. 方便找文件</p>
 <ol><li>关于 API Key 的正确做法是？</li></ol>
-<p>A. 写进代码常量，方便　　B. 放进 .env，代码用 os.getenv() 读取，.env 不进 git　　C. 写在 README 里　　D. 用讲师示例的 Key 就行</p>
+<p>A. 写进代码常量，方便　　B. 放进 .env，代码用 os.getenv() 读取，.env 不进 git　　C. 写在 README 里　　D. 用示例里的 Key 就行</p>
 <ol><li>项目选 Docling 而不选 PyMuPDF 的原因是？</li></ol>
-<p>A. Docling 更快　　B. 复杂版面/表格/扫描件的结构化解析能力强　　C. PyMuPDF 收费　　D. 只是讲师偏好</p>
+<p>A. Docling 更快　　B. 复杂版面/表格/扫描件的结构化解析能力强　　C. PyMuPDF 收费　　D. 只是个人偏好</p>
 <ol><li>跨页表格不合并直接入库会导致？</li></ol>
 <p>A. 解析报错　　B. 一个逻辑表格被切碎，检索只能命中一半，答案残缺　　C. 表格变成图片　　D. 向量维度错误</p>
 <ol><li>新增一种文档格式（如 .txt），正确接入方式是？</li></ol>
 <p>A. 在所有调用处加 if 分支　　B. 新写一个解析器类 + 在注册表加一行注册　　C. 改 BaseParser 接口　　D. 重写整个解析模块</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>章节3_项目搭建.pdf</a>
-<a href="#"><span class="k">讲义</span>章节4_数据处理模块.pdf</a>
+<a href="#"><span class="k">参考</span>章节3_项目搭建.pdf</a>
+<a href="#"><span class="k">参考</span>章节4_数据处理模块.pdf</a>
 <a href="#"><span class="k">源码</span>rag_project/src/parsers（解析器全量实现）</a>
 <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener"><span class="k">官网</span>uv 包管理器</a>
 <a href="https://github.com/docling-project/docling" target="_blank" rel="noopener"><span class="k">官网</span>Docling（IBM 文档智能解析）</a>

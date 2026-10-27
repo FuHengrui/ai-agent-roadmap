@@ -255,6 +255,6 @@ OpenClaw 云端部署 = 三步，各有使命：
 6. WebUI 管理面板里，"模型配置"和"通道配置"分别管什么？它们各自对应 OpenClaw 的哪个部分？
 
 @@links
-讲义|openclaw.pdf「OpenClaw安装部署」章节|#
+参考|openclaw.pdf「OpenClaw安装部署」章节|#
 官网|OpenClaw 官方网站|https://openclaw.ai/
 官网|阿里云轻量应用服务器|https://www.aliyun.com/

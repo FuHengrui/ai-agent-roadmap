@@ -226,6 +226,6 @@ Faster R-CNN 的意义不只是"一个检测器"，它开启了**"锚框 + 两�
 7. 论文如何用消融实验证明"3尺度3比例 anchor 有效"？你学到读论文的什么姿势？
 
 @@links
-讲义|Faster R-CNN 论文原文（讲义提取版）|#
+参考|Faster R-CNN 论文原文（提取版）|#
 论文|Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks|https://arxiv.org/abs/1506.01497
 文档|PyTorch torchvision 中的 Faster R-CNN 实现|https://pytorch.org/vision/stable/models/generated/torchvision.models.detection.fasterrcnn_resnet50_fpn.html

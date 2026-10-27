@@ -458,7 +458,7 @@ ANN(HNSW)：粗筛+精排 → ~95% 准确，O(log N) 极快</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>pip install faiss-cpu        # CPU 版，Windows 可用
 # pip install faiss-gpu     # GPU 版需 Linux + CUDA，速度可提升 10~100 倍</pre>
-<p>上手极简：建索引 → 塞向量 → 查询。下面用讲义同款"数字向量"（手机号/订单号）演示全流程——<strong>数字一样能做向量检索</strong>，这比上来就上文本模型更好理解核心机制：</p>
+<p>上手极简：建索引 → 塞向量 → 查询。下面用一组"数字向量"（手机号/订单号）演示全流程——<strong>数字一样能做向量检索</strong>，这比上来就上文本模型更好理解核心机制：</p>
 <pre>import numpy as np, faiss
 
 items = [{&quot;type&quot;: &quot;phone&quot;, &quot;id&quot;: &quot;用户A&quot;, &quot;number&quot;: 13800001234},
@@ -660,8 +660,8 @@ print(collection.query(query_embeddings=[[0.1, 0.2, 0.3]], n_results=1))</pre>
 <ol><li>企业既要精确关键词搜索又要语义搜索，首选哪个？</li></ol>
 <p>A. FAISS　　B. Pinecone　　C. Elasticsearch　　D. Chroma</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>章节1_向量数据库基础.pdf</a>
-<a href="#"><span class="k">讲义</span>vertor_db 代码包（7 个产品的上手示例）</a>
+<a href="#"><span class="k">参考</span>章节1_向量数据库基础.pdf</a>
+<a href="#"><span class="k">参考</span>vertor_db 代码包（7 个产品的上手示例）</a>
 <a href="https://github.com/facebookresearch/faiss" target="_blank" rel="noopener"><span class="k">官网</span>FAISS 官方仓库</a>
 <a href="https://milvus.io/zh" target="_blank" rel="noopener"><span class="k">官网</span>Milvus 官网</a>
 <a href="https://www.elastic.co/cn" target="_blank" rel="noopener"><span class="k">官网</span>Elasticsearch 官网</a>

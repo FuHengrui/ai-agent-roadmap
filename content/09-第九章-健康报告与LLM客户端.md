@@ -1,5 +1,5 @@
 @@h1 第九章　健康报告与 LLM 客户端
-@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★★
+@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★
 
 @@why 这一章在解决什么问题
 血糖分析算出了数字，可患者要看的是"医生怎么说"——**把统计数字变成人话**，这就是 LLM 的工作。本章同时拿下两件事：**一是 LLMClient 封装**（为什么把 LangChain 的 ChatOpenAI 包一层），**二是健康报告生成接口**（周报/月报自动生成：统计 → 摘要 → LLM 建议 → 落库展示）。
@@ -295,6 +295,6 @@ LLM 输出太飘或太长？temperature 和 max_tokens 怎么设？
 7. 报告模块与对话模块（LangGraph）在编排上的本质差异？
 
 @@links
-讲义|安康智慧健康管理平台：糖尿病AI健康助手讲义|#
+参考|安康智慧健康管理平台：糖尿病AI健康助手|#
 官网|LangChain ChatOpenAI 文档|https://python.langchain.com/docs/integrations/chat/openai/
 官网|阿里云百炼兼容模式|https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope/

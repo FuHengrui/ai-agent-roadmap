@@ -313,7 +313,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>想找"平台后台配置"去改机器人</td><td>大部分配置都在 <code>hermes gateway setup</code> 向导里完成，不是到微信/QQ 开放平台后台改</td></tr>
-<tr><td>接入配置改完没生效</td><td>讲义操作节奏：<strong>配置完成后续重启网关</strong>，消息才能正常收发</td></tr>
+<tr><td>接入配置改完没生效</td><td>操作节奏：<strong>配置完成后要重启网关</strong>，消息才能正常收发</td></tr>
 <tr><td>以为是多个命令分别接三个平台</td><td>一个 <code>hermes gateway setup</code> 入口，向导里逐个平台配置，别自己拆成三条命令乱跑</td></tr>
 </table>
 </div>
@@ -323,8 +323,8 @@
 <p>QQ 是最省心的入口，先拿它练手，建立"接入平台没那么难"的信心。需要明确：QQ 接入到底几步、用哪个 App 扫。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义原话：<strong>扫码接入就行，很简单哦~</strong></p>
-<p>流程就是：<code>hermes gateway setup</code> → 选择 QQ → 屏幕上出现二维码 → 用 QQ 手机客户端扫码 → 授权后即接通。接通后<strong>消息可以正常接收</strong>（讲义第 10 页验证：消息可以正常接收）。</p>
+<p>核心就一句：<strong>扫码接入就行，很简单哦~</strong></p>
+<p>流程就是：<code>hermes gateway setup</code> → 选择 QQ → 屏幕上出现二维码 → 用 QQ 手机客户端扫码 → 授权后即接通。接通后<strong>消息可以正常接收</strong>（验证点：消息可以正常接收）。</p>
 <p>QQ 接入后，还要回答两个"权限问题"，下一节细讲：</p>
 <ul><li><strong>DM 私信</strong>怎么授权（三种策略）；</li><li><strong>群聊</strong>怎么处理（禁用 / 全部 / 白名单）。</li></ul>
 <p>先扫码把通道打通，再做权限收敛——这就是本章心法"先接通，再收紧"。</p>
@@ -343,14 +343,14 @@
 <p>Agent 接通后变成"消息联系人"，理论上谁都能私信它、指挥它干活。如果来者不拒，等于把服务器、终端命令权限开放给所有人。必须收敛"谁有资格跟它说悄悄话"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给了三种 DM（直接消息/私信）授权策略，从上到下安全递增：</p>
+<p>三种 DM（直接消息/私信）授权策略，从上到下安全递增：</p>
 <table>
 <tr><th>策略</th><th>含义</th><th>适用</th></tr>
 <tr><td><strong>使用 DM 配对审批（推荐）</strong></td><td>只有通过配对审批的设备/账号能私信</td><td>个人使用首选，安全与便利平衡</td></tr>
 <tr><td>允许所有直接消息</td><td>任何人都能私信指挥它</td><td>只在你完全信任环境且公开场景才考虑</td></tr>
 <tr><td>仅允许已列明的用户 OpenIDs</td><td>硬编码白名单账号</td><td>团队/固定人群场景，清单要自己维护</td></tr>
 </table>
-<p>讲义在 QQ、微信、飞书三个平台里都标注"<strong>使用 DM 配对审批（推荐）</strong>"。微信/飞书还会有对应的<strong>配对审批流程</strong>（第 ⑤、⑦ 点），QQ 按相同策略选择即可。</p>
+<p>QQ、微信、飞书三个平台里都标注"<strong>使用 DM 配对审批（推荐）</strong>"。微信/飞书还会有对应的<strong>配对审批流程</strong>（第 ⑤、⑦ 点），QQ 按相同策略选择即可。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -366,14 +366,14 @@
 <p>私信管住了，还有一关：群聊。Agent 可能被拉进群，群里的 @、消息、闲聊要不要都回应？回应错了/被滥用怎么办？需要一套群聊处置策略。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>QQ 接入时讲义给出群聊处置三选一（微信接入时也出现同类选项）：</p>
+<p>QQ 接入时的群聊处置三选一（微信接入时也有同类选项）：</p>
 <table>
 <tr><th>策略</th><th>含义</th><th>适用</th></tr>
 <tr><td><strong>禁用群聊（推荐）</strong></td><td>群里完全不理，只管私信</td><td>个人使用首选，最省心最安全</td></tr>
 <tr><td>允许所有群聊</td><td>任何群的任何消息都响应</td><td>群多且希望全量服务时才用，注意刷屏与误触发</td></tr>
 <tr><td>只允许列出的群聊 ID</td><td>硬编码白名单群，只有指定群能指挥</td><td>团队固定群场景</td></tr>
 </table>
-<p>飞书略有不同：讲义给出的推荐是"<strong>仅在小组中提到 @ 时才响应（推荐）</strong>"——即群聊里只有 @ 它才回应，这是飞书场景下推荐的中间态（第 ⑦ 点展开）。</p>
+<p>飞书略有不同：推荐的是"<strong>仅在小组中提到 @ 时才响应（推荐）</strong>"——即群聊里只有 @ 它才回应，这是飞书场景下推荐的中间态（第 ⑦ 点展开）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -390,7 +390,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>微信接入 = <strong>扫码 + 授权策略配置 + 设备配对</strong>。步骤骨架：</p>
-<ol><li><code>hermes gateway setup</code> → 选择微信 → 扫码；</li><li>选 DM 授权策略（推荐 DM 配对审批）+ 群聊策略（推荐禁用群聊）；</li><li><strong>设备配对</strong>：在 WSL 下执行配对命令完成配对（讲义原文：微信和 QQ 不同的是，需要进行设备配对）：</li></ol>
+<ol><li><code>hermes gateway setup</code> → 选择微信 → 扫码；</li><li>选 DM 授权策略（推荐 DM 配对审批）+ 群聊策略（推荐禁用群聊）；</li><li><strong>设备配对</strong>：在 WSL 下执行配对命令完成配对（和 QQ 不同，微信需要先做设备配对）：</li></ol>
 <pre>hermes pairing approve &lt;平台&gt; &lt;配对码&gt;
 # 示例结构：hermes pairing approve weixin ZV5J582F
 # 实际使用时用你扫码后得到的真实配对码替换 &lt;配对码&gt;</pre>
@@ -418,7 +418,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>飞书扫码后也没消息</td><td>和微信一样有配对环节，漏了就收不到消息（讲义：与接入微信一样，需要配对哦~）</td></tr>
+<tr><td>飞书扫码后也没消息</td><td>和微信一样有配对环节，漏了就收不到消息（与接入微信一样，需要配对哦~）</td></tr>
 <tr><td>飞书策略选项和微信不完全一样</td><td>群聊策略里飞书多了"仅 @ 响应"（推荐），微信/QQ 是"禁用/全部/白名单"——按各平台实际选项选即可</td></tr>
 <tr><td>以为飞书只能企业号才能接</td><td>扫码用个人飞书客户端也能完成接入，按向导走</td></tr>
 </table>
@@ -452,7 +452,7 @@
 <p>很多新手接完平台发现"机器人没权限干这干那"，第一反应是去平台后台开权限。但 Hermes 的"授权信息"概念和平台权限是两回事，需要先厘清。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义在接入时反复出现"<strong>如何授权信息？</strong>"这个标题，底下跟的是"使用 DM 配对审批 / 允许所有直接消息 / 仅允许已列明的用户 OpenIDs"三个选项——注意：<strong>这里的"授权"授权的是"谁可以跟 Agent 对话"（人或设备），不是"Agent 能用哪些功能"</strong>。</p>
+<p>接入时反复出现"<strong>如何授权信息？</strong>"这个标题，底下跟的是"使用 DM 配对审批 / 允许所有直接消息 / 仅允许已列明的用户 OpenIDs"三个选项——注意：<strong>这里的"授权"授权的是"谁可以跟 Agent 对话"（人或设备），不是"Agent 能用哪些功能"</strong>。</p>
 <table>
 <tr><th>概念</th><th>对象</th><th>在哪配</th></tr>
 <tr><td>DM/群聊授权</td><td>谁有权指挥 Agent（人/设备/群）</td><td>gateway 接入向导</td></tr>
@@ -472,11 +472,11 @@
 </div></div>
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 配置完为什么必须重启网关</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>接入策略改完、配对也做了，但消息还是不通。讲义里有一句"后续全部 Yes 即可，然后重启网关"——这个重启为什么是必做项？</p>
+<p>接入策略改完、配对也做了，但消息还是不通。有一句"后续全部 Yes 即可，然后重启网关"——这个重启为什么是必做项？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>gateway 在启动时加载平台连接、授权策略、配对状态等配置；<strong>新增/修改的接入配置不会在运行中热生效</strong>，需要重启网关让配置重新加载。</p>
-<p>讲义操作节奏（微信接入示例）：</p>
+<p>操作节奏（微信接入示例）：</p>
 <ol><li>扫码 + 选授权策略（DM 配对审批）+ 群聊策略；</li><li>"后续全部 Yes 即可"——按推荐项确认；</li><li><strong>然后重启网关</strong>；</li><li>消息可以正常接收。</li></ol>
 <p>常见重启方式：退出当前 gateway 进程/会话后重新 <code>hermes gateway setup</code>，或按向导提示操作。只要"改过接入配置"，就把"重启网关"刻进肌肉记忆——<strong>改配置必重启</strong>，这是 gateway 场景的通用规律（本阶段第 11 章定时任务也遵循类似重载逻辑）。</p>
 </div>
@@ -570,9 +570,9 @@
 </table>
 <p>一句话记住本章：<strong>扫码接通、配对定权、群聊收紧、改完重启——平台接入不外如是；先接一个，立刻去干活。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>所有消息平台接入的总入口命令是什么？gateway 在消息进出中扮演什么角色？</li><li>QQ 接入的核心动作是什么？接入后必须回答哪两类权限问题（各举一种策略）？</li><li>DM 私信三种授权策略分别是什么？个人使用推荐哪一种，为什么？</li><li>微信接入和 QQ 接入最大的差异是什么？请写出配对命令的结构（配对码用 &lt;配对码&gt; 占位），并说明为什么必须在 WSL 环境执行。</li><li>飞书推荐的群聊策略是什么？它和"禁用群聊""允许所有群聊"的区别在哪？</li><li>讲义说"后续全部 Yes 即可，然后重启网关"——为什么改完接入配置必须重启网关？不重启会有什么后果？</li><li>请说出接入验收清单里除了"能收到消息"之外，还应该验证什么？为什么这一点同样关键？</li></ol>
+<ol><li>所有消息平台接入的总入口命令是什么？gateway 在消息进出中扮演什么角色？</li><li>QQ 接入的核心动作是什么？接入后必须回答哪两类权限问题（各举一种策略）？</li><li>DM 私信三种授权策略分别是什么？个人使用推荐哪一种，为什么？</li><li>微信接入和 QQ 接入最大的差异是什么？请写出配对命令的结构（配对码用 &lt;配对码&gt; 占位），并说明为什么必须在 WSL 环境执行。</li><li>飞书推荐的群聊策略是什么？它和"禁用群聊""允许所有群聊"的区别在哪？</li><li>"后续全部 Yes 即可，然后重启网关"这句话——为什么改完接入配置必须重启网关？不重启会有什么后果？</li><li>请说出接入验收清单里除了"能收到消息"之外，还应该验证什么？为什么这一点同样关键？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 9-15 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 9-15 页）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://learn.microsoft.com/zh-cn/windows/wsl/filesystems" target="_blank" rel="noopener"><span class="k">官方</span>WSL 访问 Windows 文件</a>
 </div>

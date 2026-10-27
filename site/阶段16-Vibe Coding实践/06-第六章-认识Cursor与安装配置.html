@@ -302,9 +302,9 @@
 <p><strong>Cursor 是一个类 VSCode 的智能编程 IDE</strong>，集成了 <strong>GPT-4、Claude 3.5</strong> 等先进大语言模型（LLM），本质上是一个<strong>内置 AI 助手的 VSCode</strong>。</p>
 <p>它的定位：</p>
 <ul><li><strong>支持自然语言编程</strong>：像和人交流一样与 AI 协作；</li><li><strong>覆盖全流程辅助</strong>：从代码编写、调试、重构到部署，都有智能辅助；</li><li><strong>目标是双提升</strong>：大幅提升<strong>开发效率</strong>和<strong>代码质量</strong>。</li></ul>
-<p>国内同类 AI 编程 IDE 参考（讲义点名）：</p>
+<p>国内同类 AI 编程 IDE 参考：</p>
 <ul><li><strong>阿里 Lingma IDE</strong>：https://lingma.aliyun.com/</li><li><strong>字节 Trae</strong>：https://www.trae.com.cn/</li></ul>
-<p>讲义的表述"内置 AI 助手的 VSCode"特别关键——<strong>它继承了 VSCode 的操作习惯和插件生态</strong>（通过导入配置实现），老 VSCode 用户迁移成本极低。</p>
+<p>"内置 AI 助手的 VSCode"这个说法特别关键——<strong>它继承了 VSCode 的操作习惯和插件生态</strong>（通过导入配置实现），老 VSCode 用户迁移成本极低。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -344,7 +344,7 @@
 <p>革新的价值要用对比来证明。Cursor 和传统 IDE 在核心维度差在哪？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义从功能特性和交互方式两个维度做了详细对比，整理成一张浓缩表：</p>
+<p>从功能特性和交互方式两个维度对比，可以浓缩成一张表：</p>
 <table>
 <tr><th>维度</th><th>传统 IDE</th><th>Cursor</th></tr>
 <tr><td>代码补全</td><td>基于语法分析和已有代码的静态补全</td><td>AI 驱动，理解上下文和意图</td></tr>
@@ -372,7 +372,7 @@
 <p>Cursor 怎么装？官网入口和前面几步怎么走？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>官网地址：<strong>https://cursor.com/cn/downloads</strong>（讲义原文）。</p>
+<p>官网地址：<strong>https://cursor.com/cn/downloads</strong>。</p>
 <p>安装流程（前四步）：</p>
 <ol><li><strong>下载安装包</strong>：从官网下载对应系统（Windows/macOS）安装包；</li><li><strong>第一步：选择"我同意此协议"</strong>——同意许可协议；</li><li><strong>第二步：选择需要的附加任务</strong>——如"添加到 PATH"、"创建桌面快捷方式"等，按需勾选；</li><li><strong>第三步：选择安装</strong>——确认安装位置后安装；</li><li><strong>第四步：选择配置</strong>——安装完成后的初始配置界面。</li></ol>
 <p>整体是"下一步"式安装，唯一要留神的是<strong>附加任务勾选项</strong>（决定是否加入右键菜单/命令行）。</p>
@@ -380,7 +380,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>官网打不开或下载慢</td><td>国内访问 cursor.com 可能受限；用讲义配套软件目录的离线安装包，或稍后重试</td></tr>
+<tr><td>官网打不开或下载慢</td><td>国内访问 cursor.com 可能受限；用配套软件目录的离线安装包，或稍后重试</td></tr>
 <tr><td>附加任务漏勾"添加到 PATH"</td><td>装完可在系统设置里补（或用安装包修复安装）；cli 命令（cursor .）需要它</td></tr>
 <tr><td>安装被安全软件拦截</td><td>Cursor 是正规 IDE；如有拦截，选择"允许"，或临时关闭误报的安全软件</td></tr>
 </table>
@@ -451,10 +451,10 @@
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 对比表补全：纠错、质量、学习、适用人群</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>八维对比只覆盖了主干，讲义在"学习支持、错误处理、代码质量"等维度还给了更细的对照——这些差异要怎么理解？</p>
+<p>八维对比只覆盖了主干，"学习支持、错误处理、代码质量"等维度还有更细的对照——这些差异要怎么理解？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义的第 2 页对比表还有这 7 个维度：</p>
+<p>对比表还有这 7 个维度：</p>
 <table>
 <tr><th>维度</th><th>传统 IDE</th><th>Cursor</th></tr>
 <tr><td>学习支持</td><td>需要外部资料和文档</td><td>内置技术知识，实时学习辅导</td></tr>
@@ -489,9 +489,9 @@
 </table>
 <p>一句话记住本章：<strong>Cursor 是"AI 原生的 VSCode"——从架构到体验全程为 AI 设计，装好它、选隐私模式、记住 Ctrl+K/L// 三连，下一章我们解锁它的四种 AI 模式。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>Cursor 是什么？讲义说它"本质上是"什么？它集成了哪些 LLM（至少写出两个）？</li><li>Cursor 的核心特性有哪五个？其中哪个是最本质的？</li><li>传统 IDE 和 Cursor 在"代码生成、问题解决、学习曲线"三个维度上分别是什么区别？</li><li>Cursor 官网下载地址是什么？安装流程中"附加任务"这一步要注意什么？</li><li>从 VS Code 导入配置会导入哪些内容？第六步"选择数据偏好"推荐选哪个模式？为什么？</li><li>如何安装 Cursor 的中文语言包？</li><li>Cursor 的三组核心 AI 快捷键分别是什么？各有什么功能？</li></ol>
+<ol><li>Cursor 是什么？它"本质上是"什么？它集成了哪些 LLM（至少写出两个）？</li><li>Cursor 的核心特性有哪五个？其中哪个是最本质的？</li><li>传统 IDE 和 Cursor 在"代码生成、问题解决、学习曲线"三个维度上分别是什么区别？</li><li>Cursor 官网下载地址是什么？安装流程中"附加任务"这一步要注意什么？</li><li>从 VS Code 导入配置会导入哪些内容？第六步"选择数据偏好"推荐选哪个模式？为什么？</li><li>如何安装 Cursor 的中文语言包？</li><li>Cursor 的三组核心 AI 快捷键分别是什么？各有什么功能？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Cursor 讲义</a>
+<a href="#"><span class="k">参考</span>Cursor</a>
 <a href="https://cursor.com/cn/downloads" target="_blank" rel="noopener"><span class="k">工具</span>Cursor 官网（下载）</a>
 <a href="https://lingma.aliyun.com/" target="_blank" rel="noopener"><span class="k">参考</span>阿里 Lingma IDE</a>
 <a href="05-第五章-MCP协议与智能旅行助手实战.html"><span class="k">上一章</span>MCP 与智能旅行助手</a>

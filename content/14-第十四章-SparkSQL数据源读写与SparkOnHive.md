@@ -1,5 +1,5 @@
 @@h1 第十四章　SparkSQL 数据源读写与 Spark On Hive
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★★☆
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★☆
 
 @@why 这一章在解决什么问题
 分析做得再好，得先把数据**读进来**、把结果**写出去**。Spark 支持的文件格式五花八门：JSON、CSV、Parquet、ORC、JDBC、Hive 表……选错格式：要么读得慢、要么没 Schema、要么写出去别人读不了。而**Spark On Hive** 更是企业里的标配姿势：Spark 负责算、Hive 负责管元数据（表/分区），两边无缝衔接。
@@ -364,7 +364,7 @@ df.filter(col("dt") === "2026-10-01")
 6. 判断题：df.write.mode("overwrite") 会原子地替换目标目录，跑一半失败也不会留下半成品。
 
 @@links
-讲义|SparkSQL 讲义（第 3 章：数据源读写）|#
-讲义|SparkSQL 讲义（第 4 章：Spark On Hive）|#
+参考|SparkSQL （第 3 章：数据源读写）|#
+参考|SparkSQL （第 4 章：Spark On Hive）|#
 官网|Spark SQL 数据源指南|https://spark.apache.org/docs/latest/sql-data-sources.html
 官网|Spark SQL 读写数据库（JDBC）|https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html

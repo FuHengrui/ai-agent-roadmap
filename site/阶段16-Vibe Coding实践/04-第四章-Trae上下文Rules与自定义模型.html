@@ -406,10 +406,10 @@ config.js: 忽略当前路径的 config.js 文件
 </div></div>
 <div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ Rules 实战案例：用提示词规范 Chakra UI 开发</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>规则到底长什么样？讲义给了一个实战案例——用 Chat 优化 CSS，通过提示词配置项目规则和个人规则。</p>
+<p>规则到底长什么样？先看一个实战案例——用 Chat 优化 CSS，通过提示词配置项目规则和个人规则。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>假设我们要使用 <strong>Chakra UI</strong> 来优化 CSS，可以通过提示词配置规则。一份高质量的项目规则示例（讲义原文）：</p>
+<p>假设我们要使用 <strong>Chakra UI</strong> 来优化 CSS，可以通过提示词配置规则。一份高质量的项目规则示例：</p>
 <pre>你是一位精通 React 和 Chakra UI 的前端开发专家。
 
 ## 核心原则
@@ -446,7 +446,7 @@ config.js: 忽略当前路径的 config.js 文件
 <p>自己写规则费劲，网上有没有现成的"神级提示词"库可以直接抄？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义推荐了一个提示词资源站：<strong>CursorRulesCN</strong>（神级提示词网站）：https://www.cursorrulescn.cn/</p>
+<p>有一个值得推荐的提示词资源站：<strong>CursorRulesCN</strong>（神级提示词网站）：https://www.cursorrulescn.cn/</p>
 <p>该站收集了大量针对不同技术栈（React、Vue、Node、Python 等）的优质规则提示词，可以：</p>
 <ul><li><strong>直接参考</strong>：找到匹配你技术栈的规则模板，改改就能用；</li><li><strong>学习写法</strong>：看别人怎么把"角色+规范+约束"组织成清晰结构；</li><li><strong>覆盖常见组合</strong>：Chakra UI、Tailwind、Next.js 等热门组合都有现成配方。</li></ul>
 <p>注意它虽然叫 CursorRules，规则写法在 Trae、Cursor 等 AI 编程工具间是通用的（都是给 AI 立规矩）。</p>
@@ -456,7 +456,7 @@ config.js: 忽略当前路径的 config.js 文件
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>照搬神级提示词不修改</td><td>别人的规则含特定技术栈假设，直接套用可能水土不服；按自己的项目裁剪</td></tr>
 <tr><td>相信"神级=万能"</td><td>提示词是辅助不是魔法；复杂项目仍需你理解架构与业务</td></tr>
-<tr><td>只看一个站</td><td>神级提示词站有好几个，多看多对比；本站是讲义点名推荐，先从这里开始</td></tr>
+<tr><td>只看一个站</td><td>神级提示词站有好几个，多看多对比；本站是重点推荐，先从这里开始</td></tr>
 </table>
 </div>
 </div></div>
@@ -495,10 +495,10 @@ config.js: 忽略当前路径的 config.js 文件
 </div></div>
 <div class="point" id="p10"><div class="head"><span class="no">10</span>⑩ 模型排行榜：怎么判断哪个模型强</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>预置模型那么多，选哪个看什么？讲义给出了一个基于"实际应用场景"的排行榜参考。</p>
+<p>预置模型那么多，选哪个看什么？下面是一份基于"实际应用场景"的排行榜参考。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义基于实际应用场景给出的模型能力参考：</p>
+<p>基于实际应用场景的模型能力参考：</p>
 <table>
 <tr><th>名次</th><th>模型</th><th>上下文能力</th><th>适合场景</th></tr>
 <tr><td>🏆</td><td>Gemini 2.5 Pro</td><td>200 万 token</td><td>处理整部小说/技术文档、分析多个竞品完整产品文档、大型数据集综合分析</td></tr>
@@ -552,9 +552,9 @@ config.js: 忽略当前路径的 config.js 文件
 </table>
 <p>一句话记住本章：<strong>给 AI 喂上下文用 #、管 AI 的口味用 Rules、换 AI 的脑子用模型列表——三件套齐了，Trae 从"能用"变"好用"。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>Trae 中添加上下文主要用哪个符号？它支持哪几种类型（至少写出 5 种）？</li><li>#Code 和 #Folder 各自适合什么场景？#Workspace 最适合什么场景？</li><li>Trae 默认忽略什么文件中的内容？忽略文件在 #Workspace/#Folder 场景下起什么作用？</li><li>个人规则和项目规则分别在哪里生效？举例说明两者各可配置什么。</li><li>讲义中 Chakra UI 规则案例体现了高质量规则的哪几个特点？</li><li>讲义模型排行榜中，上下文能力从大到小排序是什么？各自适合什么场景？</li><li>添加自定义模型的完整步骤是什么？三要素是哪三个？连接失败的排查思路是什么？</li></ol>
+<ol><li>Trae 中添加上下文主要用哪个符号？它支持哪几种类型（至少写出 5 种）？</li><li>#Code 和 #Folder 各自适合什么场景？#Workspace 最适合什么场景？</li><li>Trae 默认忽略什么文件中的内容？忽略文件在 #Workspace/#Folder 场景下起什么作用？</li><li>个人规则和项目规则分别在哪里生效？举例说明两者各可配置什么。</li><li>Chakra UI 规则案例体现了高质量规则的哪几个特点？</li><li>上面的模型排行榜中，上下文能力从大到小排序是什么？各自适合什么场景？</li><li>添加自定义模型的完整步骤是什么？三要素是哪三个？连接失败的排查思路是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Trae 讲义（38 页）</a>
+<a href="#"><span class="k">参考</span>Trae （38 页）</a>
 <a href="https://www.trae.com.cn/" target="_blank" rel="noopener"><span class="k">工具</span>Trae 官网</a>
 <a href="https://www.cursorrulescn.cn/" target="_blank" rel="noopener"><span class="k">提示词</span>CursorRulesCN 神级提示词</a>
 <a href="03-第三章-TraeBuilder模式AI自主开发.html"><span class="k">上一章</span>Trae Builder 模式</a>

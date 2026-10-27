@@ -250,6 +250,6 @@ print(generate(model, "明月", 30))
 7. 这一章的 generate() 和 GPT 的对话生成，原理上有什么异同？
 
 @@links
-讲义|RNN歌词生成实战讲义|#
+参考|RNN歌词生成实战|#
 文档|PyTorch 文本生成教程（官方）|https://pytorch.org/tutorials/intermediate/char_rnn_generation_tutorial.html
 文档|nn.RNN API 文档|https://pytorch.org/docs/stable/generated/torch.nn.RNN.html

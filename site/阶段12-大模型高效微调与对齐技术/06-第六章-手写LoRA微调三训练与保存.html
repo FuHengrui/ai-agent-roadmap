@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第六章</strong></div>
 <h1>第六章　手写 LoRA 微调（三）：训练与保存</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>模型工作台和数据都备好了，现在要<strong>点火</strong>：把 LoRA 挂到模型上、配好训练超参、跑起 Trainer、把训练好的权重保存下来。这一章是全流程的高潮，也是报错高发区——<code>get_peft_model</code> 报找不到模块、训练显存爆炸、loss 不下降、保存完不知道存了啥，每个坑都能卡你一整天。</p>
 <p>学完这一章，你会得到两个可复用的关键产物：<strong>挂好 LoRA 的可训练模型</strong> + <strong>训练结束后保存下来的 LoRA 权重目录</strong>（几十到几百 MB，而不是几个 GB 的完整模型——这正是 LoRA 的意义）。</p>
@@ -296,7 +296,7 @@
 <p>第 3 章讲过 r / α / target_modules 原理，现在要看它们在代码里长什么样。<code>LoraConfig</code> 每个字段管什么、怎么填？照抄会错在哪？——这一节把配置和原理对上号。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义代码（整理为可运行版）：</p>
+<p>示例代码（整理为可运行版）：</p>
 <pre>from peft import LoraConfig, TaskType
 
 lora_config = LoraConfig(
@@ -332,7 +332,7 @@ lora_config = LoraConfig(
 <p>配置写好了，还差两步"接入"：如果是量化模型，要先 <code>prepare_model_for_kbit_training</code> 做准备；然后 <code>get_peft_model</code> 真正把 LoRA 补丁挂上去。挂完怎么确认"挂上了"？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义代码：</p>
+<p>示例代码：</p>
 <pre>from peft import get_peft_model, prepare_model_for_kbit_training
 
 # 量化模型训练前的准备（4bit/8bit 加载时必调）
@@ -351,7 +351,7 @@ print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B</pre
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>忘了 prepare_model_for_kbit_training，量化模型训练报错/不动</td><td>4bit 加载 + 训练的组合必须 prepare；<strong>非量化（fp16 全精度加载）时这步可省</strong>，讲义环境默认都装 bitsandbytes，加了最稳</td></tr>
+<tr><td>忘了 prepare_model_for_kbit_training，量化模型训练报错/不动</td><td>4bit 加载 + 训练的组合必须 prepare；<strong>非量化（fp16 全精度加载）时这步可省</strong>，环境里默认都装了 bitsandbytes，加了最稳</td></tr>
 <tr><td>看不到 lora_A/lora_B 就开训</td><td>先 debug：检查 get_peft_model 是否成功、print 是否显示 PEFT 结构。<strong>没挂上就训练 = 训了个原模型</strong>，白烧电</td></tr>
 <tr><td>以为"挂 LoRA 后再打印的模型还是原来那坨"</td><td>挂载后模型结构会多出 lora_* 子层、参数统计变化。看到多出的部分才是挂成功的标志</td></tr>
 </table>
@@ -359,10 +359,10 @@ print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B</pre
 </div></div>
 <div class="point" id="p3"><div class="head"><span class="no">3</span>③ TrainingArguments：训练超参每个字段</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>训练是门"玄学调参"？其实每个超参都有明确职责。这节把讲义里的 TrainingArguments 逐行翻译成人话，并标出显存/效果/速度三维取舍——之后你就能自己改参数，而不是只会抄。</p>
+<p>训练是门"玄学调参"？其实每个超参都有明确职责。这节把 TrainingArguments 逐行翻译成人话，并标出显存/效果/速度三维取舍——之后你就能自己改参数，而不是只会抄。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义训练参数（整理为可运行版）：</p>
+<p>训练参数（整理为可运行版）：</p>
 <pre>from transformers import TrainingArguments
 
 training_args = TrainingArguments(
@@ -398,7 +398,7 @@ training_args = TrainingArguments(
 <p>模型、数据、超参都齐了，Trainer 就是把它们组装起来的"总机房"——传模型、训练参数、数据集、分词器，一行 train() 开跑。这一节看清 Trainer 的接线图。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义代码：</p>
+<p>示例代码：</p>
 <pre>from transformers import Trainer
 
 trainer = Trainer(
@@ -427,7 +427,7 @@ trainer.train()              # ← 点火</pre>
 <p>训练结束，现在要把成果"存下来"——但 LoRA 微调的产物不是整个大模型，而是<strong>补丁权重 + 分词器 + 配置</strong>。存什么、存哪、多大，直接影响第 7 章的加载。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义代码：</p>
+<p>示例代码：</p>
 <pre>peft_model_path = &quot;./lora_model&quot;
 tokenizer.save_pretrained(peft_model_path)   # 保存分词器
 trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）</pre>
@@ -445,7 +445,7 @@ trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）</p
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为存的是完整模型，传到别处发现打不开</td><td>LoRA 权重<strong>必须配合同名底座</strong>使用：加载时先载底座、再挂 adapter（第 7 章）。单独拿 adapter 文件给别人用，对方也得先下载底座</td></tr>
-<tr><td>只 save 了模型没 save tokenizer</td><td>加载时 tokenizer 找不到，乱码一堆。<strong>tokenizer 和模型要一起存</strong>（讲义两行都写了）</td></tr>
+<tr><td>只 save 了模型没 save tokenizer</td><td>加载时 tokenizer 找不到，乱码一堆。<strong>tokenizer 和模型要一起存</strong>（示例里两行都写了）</td></tr>
 <tr><td>保存路径被多次覆盖</td><td>LoRA 迭代训练会覆盖旧版本。<strong>按实验命名目录</strong>（如 lora_epoch3 / lora_r16）留档，方便对比回退</td></tr>
 </table>
 </div>
@@ -523,7 +523,7 @@ trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）</p
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>忘了保存 lora_model 就关了环境</td><td>权重在内存里，会话结束即失。<strong>训练一结束立刻 save</strong>（讲义顺序都是先 train 后 save），养成习惯</td></tr>
+<tr><td>忘了保存 lora_model 就关了环境</td><td>权重在内存里，会话结束即失。<strong>训练一结束立刻 save</strong>（顺序都是先 train 后 save），养成习惯</td></tr>
 <tr><td>results 和 lora_model 混为一谈</td><td>results 是日志/检查点（可续训的大物件），lora_model 是轻量补丁（交付物）。<strong>交付用 lora_model，训练维护看 results</strong></td></tr>
 <tr><td>只验收了"没报错"</td><td>没报错≠训得好。<strong>看 loss 曲线</strong>才算完成真实验收——这是和"照着跑完"的分界线</td></tr>
 </table>
@@ -542,7 +542,7 @@ trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）</p
 <h4>自测：能不能答上来</h4>
 <ol><li>LoraConfig 里 r=8、lora_alpha=32 的实际生效强度是多少？为什么这样配？</li><li>怎么确认 LoRA 真的挂载到模型上了？（至少一种方法）</li><li>显存 OOM 时，保持等效 batch 不变应怎么调两个参数？</li><li>Trainer 训练一次要检查哪两个主要观察对象？什么时候判定过拟合？</li><li>LoRA 训练保存的目录里有哪些核心文件？和完整模型的区别是什么？</li><li>tensorboard --logdir 指向哪个目录？打开后重点看哪两张 loss 图？</li><li>训练产物里 results 和 lora_model 的作用分别是什么？交付/续训各用哪个？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>大模型 DeepSeek 微调与应用：配置 LoRA 超参数、训练模型与保存模型</a>
+<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：配置 LoRA 超参数、训练模型与保存模型</a>
 <a href="https://huggingface.co/docs/transformers/main_classes/trainer" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face Trainer 文档</a>
 <a href="https://huggingface.co/docs/peft/developer_guides/save_load" target="_blank" rel="noopener"><span class="k">官网</span>PEFT 保存/加载指南</a>
 </div>

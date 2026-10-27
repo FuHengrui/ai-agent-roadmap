@@ -285,7 +285,7 @@
 <p>主角是 <strong>DBSCAN（基于密度的带噪空间聚类）</strong>，两个参数（epsilon、minPts）就能处理任意形状、自动发现噪声点、甚至不用预先指定簇数 K——这对 KMeans 来说是降维打击。配角是它的两个进阶兄弟：<strong>OPTICS</strong>（解决 epsilon 难选的痛点）和 <strong>MeanShift</strong>（均值漂移，一张图即可理解）。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章修完 KMeans 家族，但形状问题依旧无解。<strong>本章（讲义6 全部 9 页）回答"形状自由"：DBSCAN 的密度概念与三型点、epsilon/minPts 选参、流程与实战，再扩展到 OPTICS 与 MeanShift</strong>。下一章进入新的监督学习家族——决策树：不靠"线性组合"，靠"一连串 if-else 提问"分类。</span>
+<span class="node">上一章修完 KMeans 家族，但形状问题依旧无解。<strong>本章回答"形状自由"：DBSCAN 的密度概念与三型点、epsilon/minPts 选参、流程与实战，再扩展到 OPTICS 与 MeanShift</strong>。下一章进入新的监督学习家族——决策树：不靠"线性组合"，靠"一连串 if-else 提问"分类。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 密度聚类的核心思想：人以群分，密者自聚</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -513,7 +513,7 @@ plt.show()</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>密度聚类和 KMeans 的核心差异是什么？</li><li>DBSCAN 的三型点分别是什么？簇是怎么"扩张"出来的？</li><li>eps 和 minPts 各自控制什么？labels_ 中的 -1 代表什么？</li><li>怎么用 k-距离图选择 eps？</li><li>OPTICS 解决了 DBSCAN 的什么痛点？怎么读可达距离图？</li><li>MeanShift 的流程是怎样的？bandwidth 相当于什么？</li><li>三种密度聚类分别在什么场景优先使用？</li><li>为什么聚类项目要先可视化再选算法？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>密度聚类讲义（9 页）</a>
+<a href="#"><span class="k">参考</span>密度聚类（9 页）</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn DBSCAN 文档</a>
 <a href="https://scikit-learn.org/stable/modules/clustering.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn 聚类总览（含 OPTICS/MeanShift）</a>
 <a href="https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf" target="_blank" rel="noopener"><span class="k">文档</span>DBSCAN 论文（Ester et al., 1996）</a>

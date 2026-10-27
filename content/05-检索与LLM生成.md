@@ -256,8 +256,8 @@ def generate_answer(question):
    A. 让大模型自由发挥　　B. 直接返回"根据现有资料无法确定"，省调用且不胡编　　C. 重试 3 次　　D. 报错
 
 @@links
-讲义|章节7_检索模块.pdf|#
-讲义|章节8_LLM模块.pdf|#
+参考|章节7_检索模块.pdf|#
+参考|章节8_LLM模块.pdf|#
 源码|rag_project/src/retrieval 与 src/llm（SearchService / LLM / rag.py 完整实现）|#
 官网|OpenAI Chat Completions 协议（流式参考）|https://platform.openai.com/docs/guides/text-generation
-官网|tenacity（重试库，讲义嵌入层使用）|https://github.com/jd/tenacity
+官网|tenacity（重试库，嵌入层使用）|https://github.com/jd/tenacity

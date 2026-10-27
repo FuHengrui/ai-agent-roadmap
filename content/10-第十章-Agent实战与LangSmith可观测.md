@@ -287,7 +287,7 @@ Trace: ChatPromptTemplate | ChatOpenAI | ...
    A. 自动改写　　B. 评估（Eval）　　C. 代码生成　　D. 模型训练
 
 @@links
-讲义|10_LLM框架实战_Agent实战.pdf|#
-讲义|11_LLM框架实战_LangSmith.pdf|#
+参考|10_LLM框架实战_Agent实战.pdf|#
+参考|11_LLM框架实战_LangSmith.pdf|#
 官网|LangSmith 官方|https://smith.langchain.com/
 教程|LangGraph 多 Agent 教程|https://langchain-ai.github.io/langgraph/tutorials/multi_agent/

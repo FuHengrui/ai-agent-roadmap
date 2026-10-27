@@ -1,5 +1,5 @@
 @@h1 第十一章　RAG 医学知识库
-@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★★★
+@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★★
 
 @@why 这一章在解决什么问题
 大模型有通识但"不专精"——糖尿病的最新指南、食物 GI 表、用药规范，模型可能记错或乱编。本章搭建**RAG（检索增强生成）**：把 20 条医学知识提前存进向量库，回答问题时先检索最相关的几条，再"带着资料"让模型回答。本章解决三件事：**一是 ChromaDB 向量库的接入**（持久化、集合、余弦相似度），**二是中文嵌入模型与批量入库**（MiniLM 多语言模型 + 批次写入），**三是检索→过滤→格式化上下文的完整链路**（RAGEngine）。
@@ -115,7 +115,7 @@ def add_documents(self, documents, metadatas=None, ids=None):
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 重复启动知识被导入两遍 | init_knowledge_base 里 `count()>0` 就 return，天然幂等 |
-| 编码错误 | `document.encode("utf-8")`（讲义示例编码名要正确）；中文内容编码必须 utf-8 |
+| 编码错误 | `document.encode("utf-8")`（编码名要写正确）；中文内容编码必须 utf-8 |
 | 一次灌上万条卡死 | 必须分批；batch_size=100 是工程经验值 |
 
 @@point ④ 检索：相似度查询与结果"脱壳"
@@ -303,6 +303,6 @@ class RAGEngine:
 7. category 字段在意图分流（下一步 LangGraph）中扮演什么角色？
 
 @@links
-讲义|安康智慧健康管理平台：糖尿病AI健康助手讲义|#
+参考|安康智慧健康管理平台：糖尿病AI健康助手|#
 官网|ChromaDB 官方文档|https://docs.trychroma.com/
 官网|HuggingFace MiniLM 多语言模型|https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2

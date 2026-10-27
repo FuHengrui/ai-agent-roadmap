@@ -96,7 +96,7 @@ chat.messages 里混着多类消息，直接取"第一条"或用错类型会拿�
 "实时热搜"不能靠 Bot 人设里写"请搜索"（不可控），要在工作流里**显式编排**：先搜、再生成、再收口。HotTopic_Workflow 就是这份编排。
 
 @@idea 核心思路
-HotTopic_Workflow 的节点链（讲义实录）：
+HotTopic_Workflow 的节点链（实际链路）：
 ```
 开始（接收主题）→ 搜索热点插件（头条/微博/知乎/抖音热点聚合）
 → 大模型节点（人设 + 热点数据 + 主题 → 5 板块 50 标题 JSON）
@@ -224,6 +224,6 @@ def hot_topic(theme: str) -> str:
 | 把 SDK 原始报错直接回给前端 | 内部细节外泄 + 用户体验差；对外统一 500 提示语 |
 
 @@links
-讲义|智能运营平台.pdf|#
+参考|智能运营平台.pdf|#
 官方|Coze Python SDK|https://www.coze.cn/open/docs/developer_guides/coze_api_overview
 官方|Coze 工作流使用指南|https://www.coze.cn/docs/guides/workflow_overview

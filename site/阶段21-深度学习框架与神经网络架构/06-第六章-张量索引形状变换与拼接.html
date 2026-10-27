@@ -546,7 +546,7 @@ print(torch.stack((a, b), dim=0).shape) # (2, 2, 3)：新增第 0 维</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>对 3×3 张量 t，t[1]、t[:, 1]、t[1, 1] 分别取到什么？</li><li>切片 t[0:2] 包含第几行？t[-2:] 呢？为什么？</li><li>如何选出张量中所有大于 5 的元素？组合条件（如大于 3 且小于 8）怎么写？</li><li>reshape 与 view 的区别是什么？什么时候 view 会报错，怎么解决？</li><li>t.unsqueeze(0) 和 t.unsqueeze(-1) 对形状 (3,4) 的张量分别产生什么形状？</li><li>transpose(1,2) 与 permute(1,2,0) 的区别是什么？为何 transpose 后要 .contiguous()？</li><li>torch.cat((a,b), dim=1) 与 torch.stack((a,b), dim=1) 对两个 (2,3) 张量分别得到什么形状？两者本质区别是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>PyTorch入门讲义（索引/形状操作/拼接）</a>
+<a href="#"><span class="k">参考</span>PyTorch入门（索引/形状操作/拼接）</a>
 <a href="https://pytorch.org/docs/stable/torch.html#slicing-joining-mutations" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 张量切分与拼接官方文档</a>
 </div>
 <div class="pager">

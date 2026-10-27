@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第十章</strong></div>
 <h1>第十章　血糖统计与健康仪表盘</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>后端把统计算出来了，可患者要"一眼看懂"——数字堆成列表没人看。本章把<strong>统计学结果可视化</strong>：用 ECharts 把血糖趋势、健康评分、营养摄入变成仪表盘。本章解决三件事：<strong>一是 ECharts 图表配置</strong>（折线 + 阈值辅助线 + 仪表盘），<strong>二是健康评分与风险色带的业务规则</strong>（把 stats 转成 0-100 分），<strong>三是前端数据流的组织</strong>（Pinia store + axios 封装 + 多接口并行加载）。</p>
 <p>关键认知：<strong>图表不是"画得好看"，是"让关键阈值一眼可见"</strong>——3.9/7.0/10.0 三条 markLine 辅助线，比任何文字都直观。</p>
@@ -536,7 +536,7 @@ watch(() =&gt; patientStore.currentPatient?.id, loadAll)  // 切换患者重载<
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么 y 轴要固定 min 2 / max 16 而不是自动缩放？</li><li>三条 markLine（3.9/7.0/10.0）各自代表什么医学含义？颜色如何与语义对应？</li><li>healthScore 的换算规则是什么？它和 risk_level 有本质区别在哪？</li><li>Pinia store 相比每个页面自己发请求的优势是什么？</li><li>切换患者后仪表盘数据为什么没更新？正确做法是什么？</li><li>仪表盘四个接口为什么用 Promise.all？串行的坏处是什么？</li><li>前端请求为什么要走 /api 相对路径 + Vite 代理？直接写后端地址会怎样？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>安康智慧健康管理平台：糖尿病AI健康助手讲义</a>
+<a href="#"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</a>
 <a href="https://echarts.apache.org/zh/option.html" target="_blank" rel="noopener"><span class="k">官网</span>ECharts 配置项手册</a>
 <a href="https://pinia.vuejs.org/zh/" target="_blank" rel="noopener"><span class="k">官网</span>Pinia 官方文档</a>
 </div>

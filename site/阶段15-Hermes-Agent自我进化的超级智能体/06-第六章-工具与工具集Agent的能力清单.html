@@ -299,7 +299,7 @@
 <p>"Agent 会做事"听着抽象，落到实处就是一个个具体的"动作"。需要搞清楚：Agent 的能力原子单元到底是什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义定义：<strong>工具（tool）是扩展 Agent 能力的函数</strong>——每个工具就是 Agent 能执行的一个具体动作。例如：</p>
+<p>定义：<strong>工具（tool）是扩展 Agent 能力的函数</strong>——每个工具就是 Agent 能执行的一个具体动作。例如：</p>
 <table>
 <tr><th>工具</th><th>动作</th></tr>
 <tr><td>web_search</td><td>搜索网络</td></tr>
@@ -324,7 +324,7 @@
 <p>单个工具是原子，但 Agent 不需要每次都把上百个工具全加载——既浪费 token 又增加决策噪音。怎么管理"用哪些工具"这件事？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义明确：<strong>工具被组织成逻辑上的工具集（toolsets），可以按平台启用或禁用</strong>。</p>
+<p><strong>工具被组织成逻辑上的工具集（toolsets），可以按平台启用或禁用</strong>。</p>
 <p>理解"平台"这个词：不同运行环境（CLI 对话、消息平台、API 调用）可以有不同的工具组合。比如：</p>
 <table>
 <tr><th>场景</th><th>推荐工具集组合</th></tr>
@@ -349,7 +349,7 @@
 <p>"Hermes 内置了广泛的工具注册表"——这个注册表里到底有什么？规模多大？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 26 页：<strong>Hermes 内置了广泛的工具注册表，涵盖网络搜索、浏览器自动化、终端执行、文件编辑、记忆、委托、RL 训练、消息传递、Home Assistant 等</strong>。</p>
+<p><strong>Hermes 内置了广泛的工具注册表，涵盖网络搜索、浏览器自动化、终端执行、文件编辑、记忆、委托、RL 训练、消息传递、Home Assistant 等</strong>。</p>
 <p>规模上：内置 40+ 种工具（第 10 章 MCP 部分提到"内置了 40+ 工具"）。它们分属不同能力域：</p>
 <table>
 <tr><th>能力域</th><th>代表工具</th></tr>
@@ -378,7 +378,7 @@
 <p>40+ 工具零散记不住，需要一张"分类地图"把它们归位。这样看到任何工具名都能立刻判断它属于哪类、大概干嘛。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 27 页给出一张完整的<strong>八大类工具表</strong>（含类别/示例/描述）：</p>
+<p>一张完整的<strong>八大类工具表</strong>（含类别/示例/描述）：</p>
 <table>
 <tr><th>类别</th><th>示例工具</th><th>描述</th></tr>
 <tr><td><strong>网络</strong></td><td>web_search、web_extract</td><td>搜索网络并提取页面内容</td></tr>
@@ -406,7 +406,7 @@
 <p>知道了八类工具，还不能直接操作——实操层面开关的是"工具集名"。有哪些工具集可以直接启停？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 28 页给出的<strong>常见工具集清单</strong>（可直接在命令里用的"组名"）：</p>
+<p><strong>常见工具集清单</strong>（可直接在命令里用的"组名"）：</p>
 <table>
 <tr><th>工具集</th><th>大致对应</th></tr>
 <tr><td>web / terminal / file</td><td>网络、终端、文件</td></tr>
@@ -437,7 +437,7 @@
 <p>工具集的开关命令长什么样？如何在特定场景临时指定工具集？命令行和对话内分别怎么操作？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给了三组命令，各管一个场景：</p>
+<p>三组命令，各管一个场景：</p>
 <pre># ① 启动时指定工具集（一次性，按任务）
 hermes chat --toolsets &quot;web,terminal&quot;
 
@@ -528,13 +528,13 @@ hermes tools</pre>
 <tr><td>通信</td><td>框架内直接调用</td><td>Stdio（本地）/ HTTP（远程）协议</td></tr>
 <tr><td>例子</td><td>web_search、terminal</td><td>GitHub API 工具、数据库查询工具</td></tr>
 </table>
-<p>讲义原话点明两者关系：<strong>Hermes 内置了 40+ 工具，但通过 MCP 可以扩展到几乎无限</strong>。学习顺序上：先把内置的用熟，再按需接 MCP。</p>
+<p>一句话点明两者关系：<strong>Hermes 内置了 40+ 工具，但通过 MCP 可以扩展到几乎无限</strong>。学习顺序上：先把内置的用熟，再按需接 MCP。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>一上来就想全上 MCP 跳过内置工具</td><td>内置是基础，很多需求内置就够；先掌握六/七/八章再说 MCP</td></tr>
-<tr><td>以为 MCP 工具会出现在 /tools 列表里</td><td>MCP 工具接入后会成为可用工具的一部分，<code>hermes tools list</code> 能查到它们（讲义第 48 页验证命令）</td></tr>
+<tr><td>以为 MCP 工具会出现在 /tools 列表里</td><td>MCP 工具接入后会成为可用工具的一部分，<code>hermes tools list</code> 能查到它们</td></tr>
 <tr><td>把 MCP 当"技能"装</td><td>MCP 是工具通道，技能是流程文档，机制完全不同（第 10 章拆解）</td></tr>
 </table>
 </div>
@@ -625,9 +625,9 @@ hermes chat --toolsets &quot;web,terminal&quot;  # ① 本次任务限定工具�
 </table>
 <p>一句话记住本章：<strong>工具干活、工具集把关——八大类记心里，hermes tools 查一切，/tools 随时开关；能力边界你说了算。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>工具和工具集分别是什么？为什么工具要组织成工具集再按平台启用/禁用？</li><li>请默写八大类工具及其代表示例（每类至少一个工具名）。</li><li>讲义里给出的 "Hermes 内置了 40+ 工具" 是否意味着能力到此为止？后续可以通过哪两种机制扩展？</li><li>请写出 3 条工具管理命令：启动时限定工具集、查看所有工具、对话内禁用某工具（禁用 browser 为例）。</li><li>工具集和技能（Skills）的本质区别是什么？请用"零件/手册"比喻说明，并指出技能存放在哪个目录。</li><li>内置工具集和 MCP 扩展的关系是什么？为什么说"terminal 类工具是双刃剑"？</li><li>有个场景：Agent 说"我没法上网搜索"。按本章知识，你的第一排查动作应该是什么？为什么？</li></ol>
+<ol><li>工具和工具集分别是什么？为什么工具要组织成工具集再按平台启用/禁用？</li><li>请默写八大类工具及其代表示例（每类至少一个工具名）。</li><li>"Hermes 内置了 40+ 工具" 是否意味着能力到此为止？后续可以通过哪两种机制扩展？</li><li>请写出 3 条工具管理命令：启动时限定工具集、查看所有工具、对话内禁用某工具（禁用 browser 为例）。</li><li>工具集和技能（Skills）的本质区别是什么？请用"零件/手册"比喻说明，并指出技能存放在哪个目录。</li><li>内置工具集和 MCP 扩展的关系是什么？为什么说"terminal 类工具是双刃剑"？</li><li>有个场景：Agent 说"我没法上网搜索"。按本章知识，你的第一排查动作应该是什么？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 25-28、45-46 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 25-28、45-46 页）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://www.home-assistant.io/" target="_blank" rel="noopener"><span class="k">参考</span>Home Assistant 集成文档</a>
 </div>

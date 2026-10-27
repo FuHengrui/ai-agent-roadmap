@@ -1,5 +1,5 @@
 @@h1 第十二章　LangGraph 工作流与 AI 对话
-@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★★★
+@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★★
 
 @@why 这一章在解决什么问题
 前面所有模块都在造零件，本章把它们**装成一台会对话的机器**：患者发一句"最近血糖高了怎么办"，系统要识别意图 → 调取患者档案 → 检索医学知识 → 生成建议 → 评估风险。五个步骤有先后、有分支，用 LangGraph 状态图表达。本章解决三件事：**一是 LangGraph 状态图的基本概念**（State/TypedDict/节点/边/编译），**二是五节点工作流的设计**（每个节点干什么、状态怎么流转），**三是 chat 路由如何接住工作流**（对话持久化与响应构造）。
@@ -320,6 +320,6 @@ async def send_message(data: ChatMessage):
 7. 整个 AI 对话闭环的数据流是怎样的（从用户发消息到最后响应落库）？
 
 @@links
-讲义|安康智慧健康管理平台：糖尿病AI健康助手讲义|#
+参考|安康智慧健康管理平台：糖尿病AI健康助手|#
 官网|LangGraph 官方文档|https://langchain-ai.github.io/langgraph/
 官网|LangGraph StateGraph 指南|https://langchain-ai.github.io/langgraph/concepts/low_level/

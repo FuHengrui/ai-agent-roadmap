@@ -1,5 +1,5 @@
 @@h1 第十五章　DSL 与 SQL：写分析的两副笔墨 + UDF 自定义函数
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　8 课时　|　难度 ★★★★
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★
 
 @@why 这一章在解决什么问题
 SparkSQL 给数据分析两副笔墨：**DSL**（用代码方法链写：`df.select(...).groupBy(...)`）和 **SQL**（把 DataFrame 注册成临时表直接写 `SELECT`）。一副适合"代码里嵌逻辑、类型检查友好"，一副适合"复杂关联/复用已有 SQL 经验"。而真正让你"想算什么算什么"的，是 **UDF/UDAF**：内置函数不够用时自定义函数，比如部门自定义的加密算法、特殊的字符串清洗、业务独有的聚合口径。
@@ -386,7 +386,7 @@ spark.sql("EXPLAIN SELECT ...")                    // SQL 方式
 7. 判断题：UDF 可以直接用闭包里的 Driver 变量，性能不受影响。
 
 @@links
-讲义|SparkSQL 讲义（第 5 章：DSL 与 SQL）|#
-讲义|SparkSQL 讲义（第 6 章：开窗函数与 UDF/UDAF）|#
+参考|SparkSQL （第 5 章：DSL 与 SQL）|#
+参考|SparkSQL （第 6 章：开窗函数与 UDF/UDAF）|#
 官网|Spark SQL 函数库（内置）|https://spark.apache.org/docs/latest/sql-ref-functions.html
 官网|UDF/UDAF 官方文档|https://spark.apache.org/docs/latest/sql-ref-functions-udf-scalar.html

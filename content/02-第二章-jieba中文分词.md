@@ -216,6 +216,6 @@ print(words)  # 特朗普 被完整保留
 6. 处理"我们研究自然语言处理, GPT-4 很火"这种真实文本，处理步骤应该是什么？
 
 @@links
-讲义|jieba中文分词讲义|#
+参考|jieba中文分词|#
 文档|jieba 分词（GitHub 官方）|https://github.com/fxsjy/jieba
 文档|jieba 新词发现与词典说明|https://github.com/fxsjy/jieba#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%8D%E5%85%B8

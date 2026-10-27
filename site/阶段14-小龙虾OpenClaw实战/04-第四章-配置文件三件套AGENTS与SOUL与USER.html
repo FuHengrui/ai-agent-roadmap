@@ -322,7 +322,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>AGENTS.md 是 OpenClaw 工作空间的<strong>顶层规则文档</strong>，管四件事：</p>
 <ul><li><strong>行为模式</strong>：AI 在工作空间里怎么干活、按什么方式推进任务</li><li><strong>会话流程</strong>：一次对话怎么开始、怎么进行、怎么结束</li><li><strong>内存管理机制</strong>：哪些信息该记住、怎么记、什么时候写入长期记忆</li><li><strong>与人类交互的基本原则</strong>：什么时候该问、什么时候直接做</li></ul>
-<p>它像一个公司的"员工手册"——不定义这个员工多有才（那是 SOUL 的事），只定义<strong>底线和流程</strong>，所以讲义称它为"行为宪法"。</p>
+<p>它像一个公司的"员工手册"——不定义这个员工多有才（那是 SOUL 的事），只定义<strong>底线和流程</strong>，所以常称它为"行为宪法"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -340,7 +340,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>如果说 AGENTS.md 是"行为宪法"，那 <strong>SOUL.md 就是人格定义</strong>。它决定 AI 的三件事：</p>
 <ul><li><strong>性格</strong>：外向还是内敛？毒舌还是温和？</li><li><strong>说话风格</strong>：简洁还是详细？严肃还是幽默？</li><li><strong>核心原则</strong>：什么是绝对不能做的？什么是必须坚持的？</li></ul>
-<p>特别要强调"核心原则"：讲义指出，<strong>AI 可以有明确立场，不要凡事"看情况"</strong>。给 AI 一个观点和判断的偏好，它输出的质量会肉眼可见地提升——这是三份文件里"性价比"最高的一处配置。</p>
+<p>特别要强调"核心原则"：<strong>AI 可以有明确立场，不要凡事"看情况"</strong>。给 AI 一个观点和判断的偏好，它输出的质量会肉眼可见地提升——这是三份文件里"性价比"最高的一处配置。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -374,7 +374,7 @@
 <p>三份文件各自独立，但 AI 每一次回答里三份都在同时起作用。它们到底怎么配合？如果理解不了层级关系，出问题时你就不知道去改哪个文件。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给了一张三层嵌套图，从上到下依次传递：</p>
+<p>这三层是嵌套的，从上到下依次传递：</p>
 <p><strong>AGENTS.md（行为规则层）</strong> → 定义<strong>会话流程、内存管理、心跳机制</strong> ↓ ↓ ↓ <strong>SOUL.md（人格定义层）</strong> → 承载<strong>性格、说话风格、核心原则</strong> ↓ ↓ ↓ <strong>USER.md（服务对象层）</strong> → 承载<strong>基本信息、背景技能、偏好目标</strong></p>
 <p>一句话概括：<strong>AGENTS 决定"怎么运行"，SOUL 决定"以什么人格运行"，USER 决定"为谁运行"</strong>。上层的运行机制会传递到下层，下层的人格与服务对象信息又反过来决定规则怎么落地——比如"深夜不打扰"这条规则，要同时靠 AGENTS 的流程约束和 USER 的时区/勿扰时间来落地。</p>
 </div>
@@ -446,10 +446,10 @@
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 沟通与安全准则：不客套 / 不泄隐私 / 不擅自破坏 / 深夜不打扰</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>AI 接入你的工作空间后，最怕两件事：泄露隐私、乱打扰。这些"红线"应该写在哪、怎么写？讲义给了一份可以直接照抄的准则清单。</p>
+<p>AI 接入你的工作空间后，最怕两件事：泄露隐私、乱打扰。这些"红线"应该写在哪、怎么写？这里有一份可以直接照抄的准则清单。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>把讲义里的沟通与安全准则整理成<strong>六条可执行条款</strong>，可写入 AGENTS.md 与 USER.md：</p>
+<p>把沟通与安全准则整理成<strong>六条可执行条款</strong>，可写入 AGENTS.md 与 USER.md：</p>
 <ol><li><strong>绝对不要以"好问题"开头</strong>——直接回答</li><li><strong>不泄露用户的隐私数据</strong></li><li><strong>不在群聊中过度发言</strong></li><li><strong>不在未确认的情况下执行破坏性操作</strong>（删除、强推、批量改名等）</li><li><strong>深夜（23:00-08:00）除非紧急，否则不主动打扰</strong></li><li><strong>发现用户加班太晚，主动提醒休息</strong></li></ol>
 <p>注意这些条款的共同点：<strong>都具体到"能执行的动作"</strong>。"要礼貌"是态度，"不以'好问题'开头"是动作——写配置时永远选动作。</p>
 </div>
@@ -458,7 +458,7 @@
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>只写"要保护好隐私"</td><td>太抽象。写成"不泄露用户的隐私数据"，并列出哪些算隐私（密码、token、私人信息）</td></tr>
 <tr><td>忘了"破坏性操作需确认"</td><td>没这条，AI 可能直接执行删除、覆盖等不可逆操作。这条必须进 AGENTS.md</td></tr>
-<tr><td>只设了勿扰时间，没写"加班提醒"</td><td>讲义专门要求"发现工作太晚要提醒休息"，这是贴心值来源，别漏</td></tr>
+<tr><td>只设了勿扰时间，没写"加班提醒"</td><td>专门有一条要求"发现工作太晚要提醒休息"，这是贴心值来源，别漏</td></tr>
 </table>
 </div>
 </div></div>
@@ -526,10 +526,10 @@
 </table>
 <h4>自测：能不能答上来</h4>
 <p>1.（单选）在 OpenClaw 中，哪个文件主要用于定义 AI 的性格、说话风格以及核心原则？A AGENTS.md　B SOUL.md　C USER.md　D CONFIG.md 2.（单选）USER.md 的主要作用是什么？A 定义 AI 的运行规则和内存机制　B 定义 AI 的性格和语言风格　C 描述 AI 服务对象的背景信息和偏好　D 控制 AI 的模型参数</p>
-<ol><li>为什么说"SOUL.md 写得越多越好"是误区？好的 SOUL.md 应该像什么？（提示：分析瘫痪）</li><li>"只填 USER.md 不填 SOUL.md"会得到什么样的 AI？讲义把它比作什么？</li><li>判断题：AGENTS.md 只影响 AI 的回复语气，不影响它能不能记住对话。</li></ol>
+<ol><li>为什么说"SOUL.md 写得越多越好"是误区？好的 SOUL.md 应该像什么？（提示：分析瘫痪）</li><li>"只填 USER.md 不填 SOUL.md"会得到什么样的 AI？它被比作什么？</li><li>判断题：AGENTS.md 只影响 AI 的回复语气，不影响它能不能记住对话。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>openclaw.pdf「OpenClaw Web UI 解读」章节</a>
-<a href="#"><span class="k">讲义</span>OpenClaw 配置文件三件套：AGENTS / SOUL / USER</a>
+<a href="#"><span class="k">参考</span>openclaw.pdf「OpenClaw Web UI 解读」章节</a>
+<a href="#"><span class="k">参考</span>OpenClaw 配置文件三件套：AGENTS / SOUL / USER</a>
 <a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
 </div>
 <div class="pager">

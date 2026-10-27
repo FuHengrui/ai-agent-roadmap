@@ -237,7 +237,7 @@ Builder 每轮建造都值得留档。和 Chat 一样，Builder 也有历史记�
 7. 你会如何为"帮我做一个记账小网站"和"帮我解释这段正则表达式"分别选择模式？为什么？
 
 @@links
-讲义|Trae 讲义（38 页）|#
+参考|Trae （38 页）|#
 工具|Trae 官网|https://www.trae.com.cn/
 上一章|Trae Chat 模式|02-第二章-TraeChat模式边聊边写代码.html
 下一章|Trae 上下文与 Rules|04-第四章-Trae上下文Rules与自定义模型.html

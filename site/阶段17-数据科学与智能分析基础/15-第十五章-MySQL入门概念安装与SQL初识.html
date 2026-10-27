@@ -361,7 +361,7 @@
 <p>推荐用 <strong>MySQL Installer（MSI 向导）</strong> 最低阻力安装：</p>
 <ol><li>官网下载 MySQL Installer → 选 <strong>Developer Default</strong>（含 MySQL Server、MySQL Shell、Workbench）；</li><li>到 <strong>Type and Networking</strong> 页：端口保持 <strong>3306</strong>，默认即可；</li><li><strong>Authentication Method</strong>：选 "Use Strong Password Encryption"（8.0 默认，兼容性最好）；</li><li><strong>Accounts and Roles</strong>：设置 <strong>root 密码</strong>（教程先用 root 连接；生产环境应另建最小权限账号并用强密码）；</li><li><strong>Windows Service</strong>：勾选 "Configure MySQL Server as a Windows Service"，开机自启方便学习；</li><li>Apply 完成后，MySQL 会自动作为服务启动。</li></ol>
 <p>检查安装是否成功：任务管理器找 <code>mysqld</code> 进程，或（后一点）命令行连一下。</p>
-<p><strong>安全提示（教学 vs 生产）</strong>：本课程课件/练习用 <code>root</code> + 简单密码是为了跟教程走，<strong>真实环境严禁</strong>——root 只留本机运维，业务用独立账号最小权限。</p>
+<p><strong>安全提示（教学 vs 生产）</strong>：本地练习用 <code>root</code> + 简单密码是为了跟教程走，<strong>真实环境严禁</strong>——root 只留本机运维，业务用独立账号最小权限。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -504,7 +504,7 @@ DROP DATABASE demo;</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>DB、DBMS、DBS 三者的关系是什么？</li><li>关系型数据库和非关系型数据库的核心区别是什么？MySQL、Redis、MongoDB 各属于哪类？</li><li>学习/个人使用应下载 MySQL 的哪个版本？Windows 上推荐用什么方式安装？</li><li>安装向导中通常需要设置哪几项关键配置（端口、账号、服务）？</li><li>如何用命令行连接本机 MySQL 并验证成功？</li><li>SQL 分为哪五类？CREATE、INSERT、SELECT、GRANT、COMMIT 分别属于哪一类？</li><li>SQL 语句末尾漏了分号会怎样？字符串常量应该用单引号还是双引号？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>MySQL 讲义（158 页）</a>
+<a href="#"><span class="k">参考</span>MySQL （158 页）</a>
 <a href="https://dev.mysql.com/downloads/" target="_blank" rel="noopener"><span class="k">工具</span>MySQL 官网下载</a>
 <a href="https://dev.mysql.com/doc/" target="_blank" rel="noopener"><span class="k">文档</span>MySQL 官方文档</a>
 </div>

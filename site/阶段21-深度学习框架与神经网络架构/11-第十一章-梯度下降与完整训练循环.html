@@ -534,7 +534,7 @@ start_epoch = ckpt[&quot;epoch&quot;] + 1                # 从断点继续</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么说梯度指向"上升最快"方向？更新参数时为什么要用负梯度？</li><li>学习率过大和过小分别会观察到什么现象？</li><li>训练循环里五步的顺序为什么不能乱？漏掉 zero_grad 会发生什么？</li><li>优化器创建时为什么要传入 model.parameters()？step() 内部做了什么？</li><li>批量梯度下降、随机梯度下降、小批量梯度下降各有什么特点？为什么实践中默认小批量？</li><li>DataLoader 的 shuffle=True 是干什么的？忘记它会有什么隐患？</li><li>写一个完整的线性回归训练循环骨架（模型、损失、优化器、两层循环、五连步骤）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>神经网络基础(1)讲义（梯度下降与训练循环部分）</a>
+<a href="#"><span class="k">参考</span>神经网络基础(1)（梯度下降与训练循环部分）</a>
 <a href="https://pytorch.org/tutorials/beginner/deep_learning_60min_blitz.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 60 分钟入门教程（训练部分）</a>
 </div>
 <div class="pager">

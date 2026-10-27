@@ -233,6 +233,6 @@ print(text)
 7. BERT 与 GPT 在结构、目标、擅长任务、迁移方式上分别有什么差异？
 
 @@links
-讲义|GPT生成式模型讲义|#
+参考|GPT生成式模型|#
 文档|Language Models are Few-Shot Learners（GPT-3 原文）|https://arxiv.org/abs/2005.14165
 文档|Training language models to follow instructions with human feedback（InstructGPT/RLHF）|https://arxiv.org/abs/2203.02155

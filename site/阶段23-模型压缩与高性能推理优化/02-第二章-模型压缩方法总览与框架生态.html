@@ -391,8 +391,8 @@
 <p>为什么说压缩要从多个层面综合看，而不是只盯着模型？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义原话强调："从数据、模型和硬件<strong>多维度</strong>的层面来分析压缩和加速的方法"：</p>
-<ul><li><strong>数据维度</strong>：输入能否降维/剪枝（如只喂关键 token）、用廉价数据校准量化。</li><li><strong>模型维度</strong>：剪枝/量化/蒸馏/紧凑结构——本课程主线。</li><li><strong>硬件维度</strong>：GPU/FPGA/ASIC 的能力差异决定量化激进程度与算子优化空间（如 FPGA 可做更激进的量化）。</li></ul>
+<p>一个概括："从数据、模型和硬件<strong>多维度</strong>的层面来分析压缩和加速的方法"：</p>
+<ul><li><strong>数据维度</strong>：输入能否降维/剪枝（如只喂关键 token）、用廉价数据校准量化。</li><li><strong>模型维度</strong>：剪枝/量化/蒸馏/紧凑结构——本书主线。</li><li><strong>硬件维度</strong>：GPU/FPGA/ASIC 的能力差异决定量化激进程度与算子优化空间（如 FPGA 可做更激进的量化）。</li></ul>
 <p><strong>压缩不是模型单方面的事</strong>——同样的量化，在不同硬件上收益天差地别；同样的模型，配不同数据校准，量化精度也不同。多维协同才叫"系统优化"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -456,11 +456,11 @@
 <tr><td>构建新小网络</td><td>紧凑网络设计</td><td>天生小而快的架构（MobileNet 等）</td></tr>
 <tr><td>工具链</td><td>PyTorch/TF/TensorRT/Distiller/ncnn</td><td>压缩能力落地靠框架</td></tr>
 </table>
-<p>一句话记住本章：<strong>模型压缩分两大路：对已有网络做"张量分解、剪枝、量化"，对全新网络做"知识蒸馏、紧凑设计"；框架工具决定落地路径（PyTorch 剪枝量化、TensorRT 做 PTQ、Distiller 研究全家桶），从数据、模型、硬件多维度协同才是完整优化——本课程接下来依次深挖剪枝、量化和蒸馏三座大山。</strong></p>
+<p>一句话记住本章：<strong>模型压缩分两大路：对已有网络做"张量分解、剪枝、量化"，对全新网络做"知识蒸馏、紧凑设计"；框架工具决定落地路径（PyTorch 剪枝量化、TensorRT 做 PTQ、Distiller 研究全家桶），从数据、模型、硬件多维度协同才是完整优化——本书接下来依次深挖剪枝、量化和蒸馏三座大山。</strong></p>
 <h4>自测：能不能答上来</h4>
 <ol><li>模型压缩的两大类方法分别是什么？各自针对什么对象？</li><li>剪枝、量化、张量分解各自的思路与收益侧重是什么？</li><li>知识蒸馏与剪枝/量化在"对象"上的本质区别是什么？</li><li>紧凑网络设计和知识蒸馏各举一个代表并说明思路。</li><li>框架支持矩阵中，QKeras、TensorRT、Distiller 分别强在什么能力？</li><li>为什么说压缩要从"数据、模型、硬件"多维度分析？</li><li>生产实践中 LLM 推理最常见的压缩技术组合是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>模型优化讲义（章节1）</a>
+<a href="#"><span class="k">参考</span>模型优化（章节1）</a>
 <a href="https://arxiv.org/abs/1510.00149" target="_blank" rel="noopener"><span class="k">文档</span>Deep Compression</a>
 <a href="https://github.com/IntelLabs/distiller" target="_blank" rel="noopener"><span class="k">文档</span>Distiller 官方文档</a>
 </div>

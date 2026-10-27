@@ -1,5 +1,5 @@
 @@h1 第五章　Spark On YARN 与 spark-submit
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★★
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 上一章你搭了 Spark 自己的 Standalone 集群。但真实企业里，Hadoop 生态往往**早就存在**：HDFS 存数据，YARN 管资源。这时候再为 Spark 单独搭一套 Standalone，等于**同一个机房养两套资源调度**——浪费、难管、还容易打架。企业的标准答案是：**让 Spark 跑在 YARN 上**，和 MR、Flink、Tez 等框架**共享同一批资源**。
@@ -16,7 +16,7 @@
 阶段终点：你能独立完成 Spark 从部署、编程到调优的全链路
 
 @@note info 学习提示
-本章是"部署最后一课"。如果你没有 Hadoop 环境，重点理解**两种模式的区别和 spark-submit 参数**；有环境就照着讲义把 On YARN 任务提交一遍。
+本章是部署主线的最后一环。如果你没有 Hadoop 环境，重点理解**两种模式的区别和 spark-submit 参数**；有环境就照着示例把 On YARN 任务提交一遍。
 
 @@point ① YARN 是谁：Hadoop 的资源调度平台
 @@need 要解决什么
@@ -253,7 +253,7 @@ spark-submit \
 
 @@point ⑧ On YARN 常见故障速查
 @@need 要解决什么
-部署课不教排障是耍流氓。本章最后给一份 **On YARN 高频故障速查表**：遇到这些报错，直接对号入座，少走弯路。后面 13 章遇到"任务起不来"都能回来查这页。
+讲部署不讲排障是耍流氓。本章最后给一份 **On YARN 高频故障速查表**：遇到这些报错，直接对号入座，少走弯路。后面 13 章遇到"任务起不来"都能回来查这页。
 
 @@idea 核心思路
 | 报错/现象 | 根因 | 处理 |
@@ -293,7 +293,7 @@ spark-submit \
 6. 判断题：Spark On YARN 模式下，Spark 自己的 8080 Web UI 依然可用（选错说明你还没分清两种模式）。
 
 @@links
-讲义|Spark 分布式计算框架基础（第 5 章：Spark On YARN）|#
+参考|Spark 分布式计算框架基础（第 5 章：Spark On YARN）|#
 官网|Spark 提交应用文档|https://spark.apache.org/docs/latest/submitting-applications.html
 官网|Apache Hadoop YARN 文档|https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html
-资料|讲义 spark-submit 示例脚本|#
+资料|spark-submit 示例脚本|#

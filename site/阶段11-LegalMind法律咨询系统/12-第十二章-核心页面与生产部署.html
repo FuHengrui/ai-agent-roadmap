@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 11 · LegalMind 法律咨询系统 › <strong>第十二章</strong></div>
 <h1>第十二章　核心页面实现与生产部署</h1>
-<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★★</div>
+<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面的骨架再结实也只是"空房子"，本章把三个门面装完：<strong>聊天页</strong>（打字机流式对话 + 引用案例展示 + 会话切换）、<strong>文书生成页</strong>（选类型填参数 → 实时生成）、<strong>案例检索页</strong>（关键词 + 过滤 + 分页）。最后用 docker-compose 把整个系统<strong>一键部署</strong>到生产。 这几页写完后，LegalMind 就从一个"能调 API 的项目"变成一个"注册就能用的产品"。本章是收官章：<strong>所有能力在这一页上汇合</strong>。</p>
 </div>
@@ -304,7 +304,7 @@ const input = ref(&#x27;&#x27;)
 const sessionId = ref(null)       // 当前会话
 const sessions = ref([])          // 历史会话列表
 const loading = ref(false)
-…（以下省略 26 行，完整代码见讲义/仓库对应位置）
+…（以下省略 26 行，完整代码见仓库对应位置）
     isStreaming.value = false
     streamingAbort.value = null
     await loadSessions()          // 刷新侧边栏会话列表
@@ -338,7 +338,7 @@ function stopStreaming() { streamingAbort.value?.abort() }
           {{ msg.content }}
         &lt;/div&gt;
       &lt;/div&gt;
-…（以下省略 12 行，完整代码见讲义/仓库对应位置）
+…（以下省略 12 行，完整代码见仓库对应位置）
 &lt;script setup&gt;
 function scrollToBottom() {
   nextTick(() =&gt; {
@@ -371,7 +371,7 @@ const form = ref({ 原被告、金额等占位 })
 const content = ref(&#x27;&#x27;)
 const references = ref([])
 const loading = ref(false)
-…（以下省略 21 行，完整代码见讲义/仓库对应位置）
+…（以下省略 21 行，完整代码见仓库对应位置）
 }
 
 async function copyToClipboard() {
@@ -405,7 +405,7 @@ const fieldConfig = {
     { key: &#x27;evidence&#x27;, label: &#x27;证据清单&#x27;, placeholder: &#x27;合同、转账记录…&#x27;, type: &#x27;textarea&#x27; },
   ],
   合同: [
-…（以下省略 11 行，完整代码见讲义/仓库对应位置）
+…（以下省略 11 行，完整代码见仓库对应位置）
     &lt;div v-for=&quot;f in fieldConfig[selectedType]&quot; :key=&quot;f.key&quot; class=&quot;flex flex-col&quot;&gt;
       &lt;label class=&quot;mb-1 text-sm&quot;&gt;{{ f.label }}&lt;/label&gt;
       &lt;textarea v-if=&quot;f.type === &#x27;textarea&#x27;&quot; v-model=&quot;params[f.key]&quot;
@@ -432,7 +432,7 @@ const page = ref(1)
 const pageSize = 8
 const total = ref(0)
 const loading = ref(false)
-…（以下省略 15 行，完整代码见讲义/仓库对应位置）
+…（以下省略 15 行，完整代码见仓库对应位置）
 watch(keyword, () =&gt; search(1))   // 输入即搜索（防抖可加）
 
 function highlight(text) {
@@ -467,7 +467,7 @@ function highlight(text) {
         {&quot;title&quot;: &quot;借款合同纠纷逾期利息计算案&quot;, &quot;summary&quot;: &quot;…&quot;, &quot;category&quot;: &quot;合同法&quot;, …},
         # 20+ 条真实风格案例
     ]
-…（以下省略 3 行，完整代码见讲义/仓库对应位置）
+…（以下省略 3 行，完整代码见仓库对应位置）
         await LegalCase.get_or_create(title=c[&quot;title&quot;], defaults={**c})
 
     # 2) 向量化入库（供语义检索）
@@ -494,7 +494,7 @@ function highlight(text) {
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-…（以下省略 24 行，完整代码见讲义/仓库对应位置）
+…（以下省略 24 行，完整代码见仓库对应位置）
     ports:
       - &quot;80:80&quot;
     depends_on:
@@ -560,7 +560,7 @@ docker compose logs -f backend</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>Chat.vue 打字机效果的实现核心是什么？isStreaming 锁解决了什么并发问题？</li><li>停止生成按钮如何实现？AbortController 的 abort 后 catch 里怎么区分"主动取消"和"真出错"？</li><li>引用案例卡片为什么用黄色底？sources 是哪条链路产生的？</li><li>文书页的字段配置驱动 UI 有什么好处？加一种文书类型要改几处代码？</li><li>案例检索的高亮为什么要先正则转义再替换？</li><li>seed_cases 为什么双通道写入？get_or_create 幂等性如何保证重跑安全？</li><li>docker-compose 的 healthcheck + condition: service_healthy 解决了什么问题？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>LegalMind 法律咨询系统：前端页面与部署</a>
+<a href="#"><span class="k">参考</span>LegalMind 法律咨询系统：前端页面与部署</a>
 <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener"><span class="k">官网</span>docker-compose 官方文档</a>
 <a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html" target="_blank" rel="noopener"><span class="k">官网</span>Nginx proxy_pass 文档</a>
 </div>

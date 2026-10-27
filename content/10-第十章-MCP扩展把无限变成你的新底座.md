@@ -22,7 +22,7 @@ MCP 是本阶段**技术浓度最高**的一章，但结构其实只有四件事
 "MCP"三个字母听着像又一个黑话。到底什么是 Model Context Protocol？为什么说它是"无限工具"的关键？
 
 @@idea 核心思路
-**MCP = Model Context Protocol（模型上下文协议）**——一个开放标准，定义了"AI 应用如何连接外部数据源和工具"的通用方式（讲义第 42 页）。
+**MCP = Model Context Protocol（模型上下文协议）**——一个开放标准，定义了"AI 应用如何连接外部数据源和工具"的通用方式。
 
 用"USB-C"类比最好懂：
 
@@ -78,7 +78,7 @@ GitHub 团队写一次 MCP 服务器
 接入 MCP 服务器时，配置里要选"传输方式"——Stdio 和 HTTP(S) 是什么区别？什么时候该用哪个？
 
 @@idea 核心思路
-讲义第 43 页给出两种官方支持的传输：
+两种官方支持的传输方式：
 
 | 维度 | **Stdio** | **HTTP(S)** |
 |---|---|---|
@@ -135,7 +135,7 @@ mcpServers:
 MCP 服务器注册完，它的工具在哪能看见？"并入可用工具集"具体指什么？
 
 @@idea 核心思路
-MCP 服务器的工具**作为可用工具并入 Hermes 的工具集**（讲义第 43 页）。验证入口：
+MCP 服务器的工具**作为可用工具并入 Hermes 的工具集**。验证入口：
 
 ```bash
 hermes tools            # 查看所有可用工具
@@ -156,7 +156,7 @@ hermes tools list       # （如支持）列出含 MCP 工具在内的完整清�
 讲概念不如带一遍真流程。GitHub MCP 是官方最常见的例子，把它从创建 Token 到验证工具完整走一遍。
 
 @@idea 核心思路
-接入 GitHub MCP 的完整链路（讲义第 43-47 页逻辑整合）：
+接入 GitHub MCP 的完整链路（整合成一条完整流程）：
 
 **第一步——准备 Token**：在 GitHub 生成一个 Personal Access Token（Fine-grained PAT：仓库读权限等按需勾选）。**Token 只用于配置，不进任何代码/记忆文件**（红线！）。
 
@@ -217,7 +217,7 @@ hermes tools                # 或用 hermes tools list，找到 github_* 工具
 注册完服务器，日常怎么查状态、管服务器？有没有专门的命令入口？
 
 @@idea 核心思路
-讲义给的关键命令：
+关键命令：
 
 ```bash
 hermes mcp list        # 查看已连接的 MCP 服务器及状态
@@ -234,7 +234,7 @@ hermes mcp             # （带子命令）管理 MCP 服务器
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 找不到 hermes mcp 子命令 | 版本较老/未安装 MCP 支持时命令缺失；确认 Hermes 版本支持 MCP（讲义 0.10.0+ 语境） |
+| 找不到 hermes mcp 子命令 | 版本较老/未安装 MCP 支持时命令缺失；确认 Hermes 版本支持 MCP（0.10.0+） |
 | 只查 mcp list 不查 tools | list 管服务器存活，tools 管工具可见；两步都要 |
 | 服务器状态 in 但工具没并入 | 部分服务器的工具注册失败（启动报错）；看 hermes 启动日志抓原因 |
 
@@ -363,6 +363,6 @@ MCP 排查路径（按顺序）：
 7. MCP 工具、技能、工具集三者的关系是什么？请用一句话+一个例子说明"为什么装了 MCP 服务器不等于 Agent 会自动干活"。
 
 @@links
-讲义|Hermes-Agent 讲义（第 42-47 页）|#
+参考|Hermes-Agent （第 42-47 页）|#
 官网|Model Context Protocol 官方文档|https://modelcontextprotocol.io/
 参考|GitHub Model Context Protocol 服务器|https://github.com/modelcontextprotocol/servers

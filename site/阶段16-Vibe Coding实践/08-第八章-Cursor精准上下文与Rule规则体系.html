@@ -366,7 +366,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>Cursor Rules</strong>（规则）是<strong>指导 AI 行为的提示词（Prompt）文件</strong>——把"AI 应该怎么工作"的规范写成文件，Cursor 会在合适时机<strong>自动加载</strong>这些规则，让 AI 严格遵守。</p>
 <p><strong>Rules 的本质</strong>：一段文本（Markdown/纯文本），描述"如何编程、何时使用何种模型、注意什么"等行为约束。</p>
-<p><strong>重要澄清</strong>（讲义原文强调）：Rules 是<strong>提示词文件</strong>，<strong>不是插件</strong>，也不是代码库——它塑造 AI 的行为，不改变 Cursor 的机制本身。</p>
+<p><strong>重要澄清</strong>：Rules 是<strong>提示词文件</strong>，<strong>不是插件</strong>，也不是代码库——它塑造 AI 的行为，不改变 Cursor 的机制本身。</p>
 <p><strong>使用价值</strong>：</p>
 <table>
 <tr><th>价值</th><th>说明</th></tr>
@@ -442,7 +442,7 @@ glob: &quot;**/*.ts&quot;
 <p>下一章要用 Cursor 实战开发 Chrome 插件，这里先把"离线安装、权限、文件的 MIME 映射"等前置概念补完，避免下一章被细节卡住。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义在本章末尾为实战做了铺垫，三个技术细节提前讲清：</p>
+<p>本章末尾为实战做了铺垫，三个技术细节提前讲清：</p>
 <p><strong>1. 加载已解压的扩展程序（开发者模式）</strong></p>
 <p>Chrome 地址栏输入 <code>chrome://extensions/</code> → 右上角开启"开发者模式" → 点"加载已解压的扩展程序" → 选择插件目录。这是开发期加载<strong>未打包插件</strong>的标准方式（对应打包后的 .crx 安装）。</p>
 <p><strong>2. 插件权限（permissions）</strong></p>
@@ -473,7 +473,7 @@ glob: &quot;**/*.ts&quot;
 <tr><td><strong>Agent Requested</strong></td><td>由 AI 代理判断是否应用（需提供规则说明）</td><td>想让 AI 自己决定</td></tr>
 <tr><td><strong>Manual</strong></td><td>仅在提示中显式使用 <code>@规则名</code> 时附加</td><td>想手动调用规则</td></tr>
 </table>
-<p><strong>② User Rule 的配置入口</strong>：Cursor 的全局设置——<strong>Cursor Settings → Rules</strong> 里设置，对所有项目生效。讲义给的用户级规则示例（回复语言与风格类）：</p>
+<p><strong>② User Rule 的配置入口</strong>：Cursor 的全局设置——<strong>Cursor Settings → Rules</strong> 里设置，对所有项目生效。用户级规则示例（回复语言与风格类）：</p>
 <pre>所有输出和建议必须基于确认无误的信息，严禁臆测或无依据的猜测
 按文件逐一修改，便于审阅和排查问题
 除非明确要求，禁止添加任何第三方或新增依赖
@@ -507,7 +507,7 @@ glob: &quot;**/*.ts&quot;
 <h4>自测：能不能答上来</h4>
 <ol><li>精准上下文是通过什么方式将哪些内容加入 AI 上下文的？使用 @ 时要注意什么（占用什么）？</li><li>@Docs 的使用方式是什么？如何把新文档加入 @Docs 列表（Custom docs 操作）？</li><li>@Web 与 @Docs 的差别是什么？各自典型适用场景是什么？</li><li>Cursor Rules 的本质是什么？它是不是插件？它和"代码库"的区别是什么？</li><li>四种规则类型分别是什么？它们的优先级顺序是怎样的？</li><li>.mdc 规则文件相比纯 md 规则多出来的能力是什么？</li><li>加载已解压的扩展程序需要先开启什么？插件权限应遵循什么原则？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Cursor 讲义</a>
+<a href="#"><span class="k">参考</span>Cursor</a>
 <a href="https://cursor.com/cn/downloads" target="_blank" rel="noopener"><span class="k">工具</span>Cursor 官网</a>
 <a href="07-第七章-Cursor四种模式与内联智能.html"><span class="k">上一章</span>Cursor 四种模式</a>
 <a href="09-第九章-Cursor实战Chrome插件开发.html"><span class="k">下一章</span>Cursor 实战 Chrome 插件</a>

@@ -293,7 +293,7 @@
 <p>学完这一章，你对"算法发展史"会有深刻体会：<strong>没有完美的算法，每个变体都是在时间、空间、稳定性、精度之间做一选择</strong>。这也是机器学习工程化的常态——不是"哪个最好"，而是"现在卡在哪，选哪个解"。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章学完 KMeans 主体（流程/距离/SSE/肘部法）并列出五条软肋。<strong>本章（讲义5 全部 6 页）逐个解决：KMedoids → 二分 KMeans → KMeans++ → elkan → Mini-Batch</strong>。下一章（讲义6）接最后一块拼图：KMeans 家族搞不定的"任意形状"数据，交给密度聚类（DBSCAN/OPTICS/MeanShift）。</span>
+<span class="node">上一章学完 KMeans 主体（流程/距离/SSE/肘部法）并列出五条软肋。<strong>本章逐个解决：KMedoids → 二分 KMeans → KMeans++ → elkan → Mini-Batch</strong>。下一章接最后一块拼图：KMeans 家族搞不定的"任意形状"数据，交给密度聚类（DBSCAN/OPTICS/MeanShift）。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① KMeans 家族的技术谱系：先看全局</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -491,7 +491,7 @@ print(&quot;SSE++:&quot;, km_pp.inertia_, &quot; SSE random:&quot;, km_rd.inerti
 <h4>自测：能不能答上来</h4>
 <ol><li>五个变体分别对应 KMeans 的哪五个软肋？</li><li>KMeans++ 的初始化策略核心是什么？为什么说它"免费"？</li><li>二分 KMeans 为什么更不容易卡局部最优？</li><li>KMedoids 的质心和 KMeans 的质心本质区别是什么？各带来什么优势？</li><li>elkan 加速的依据是什么？什么条件下不划算？</li><li>Mini-Batch KMeans 与 Mini-Batch 梯度下降有什么共通思想？</li><li>数据是环形结构，这五个变体该不该用？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>KMeans 聚类变形讲义（6 页）</a>
+<a href="#"><span class="k">参考</span>KMeans 聚类变形（6 页）</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn KMeans init/algorithm 参数说明</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn MiniBatchKMeans 文档</a>
 </div>

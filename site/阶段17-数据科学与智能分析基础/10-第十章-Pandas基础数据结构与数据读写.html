@@ -292,7 +292,7 @@
 <span class="node"><strong>阶段终点</strong>：完成"读数据 → 清洗 → 计算 → 可视化 → 入库"链路，Pandas 就是这条链的中枢</span>
 </div>
 <div class="note info"><span class="t">学习提示</span>
-<p>本章是 Pandas 全流程入口：<strong>"读"（Excel/CSV/DB）→ 认识结构（Series/DataFrame）→ "写"（文件/DB）</strong>。结构化记忆：先背两个数据结构的三件事（是什么/怎么建/怎么访问），再背三种读法和两种写法的函数名。pymysql 连接数据库一段<strong>密码必须填你自己的</strong>，讲义里的教学占位串只是示例。</p></div>
+<p>本章是 Pandas 全流程入口：<strong>"读"（Excel/CSV/DB）→ 认识结构（Series/DataFrame）→ "写"（文件/DB）</strong>。结构化记忆：先背两个数据结构的三件事（是什么/怎么建/怎么访问），再背三种读法和两种写法的函数名。pymysql 连接数据库一段<strong>密码必须填你自己的</strong>，文中的教学占位串只是示例。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① Pandas 是什么：数据分析的主干工具</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>NumPy 管数组，<strong>但真实数据是"带列名的表"</strong>——NumPy 缺标签、缺缺失值处理、缺数据库对接。谁能补上？Pandas。</p>
@@ -566,7 +566,7 @@ df.to_sql(&#x27;结果表&#x27;, conn, index=False, if_exists=&#x27;replace&#x27
 <h4>自测：能不能答上来</h4>
 <ol><li>Series 和 ndarray 的关系是什么？Series 相比 ndarray 多出来的是什么？</li><li>用字典创建 Series 时，字典的键会变成什么？指定 index 缺键时会出现什么？</li><li>Series 传标量创建的结果是什么？与传列表有何不同？</li><li>从 {列名: 列表} 字典创建 DataFrame，键和值分别对应什么？</li><li>read_excel 读取非第一个 sheet 要传哪个参数？缺 openpyxl 时报什么错？</li><li>读 CSV 中文乱码应怎么排查？写出给 Excel 用的 CSV 应该用什么编码？</li><li>Pandas 连 MySQL 需要安装什么库？连接参数里哪两个最容易坑？（一个字符集、一个保密）</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Pandas 讲义（145 页）</a>
+<a href="#"><span class="k">参考</span>Pandas （145 页）</a>
 <a href="https://pandas.pydata.org/" target="_blank" rel="noopener"><span class="k">工具</span>Pandas 官网</a>
 <a href="https://pandas.pydata.org/docs/user_guide/io.html" target="_blank" rel="noopener"><span class="k">文档</span>Pandas IO 工具一览</a>
 </div>

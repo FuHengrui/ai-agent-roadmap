@@ -285,7 +285,7 @@
 <p>这章的思维模型值得单独强调：<strong>把求最优解想象成"蒙眼下山"</strong>——你看不到全局，只能靠脚下的坡度判断往哪迈，一步步走，总能走到最低处。把"山谷→梯度→步长（学习率）→收敛"这条线理解透，机器学习就再没有秘密了。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">前三章建立线性模型、MSE 损失和解析解，并暴露了解析解的三条硬伤。<strong>本章回答"为什么要有梯度下降、梯度下降凭什么能走到最优点"（讲义章节1）</strong>。下一章讲它的三个变体（批量/随机/小批量，讲义章节2），再下一章上代码（讲义章节3），随后进入归一化、正则化，把"学得稳"的问题一并解决。</span>
+<span class="node">前三章建立线性模型、MSE 损失和解析解，并暴露了解析解的三条硬伤。<strong>本章回答"为什么要有梯度下降、梯度下降凭什么能走到最优点"</strong>。下一章讲它的三个变体（批量/随机/小批量），再下一章上代码，随后进入归一化、正则化，把"学得稳"的问题一并解决。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 解析解的硬伤与迭代法的登场</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -328,7 +328,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <ul><li><strong>梯度的定义</strong>：损失函数对每个参数求偏导，组成的向量 ∇J(w)。它是一个向量，指向<strong>损失上升最快</strong>的方向。</li><li><strong>关键结论</strong>：梯度的反方向（负梯度 -∇J）就是<strong>损失下降最快的方向</strong>。</li><li>直觉验证：单参数时梯度就是导数（dy/dx）。导数正 → 向右走损失变大 → 应向左（负方向）走；导数负 → 向右走损失变小 → 应向右（正方向）走。<strong>永远朝导数相反方向迈步</strong>，损失就在下降。</li></ul>
-<p>对 MSE：J(w) = (1/2m)·Σ(y_i - ŷ_i)²（讲义为了求导方便加了 1/2，导数更简洁），其梯度是：</p>
+<p>对 MSE：J(w) = (1/2m)·Σ(y_i - ŷ_i)²（为了求导方便加了 1/2，导数更简洁），其梯度是：</p>
 <pre>∂J/∂w_j = (1/m) · Σ (ŷ_i - y_i) · x_ij</pre>
 <p>后半段会看到：梯度里那个"(预测-真实)·特征"的结构，会在线性回归、逻辑回归里反复出现。</p>
 </div>
@@ -349,9 +349,9 @@
 <pre>w = w - η · ∇J(w)</pre>
 <p>拆开逐项：</p>
 <ul><li>w：当前参数（一组值）。</li><li>∇J(w)：当前点的梯度。</li><li>η（eta）：<strong>学习率（learning rate）</strong>，控制每一步迈多大。</li><li>更新后 w = 原 w 减去"步长×方向"，完成一次"往下走"。</li></ul>
-<p>完整算法四步（讲义的标准流程）：</p>
+<p>完整算法四步（标准流程）：</p>
 <ol><li>初始化：随机给 w 赋初值（或全 0）。</li><li>计算损失 J(w) 在当前位置的梯度 ∇J(w)。</li><li>按公式更新 w：w -= η·∇J(w)。</li><li>重复 2-3，直到损失不再明显下降（收敛）或达到最大轮次。</li></ol>
-<p><strong>θ（theta）与 w</strong>：讲义和很多资料用 θ 表示参数，与 w 等价，是同一回事。</p>
+<p><strong>θ（theta）与 w</strong>：很多资料用 θ 表示参数，与 w 等价，是同一回事。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -474,7 +474,7 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>解析解有哪三条硬伤？分别对应梯度下降的哪条优势？</li><li>梯度的定义是什么？为什么优化要走负梯度方向？</li><li>写出梯度下降的参数更新公式，并说明每个符号含义。</li><li>学习率过大和过小各会导致什么现象？怎么通过损失曲线判断？</li><li>梯度下降判定收敛的三种方式分别是什么？</li><li>为什么线性回归用梯度下降不担心局部最优？</li><li>BGD、SGD、Mini-Batch 按什么标准区分？</li><li>小规模线性回归问题上你会选解析解还是梯度下降？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>梯度下降讲义（无约束最优化问题 8 页）</a>
+<a href="#"><span class="k">参考</span>梯度下降（无约束最优化问题 8 页）</a>
 <a href="https://arxiv.org/abs/1609.04747" target="_blank" rel="noopener"><span class="k">文档</span>An overview of gradient descent optimization algorithms</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn SGDRegressor 文档</a>
 </div>

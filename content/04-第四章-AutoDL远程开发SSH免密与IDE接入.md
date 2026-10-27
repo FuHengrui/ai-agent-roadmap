@@ -241,7 +241,7 @@ VSCode 远程开发三步走：
 8. 本地改了代码但云端跑的还是旧的，怎么排查和解决？
 
 @@links
-讲义|大模型开发工具平台讲义（AutoDL 部分，16 页）|#
+参考|大模型开发工具平台（AutoDL 部分，16 页）|#
 工具|Git for Windows（Git Bash）|https://git-scm.com/downloads
 工具|XShell 官网|https://www.netsarang.com/zh/xshell/
 文档|VSCode Remote-SSH 官方文档|https://code.visualstudio.com/docs/remote/ssh

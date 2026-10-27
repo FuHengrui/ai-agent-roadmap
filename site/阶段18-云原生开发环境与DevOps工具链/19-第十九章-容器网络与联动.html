@@ -459,7 +459,7 @@ docker network create --driver bridge \
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>自定义网络网段和现有网络撞车</td><td>容器网络会混乱；创建前先看下现有网段，选个不冲突的</td></tr>
 <tr><td>rm 网络报 "network has active endpoints"</td><td>网络里还挂着容器；先 disconnect 或删容器再 rm</td></tr>
-<tr><td>--subnet 写成 192.168.0.0.16 报格式错</td><td>网段的写法是"IP/掩码位数"，中间是斜杠，不是小数点；这是讲义原稿里的笔误写法，正确是 192.168.0.0/16</td></tr>
+<tr><td>--subnet 写成 192.168.0.0.16 报格式错</td><td>网段的写法是"IP/掩码位数"，中间是斜杠，不是小数点；这是很常见的笔误写法，正确是 192.168.0.0/16</td></tr>
 </table>
 </div>
 </div></div>
@@ -507,7 +507,7 @@ docker network inspect mynet</div>
 <h4>自测：能不能答上来</h4>
 <ol><li>docker0 是什么？每个容器启动后能得到什么？</li><li>veth pair 为什么天生成对？容器删除后它会怎样？</li><li><code>--link tomcat02</code> 解决什么问题？它有什么局限？</li><li>四种网络模式分别是什么？各自一句话描述。</li><li>哪种网络模式最安全？host 模式有什么代价？</li><li><code>--subnet 192.168.0.0/16</code> 里的 <code>/16</code> 是什么意思？</li><li>怎样让两个容器不写死 IP 也能互访？给出两种做法。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Docker技术应用与实战讲义（76 页）</a>
+<a href="#"><span class="k">参考</span>Docker技术应用与实战（76 页）</a>
 <a href="https://docs.docker.com/network/" target="_blank" rel="noopener"><span class="k">文档</span>Docker 网络概览</a>
 <a href="https://docs.docker.com/engine/reference/commandline/network/" target="_blank" rel="noopener"><span class="k">文档</span>docker network 命令</a>
 </div>

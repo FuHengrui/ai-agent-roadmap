@@ -291,7 +291,7 @@ Agent 不是"写完代码就上线"的东西——它是具有不确定性的系
    A. 工具太多　　B. 描述含混，模型不知道何时调用　　C. 工具内部太复杂　　D. 返回值太长
 
 @@links
-讲义|01Agent理论基础.pdf|#
-讲义|02Agent工具系统.pdf|#
+参考|01Agent理论基础.pdf|#
+参考|02Agent工具系统.pdf|#
 官网|LangChain Agent 概念文档|https://python.langchain.com/docs/concepts/agents
 官网|Anthropic Agent 构建指南|https://www.anthropic.com/research/building-effective-agents

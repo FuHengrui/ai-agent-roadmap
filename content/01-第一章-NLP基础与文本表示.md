@@ -60,7 +60,7 @@
 - **文本生成**：输入提示，输出新文本（翻译、摘要、续写、对话）。
 - **信息抽取**：从非结构化文本中抽出结构化事实（实体、关系、事件）。
 
-本阶段讲义覆盖的正是这条线：分词与词性（序列标注）、关键词（抽取）、翻译与生成（Seq2Seq/Transformer/GPT）、理解（BERT）。
+本阶段覆盖的正是这条线：分词与词性（序列标注）、关键词（抽取）、翻译与生成（Seq2Seq/Transformer/GPT）、理解（BERT）。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -202,6 +202,6 @@ NLP 的发展大致走过三个阶段：
 7. 本阶段 17 章的四段式路线是什么？先后顺序为什么不能乱？
 
 @@links
-讲义|NLP基础与文本表示讲义|#
+参考|NLP基础与文本表示|#
 文档|jieba 官方文档（GitHub）|https://github.com/fxsjy/jieba
 文档|NLP 常用术语表（Hugging Face 课程）|https://huggingface.co/learn/nlp-course

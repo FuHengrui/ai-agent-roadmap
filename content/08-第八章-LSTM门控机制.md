@@ -223,6 +223,6 @@ LSTM 的硬伤集中在"**顺序处理**"：
 7. LSTM 相比 RNN 的代价是什么？它还有什么局限？
 
 @@links
-讲义|LSTM讲义|#
+参考|LSTM|#
 文档|Colah 图解 LSTM（必读经典）|https://colah.github.io/posts/2015-08-Understanding-LSTMs/
 文档|PyTorch nn.LSTM API|https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html

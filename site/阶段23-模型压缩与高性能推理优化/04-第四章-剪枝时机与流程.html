@@ -291,7 +291,7 @@
 <p>剪枝可以在训练的哪个阶段进行？各有什么特点？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>剪枝有两个概念性时机维度，讲义将其归纳为三类：</p>
+<p>剪枝有两个概念性时机维度，归纳起来分三类：</p>
 <ul><li><strong>训练前剪枝（Pre-training）</strong>：初始化后就剪，训一个稀疏模型（如 Lottery Ticket Hypothesis、随机稀疏初始化）。省了整轮训练成本，但稀疏结构难找。</li><li><strong>训练中剪枝（Dynamic / During training）</strong>：训练过程中边学边剪，动态调整掩码（如 dynamic network surgery）。结构与权重共同优化，效果通常更好，但实现复杂。</li><li><strong>训练后剪枝（Post-training）</strong>：先把基准模型训到收敛，再剪枝（必要时微调）。<strong>流程最简单、工业界主流</strong>。</li></ul>
 <p>工业现实：LLM 时代"训练后剪枝 + 轻量微调"最常用——因为基础模型很贵，不想为剪枝重训一遍。</p>
 </div>
@@ -370,7 +370,7 @@
 <p>无论哪种时机，剪枝的通用动作是什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出了剪枝的统一流程骨架（以训练后剪枝为准）：</p>
+<p>剪枝的统一流程骨架（以训练后剪枝为准）：</p>
 <pre>① 训练基准模型（或载入预训练权重）
 ② 选择剪枝粒度（连接级/通道级）
 ③ 给每个参数计算重要性分数
@@ -456,7 +456,7 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>剪枝有哪三种时机？各自的核心特点是什么？</li><li>为什么工业界主流选择"训练后剪枝"？</li><li>训练中剪枝与训练后剪枝在掩码处理上有什么本质区别？</li><li>画出训练后剪枝的六步标准流程。</li><li>剪枝后为什么要微调？微调时有什么注意事项？</li><li>为什么"剪得越多越好"是误区？评估剪枝效果要综合哪四个维度？</li><li>Lottery Ticket Hypothesis 属于哪种剪枝时机？它研究的核心问题是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>模型优化讲义（章节1）</a>
+<a href="#"><span class="k">参考</span>模型优化（章节1）</a>
 <a href="https://arxiv.org/abs/1803.03635" target="_blank" rel="noopener"><span class="k">文档</span>The Lottery Ticket Hypothesis</a>
 <a href="https://arxiv.org/abs/1708.04619" target="_blank" rel="noopener"><span class="k">文档</span>Dynamic Network Surgery</a>
 </div>

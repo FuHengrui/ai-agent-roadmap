@@ -1,5 +1,5 @@
 @@h1 第七章　手写 LoRA 微调（四）：测试、合并与上传
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 训练完了，LoRA 权重躺在 `./lora_model`——但**工作没完**：你怎么证明它真的变强了？怎么把它从"训练态"变成"能线上用的完整模型"？怎么把成果分享给全世界/同事？
@@ -23,7 +23,7 @@
 测试第一步：把训练好的 LoRA 权重加载回来。它和加载原始模型不一样——**先载底座（base model），再叠补丁（LoRA）**。为什么必须两步？直接载 lora_model 目录行不行？
 
 @@idea 核心思路
-讲义代码（整理为可运行版）：
+示例代码（整理为可运行版）：
 
 ```python
 from peft import PeftConfig, PeftModel
@@ -60,7 +60,7 @@ tokenizer = AutoTokenizer.from_pretrained(peft_model_path)
 补丁模式不能直接转 GGUF、不能跑 Ollama、别人也没法直接用。**合并（merge）**把补丁算进底座，产出"无 LoRA 痕迹"的完整模型——为什么非合不可？
 
 @@idea 核心思路
-讲义代码：
+示例代码：
 
 ```python
 # 合并 LoRA 权重并卸载适配器
@@ -97,7 +97,7 @@ $$W_{merged} = W + \frac{\alpha}{r} \cdot AB$$
 加载完成了，怎么让模型生成回答？`model.generate` 是入口，但直接生成会输出一堆 token 数字——要写一个 `generate_text` 函数，把"输入文本→编码→生成→解码"封装起来，这也是第 9、10 章都会用到的模式。
 
 @@idea 核心思路
-讲义代码（整理为可运行版）：
+示例代码（整理为可运行版）：
 
 ```python
 import torch
@@ -294,6 +294,6 @@ model.push_to_hub(repo_name)
 7. 从环境到上传的完整流水线按顺序写出来（八步）。
 
 @@links
-讲义|大模型 DeepSeek 微调与应用：测试微调后的模型、模型上传 Hugging Face|#
+参考|大模型 DeepSeek 微调与应用：测试微调后的模型、模型上传 Hugging Face|#
 官网|Hugging Face Hub 文档（上传/令牌）|https://huggingface.co/docs/hub/models-uploading
 官网|PEFT 显存优化指南（合并/卸载）|https://huggingface.co/docs/peft/conceptual_guides/memory

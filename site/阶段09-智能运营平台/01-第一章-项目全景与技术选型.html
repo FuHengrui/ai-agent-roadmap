@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 9 · 智能运营平台 › <strong>第一章</strong></div>
 <h1>第一章　项目全景与技术选型</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>一个糖尿病患者要管住四件事：<strong>测血糖、管住嘴、按时吃药、坚持运动</strong>。传统的做法是记在本子上、凭感觉吃饭、等到复诊才被医生"教育"一顿，中间三周的异常根本没人管。本章要做的系统，就是把患者的血糖、饮食、用药、运动数据全部收进一套系统里，再用 AI（大模型 + RAG + LangGraph）给出<strong>个性化</strong>的管理建议——你说"我今天早饭喝了粥血糖升到 9"它会结合你的饮食记录和医学知识库告诉你该怎么调整，而不是丢一句正确的废话。</p>
 <p>学完这一章，你手里会有一张<strong>完整信息系统蓝图</strong>：知道这个"AI 健康助手"由哪些模块组成、每个模块用什么技术、整个项目怎么分层。后面每章做的都是这张图上的一块拼图。</p>
@@ -312,7 +312,7 @@
 <p>一个完整产品不可能一把梭，先把"这个系统到底有哪些能力"列清楚，后面开发才有清单。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的功能模块清单，就是这套系统的需求地图：</p>
+<p>功能模块清单，就是这套系统的需求地图：</p>
 <table>
 <tr><th>模块</th><th>负载</th><th>技术落点</th></tr>
 <tr><td>📊 血糖监测与分析</td><td>记录血糖、趋势分析、高/低血糖异常预警</td><td>BloodSugar 模型 + 统计引擎</td></tr>
@@ -332,7 +332,7 @@
 <p>项目用什么语言、什么框架、什么数据库，需要在动手前一次性定清楚，避免中途换栈。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义的选型清单（12 项）：</p>
+<p>选型清单（12 项）：</p>
 <table>
 <tr><th>#</th><th>技术</th><th>用途</th></tr>
 <tr><td>1</td><td>Windows 11</td><td>开发操作系统</td></tr>
@@ -353,7 +353,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>Python 版本不齐，LangGraph 装不上</td><td>讲义要求 Python 3.12，低于 3.10 的语法和依赖兼容性会出问题；用 uv 统一管理解释器版本</td></tr>
+<tr><td>Python 版本不齐，LangGraph 装不上</td><td>Python 3.12 是硬要求，低于 3.10 的语法和依赖兼容性会出问题；用 uv 统一管理解释器版本</td></tr>
 <tr><td>uv、pip 命令混着用，环境越装越乱</td><td>项目一律用 <code>uv add</code>/<code>uv run</code>，不要混用 pip 装入依赖</td></tr>
 </table>
 </div>
@@ -373,7 +373,7 @@
 <p>动手前心里要有"系统长什么样"的静态结构图，知道每段代码摆在哪个层。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>项目的总体分层（讲义架构图的文字化）：</p>
+<p>项目的总体分层（架构图的文字化）：</p>
 <pre>┌──────────────────────────────────────────────┐
 │  Vue3 + TypeScript 前端（Element Plus + ECharts）│
 │  血糖图表 / 饮食管理 / AI 对话 / 报告页        │
@@ -403,7 +403,7 @@
 <p>系统的"大脑"是一套 LangGraph 工作流，必须先理解它的节点顺序，后面第十三章才能照着写。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Agent 工作流是一条流水线（讲义 Agent 工作流程图 / 时序图的文字化）：</p>
+<p>Agent 工作流是一条流水线（Agent 工作流程图 / 时序图的文字化）：</p>
 <pre>用户消息
   │
   ▼
@@ -485,7 +485,7 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>这个系统要解决的四大痛点是什么？AI 分别是如何应对"缺乏个性化指导"和"就医频次有限"的？</li><li>八大功能模块里，哪三个是靠"传统 CRUD"就能实现，哪三个必须依赖 AI/向量库？</li><li>技术选型里，与阶段 9 完全重复的技术有哪些？本阶段的三个增量技术分别负责什么？</li><li>Agent 工作流的五个节点按顺序是什么？为什么"风险评估"要放在最后而不是最前？</li><li>为什么 AI 相关代码要集中在 <code>app/core/</code> 而不是散在各路由里？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>安康智慧健康管理平台：糖尿病AI健康助手讲义</a>
+<a href="#"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</a>
 <a href="#"><span class="k">资料</span>糖尿病AI健康助手前端源码（Vue3+TS）</a>
 <a href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 官方文档</a>
 <a href="https://langchain-ai.github.io/langgraph/" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 官方文档</a>

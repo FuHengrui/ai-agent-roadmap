@@ -1,5 +1,5 @@
 @@h1 第十章　Pipeline 流水线、Cache 缓存与 Checkpoint
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★★☆
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★☆
 
 @@why 这一章在解决什么问题
 上一章讲了"一个 Stage 内的窄依赖算子可以连续跑"——但什么叫连续跑？为什么能快？这背后是 **Pipeline 流水线机制**。而第二个用户体验差到爆的问题：**重复计算**——同一段数据被多个 Job 用，每个 Job 都从头算一遍，慢得离谱。解决它的两把钥匙是 **Cache（缓存）** 与 **Checkpoint（检查点）**，但这两个东西长得像、用法完全不同：`cache()` 只是把数据放内存；`checkpoint()` 会把数据落盘**并且切断血缘**。选错了，要么内存白占、要么多一次全量 IO。
@@ -324,7 +324,7 @@ for (i <- 1 to 100) {
 6. 判断题：checkpoint 之后该 RDD 的血缘链被截断，重算时直接从检查点开始。
 
 @@links
-讲义|Spark 内核进阶（第 3 章：Pipeline 计算）|#
-讲义|Spark 内核进阶（第 4 章：Cache 与 CheckPoint）|#
+参考|Spark 内核进阶（第 3 章：Pipeline 计算）|#
+参考|Spark 内核进阶（第 4 章：Cache 与 CheckPoint）|#
 官网|RDD 持久化官方文档|https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence
 官网|Spark 配置（内存相关）|https://spark.apache.org/docs/latest/configuration.html#memory-management

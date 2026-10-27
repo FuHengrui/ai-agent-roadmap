@@ -1,5 +1,5 @@
 @@h1 第八章　RAG 检索与重排序
-@@sub 阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★★
+@@sub 阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 第 7 章向量库建好了，但"检索"远不止"向量搜一下"这么简单。法律场景有两个硬需求：**案号和法条编号要能精确命中**（向量检索在这上面会漏），**命中结果要按相关度排好序**（向量分高的未必是最该引用的）。
@@ -47,7 +47,7 @@ class HybridRetriever:
         docs = [d.page_content for d in self.vector_store.db.get()["documents"]]
         tokenized = [list(jieba.cut(d)) for d in docs]   # 中文分词
         return BM25Okapi(tokenized), docs
-…（以下省略 6 行，完整代码见讲义/仓库对应位置）
+…（以下省略 6 行，完整代码见仓库对应位置）
         tokenized_query = list(jieba.cut(query))
         bm25_scores = self.bm25_index.get_scores(tokenized_query)
         bm25_top = sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)[:top_k * 3]
@@ -115,7 +115,7 @@ class RetrievalAgent:
         candidates = await self.retriever.retrieve(query=query, top_k=top_k * 3, filters=filters)
 
         # 2. 重排序
-…（以下省略 6 行，完整代码见讲义/仓库对应位置）
+…（以下省略 6 行，完整代码见仓库对应位置）
     async def search_by_keywords(self, keywords: list[str], top_k: int = 10) -> list[dict]:
         """关键词检索（案例搜索页用）"""
         return await self.retrieve(" ".join(keywords), top_k)
@@ -258,7 +258,7 @@ asyncio.run(main())
 7. 调试检索"召回太多垃圾"应该调大还是调小 RAG_SCORE_THRESHOLD？为什么？
 
 @@links
-讲义|LegalMind 法律咨询系统：RAG 检索与重排序|#
+参考|LegalMind 法律咨询系统：RAG 检索与重排序|#
 官网|rank-bm25 文档|https://github.com/dorianbrown/rank_bm25
 官网|LangChain RAG 教程|https://python.langchain.com/docs/tutorials/rag/
 官网|jieba 分词|https://github.com/fxsjy/jieba

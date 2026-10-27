@@ -279,10 +279,10 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第五章</strong></div>
 <h1>第五章　手写 LoRA 微调（二）：数据准备与预处理</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>模型工作台搭好了，但<strong>模型吃不了中文句子，只能吃数字（token）</strong>。你手上有原始问答数据，它们长这样："指令：请翻译……回应：……"。要让 LoRA 学会"按指令回答"，至少要做四件事：找一个合适的公开数据集、看懂它的字段、拆成训练/验证集、把文本转成模型能吃的 token 序列——这四件事合起来叫<strong>数据准备与预处理</strong>。</p>
-<p>很多微调翻车不是模型问题，而是数据问题：字段名对不上、标签算错、序列截断导致回答被切掉、批次大小和最大长度不匹配。这一章用讲义指定的 <strong>LaMini-instruction 数据集</strong>走一遍完整的数据流水线，每一个坑都标注出来。</p>
+<p>很多微调翻车不是模型问题，而是数据问题：字段名对不上、标签算错、序列截断导致回答被切掉、批次大小和最大长度不匹配。这一章用 <strong>LaMini-instruction 数据集</strong>走一遍完整的数据流水线，每一个坑都标注出来。</p>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（手写 LoRA 一）：环境 + DeepSeek 模型加载完成——"锅"和"火"都有了</span>
@@ -296,7 +296,7 @@
 <p>教材第一步是"先看到数据长什么样"。LaMini-instruction 是谁、里面有什么字段、为什么适合当微调教材？不搞清楚字段结构，后面所有处理代码都是瞎写。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的数据集档案：</p>
+<p>数据集档案：</p>
 <table>
 <tr><th>属性</th><th>内容</th></tr>
 <tr><td>卡片名</td><td>MBZUAI/LaMini-instruction</td></tr>
@@ -317,7 +317,7 @@ print(dataset[:2])            # 看前两条样本</pre>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>加载时网络失败/data 卡住</td><td>与模型同理，可设置 HF 镜像；或用 <code>trust_remote_code=True</code> 处理个别数据集需要自定义代码的情况</td></tr>
 <tr><td>以为"所有指令数据集都长这样"</td><td>有的数据集有第三个字段 input（如 Alpaca 风格），有的叫"prompt/output"。<strong>每次先 print(column_names) 再写处理函数</strong>，别想当然</td></tr>
-<tr><td>一次加载全量数据太大</td><td>讲义用 <code>split="train[:10]"</code> 先读 10 条做测试！正式训练再换 <code>split="train"</code>。先小后大，避免白等下载</td></tr>
+<tr><td>一次加载全量数据太大</td><td>用 <code>split="train[:10]"</code> 先读 10 条做测试！正式训练再换 <code>split="train"</code>。先小后大，避免白等下载</td></tr>
 </table>
 </div>
 </div></div>
@@ -326,7 +326,7 @@ print(dataset[:2])            # 看前两条样本</pre>
 <p>一个数据集不能全拿去训练——没有"没见过的数据"来验证，你无法知道模型是不是过拟合/背答案。所以要把数据按比例拆成<strong>训练集</strong>（学）和<strong>验证集</strong>（考）。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义用 <code>train_test_split</code> 手动拆：</p>
+<p>这里用 <code>train_test_split</code> 手动拆：</p>
 <pre>from datasets import load_dataset
 # 正式加载训练集（按需取量，这里示例取 10000 条）
 dataset = load_dataset(&quot;MBZUAI/LaMini-instruction&quot;, split=&quot;train[:10000]&quot;)
@@ -353,7 +353,7 @@ print(len(train_dataset_raw), len(eval_dataset_raw))  # 9000 / 1000</pre>
 <p>模型吃 token 不吃汉字。数据准备的核心函数就是"把 instruction+response 拼成模板 → 分词器编码成 input_ids → 再把 response 部分标成 labels"。这段代码是微调数据的"翻译官"，一定要逐行读懂。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义 preprocess_function 拆解：</p>
+<p>preprocess_function 拆解：</p>
 <pre>from transformers import AutoTokenizer
 
 # 定义数据预处理函数
@@ -423,7 +423,7 @@ eval_dataset = eval_dataset_raw.map(
 <tr><td>remove_columns</td><td>处理后删掉原始列</td><td>数据集列越来越多，占用内存</td></tr>
 </table>
 <p>为什么 batched 快：分词器（tokenizer）内部对批量输入有<strong>批量优化</strong>（如 padding 一次到位、batch 内并行），逐条调用等于放弃这些优化，10000 条数据能慢到天荒地老。</p>
-<p>讲义里 preprocess_function 接收的 <code>examples</code> 是<strong>字典：列名→该列的一个 batch 列表</strong>（所以函数里用 <code>examples["instruction"]</code> 取到的是列表、再列表推导式逐个拼模板）——这就是 batched 模式的数据形态。</p>
+<p>这里的 preprocess_function 接收的 <code>examples</code> 是<strong>字典：列名→该列的一个 batch 列表</strong>（所以函数里用 <code>examples["instruction"]</code> 取到的是列表、再列表推导式逐个拼模板）——这就是 batched 模式的数据形态。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -464,18 +464,18 @@ print(tokenizer.decode(sample[&quot;labels&quot;]))  # 应看到原 response</pr
 </div></div>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 指令格式的取舍：这里为什么用"指令:\n回应:"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>你可能注意到：LaMini 没有 chat 模板，讲义直接拼 <code>"指令: {instruction}\n回应:"</code>。为什么不套用 DeepSeek 的官方 Chat 模板？不同模板对训练结果影响有多大？——理解模板，你才不会被"哪个模板对"搞晕。</p>
+<p>你可能注意到：LaMini 没有 chat 模板，就直接拼 <code>"指令: {instruction}\n回应:"</code>。为什么不套用 DeepSeek 的官方 Chat 模板？不同模板对训练结果影响有多大？——理解模板，你才不会被"哪个模板对"搞晕。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>模板的本质：<strong>告诉模型"哪段是输入、哪段该输出"的格式约定</strong>。</p>
 <table>
 <tr><th>方案</th><th>格式示例</th><th>适合</th></tr>
-<tr><td>讲义简化模板</td><td><code>指令: xxx\n回应:</code></td><td>教学/快速起步，可控、直观</td></tr>
+<tr><td>简化模板</td><td><code>指令: xxx\n回应:</code></td><td>教学/快速起步，可控、直观</td></tr>
 <tr><td>模型官方 Chat 模板</td><td>`&lt;</td><td>user</td><td>&gt;...&lt;</td><td>assistant</td><td>&gt;...`（tokenizer.apply_chat_template）</td><td>生产项目，与模型预训练格式一致</td></tr>
 <tr><td>Alpaca 模板</td><td><code>### Instruction: ...\n### Response:</code></td><td>第 9 章 Unsloth 使用</td></tr>
 </table>
 <p>会不会"格式错了模型学不会"？——微调本质上会<strong>学会你的格式</strong>：只要训练/推理用同一模板，模型就能跟着学会"看到回应:就接话"。所以一致性 &gt; 完美性：<strong>训测同模板</strong>比"用最官方模板但训测不一致"强得多。</p>
-<p>讲义主线统一用"指令:/回应:"模板，后文推理测试也是同一格式（第 7 章），正符合"一致性"原则。</p>
+<p>这里主线统一用"指令:/回应:"模板，后文推理测试也是同一格式（第 7 章），正符合"一致性"原则。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -525,7 +525,7 @@ print(tokenizer.decode(sample[&quot;labels&quot;]))  # 应看到原 response</pr
 <h4>自测：能不能答上来</h4>
 <ol><li>LaMini-instruction 的字段名是什么？加载后第一件事应该做什么？</li><li><code>train_test_split(test_size=0.1, seed=42)</code> 中 seed 的作用是什么？不设会怎样？</li><li>为什么 labels 用 response 的 token 而不是 instruction 的 token？</li><li><code>datasets</code> 的 <code>map(..., batched=True)</code> 有什么好处？batched 模式下函数收到的 examples 长什么样？</li><li>用 30 秒写出发自这一章的"肉眼验收三步"是什么？</li><li>"训练用 A 模板、测试用 B 模板"会造成什么问题？正确做法是什么？</li><li>预处理产出空 labels 样本会导致什么？怎么提前预防？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>大模型 DeepSeek 微调与应用：加载数据集与数据预处理</a>
+<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：加载数据集与数据预处理</a>
 <a href="https://huggingface.co/docs/datasets/" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face Datasets 文档（map/加载）</a>
 <a href="https://huggingface.co/datasets/MBZUAI/LaMini-instruction" target="_blank" rel="noopener"><span class="k">数据集</span>MBZUAI/LaMini-instruction</a>
 </div>

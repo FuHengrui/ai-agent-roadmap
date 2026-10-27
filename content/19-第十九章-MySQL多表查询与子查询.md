@@ -383,6 +383,6 @@ LIMIT 3;
 6. CROSS JOIN 和 NATURAL JOIN 分别是什么？为什么实战不常用 NATURAL？
 7. 标量子查询和表子查询分别应该用哪些比较操作符来承接结果？
 @@links
-讲义|MySQL 讲义（158 页）|#
+参考|MySQL （158 页）|#
 文档|JOIN 语法|https://dev.mysql.com/doc/refman/8.0/en/join.html
 文档|子查询|https://dev.mysql.com/doc/refman/8.0/en/subqueries.html

@@ -264,6 +264,6 @@ Docker 的容器技术属于**操作系统虚拟化**——它不虚拟整台电
 5. 补全公式"容器 = ？"，并说明两个部分各自的特点。
 6. "Build once, Run anywhere"是什么意思？它解决了什么痛点？
 @@links
-讲义|Docker技术应用与实战讲义（76 页）|#
+参考|Docker技术应用与实战（76 页）|#
 文档|Docker 官方文档|https://docs.docker.com/
 文档|Docker Hub 镜像仓库|https://hub.docker.com/

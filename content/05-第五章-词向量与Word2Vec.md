@@ -244,6 +244,6 @@ print(model.wv.similarity("猫", "狗"))  # 应高于 猫 vs 汽车
 7. 语料规模很小（几万句）时，你会选 CBOW 还是 Skip-gram？为什么？
 
 @@links
-讲义|词向量与Word2Vec讲义|#
+参考|词向量与Word2Vec|#
 文档|gensim Word2Vec 文档|https://radimrehurek.com/gensim/models/word2vec.html
 文档|Word2Vec 原始论文（Efficient Estimation of Word Representations）|https://arxiv.org/abs/1301.3781

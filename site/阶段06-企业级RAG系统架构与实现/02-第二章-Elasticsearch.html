@@ -787,7 +787,7 @@ public class NewsService {
 <tr><td>磁盘涨</td><td>定期 <code>DELETE</code> 过期索引、改冷热分层（热节点 SSD/冷节点 HDD）</td></tr>
 <tr><td>写入慢</td><td>批量 <code>_bulk</code>、调大 refresh_interval、关副本写入再开</td></tr>
 </table>
-<p><strong>综合案例：百度式新闻搜索</strong>（讲义配套 escase 项目的核心链路）：</p>
+<p><strong>综合案例：百度式新闻搜索</strong>（配套项目 escase 的核心链路）：</p>
 <pre>采集(Logstash) → 新闻表(MySQL) → 同步进 ES(news 索引，ik_pinyin 分词)
         ↓
 用户输入&quot;养老&quot; → ES 查询三连：
@@ -815,8 +815,8 @@ public class NewsService {
 <ol><li>ES 中 <code>term</code> 查询与 <code>match</code> 查询的本质区别？</li></ol>
 <p>A. term 是精确匹配（keyword），match 是分词匹配（text）　　B. 两者一样　　C. term 更快但只支持英文　　D. match 不支持中文</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>章节2_Elasticsearch.pdf</a>
-<a href="#"><span class="k">讲义</span>es.rar（SpringBoot+ES Java 工程源码，选读）</a>
+<a href="#"><span class="k">参考</span>章节2_Elasticsearch.pdf</a>
+<a href="#"><span class="k">参考</span>es.rar（SpringBoot+ES Java 工程源码，选读）</a>
 <a href="#"><span class="k">软件</span>elasticsearch-8.10.4、kibana、logstash 安装包（章节2/软件/）</a>
 <a href="https://www.elastic.co/cn" target="_blank" rel="noopener"><span class="k">官网</span>Elastic 官网</a>
 <a href="https://github.com/medcl/elasticsearch-analysis-ik" target="_blank" rel="noopener"><span class="k">插件</span>IK 分词器仓库</a>

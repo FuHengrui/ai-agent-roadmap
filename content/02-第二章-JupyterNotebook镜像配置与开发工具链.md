@@ -361,7 +361,7 @@ uv run script.py              # 在项目环境中运行脚本
 6. 在命令模式下，插入单元格、删除单元格、切换 Markdown、运行并选中下一个的快捷键分别是什么？
 7. VSCode 里跑 Jupyter 需要满足哪三个条件？
 @@links
-讲义|Anaconda 开发环境讲义（34 页）|#
+参考|Anaconda 开发环境（34 页）|#
 工具|Jupyter 官网|https://jupyter.org/
 工具|PyCharm 下载页|https://www.jetbrains.com/pycharm/
 工具|VSCode 官网|https://code.visualstudio.com/

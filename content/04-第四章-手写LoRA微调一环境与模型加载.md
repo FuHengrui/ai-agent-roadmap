@@ -1,10 +1,10 @@
 @@h1 第四章　手写 LoRA 微调（一）：环境与模型加载
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 前两章全是理论，你这会儿一定手痒：**到底怎么把一个 DeepSeek 模型"挂上"LoRA 开始微调？** 从零搭一套可复现的环境，往往是新手第一个劝退点——要么 torch 装错版本、要么模型加载报"cuda 不可用"、要么显存爆掉。这一章就是"实战第一脚"：创建虚拟环境、装齐依赖、真正把 DeepSeek-R1-Distill-Qwen-1.5B 加载进显存，并看懂打印出来的模型架构。
 
-学完这一章，你手里有一个**能加载预训练模型的工作台**——下一章喂数据，第三节就开训。所有步骤都对着讲义来，遇到环境报错也有坑位表可查。
+学完这一章，你手里有一个**能加载预训练模型的工作台**——下一章喂数据，第三节就开训。所有步骤都按清单来，遇到环境报错也有坑位表可查。
 
 @@map 这一章在整个知识库里的位置
 上一章（LoRA 原理）：懂了低秩补丁（W+AB）为什么省、参数怎么设置
@@ -18,7 +18,7 @@
 很多新手死在新环境第一步：直接在 base 环境里 pip install，装到一半要 python 2.7 的依赖，把系统环境搞烂。先看清需要的"零件清单"，再用虚拟环境隔离，才不翻车。
 
 @@idea 核心思路
-讲义的环境清单，拆成四组：
+环境清单拆成四组：
 
 | 零件 | 命令/内容 | 作用 |
 |---|---|---|
@@ -34,14 +34,14 @@
 |---|---|
 | 直接 `pip install torch` 完事，训练时 `torch.cuda.is_available()` 返回 False | 默认 PyPI 的 torch 是 CPU 版。**必须用 CUDA 版本安装源**（如 cu126 对应 CUDA 12.6）重装；装完立即 `python -c "import torch;print(torch.cuda.is_available())"` 验证 |
 | conda 环境建了但没激活，pip 装到了 base | 每次新开终端**先 `conda activate lora_env`**，用 `which python` 确认路径在环境里再安装；否则两套环境互相污染 |
-| python 版本乱选 | 讲义指定 3.9（transformers/peft 对 3.9 兼容性最稳）；日后用 Unsloth 时再用 3.11 另建环境（第 8 章），两个环境并行不冲突 |
+| python 版本乱选 | 本项目指定 3.9（transformers/peft 对 3.9 兼容性最稳）；日后用 Unsloth 时再用 3.11 另建环境（第 8 章），两个环境并行不冲突 |
 
 @@point ② 第一步：创建并激活虚拟环境
 @@need 要解决什么
 环境隔离怎么做才"干净可复现"？一张命令清单，从建环境到确认环境生效，避免"装了半天发现装错地方"。
 
 @@idea 核心思路
-讲义给的三行，加一行验证：
+三行命令，加一行验证：
 
 ```bash
 conda create -n lora_env python=3.9   # 创建，-n 是名字
@@ -67,7 +67,7 @@ python --version                      # 验证：必须显示 3.9.x
 transformers/peft/datasets 是三件套，bitsandbytes/accelerate 是"量化+加速"的进阶件。哪些必装、哪些可选、装错版本会怎样——一条命令讲清楚。
 
 @@idea 核心思路
-讲义命令拆解：
+命令拆解：
 
 ```bash
 # 基础依赖
@@ -84,7 +84,7 @@ pip install bitsandbytes accelerate
 | bitsandbytes | 4bit/8bit 量化（QLoRA） | 显存不够时没法省 |
 | accelerate | device_map 自动分配、多卡加速 | 加载时无法 "auto" 分设备 |
 
-要不要装 bitsandbytes 取决于你的显存：**8GB 及以下强烈建议（量化后模型小 4 倍）**；24GB+ 可以先不装，LoRA 直接跑。讲义默认都装，照着做最稳。
+要不要装 bitsandbytes 取决于你的显存：**8GB 及以下强烈建议（量化后模型小 4 倍）**；24GB+ 可以先不装，LoRA 直接跑。这里默认都装，照着做最稳。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -98,7 +98,7 @@ pip install bitsandbytes accelerate
 这一步是新手重灾区：torch 装了，但用不了 GPU。为什么必须用 `--index-url` 指定 cu 版本？CUDA 版本怎么和显卡驱动匹配？——把它装在"驱动 → CUDA 工具包 → torch 构建版本"这条链上理解。
 
 @@idea 核心思路
-讲义命令（以 cu126 为例）：
+安装命令（以 cu126 为例）：
 
 ```bash
 pip install torch torchvision torchaudio \
@@ -131,7 +131,7 @@ python -c "import torch; print(torch.__version__); print(torch.cuda.is_available
 动手加载之前，总得先认识要调教的模型：它是什么底子、多大、"蒸馏"是什么意思？选它当教材主角不是因为最强，而是因为**小到单卡能跑、强到微调有肉眼可见效果**。
 
 @@idea 核心思路
-讲义指定的模型：
+本章用的模型：
 
 | 属性 | 内容 |
 |---|---|
@@ -156,7 +156,7 @@ python -c "import torch; print(torch.__version__); print(torch.cuda.is_available
 LoRA 微调的第一个真实代码块来了。两行加载为什么写法是 `device_map="auto"` 和 `torch_dtype=torch.float16`？它们各自防什么坑？
 
 @@idea 核心思路
-讲义加载代码（整理为可运行版）：
+示例代码（整理为可运行版）：
 
 ```python
 from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -193,7 +193,7 @@ print(model)
 模型加载后会打印一大坨结构。新手看着像天书，但里面藏着微调的关键信息——**你要 LoRA 挂载的 q_proj/v_proj 就在这个结构里**。学会读它，后面填 target_modules 就不靠猜。
 
 @@idea 核心思路
-讲义打印的核心结构（Qwen2 1.5B 节选）：
+打印出来的核心结构（Qwen2 1.5B 节选）：
 
 ```
 Qwen2ForCausalLM(
@@ -280,6 +280,6 @@ print(model) 不只是"看看"，它是对照填参的字典。
 7. 显存只有 4GB 想微调 1.5B 模型，按本章建议怎么降负担？（至少说三层）
 
 @@links
-讲义|大模型 DeepSeek 微调与应用：配置环境与加载预训练模型|#
+参考|大模型 DeepSeek 微调与应用：配置环境与加载预训练模型|#
 官网|Hugging Face 模型页：DeepSeek-R1-Distill-Qwen-1.5B|https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
 官网|PyTorch 安装（CUDA 版本选择）|https://pytorch.org/get-started/locally/

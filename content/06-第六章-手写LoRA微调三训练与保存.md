@@ -1,5 +1,5 @@
 @@h1 第六章　手写 LoRA 微调（三）：训练与保存
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 模型工作台和数据都备好了，现在要**点火**：把 LoRA 挂到模型上、配好训练超参、跑起 Trainer、把训练好的权重保存下来。这一章是全流程的高潮，也是报错高发区——`get_peft_model` 报找不到模块、训练显存爆炸、loss 不下降、保存完不知道存了啥，每个坑都能卡你一整天。
@@ -18,7 +18,7 @@
 第 3 章讲过 r / α / target_modules 原理，现在要看它们在代码里长什么样。`LoraConfig` 每个字段管什么、怎么填？照抄会错在哪？——这一节把配置和原理对上号。
 
 @@idea 核心思路
-讲义代码（整理为可运行版）：
+示例代码（整理为可运行版）：
 
 ```python
 from peft import LoraConfig, TaskType
@@ -56,7 +56,7 @@ lora_config = LoraConfig(
 配置写好了，还差两步"接入"：如果是量化模型，要先 `prepare_model_for_kbit_training` 做准备；然后 `get_peft_model` 真正把 LoRA 补丁挂上去。挂完怎么确认"挂上了"？
 
 @@idea 核心思路
-讲义代码：
+示例代码：
 
 ```python
 from peft import get_peft_model, prepare_model_for_kbit_training
@@ -84,16 +84,16 @@ print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 忘了 prepare_model_for_kbit_training，量化模型训练报错/不动 | 4bit 加载 + 训练的组合必须 prepare；**非量化（fp16 全精度加载）时这步可省**，讲义环境默认都装 bitsandbytes，加了最稳 |
+| 忘了 prepare_model_for_kbit_training，量化模型训练报错/不动 | 4bit 加载 + 训练的组合必须 prepare；**非量化（fp16 全精度加载）时这步可省**，环境里默认都装了 bitsandbytes，加了最稳 |
 | 看不到 lora_A/lora_B 就开训 | 先 debug：检查 get_peft_model 是否成功、print 是否显示 PEFT 结构。**没挂上就训练 = 训了个原模型**，白烧电 |
 | 以为"挂 LoRA 后再打印的模型还是原来那坨" | 挂载后模型结构会多出 lora_* 子层、参数统计变化。看到多出的部分才是挂成功的标志 |
 
 @@point ③ TrainingArguments：训练超参每个字段
 @@need 要解决什么
-训练是门"玄学调参"？其实每个超参都有明确职责。这节把讲义里的 TrainingArguments 逐行翻译成人话，并标出显存/效果/速度三维取舍——之后你就能自己改参数，而不是只会抄。
+训练是门"玄学调参"？其实每个超参都有明确职责。这节把 TrainingArguments 逐行翻译成人话，并标出显存/效果/速度三维取舍——之后你就能自己改参数，而不是只会抄。
 
 @@idea 核心思路
-讲义训练参数（整理为可运行版）：
+训练参数（整理为可运行版）：
 
 ```python
 from transformers import TrainingArguments
@@ -133,7 +133,7 @@ training_args = TrainingArguments(
 模型、数据、超参都齐了，Trainer 就是把它们组装起来的"总机房"——传模型、训练参数、数据集、分词器，一行 train() 开跑。这一节看清 Trainer 的接线图。
 
 @@idea 核心思路
-讲义代码：
+示例代码：
 
 ```python
 from transformers import Trainer
@@ -165,7 +165,7 @@ Trainer 内部替你干了全套脏活：自动批处理、梯度累积、评估
 训练结束，现在要把成果"存下来"——但 LoRA 微调的产物不是整个大模型，而是**补丁权重 + 分词器 + 配置**。存什么、存哪、多大，直接影响第 7 章的加载。
 
 @@idea 核心思路
-讲义代码：
+示例代码：
 
 ```python
 peft_model_path = "./lora_model"
@@ -190,7 +190,7 @@ trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 以为存的是完整模型，传到别处发现打不开 | LoRA 权重**必须配合同名底座**使用：加载时先载底座、再挂 adapter（第 7 章）。单独拿 adapter 文件给别人用，对方也得先下载底座 |
-| 只 save 了模型没 save tokenizer | 加载时 tokenizer 找不到，乱码一堆。**tokenizer 和模型要一起存**（讲义两行都写了） |
+| 只 save 了模型没 save tokenizer | 加载时 tokenizer 找不到，乱码一堆。**tokenizer 和模型要一起存**（示例里两行都写了） |
 | 保存路径被多次覆盖 | LoRA 迭代训练会覆盖旧版本。**按实验命名目录**（如 lora_epoch3 / lora_r16）留档，方便对比回退 |
 
 @@point ⑥ 训练监控：tensorboard 怎么看
@@ -269,7 +269,7 @@ GPU 显存不够看不到吗？——tensorboard 用 CPU 就能跑，只读日�
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 忘了保存 lora_model 就关了环境 | 权重在内存里，会话结束即失。**训练一结束立刻 save**（讲义顺序都是先 train 后 save），养成习惯 |
+| 忘了保存 lora_model 就关了环境 | 权重在内存里，会话结束即失。**训练一结束立刻 save**（顺序都是先 train 后 save），养成习惯 |
 | results 和 lora_model 混为一谈 | results 是日志/检查点（可续训的大物件），lora_model 是轻量补丁（交付物）。**交付用 lora_model，训练维护看 results** |
 | 只验收了"没报错" | 没报错≠训得好。**看 loss 曲线**才算完成真实验收——这是和"照着跑完"的分界线 |
 
@@ -295,6 +295,6 @@ GPU 显存不够看不到吗？——tensorboard 用 CPU 就能跑，只读日�
 7. 训练产物里 results 和 lora_model 的作用分别是什么？交付/续训各用哪个？
 
 @@links
-讲义|大模型 DeepSeek 微调与应用：配置 LoRA 超参数、训练模型与保存模型|#
+参考|大模型 DeepSeek 微调与应用：配置 LoRA 超参数、训练模型与保存模型|#
 官网|Hugging Face Trainer 文档|https://huggingface.co/docs/transformers/main_classes/trainer
 官网|PEFT 保存/加载指南|https://huggingface.co/docs/peft/developer_guides/save_load

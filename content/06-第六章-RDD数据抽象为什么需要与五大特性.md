@@ -1,5 +1,5 @@
 @@h1 第六章　RDD 数据抽象：为什么需要与五大特性
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★★
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 你部署好了集群，但真正要开始写数据处理代码时，第一个问题来了：**"数据"在 Spark 里到底长什么样？** 你手里是一堆文本文件、几百行日志，怎么把它们变成"能分布到 100 台机器上并行处理"的东西？直接丢给集群？显然不行。
@@ -54,7 +54,7 @@ RDD（Resilient Distributed Dataset）拆开看：
 | **Distributed（分布式）** | 数据切成多个分区，分布在集群不同节点上 |
 | **Dataset（数据集）** | 它是一个"数据集合"的抽象，里面装元素，像集合一样可遍历、可变换 |
 
-讲义给出的完整定义：**RDD 是 Spark 中最基本的数据抽象，代表一个不可变、可分区、里面的元素可并行计算的集合**。
+完整的定义是：**RDD 是 Spark 中最基本的数据抽象，代表一个不可变、可分区、里面的元素可并行计算的集合**。
 
 四个要点拆开：
 
@@ -203,7 +203,7 @@ rdd = rdd.partitionBy(3, partitionFunc)   # 自定义规则
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 自定义分区器返回值越界 | 返回的分区号必须 `0 <= n < 分区数`，越界直接报 `IllegalArgumentException`。讲义特意提醒：编号从 0 开始，别超总数 |
+| 自定义分区器返回值越界 | 返回的分区号必须 `0 <= n < 分区数`，越界直接报 `IllegalArgumentException`。特别提醒：编号从 0 开始，别超总数 |
 | 以为所有 shuffle 都默认 hash | reduceByKey/groupByKey 默认 HashPartitioner，但你可以用 `partitionBy` 改成自定义分区，控制数据落点 |
 | 本地性总是 100%？ | 理想是"计算挨着数据"，但资源不够或 shuffle 后数据移动会导致部分任务变级（PROCESS_LOCAL/RACK_LOCAL）。UI 的 locality level 可见 |
 
@@ -242,7 +242,7 @@ makeRDD 只是 parallelize 的别名，别为了两个名字纠结。
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 知道 `textFile` 但不知道"默认分多少区" | HDFS 按块（128MB/块）分；本地文件按块大小估算，但总分区数有限制。想控制就显式传 `minPartitions` |
-| 设了 `minPartitions=100` 实际出来 86 | 讲义明确讲过：**最小分区数是参考值，Spark 会按数据量自行调整**（不会为 1 字节文件硬造 100 分区）。这是正常行为不是 bug |
+| 设了 `minPartitions=100` 实际出来 86 | 要记住：**最小分区数是参考值，Spark 会按数据量自行调整**（不会为 1 字节文件硬造 100 分区）。这是正常行为不是 bug |
 | 以为读目录必须逐个列文件 | `textFile("hdfs://.../input/")` 读**整个目录**下所有文件（会合并），用通配符可精细控制：`"input/*.txt"` |
 | `parallelize` 与 `makeRDD` 纠结 | 完全等价，前者是原生 API，后者是 SparkContext 的便捷封装。用哪个都行，别当成两种机制 |
 
@@ -264,7 +264,7 @@ makeRDD 只是 parallelize 的别名，别为了两个名字纠结。
 6. `makeRDD` 和 `parallelize` 是什么关系？
 
 @@links
-讲义|Spark 分布式计算框架基础（第 6 章：RDD 概述与五大特性）|#
-讲义|Spark 分布式计算框架基础（第 7 章：RDD 创建）|#
+参考|Spark 分布式计算框架基础（第 6 章：RDD 概述与五大特性）|#
+参考|Spark 分布式计算框架基础（第 7 章：RDD 创建）|#
 官网|RDD Programming Guide|https://spark.apache.org/docs/latest/rdd-programming-guide.html
 资料|sparkdemo.zip（本章 RDD 创建示例源码）|#

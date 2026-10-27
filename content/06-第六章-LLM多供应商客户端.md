@@ -1,5 +1,5 @@
 @@h1 第六章　大语言模型多供应商客户端
-@@sub 阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★☆
+@@sub 阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
 LegalMind 的所有智能都来自大模型：意图识别、法律问答、文书生成。但大模型有一个现实问题——**供应商会变、模型名会变、价格会变**。把 `openai.ChatCompletion` 写死在代码里，DeepSeek 出个更便宜的就要改全项目；把 prompt 散落在 agent 里，调一次话术要翻五个文件。
@@ -28,7 +28,7 @@ def get_llm() -> BaseChatModel:
     provider = settings.LLM_PROVIDER.lower()
 
     if provider == "deepseek":
-…（以下省略 7 行，完整代码见讲义/仓库对应位置）
+…（以下省略 7 行，完整代码见仓库对应位置）
         return ChatOpenAI(
             model=settings.LLM_MODEL,
             api_key=settings.LLM_API_KEY,
@@ -139,7 +139,7 @@ if intent not in ['qa', 'document', 'search']:
 @@need 要解决什么
 问答质量取决于 system prompt 的"人设"和"纪律"。没有约束的模型会编法条、乱给建议、不说风险。写一条**专业法律顾问**人设 + 四条回答原则 + 三段回答结构。
 @@idea 核心思路
-`QA_SYSTEM_PROMPT` 的三层设计（浓缩版，完整代码在讲义）：
+`QA_SYSTEM_PROMPT` 的三层设计（浓缩版，完整代码见配套代码）：
 ```text
 System: 你是一位专业的法律顾问……你的职责是基于提供的案例资料，为用户提供专业、准确、有法律依据的法律建议。
 
@@ -186,7 +186,7 @@ DOCUMENT_TEMPLATES = {
 1. [诉讼请求1]
 2. [诉讼请求2]
 
-…（以下省略 6 行，完整代码见讲义/仓库对应位置）
+…（以下省略 6 行，完整代码见仓库对应位置）
 原告：[签名]
 日期：[日期]
 """,
@@ -267,6 +267,6 @@ asyncio.run(main())
 7. temperature=0.3 适合什么场景？法律问答为什么不用 0.7+？
 
 @@links
-讲义|LegalMind 法律咨询系统：大语言模型多供应商客户端|#
+参考|LegalMind 法律咨询系统：大语言模型多供应商客户端|#
 官网|LangChain Chat Models 文档|https://python.langchain.com/docs/integrations/chat/
 官网|DeepSeek API 文档|https://api-docs.deepseek.com/

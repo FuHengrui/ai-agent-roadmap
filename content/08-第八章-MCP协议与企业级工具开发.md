@@ -155,7 +155,7 @@ async with stdio_client(server) as (read, write):
 - `initialize()` 建立会话握手 → `list_tools()` 发现能力 → `call_tool()` 执行
 - 学习/实践组合：自己写一个 `server_xxx.py`（服务端）+ 一个客户端脚本（连接调用），先跑通再谈生产
 
-实践案例（企业级讲义三连）：**邮件发送 MCP**（把 send_email 注册为工具）、**数据库查询 MCP**（把 SQL 执行封装成工具）、**面向 Agent 的数据图表工具**（把绘图逻辑封装，Agent 说"画个 8 月销售柱状图"→ 工具出图）。
+实践案例（企业级三连）：**邮件发送 MCP**（把 send_email 注册为工具）、**数据库查询 MCP**（把 SQL 执行封装成工具）、**面向 Agent 的数据图表工具**（把绘图逻辑封装，Agent 说"画个 8 月销售柱状图"→ 工具出图）。
 
 @@trap 坑在哪
 | 现象 | 原因 |
@@ -287,8 +287,8 @@ with client as mcp_tools:
    A. 只能传输文本　　B. 调用工具时会启动新子进程，适合本地不适合 Web 服务　　C. 速度最慢　　D. 不加密
 
 @@links
-讲义|08_LLM框架实战_MCP.pdf|#
-讲义|企业级AI模型部署与工具开发实战.pdf|#
+参考|08_LLM框架实战_MCP.pdf|#
+参考|企业级AI模型部署与工具开发实战.pdf|#
 官网|MCP 官方文档|https://modelcontextprotocol.io/
 中文|FastMCP 教程|https://fastmcp.wiki/zh/getting-started/welcome
 官网|langchain-mcp-adapters|https://github.com/langchain-ai/langchain-mcp-adapters

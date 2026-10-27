@@ -1,5 +1,5 @@
 @@h1 第五章　应用启动与患者管理 API
-@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★
+@@sub 阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 第四章写好了 7 个模型类，但代码还跑不起来——FastAPI 应用入口没建、路由没挂、数据库生命周期没注册。本章解决三件事：**一是从 main.py 把整个应用组装起来**（CORS、路由注册、Tortoise 生命周期、lifespan），**二是写第一个完整的 CRUD 模块（患者管理）**，**三是吃透 Pydantic v2 的 Schema 三件套**（Create/Update/Response）和 `from_attributes` 配置。
@@ -322,6 +322,6 @@ FastAPI 把错误也"结构化"了，常见三种：
 6. 复用患者模块写血糖模块，至少需要改哪三处？
 
 @@links
-讲义|安康智慧健康管理平台：糖尿病AI健康助手讲义|#
+参考|安康智慧健康管理平台：糖尿病AI健康助手|#
 官网|FastAPI 教程|https://fastapi.tiangolo.com/tutorial/
 官网|Pydantic v2 模型配置|https://docs.pydantic.dev/latest/concepts/config/

@@ -281,7 +281,7 @@ git commit -m "移除 target 目录的跟踪"   # 提交这次移除
 6. 已提交过的文件写进 .gitignore 后为什么还在版本库里？怎么解决？
 
 @@links
-讲义|Git版本控制管理讲义（86 页）|#
+参考|Git版本控制管理（86 页）|#
 文档|Git 基础 · 撤销操作|https://git-scm.com/book/zh/v2/Git-基础-撤销操作
 文档|Git 基础 · 查看提交历史|https://git-scm.com/book/zh/v2/Git-基础-查看提交历史
 文档|Git 官方文档|https://git-scm.com/doc

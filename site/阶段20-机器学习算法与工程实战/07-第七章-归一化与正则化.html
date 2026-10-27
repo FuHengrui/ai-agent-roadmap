@@ -285,7 +285,7 @@
 <p>两个问题一个在数据侧（归一化）、一个在模型侧（正则化），是数据挖掘工作流里出现频率最高的两个动作。学完本章，你能解释"为什么好多教程第一行都是 StandardScaler"以及"为什么 L2 正则叫 Ridge、L1 正则叫 Lasso"。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章代码实验看到量纲问题让梯度下降收敛困难。<strong>本章先给数据做"美容"（两种归一化及其对比），再讲模型"戴枷锁"（L1/L2 正则化），并回答欠拟合与过拟合的判断</strong>。下一章（讲义章节6-7）把这些工具组装成完整武器：Ridge/Lasso/ElasticNet 与多项式升维，最后用"保险花销预测"这个大案例把所有招式串起来。</span>
+<span class="node">上一章代码实验看到量纲问题让梯度下降收敛困难。<strong>本章先给数据做"美容"（两种归一化及其对比），再讲模型"戴枷锁"（L1/L2 正则化），并回答欠拟合与过拟合的判断</strong>。下一章把这些工具组装成完整武器：Ridge/Lasso/ElasticNet 与多项式升维，最后用"保险花销预测"这个大案例把所有招式串起来。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 为什么必须归一化：峡谷与碗</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -460,7 +460,7 @@ x_test_scaled = scaler.transform(x_test)    # ③ 测试集用同一套 μ、σ 
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么量纲悬殊会让梯度下降收敛变差？用"峡谷"解释。</li><li>Min-Max 归一化和标准归一化各适合什么场景？分别写出公式。</li><li>StandardScaler 的 with_mean、with_std 参数分别实现什么？</li><li>为什么对测试集只能 transform 不能 fit？操作顺序"先切分再归一化"防的是什么？</li><li>欠拟合和过拟合各有什么特征？判断依据是什么？</li><li>正则化的目标函数长什么样？λ 增大时模型往哪个方向走？</li><li>L1 与 L2 惩罚的效果差异是什么？各适合什么场景？</li><li>λ 为什么是超参数而不是模型参数？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>梯度下降讲义（归一化与正则化 9 页）</a>
+<a href="#"><span class="k">参考</span>梯度下降（归一化与正则化 9 页）</a>
 <a href="https://scikit-learn.org/stable/modules/preprocessing.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn preprocessing 中文说明</a>
 <a href="https://scikit-learn.org/stable/auto_examples/linear_model/plot_ridge_lasso.html" target="_blank" rel="noopener"><span class="k">文档</span>Lasso 与 Ridge 对比（sklearn）</a>
 </div>

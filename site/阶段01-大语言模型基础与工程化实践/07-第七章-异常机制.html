@@ -279,13 +279,13 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 1 · 大语言模型基础与工程化实践 › <strong>第七章</strong></div>
 <h1>第七章　异常机制</h1>
-<div class="subtitle">阶段 1 · 大语言模型基础与工程化实践　|　12 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 1 · 大语言模型基础与工程化实践　|　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>你的程序要抓 200 个页面。抓到第 137 个的时候，那个页面返回了 404——<strong>程序直接崩了，前面 136 个白抓。</strong></p>
 <p>这就是没有异常处理的代价：<strong>一处小问题，毁掉全部工作。</strong></p>
 <p>这一章要解决两件事：</p>
 <ul><li><strong>"出错了怎么不崩"</strong>——捕获异常，跳过坏的继续跑</li><li><strong>"出错了怎么知道为什么"</strong>——记录日志、调试定位</li></ul>
-<p><strong>而且这一章有个更重要的观念转变</strong>：讲义第一节课叫「异常的本质、调试错误的核心理念」——<strong>异常不是"敌人"，是"信息"</strong>。它告诉你程序在哪、因为什么、走不下去了。</p>
+<p><strong>而且这一章有个更重要的观念转变</strong>：<strong>异常不是"敌人"，是"信息"</strong>。它告诉你程序在哪、因为什么、走不下去了。</p>
 <p><strong>新手看到报错就慌，老手看到报错就高兴</strong>——因为报错是程序在帮你定位问题。学会读懂异常，你的 debug 速度会翻倍。</p>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
@@ -295,7 +295,7 @@
 <span class="node">阶段终点 —— 一个能跑一整晚、出错也能自己恢复的自动化系统</span>
 </div>
 <div class="note info"><span class="t">这一章为什么短，但很重要</span>
-<p>只有 12 课时，是阶段 1 最短的一章。<strong>但它是"玩具代码"和"能用的程序"的分界线。</strong></p>
+<p>篇幅很短，是阶段 1 最短的一章。<strong>但它是"玩具代码"和"能用的程序"的分界线。</strong></p>
 <p>实际跑采集的时候你会遇到：网络超时、页面改版、被限速、模型返回垃圾 JSON、磁盘写满……<strong>每一种都可能发生。</strong> 没有异常处理，你的程序只能跑一次演示。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 异常的本质</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -328,7 +328,7 @@
 <span class="c">#            ▼</span>
 <span class="c">#     程序崩溃，打印 Traceback</span></div>
 <p><strong>关键理解：异常会沿着调用链一层层往上抛，直到有人接住它。</strong></p>
-<p><strong>调试的核心理念</strong>（讲义第一节的重点）：</p>
+<p><strong>调试的核心理念</strong>：</p>
 <p>&gt; <strong>不要猜，要定位。</strong> 报错信息已经告诉你"文件、行号、什么错"了，<strong>照着读比拍脑袋快十倍</strong>。</p>
 <p><strong>遇到报错的正确顺序</strong>：</p>
 <ul><li><strong>看最后一行</strong>——错误类型和原因</li><li><strong>看行号</strong>——哪一行出的问题</li><li><strong>看中间</strong>——如果是多层调用，看是谁调用了谁</li><li><strong>复现</strong>——能稳定复现，才能稳定修好</li></ul>
@@ -464,7 +464,7 @@ try:
     content = f.read()
 finally:
     f.close()          # 即使 read 抛异常，文件也会被关掉</pre>
-<p><strong><code>finally</code> 和 <code>return</code> 的顺序</strong>（讲义专门讲了这个）：</p>
+<p><strong><code>finally</code> 和 <code>return</code> 的顺序</strong>（容易踩坑，值得单独记住）：</p>
 <pre>def f():
     try:
         return &quot;try 的返回值&quot;
@@ -739,8 +739,7 @@ except Exception:
 <h4>自测：能不能答上来</h4>
 <ol><li>语法错误、逻辑错误、运行时异常分别有什么表现？哪个最难查？</li><li>异常在函数调用链里是怎么传播的？什么时候程序才会真的崩？</li><li><code>except Exception</code> 和裸 <code>except:</code> 有什么区别？为什么裸的 <code>except</code> 很危险？</li><li>多个 <code>except</code> 的排列顺序有什么要求？把 <code>except Exception</code> 放最前面会怎样？</li><li><code>else</code> 和 <code>finally</code> 分别在什么时候执行？为什么 <code>finally</code> 里写 <code>return</code> 很危险？</li><li><code>with open(...) as f</code> 比手动 <code>f.close()</code> 好在哪？它是靠什么机制实现的？</li><li>为什么说"只看 <code>print(e)</code> 不够"，traceback 多给了你什么信息？</li><li>为什么要自定义异常类？<code>raise</code> 和 <code>raise e</code> 有什么区别？</li><li>程序不崩但结果不对，你会怎么查？"二分定位法"是怎么做的？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>异常机制</a>
-<a href="#"><span class="k">资料</span>本章资料下载地址</a>
+<a href="#"><span class="k">参考</span>异常机制</a>
 <a href="https://docs.python.org/zh-cn/3/tutorial/errors.html" target="_blank" rel="noopener"><span class="k">官网</span>Python 官方教程 · 错误和异常</a>
 </div>
 <div class="pager">

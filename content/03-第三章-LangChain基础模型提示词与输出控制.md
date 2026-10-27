@@ -321,7 +321,7 @@ print(profile.name, profile.age, profile.is_student)  # 直接是 Pydantic 对�
    A. 重装 Python　　B. 确认 ollama pull 过该模型、模型名拼写、是否走对 langchain_ollama　　C. 换电脑　　D. 升级内存
 
 @@links
-讲义|LLM框架实战_基础.pdf|#
+参考|LLM框架实战_基础.pdf|#
 官网|LangChain 官方文档|https://python.langchain.com/docs/introduction/
 官网|LangChain 提示词模板|https://python.langchain.com/docs/how_to/#prompt-templates
 官网|LangChain 输出解析器|https://python.langchain.com/docs/how_to/#output-parsers

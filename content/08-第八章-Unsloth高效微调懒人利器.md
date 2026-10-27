@@ -1,5 +1,5 @@
 @@h1 第八章　Unsloth 入门：把微调提速 2~5 倍
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★
 
 @@why 这一章在解决什么问题
 手写 LoRA 教会你原理，但真跑起来它"又慢又费显存"——4GB 显存装 1.5B 模型都勉强。Unsloth 就是"LoRA 的涡轮增压"：**训练快 2~5 倍、显存省最多 70%**，代码却几乎一样（还是用你学会的 LoraConfig + SFTTrainer）。
@@ -24,7 +24,7 @@
 "快 2~5 倍、省 70% 显存"听着像营销话术。它是怎么做到的？会不会改乱了模型？——这一节把 Unsloth 的工作方式讲明白，消除"黑魔法"疑虑。
 
 @@idea 核心思路
-Unsloth 的核心手段（讲义表述），一句话说就是：
+Unsloth 的核心手段，一句话说就是：
 
 **它没有改写模型结构，只替换了 PyTorch 的运行内核（kernels）与注意力实现**：
 
@@ -54,19 +54,19 @@ Unsloth 的核心手段（讲义表述），一句话说就是：
 装任何库第一关是"我机器能不能跑"。Unsloth 对显卡、驱动、Python 版本有明确要求——先对照清单自检，避免装完报错再返工。
 
 @@idea 核心思路
-讲义系统要求（整理为清单）：
+系统要求（整理为清单）：
 
 | 项目 | 要求 |
 |---|---|
 | 显卡 | NVIDIA GPU，**8GB 显存**以上（Q4 量化微调） |
 | 驱动 | 已装 NVIDIA 驱动 + CUDA 可用 |
-| Python | 3.10~3.12（讲义环境以 3.11 为例） |
+| Python | 3.10~3.12（示例环境以 3.11 为例） |
 | PyTorch | 2.3.0+（CUDA 版本） |
 | bitsandbytes | 有它支持 QLoRA 4bit 量化微调 |
 
 补充说明：
 - 显存不够 8GB？→ 用 **QLoRA（4bit 量化 + LoRA）**，同样模型显存再降约 70%，4GB 卡也能玩转 1.5B~7B 模型；
-- 纯 CPU / AMD / Mac？→ Unsloth 支持有限，本课程以 NVIDIA CUDA 为主线（讲义环境为 Colab T4 ~15GB 显存，够跑 7B 量化微调）。
+- 纯 CPU / AMD / Mac？→ Unsloth 支持有限，本书以 NVIDIA CUDA 为主线（示例环境为 Colab T4 ~15GB 显存，够跑 7B 量化微调）。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -80,7 +80,7 @@ Unsloth 的核心手段（讲义表述），一句话说就是：
 环境要求过关了，安装就一句话的事。但要注意：装 unsloth 必须和 torch 版本匹配，别在旧的 lora_env 里硬装导致冲突。
 
 @@idea 核心思路
-讲义安装命令（Linux/WSL2/Colab）：
+安装命令（Linux/WSL2/Colab）：
 
 ```bash
 pip uninstall unsloth -y          # 如果有旧版，先卸
@@ -109,12 +109,12 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好
 
 @@point ④ 模型选择：DeepSeek-R1-1.5B 为什么是"起步标配"
 @@need 要解决什么
-Unsloth 支持几十个模型，选哪个跑第一遍？这一节给三条选择标准，并解释为什么课程选 **DeepSeek-R1-1.5B** 作为全程示范。
+Unsloth 支持几十个模型，选哪个跑第一遍？这一节给三条选择标准，并解释为什么选 **DeepSeek-R1-1.5B** 作为全程示范。
 
 @@idea 核心思路
 | 模型 | 显存需求（Q4 LoRA） | 特点 | 适合谁 |
 |---|---|---|---|
-| DeepSeek-R1-1.5B | ~1.8GB | 轻、快、推理风格强 | 课程示范 / 起步期 |
+| DeepSeek-R1-1.5B | ~1.8GB | 轻、快、推理风格强 | 全书示范 / 起步期 |
 | Qwen2.5-7B | ~5GB | 中文强、通用 | 中文任务主力 |
 | Llama-8B | ~6GB | 通用强 | 英文任务主力 |
 
@@ -137,9 +137,9 @@ DeepSeek-R1-1.5B 的定位：**显存门槛最低、速度最快、推理风格�
 本地显卡不够格怎么办？——Colab 免费 T4（15GB 显存）直接能跑 7B 量化微调。这一节说清 Colab 路线：怎么开、怎么装、怎么传数据，适合"硬件不够但想上强度"的场景。
 
 @@idea 核心思路
-Colab 使用的要点（讲义流程）：
+Colab 使用的要点：
 1. 打开 [colab.research.google.com] → 新建笔记本 → 选 T4 GPU 运行时；
-2. 前三格运行讲义给出的安装代码（含 unsloth 一键装）；
+2. 前三格运行上面的安装代码（含 unsloth 一键装）；
 3. 后续代码格按第 9 章流程走：加载模型 → 数据 → SFTTrainer → 训练；
 4. 数据/结果文件用 Colab 的"上传/下载"或挂载 Google Drive 存取。
 
@@ -163,7 +163,7 @@ Colab + T4 的典型能力边界：
 DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（model family）概念——理解它，你就能判断"某个模型 Unsloth 支不支持"，并能套用同一套代码。
 
 @@idea 核心思路
-关键认知（讲义明确提示）：
+关键认知：
 
 **DeepSeek-R1-Distill-Qwen-1.5B 的架构 = Qwen 架构**（蒸馏自 R1 但骨架是 Qwen），同理 R1-Distill-Llama-8B 就是 Llama 架构。
 
@@ -192,7 +192,7 @@ DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（mod
 有人觉得"会用 Unsloth 就不用手写 LoRA 了"——这是误解。Unsloth 快在哪里、能替代什么、替代不了什么？把边界划清，你才知道什么时候该用工具、什么时候该回到底层。
 
 @@idea 核心思路
-对比表（Unsloth vs 手写基线，基于讲义与原理）：
+对比表（Unsloth vs 手写基线，基于原理）：
 
 | 维度 | 手写 LoRA 基线 | Unsloth |
 |---|---|---|
@@ -205,7 +205,7 @@ DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（mod
 
 结论：**Unsloth 优化的是性能层，不是理论层**。如果第 6~7 章你理解了什么在训练，Unsloth 只是让它跑得更快；如果直接上来用 Unsloth，遇到报错你连"它在优化哪里"都不知道。
 
-先手写、后工具——这就是课程的顺序逻辑。
+先手写、后工具——这就是本书的顺序逻辑。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -262,6 +262,6 @@ DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（mod
 7. 本章验收清单里最关键的显存相关检查是什么？
 
 @@links
-讲义|大模型 DeepSeek 微调与应用：Unsloth 介绍与系统要求、模型选择、Colab 使用|#
+参考|大模型 DeepSeek 微调与应用：Unsloth 介绍与系统要求、模型选择、Colab 使用|#
 官网|Unsloth 官方仓库（模型支持名单）|https://github.com/unslothai/unsloth
 官网|Colab 免费版说明|https://colab.research.google.com/signup

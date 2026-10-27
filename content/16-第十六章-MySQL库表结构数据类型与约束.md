@@ -400,6 +400,6 @@ INSERT INTO student (score, gender) VALUES (90, 'x');     -- 报错：ENUM 不�
 6. PRIMARY KEY、UNIQUE、NOT NULL、DEFAULT、AUTO_INCREMENT 各自的作用是什么？哪个约束"既是唯一又是非空"？
 7. 外键建不上通常是什么原因？ON DELETE 的 RESTRICT 和 CASCADE 有什么区别？
 @@links
-讲义|MySQL 讲义（158 页）|#
+参考|MySQL （158 页）|#
 文档|MySQL 数据类型|https://dev.mysql.com/doc/refman/8.0/en/data-types.html
 文档|MySQL 约束|https://dev.mysql.com/doc/refman/8.0/en/constraint-primary-key.html

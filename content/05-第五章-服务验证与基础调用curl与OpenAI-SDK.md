@@ -2,7 +2,7 @@
 @@sub 阶段 24 · 大模型时代的模型运维与部署　|　验收实战　|　难度 ★★★
 
 @@why 这一章在解决什么问题
-服务起来了，怎么确认真能用？**验证**环节分两路：用 curl 直接打 HTTP 接口看裸响应，用 OpenAI SDK 走"正经客户端"流程。同时把讲义附带的 `server.py` 源码吃透——它演示了从客户端视角调用 vLLM 服务的标准写法。本章是部署链路最后的"关门验收"。
+服务起来了，怎么确认真能用？**验证**环节分两路：用 curl 直接打 HTTP 接口看裸响应，用 OpenAI SDK 走"正经客户端"流程。同时把配套的 `server.py` 源码吃透——它演示了从客户端视角调用 vLLM 服务的标准写法。本章是部署链路最后的"关门验收"。
 
 @@map 上一章→本章→下一章
 上一章完成了模型下载与服务启动。**本章验收：curl 验证 /v1/models 与对话接口、OpenAI SDK 调用、server.py 源码拆解、常见故障排查**。至此阶段24 完结，模型部署"从装到用到验"全链路闭环。
@@ -74,7 +74,7 @@ OpenAI 官方 Python SDK（工业标准）：
 pip install openai
 ```
 
-调用代码（讲义 server.py 同款思路）：
+调用代码（和 server.py 同款思路）：
 
 ```
 from openai import OpenAI
@@ -101,10 +101,10 @@ print(resp.choices[0].message.content)
 
 @@point ④ server.py 源码逐行拆解
 @@need 要解决什么
-讲义附带的 server.py 只有 9 行，它演示了什么？
+配套的 server.py 只有 9 行，它演示了什么？
 
 @@idea 核心思路
-讲义附带的服务器端示例源码语义（9 行演示）：
+配套的服务器端示例源码语义（9 行演示）：
 
 ```
 from openai import OpenAI       # ① 引入官方 SDK
@@ -190,7 +190,7 @@ for chunk in resp:        # 逐块读取
 本地验证通过后，离"线上可用"还差哪些事？
 
 @@idea 核心思路
-教学链路（本课程终点）与生产链路之间还有增量：
+教学链路（本章终点）与生产链路之间还有增量：
 
 | 环节 | 生产化动作 |
 |---|---|
@@ -200,7 +200,7 @@ for chunk in resp:        # 逐块读取
 | 可观测 | 监控指标、日志、告警 |
 | 成本 | 显存水位、并发上限、量化选型 |
 
-理解意义：**vLLM 已把"推理服务化"这层做透，运维增量是工程化标准动作**——本课程覆盖到"服务可用+可调用"即达成教学目标。
+理解意义：**vLLM 已把"推理服务化"这层做透，运维增量是工程化标准动作**——本阶段覆盖到"服务可用+可调用"即达成教学目标。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -250,6 +250,6 @@ for chunk in resp:        # 逐块读取
 7. 教学链路验证通过后，上线生产还差哪些工程化动作？
 
 @@links
-讲义|部署讲义（章节1-2）|#
+参考|部署（章节1-2）|#
 文档|OpenAI Python SDK|https://github.com/openai/openai-python
 站点|vLLM 服务化示例|https://docs.vllm.ai/en/latest/getting_started/quickstart.html

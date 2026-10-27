@@ -342,7 +342,7 @@
 <p>技能文件的头部（frontmatter）到底该写哪些字段？每个字段什么意思？写错会怎样？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>以讲义给出的 skill.md 示例为骨架：</p>
+<p>以 skill.md 示例为骨架：</p>
 <pre>---
 name: my-skill
 description: 什么时候用、能做什么、怎么用（给 Agent 看的一段摘要）
@@ -377,7 +377,7 @@ description: 什么时候用、能做什么、怎么用（给 Agent 看的一段
 <tr><td>示例化</td><td>关键的调用方式给示例代码块</td></tr>
 <tr><td>边界化</td><td>写清"什么情况适用、什么情况不适用"</td></tr>
 </table>
-<p>以天气预报技能的正文为例（讲义第 33 页逻辑）：说明"使用什么 API、参数怎么填、返回怎么整理成回答、获取失败怎么办"——读完之后，<strong>没做过天气任务的 Agent 也能照着完成</strong>。这就是技能"把经验固化"的价值。</p>
+<p>以天气预报技能的正文为例：说明"使用什么 API、参数怎么填、返回怎么整理成回答、获取失败怎么办"——读完之后，<strong>没做过天气任务的 Agent 也能照着完成</strong>。这就是技能"把经验固化"的价值。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -393,7 +393,7 @@ description: 什么时候用、能做什么、怎么用（给 Agent 看的一段
 <p>技能不止一个，它们存放在哪？"已安装技能""启用技能""内置技能"这些说法对应什么物理位置？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 30 页给出三个技能目录的角色分工：</p>
+<p>三个技能目录的角色分工：</p>
 <table>
 <tr><th>目录</th><th>角色</th><th>内容</th></tr>
 <tr><td><code>~/.hermes/skills/</code></td><td><strong>已安装技能的库</strong></td><td>所有可用技能的存放地</td></tr>
@@ -416,7 +416,7 @@ description: 什么时候用、能做什么、怎么用（给 Agent 看的一段
 <p>安装、列举、删除技能的命令长什么样？有没有类似"应用商店"的机制？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出三组核心命令：</p>
+<p>三组核心命令：</p>
 <pre>hermes skills list              # 列出已安装的技能
 hermes skills install &lt;名字&gt;    # 通过网络安装技能
 hermes skills remove &lt;名字&gt;     # 移除已安装的技能</pre>
@@ -474,7 +474,7 @@ hermes skills remove &lt;名字&gt;     # 移除已安装的技能</pre>
 2. 目录内创建 SKILL.md（frontmatter + 正文）
 3. 确保 name 与目录名一致
 4. 在 hermes skills list 中确认并启用</pre>
-<p>讲义里的天气预报技能就是路径 B 的实例：<code>~/.hermes/skills/taiyuan-weather/SKILL.md</code>，目录名=taiyuan-weather。</p>
+<p>天气预报技能就是路径 B 的实例：<code>~/.hermes/skills/taiyuan-weather/SKILL.md</code>，目录名=taiyuan-weather。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -487,10 +487,10 @@ hermes skills remove &lt;名字&gt;     # 移除已安装的技能</pre>
 </div></div>
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 实战拆解：天气预报技能完整示例</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>光有规则没有活例，还是不知道"好技能长什么样"。讲义带了一个完整的天气预报技能（太原），逐行解剖它的结构。</p>
+<p>光有规则没有活例，还是不知道"好技能长什么样"。下面用一个完整的天气预报技能（太原），逐行解剖它的结构。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义 <code>taiyuan-weather/SKILL.md</code> 的真实结构（逻辑还原，非逐字）：</p>
+<p><code>taiyuan-weather/SKILL.md</code> 的真实结构（逻辑还原，非逐字）：</p>
 <pre>---
 name: taiyuan-weather
 description: 当用户需要查询太原实时天气时使用。它使用和风天气 API 获取温度、湿度、
@@ -600,7 +600,7 @@ description: 当用户需要查询太原实时天气时使用。它使用和风�
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么 Hermes 要设计"技能"而不是靠提示词/SOUL/AGENTS 来教 Agent 做事的流程？技能的三重优势是什么？</li><li>SKILL.md 由哪两部分组成？frontmatter 里两个核心字段分别起什么作用？</li><li>技能文件的三个存放/管理位置分别是什么？"装进库"和"启用"是一回事吗？</li><li>请写出技能管理的三条命令（查看、安装、移除）。技能装好后，"启用"环节在哪里完成？</li><li>渐进披露（progressive disclosure）的机制是什么？它对长对话优化的意义在哪里？</li><li>以天气预报技能为例，一条"好脚本"的正文应该包含哪些要素？为什么示例里特别强调 API Key 要从环境变量读取？</li><li>你写好了技能文件但 Agent 始终不调用，请按顺序列出至少 3 个排查点（从最可能的原因开始）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 29-33 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 29-33 页）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://dev.qweather.com/" target="_blank" rel="noopener"><span class="k">参考</span>和风天气开放平台（示例技能 API）</a>
 </div>

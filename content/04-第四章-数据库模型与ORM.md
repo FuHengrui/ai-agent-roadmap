@@ -1,5 +1,5 @@
 @@h1 第四章　数据库模型与 ORM 层
-@@sub 阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★☆
+@@sub 阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
 上一章骨架跑起来了，Postgres 里却一张表都没有。没有表，用户注册没地方存、案例没地方放、聊天记录没地方写。本章用 **Tortoise ORM**（Python 原生 async ORM）把第一章蓝图里的四张核心表落成代码：`User`（用户）、`Case`（案例）、`ChatSession/ChatMessage`（会话与消息）、`GeneratedDocument`（文书）。
@@ -75,7 +75,7 @@ class Case(Model):
     case_type = fields.CharField(max_length=50)       # 民事/刑事/行政/劳动争议
     summary = fields.TextField()                      # 裁判要旨/案情摘要
     content = fields.TextField(null=True)             # 裁判文书全文（详情页用）
-…（以下省略 6 行，完整代码见讲义/仓库对应位置）
+…（以下省略 6 行，完整代码见仓库对应位置）
             "title": self.title,
             "case_number": self.case_number,
             "court": self.court,
@@ -251,6 +251,6 @@ messages = await ChatMessageRecord.filter(chat_session=session).order_by("create
 7. Tortoise 的 `filter(court__icontains="北京")` 里的 `__icontains` 是什么语法？
 
 @@links
-讲义|LegalMind 法律咨询系统：数据库模型与 ORM|#
+参考|LegalMind 法律咨询系统：数据库模型与 ORM|#
 官网|Tortoise ORM 官方文档|https://tortoise.github.io/
 官网|PostgreSQL JSONB 文档|https://www.postgresql.org/docs/current/datatype-json.html

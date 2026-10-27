@@ -288,7 +288,7 @@
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章（第十章）</strong>：MCP——能力外接，底座无限。</span>
 <span class="node"><span class="here">本章 ← 你在这里：定时任务（自动化）+ Web 仪表板（可视化）+ 常用命令（操作大全），闭环收官</span></span>
-<span class="node"><strong>阶段终点</strong>：人格（SOUL）→ 行动（工具）→ 流程（技能）→ 记忆 → 外观 → 扩展 → 自动化。第 12 章进入强化学习与对齐（如课程有）或毕业实操</span>
+<span class="node"><strong>阶段终点</strong>：人格（SOUL）→ 行动（工具）→ 流程（技能）→ 记忆 → 外观 → 扩展 → 自动化。第 12 章进入强化学习与对齐或毕业实操</span>
 </div>
 <div class="note info"><span class="t">学习提示</span>
 <p>本章是三合一，容易散。抓住主线："<strong>主动</strong>"两字——Cron 让 Agent 主动开工，仪表板让你主动掌握状态，命令让你主动操控一切。三个都是"从被动到主动"的进阶。</p></div>
@@ -317,17 +317,17 @@
 </div></div>
 <div class="point" id="p2"><div class="head"><span class="no">2</span>② 三种调度模式：秒速/计划/条件</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>"定时"不只是"每个小时一次"——讲义给了三种调度模式，它们适用场景完全不同。需要一次分清。</p>
+<p>"定时"不只是"每个小时一次"——三种调度模式，它们适用场景完全不同。需要一次分清。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 48 页界定三种调度模式：</p>
+<p>先界定三种调度模式：</p>
 <table>
 <tr><th>模式</th><th>机理</th><th>适用</th></tr>
 <tr><td><strong>基于时间的调度</strong></td><td>按 cron 表达式在指定时刻触发</td><td>每日/每周/每月定点任务（最常见）</td></tr>
 <tr><td><strong>基于间隔的调度</strong></td><td>按固定间隔（如每 30 分钟）触发</td><td>轮询类、频率稳定的任务</td></tr>
 <tr><td><strong>基于条件的调度</strong></td><td>满足某条件时才触发（如某工具返回特定结果）</td><td>监控类：网页变化、API 状态、阈值报警</td></tr>
 </table>
-<p>选型口诀：<strong>"定点用时间，均匀用间隔，看情况触发用条件"</strong>。本阶段教材重点演示"基于时间的调度"（cron 表达式），后两种知道存在即可，需要时再查。</p>
+<p>选型口诀：<strong>"定点用时间，均匀用间隔，看情况触发用条件"</strong>。本阶段重点演示"基于时间的调度"（cron 表达式），后两种知道存在即可，需要时再查。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -343,7 +343,7 @@
 <p>怎么创建定时任务？命令长什么样？创建后还能改吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>对话内斜杠命令 <code>/cron</code> 是定时任务的创建与管理入口（讲义第 49 页示例环境是一条用内网工具创建的 cronjob）：</p>
+<p>对话内斜杠命令 <code>/cron</code> 是定时任务的创建与管理入口（示例环境是一条用内网工具创建的 cronjob）：</p>
 <pre>/cron                      # 进入任务创建/管理向导
 # 创建时通常要提供：
 #   触发方式：cron 表达式（如 0 8 * * * = 每天 08:00）
@@ -369,10 +369,10 @@
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ 网关 60 秒轮询：定时任务"醒来"的机制</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>定时任务不是凭空执行的——总有个"闹钟"在看表。讲义说"网关每 60 秒检查一次"，这段机制怎么理解？跟定时任务的准确度什么关系？</p>
+<p>定时任务不是凭空执行的——总有个"闹钟"在看表。<strong>"网关每 60 秒检查一次"</strong>，这段机制怎么理解？跟定时任务的准确度什么关系？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义原话要点：<strong>线程在 60 秒间隔检查已调度的 cronjob 并触发它们</strong>（讲义第 49 页："同样会在每 60 秒的网关线程中检查并触发"）。</p>
+<p><strong>要点</strong>：<strong>线程在 60 秒间隔检查已调度的 cronjob 并触发它们</strong>——也就是"在每 60 秒的网关线程中检查并触发"。</p>
 <p>机制图解：</p>
 <pre>网关持续运行（后台线程）
    └─ 每 60 秒扫描一次定时任务表
@@ -438,7 +438,7 @@
 <p>命令行再好，"可视化总览"仍有不可替代的价值：任务、状态、日志一眼扫过去。Web 仪表板就是这块"玻璃窗"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p><strong>Hermes 提供 Web 仪表板</strong>，默认地址 <code>http://localhost:9119</code>（讲义第 49 页提到 "dashboard" 可视化查看任务/logs 等；默认端口 9119）。</p>
+<p><strong>Hermes 提供 Web 仪表板</strong>，默认地址 <code>http://localhost:9119</code>（"dashboard" 用来可视化查看任务/logs 等；默认端口 9119）。</p>
 <table>
 <tr><th>能力</th><th>说明</th></tr>
 <tr><td>浏览器访问</td><td>打开 localhost:9119 即可（无需登录/简单鉴权，以实际版本为准）</td></tr>
@@ -460,7 +460,7 @@
 <p>十一个章节下来，命令散落各处。最后把它们收进"一张全景图"，随用随查。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>把全书命令按用途分四大类（合并讲义第 50 页常用命令与各章已学）：</p>
+<p>把全书命令按用途分四大类（合并常用命令表与各章已学）：</p>
 <p><strong>① 配置与信息类</strong></p>
 <pre>hermes config show        # 查看配置（含各路径）
 hermes --version          # 版本
@@ -601,7 +601,7 @@ hermes dashboard          # 打开 Web 仪表板（如提供）</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>定时任务的三种调度模式分别是什么？请各举一个适用场景。</li><li>请写出 cron 表达式：每天 08:00、每 30 分钟、每周一 09:00（5 段格式）。</li><li>网关"每 60 秒轮询"机制对定时任务有什么影响？如果你的定时任务到点没跑，请按顺序列出至少 3 个排查项。</li><li>调试定时任务的铁律是什么？为什么"先手动触发"比"配完就等"更合理？</li><li>Web 仪表板的默认地址是什么？它和 hermes mcp list 等命令在用法上的分工是什么？</li><li>定时任务配置为"每天自动清理旧文件（删除类）"——按"自动化红线"，这个设计有什么问题？应该怎么改？</li><li>请画出阶段 15 的"伙伴养成线"（11 步）中的任意 6 步，并说明"运维四件套"中的任意 2 项的周期与动作。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 48-50 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 48-50 页）</a>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://crontab.guru/" target="_blank" rel="noopener"><span class="k">参考</span>Cron 表达式在线工具</a>
 </div>

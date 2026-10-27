@@ -320,6 +320,6 @@ a[(a == 0) | (a == 1)]  # 或条件：| 表示或
 6. A * B 与 A @ B 分别是什么运算？维度配型规则是什么？
 7. argsort 返回什么？举一个用它"按成绩重排姓名"的例子。
 @@links
-讲义|numpy 讲义（68 页）|#
+参考|numpy （68 页）|#
 工具|NumPy 官网|https://numpy.org/
 文档|NumPy 广播官方说明|https://numpy.org/doc/stable/user/basics.broadcasting.html

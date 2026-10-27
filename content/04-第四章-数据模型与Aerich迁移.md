@@ -4,7 +4,7 @@
 @@why 这一章在解决什么问题
 上一章我们有了配置好的工程与数据库 URL，但 Tortoise-ORM 还不认识数据库里那 8 张表。本章解决两件事：**一是把 8 张表翻译成 Python 模型类**（定义字段、类型、约束、表名），**二是用 Aerich 完成初始化迁移**，让迁移框架能持续追踪表结构变化。
 
-关键认知：**模型定义必须与建库 SQL 完全一致**——字段名、类型、表名、默认值一处对不上，启动即崩或查询即错。这也是"讲义教学版"最容易翻车的地方：讲义里的建库 SQL 与代码里的 models.py 偶有细节出入，必须以 models.py 为准。
+关键认知：**模型定义必须与建库 SQL 完全一致**——字段名、类型、表名、默认值一处对不上，启动即崩或查询即错。这也是这类示例工程最容易翻车的地方：建库 SQL 与代码里的 models.py 偶有细节出入，必须以 models.py 为准。
 
 @@map 这一章在整个知识库里的位置
 上一章：后端工程搭建——uv 工程 + config.py 数据源配置就绪
@@ -73,7 +73,7 @@ SQL ↔ Tortoise 类型对照表（本项目用到的）：
 | DATETIME | fields.DatetimeField(auto_now_add=True) | 创建时间自动填充 |
 | 更新时间 | fields.DatetimeField(auto_now=True) | 每次保存自动更新 |
 
-注意 **Meta.table**：默认表名是模型名（如 user），讲义里全部显式指定 `table="t_xxx"` 与建库 SQL 对齐。
+注意 **Meta.table**：默认表名是模型名（如 user），本项目里全部显式指定 `table="t_xxx"` 与建库 SQL 对齐。
 
 @@trap 坑在哪
 | 现象 | 原因 |
@@ -132,7 +132,7 @@ class Title(models.Model):
         table = "t_titles"
 ```
 
-设计取舍（讲义源码实录）：**Section/Title 之间的"外键"用普通 IntField 保存 id，而不是 Tortoise 的 fields.ForeignKeyField**。为什么？因为生成时是"批量插入再一次性查询"，用普通 id 字段省去 FK 的异步加载与级联复杂度，查询时自己控制 `filter(section_id=...)`。
+设计取舍（源码实录）：**Section/Title 之间的"外键"用普通 IntField 保存 id，而不是 Tortoise 的 fields.ForeignKeyField**。为什么？因为生成时是"批量插入再一次性查询"，用普通 id 字段省去 FK 的异步加载与级联复杂度，查询时自己控制 `filter(section_id=...)`。
 
 ⚠️ 代价与坑：这种简化写法下，**必须自己在业务代码里保证引用一致性**——删板块不会自动删标题（无级联），查询时若标题的 section_id 指向不存在的板块，关联信息就不完整。代码里采用"先写 Section 拿 id 再逐条写 Title"的流程天然避免孤儿数据，但直接手写库的读者要注意。
 
@@ -140,7 +140,7 @@ class Title(models.Model):
 | 现象 | 原因 |
 |---|---|
 | 想像 Django 那样 title.section.name 直接访问 | 没有 FK 字段就没有反向访问器；必须用 section_id="xx"。预取用 select_related 才可用对象链 |
-| 手工删了 section 忘删 titles | 无数据库级联，set null 或同步删除要靠业务代码，漏删即出孤儿数据（讲义用"批量插入事务"规避） |
+| 手工删了 section 忘删 titles | 无数据库级联，set null 或同步删除要靠业务代码，漏删即出孤儿数据（代码里用"批量插入事务"规避） |
 
 @@point ⑤ 素材类模型：Style 与 Image
 @@need 要解决什么
@@ -207,7 +207,7 @@ class PublishImage(models.Model):
         table = "t_publish_images"
 ```
 
-再次强调：**PublishImage.image_type 的码值（1/2/3）与 TitleImage.image_type（0/1/2）不同**，这是讲义代码如实存在的不一致，后端转换必须按表处理。
+再次强调：**PublishImage.image_type 的码值（1/2/3）与 TitleImage.image_type（0/1/2）不同**，这是代码里如实存在的不一致，后端转换必须按表处理。
 
 @@trap 坑在哪
 | 现象 | 原因 |
@@ -279,7 +279,7 @@ migrations/models/
    A. default　　B. null　　C. max_length　　D. unique
 3. 模型的表名如何与建库 SQL 的 t_users 对齐？
    A. 模型名写 User　　B. Meta.table = "t_users"　　C. 类名小写　　D. 无法对齐
-4. 讲义中 Section/Title 的外键采用什么实现？
+4. 本章 Section/Title 的外键采用什么实现？
    A. ForeignKeyField　　B. 普通 IntField 存 id　　C. 中间表　　D. 不用关联
 5. 库已被 SQL 建好时，迁移的正确操作是？
    A. 直接 aerich init-db　　B. aerich init → migrate → upgrade　　C. 什么都不用做　　D. 删库重来
@@ -289,6 +289,6 @@ migrations/models/
    A. 模板文件　　B. config 模块中的 TORTOISE_ORM　　C. 模型文件　　D. 数据库地址
 
 @@links
-讲义|智能运营平台.pdf|#
+参考|智能运营平台.pdf|#
 官方|Tortoise-ORM 模型文档|https://tortoise.github.io/models.html
 官方|Aerich 文档（源码仓库）|https://github.com/tortoise/aerich

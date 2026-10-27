@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第三章</strong></div>
 <h1>第三章　Local 模式与 WordCount 入门</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章你有了架构图，但还没见过 Spark 长什么样。<strong>理论和代码之间隔着一道坎</strong>：环境怎么搭、第一个程序怎么写、跑通了怎么确认"我确实在用分布式计算"？本章用最轻量的 Local 模式，让你在自己电脑上把第一个 Spark 程序（WordCount）跑通——它是编程界的"Hello World"，也是后续 15 章所有代码的起跑线。</p>
 <p>学完这一章，你能：<strong>在本机启动 spark-shell/pyspark，写一个能跑的 WordCount，并从 Web UI 看到它真的跑起来</strong>。</p>
@@ -292,7 +292,7 @@
 <span class="node">阶段终点：你能独立用 Spark 处理 TB 级数据的全套流程</span>
 </div>
 <div class="note info"><span class="t">环境说明</span>
-<p>本章基于课程配套 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8+ 并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。</p></div>
+<p>本章基于 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8+ 并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 环境准备：JDK、Spark 解压与目录结构</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>"我按教程敲了代码，怎么一跑就报 Java 相关的错？"——八成是环境变量没配。环境这部分不讲清楚，后面每次报错你都在猜。先把地基打好：<strong>JDK 装没装、SPARK_HOME 配没配、spark 解压包里的东西是什么</strong>。</p>
@@ -323,7 +323,7 @@ PATH 追加 %SPARK_HOME%\bin</div>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td><code>java -version</code> 有输出但 Spark 报"JAVA_HOME is not set"</td><td>说明系统 Java 通过别的方式可用，但环境变量 JAVA_HOME 没配。<strong>必须设 JAVA_HOME 变量</strong>，指向 JDK 安装根目录（不是 bin 目录）</td></tr>
 <tr><td>Windows 上 spark-shell 一闪而过/乱码</td><td>双击脚本是坑。在命令行里跑 <code>spark-shell.cmd</code>；中文乱码可设 <code>PYTHONIOENCODING=utf-8</code> 或用 cmd 的 <code>chcp 65001</code></td></tr>
-<tr><td>下载的 spark 版本和 Hadoop 版本对不上</td><td>包名里的 <code>-bin-hadoop3.2</code> 表示配套 Hadoop 3.2。版本错了运行时会出现奇怪的类加载错误。课程用的是 hadoop3.2 的包，跟课程走</td></tr>
+<tr><td>下载的 spark 版本和 Hadoop 版本对不上</td><td>包名里的 <code>-bin-hadoop3.2</code> 表示配套 Hadoop 3.2。版本错了运行时会出现奇怪的类加载错误。配套的就是 hadoop3.2 的包，照着来</td></tr>
 </table>
 </div>
 </div></div>
@@ -335,7 +335,7 @@ PATH 追加 %SPARK_HOME%\bin</div>
 <p>两个入口，按你用的语言选：</p>
 <table>
 <tr><th>入口</th><th>命令</th><th>谁用</th></tr>
-<tr><td>Scala</td><td><code>spark-shell --master local[2]</code></td><td>教程、源码讲解常用（课程讲义用 Scala）</td></tr>
+<tr><td>Scala</td><td><code>spark-shell --master local[2]</code></td><td>教程、源码讲解常用（示例用 Scala）</td></tr>
 <tr><td>Python</td><td><code>pyspark --master local[2]</code></td><td>Python 开发者，PySpark 也是主流</td></tr>
 </table>
 <div class="cmd">D:\soft\...&amp;gt; spark-shell --master local[2]
@@ -508,26 +508,26 @@ for row in rdd.take(5):
 </table>
 </div>
 </div></div>
-<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 版本选择：Spark 3.2.1 与课程配套</div><div class="body">
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 版本选择：为什么锁定 Spark 3.2.1</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>网上教程用 2.x 的、3.5 的、4.x 预览版的都有，代码写法差异不小（旧 API 已废弃）。你跟着课程学，<strong>就该用课程配套版本</strong>，避免"教程能跑我跑不了"。本点讲版本意识。</p>
+<p>网上教程用 2.x 的、3.5 的、4.x 预览版的都有，代码写法差异不小（旧 API 已废弃）。<strong>所以一律用配套的同一版本</strong>，避免"教程能跑我跑不了"。本点讲版本意识。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>课程配套 <strong>Spark 3.2.1</strong>（Spark 3.x 系列），资料「软件」目录有 <code>spark-3.2.1-bin-hadoop3.2.tgz</code>。为什么强调版本：</p>
+<p>配套版本是 <strong>Spark 3.2.1</strong>（Spark 3.x 系列），资料「软件」目录有 <code>spark-3.2.1-bin-hadoop3.2.tgz</code>。为什么强调版本：</p>
 <table>
-<tr><th>版本差异点</th><th>Spark 2.x</th><th>Spark 3.x（课程用）</th></tr>
+<tr><th>版本差异点</th><th>Spark 2.x</th><th>Spark 3.x（本书用）</th></tr>
 <tr><td>SparkSession</td><td>需手动配置</td><td>默认入口，整合 sc/sql 上下文</td></tr>
 <tr><td>DataFrame API</td><td>老 API</td><td>统一、更简洁</td></tr>
 <tr><td>性能</td><td>—</td><td>3.x 引入动态分区裁剪、AQE 等</td></tr>
 <tr><td>学习资料</td><td>大量旧博客</td><td>建议认准 3.x</td></tr>
 </table>
-<p>你应该做的是：<strong>解压课程配套包 → 跟着讲义版本跑</strong>。遇到网上教程代码跑不通，先看它是不是 2.x 的老写法（比如 <code>SQLContext</code>、<code>HiveContext</code> 早已整合进 SparkSession）。</p>
+<p>你应该做的是：<strong>解压配套包 → 按同一版本跑</strong>。遇到网上教程代码跑不通，先看它是不是 2.x 的老写法（比如 <code>SQLContext</code>、<code>HiveContext</code> 早已整合进 SparkSession）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>网上教程用了 <code>SQLContext</code>/<code>HiveContext</code>，你抄下来报错</td><td>那是 Spark 2.x 老写法，3.x 已整合成 <code>SparkSession</code>。<code>spark.sql(...)</code> 直接可用，不用再单独建上下文</td></tr>
-<tr><td>用 PySpark 时 <code>pip install pyspark</code> 装了最新版</td><td>pip 默认装最新（例 3.5），和课程 3.2.1 可能有 API 差异。要么 <code>pip install pyspark==3.2.1</code>，要么用课程自带包的环境</td></tr>
+<tr><td>用 PySpark 时 <code>pip install pyspark</code> 装了最新版</td><td>pip 默认装最新（例 3.5），和 3.2.1 可能有 API 差异。要么 <code>pip install pyspark==3.2.1</code>，要么用配套包自带的环境</td></tr>
 <tr><td>以为"大版本一样就能混"</td><td>Spark 2.4 → 3.x 有 API 破坏性变更（如 <code>Dataset</code> 行为）。跨大版本抄代码，先查对应版本的迁移说明</td></tr>
 </table>
 </div>
@@ -543,7 +543,7 @@ for row in rdd.take(5):
 <h4>自测：能不能答上来</h4>
 <ol><li>WordCount 的四步流程是什么？分别对应哪个 Spark 算子？</li><li><code>map</code> 和 <code>flatMap</code> 在 WordCount 里为什么不能互换？</li><li><code>collect()</code> 和 <code>take(5)</code> 的区别是什么？为什么说大数据集上 <code>collect()</code> 危险？</li><li>本地模式 <code>sc.textFile</code> 读 <code>D:\data\a.txt</code> 的正确路径写法是什么？</li><li>判断题：<code>saveAsTextFile</code> 之前必须先把结果 <code>collect()</code> 回来。</li><li>一个任务报了 Web UI 4040 打不开，可能的原因有哪些（至少两条）？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Spark 分布式计算框架基础（第 3 章：Local 模式与 WordCount）</a>
+<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 3 章：Local 模式与 WordCount）</a>
 <a href="#"><span class="k">软件</span>spark-3.2.1-bin-hadoop3.2.tgz</a>
 <a href="https://spark.apache.org/docs/latest/quick-start.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark 快速入门（Quick Start）</a>
 <a href="#"><span class="k">资料</span>sparkdemo.zip（本章 WordCount 源码）</a>
@@ -563,7 +563,7 @@ for row in rdd.take(5):
   <a href="#p5" title="读文件路径：本地路径与通配符"><span class="n">5</span>读文件路径：本地路径与通配符</a>
   <a href="#p6" title="collect 与 take：别把整个大数据集拉回 Driver"><span class="n">6</span>collect 与 take：别把整个大数据集拉回 Driver</a>
   <a href="#p7" title="Web UI：用浏览器看你的任务"><span class="n">7</span>Web UI：用浏览器看你的任务</a>
-  <a href="#p8" title="版本选择：Spark 3.2.1 与课程配套"><span class="n">8</span>版本选择：Spark 3.2.1 与课程配套</a>
+  <a href="#p8" title="版本选择：为什么锁定 Spark 3.2.1"><span class="n">8</span>版本选择：为什么锁定 Spark 3.2.1</a>
 </div>
 </aside>
 </div>

@@ -441,6 +441,6 @@ plt.savefig('./img/line1.png',     # 路径 + 文件名（支持 png/svg/jpeg/pd
 7. 为什么先 show 再 savefig 可能存出空白图？位图（png）和矢量图（svg/pdf）的清晰度机制有什么不同？
 
 @@links
-讲义|matplotlib 讲义（52 页）|#
+参考|matplotlib （52 页）|#
 工具|Matplotlib 官网|https://matplotlib.org/
 文档|Matplotlib 风格参考|https://matplotlib.org/stable/gallery/style_sheets/

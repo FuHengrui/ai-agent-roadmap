@@ -179,7 +179,7 @@ docker run -t -i centos /bin/bash
 
 #### 退出容器有两种方式，别搞混
 - `exit`：退出并**停止容器**（容器里主进程 bash 结束了）；
-- `Ctrl + p` 再 `Ctrl + q`（讲义里写作 Ctrl+p+q）：退出终端但**容器保持运行**——适合你暂时走开、容器里的进程还要继续跑的场景。
+- `Ctrl + p` 再 `Ctrl + q`（也写作 Ctrl+p+q）：退出终端但**容器保持运行**——适合你暂时走开、容器里的进程还要继续跑的场景。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -320,7 +320,7 @@ docker rm 容器ID
 docker rm -f 容器ID     # -f 强制删除运行中的容器
 ```
 
-讲义还提了两个贴心的历史参数：`-l` 只删容器间的连接，`-V` 连它挂载的数据卷一起删（第 17 章会用到）。
+还有两个贴心的历史参数：`-l` 只删容器间的连接，`-V` 连它挂载的数据卷一起删（第 17 章会用到）。
 **口诀：镜像用 rmi 删，容器用 rm 删，stop 只是"熄火"不是"报废"。**
 
 @@trap 坑在哪
@@ -440,6 +440,6 @@ docker ps
 5. docker rm 和 docker rmi 有什么区别？各自负责什么对象？
 6. 容器启动失败了，你第一步应该做什么？为什么？
 @@links
-讲义|Docker技术应用与实战讲义（76 页）|#
+参考|Docker技术应用与实战（76 页）|#
 文档|Docker 官方文档|https://docs.docker.com/
 文档|docker run 参考|https://docs.docker.com/engine/reference/run/

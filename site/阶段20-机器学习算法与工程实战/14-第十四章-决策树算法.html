@@ -287,7 +287,7 @@
 <p>从这章开始，我们进入"非线性模型 + 集成学习"大板块：决策树是地基，下一章的随机森林、Adaboost、GBDT 全是"一群树"的合体。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章结束无监督聚类。<strong>本章（讲义7 章节1-4）学决策树的完整闭环：特点与数学表达 → 分裂指标（Gini/信息熵/信息增益）→ 经典算法（ID3/C4.5/CART）→ 剪枝 → 鸢尾花实战</strong>。下一章（讲义7 章节5-8）把树升级成"森林与提升机"：集成学习三件套（随机森林 Bagging、Adaboost、GBDT）。</span>
+<span class="node">上一章结束无监督聚类。<strong>本章学决策树的完整闭环：特点与数学表达 → 分裂指标（Gini/信息熵/信息增益）→ 经典算法（ID3/C4.5/CART）→ 剪枝 → 鸢尾花实战</strong>。下一章把树升级成"森林与提升机"：集成学习三件套（随机森林 Bagging、Adaboost、GBDT）。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 决策树的特点：像人一样做判断</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -295,7 +295,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>决策树决策过程</strong>：从根节点开始，每个内部节点是一个"特征提问"（如"年龄≥30 吗？"），按答案分叉到子节点，重复直到叶子节点给出结论（类别或数值）。 举例（贷款审批）：是否稳定工作？→ 是 → 月收入≥1万？→ 是 → 批准。这就是一棵树。</p>
-<p>特点盘点（讲义原文精髓）：</p>
+<p>特点盘点（要点精髓）：</p>
 <ul><li><strong>决策过程接近人的思维习惯</strong>：问"如果…就…"，天然可解释。</li><li><strong>比线性模型解释性更强</strong>：线性回归的参数 w 要人解读，树是"人能复述的规则"。</li><li><strong>能图形化展示</strong>：画出来就是树状图，非技术人员也能懂。</li><li><strong>处理离散/类别特征容易</strong>：无需哑变量编码的"数值化"思维，直接按取值分叉。</li><li><strong>几乎不需要归一化</strong>：树只用"比较大小"（≥某阈值），不涉及距离，量纲无碍。</li></ul>
 <p><strong>知识卡片</strong>：决策树的数学表达——每个节点是一个条件（特征维度 j 与阈值 t），样本按"x_j &lt; t / ≥ t"分派；整个树是一族 if-else 规则的嵌套。</p>
 </div>
@@ -521,7 +521,7 @@ plt.legend(); plt.show()</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>决策树决策的完整过程是什么样的？画出贷款审批的类型化例子。</li><li>写出 Gini 不纯度和信息熵的公式，说明各自取 0 的含义。</li><li>信息增益 = 什么减什么？为什么 ID3 偏好取值多的属性？</li><li>C4.5 相比 ID3 做了哪些改进？CART 和它们相比最核心的差异是什么？</li><li>前剪枝和后剪枝的思路差异是什么？sklearn 分别用哪个参数实现？</li><li>决策树的三个缺点分别是什么？哪一个直接促成了集成学习？</li><li>用代码展示"max_depth 扫描"如何直观暴露过拟合。</li><li>为什么决策树几乎不需要归一化？哪些预处理仍然必要？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>决策树讲义（章节1-4，16 页）</a>
+<a href="#"><span class="k">参考</span>决策树（章节1-4，16 页）</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn DecisionTreeClassifier 文档</a>
 <a href="https://en.wikipedia.org/wiki/Decision_tree_learning" target="_blank" rel="noopener"><span class="k">文档</span>决策树（维基百科，含 ID3/C4.5/CART）</a>
 </div>

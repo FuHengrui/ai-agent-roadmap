@@ -10,7 +10,7 @@
 GBDT 尤其值得高度重视：它是 XGBoost、LightGBM、CatBoost 这些"Kaggle 霸主"的祖师爷，也是当前表格数据领域最强的模型家族。**学完本章，你手里就有了对抗绝大多数结构化数据的"终极大招"。**
 
 @@map 上一章→本章→下一章
-上一章学完单棵决策树（分裂、剪枝）并记下"单树精度一般"。**本章（讲义7 章节5-8）补齐三个算法：随机森林（Bagging）→ Adaboost（样本加权）→ GBDT（负梯度拟合残差）→ 应用 GBDT 分类实战**。下一章起进入阶段 20 收尾实战专题，把回归、分类、聚类、树模型组成"武器库"应对综合场景。
+上一章学完单棵决策树（分裂、剪枝）并记下"单树精度一般"。**本章补齐三个算法：随机森林（Bagging）→ Adaboost（样本加权）→ GBDT（负梯度拟合残差）→ 应用 GBDT 分类实战**。下一章起进入阶段 20 收尾实战专题，把回归、分类、聚类、树模型组成"武器库"应对综合场景。
 
 @@point ① 集成学习总览：越乱越好 vs 越错越补
 @@need 要解决什么
@@ -316,7 +316,7 @@ plt.show()
 8. 写一段代码：用同一训练/测试切分，对比 Ridge、RandomForest、GBDT 三个模型的测试 RMSE。
 
 @@links
-讲义|决策树讲义（章节5-8，27 页）|#
+参考|决策树（章节5-8，27 页）|#
 文档|sklearn ensemble 总览|https://scikit-learn.org/stable/modules/ensemble.html
 文档|XGBoost 官方文档|https://xgboost.readthedocs.io/
 文档|LightGBM 官方文档|https://lightgbm.readthedocs.io/

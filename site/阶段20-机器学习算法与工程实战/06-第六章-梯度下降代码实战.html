@@ -285,7 +285,7 @@
 <p>学完这一章，你会理解为什么实验要设随机种子、为什么要打乱数据、学习率衰减怎么落地——这些都是教科书不写、实战必踩的点。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章讲清三兄弟的"分工"。<strong>本章全部是代码（讲义章节3）：BGD 循环实现 → SGD 单样本实现 → 学习率衰减 → Mini-Batch 实现 → sklearn 验证</strong>。下一章进入归一化与正则化（讲义章节4-5），解决"数据量纲不一致把梯度下降带偏、模型过拟合"两个实战大坑。</span>
+<span class="node">上一章讲清三兄弟的"分工"。<strong>本章全部是代码：BGD 循环实现 → SGD 单样本实现 → 学习率衰减 → Mini-Batch 实现 → sklearn 验证</strong>。下一章进入归一化与正则化，解决"数据量纲不一致把梯度下降带偏、模型过拟合"两个实战大坑。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 复用第三章的模拟数据</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -514,7 +514,7 @@ for i in range(500):
 <h4>自测：能不能答上来</h4>
 <ol><li>手写 BGD 的核心更新代码只有两三行，说出 gradients 表达式的计算步骤。</li><li>怎么判断损失曲线暴露的学习率问题？</li><li>SGD 里 np.random.randint 的作用是什么？不用它会怎样？</li><li>learning_schedule 函数实现的是什么策略？为什么 SGD 需要它而 BGD 不强制？</li><li>Mini-Batch 里 np.random.permutation 的作用？与 SGD 的 randint 有何不同？</li><li>SGDRegressor 中 learning_rate、max_iter、tol 分别控制什么？</li><li>量纲悬殊为什么会让梯度下降收敛变差？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>梯度下降讲义（代码实战与优化 4 页）</a>
+<a href="#"><span class="k">参考</span>梯度下降（代码实战与优化 4 页）</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn SGDRegressor 参考</a>
 <a href="https://numpy.org/doc/stable/reference/random/index.html" target="_blank" rel="noopener"><span class="k">文档</span>numpy 随机模块参考</a>
 </div>

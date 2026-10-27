@@ -30,7 +30,7 @@ app = FastAPI(title="智能运营平台", version="1.0.0")
 # 1) CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # 讲义写法：通配；生产必须收紧
+    allow_origins=["*"],          # 通配写法；生产必须收紧
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
 | 参数 | 含义 | 本项目 |
 |---|---|---|
-| allow_origins | 允许的来源列表 | 讲义场景用 ["*"]；联调建议写 ["http://127.0.0.1:5173"] |
+| allow_origins | 允许的来源列表 | 练习环境用 ["*"]；联调建议写 ["http://127.0.0.1:5173"] |
 | allow_credentials | 是否允许携带 Cookie/Authorization | True（JWT 走 Authorization 头） |
 | allow_methods | 允许的 HTTP 方法 | ["*"] 即 GET/POST/PUT/DELETE/OPTIONS |
 | allow_headers | 允许的请求头 | ["*"] 含自定义头如 Authorization |
@@ -255,6 +255,6 @@ python -c "from main import app"                      # 应用层
 | 改了代码却还是旧报错 | reload 节点没监听到该文件（新加的文件）；重启进程最稳 |
 
 @@links
-讲义|智能运营平台.pdf|#
+参考|智能运营平台.pdf|#
 官方|FastAPI CORS 文档|https://fastapi.tiangolo.com/tutorial/cors/
 官方|Tortoise FastAPI 集成|https://tortoise.github.io/contrib/fastapi.html

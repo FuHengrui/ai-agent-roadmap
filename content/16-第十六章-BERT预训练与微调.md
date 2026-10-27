@@ -260,6 +260,6 @@ BERT 开创了什么？它自己又留了什么"坑"给后续模型？
 7. BERT 有哪些"做不了"的任务？为什么这些任务要交给解码器式模型（GPT）？
 
 @@links
-讲义|BERT预训练与微调讲义|#
+参考|BERT预训练与微调|#
 文档|BERT 原文（Pre-training of Deep Bidirectional Transformers for Language Understanding）|https://arxiv.org/abs/1810.04805
 文档|Hugging Face BERT 中文微调教程|https://huggingface.co/docs/transformers/model_doc/bert

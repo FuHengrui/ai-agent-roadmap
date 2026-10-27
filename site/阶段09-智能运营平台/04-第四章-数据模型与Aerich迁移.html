@@ -282,7 +282,7 @@
 <div class="subtitle">阶段 9 · 智能运营平台　|　实践　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章我们有了配置好的工程与数据库 URL，但 Tortoise-ORM 还不认识数据库里那 8 张表。本章解决两件事：<strong>一是把 8 张表翻译成 Python 模型类</strong>（定义字段、类型、约束、表名），<strong>二是用 Aerich 完成初始化迁移</strong>，让迁移框架能持续追踪表结构变化。</p>
-<p>关键认知：<strong>模型定义必须与建库 SQL 完全一致</strong>——字段名、类型、表名、默认值一处对不上，启动即崩或查询即错。这也是"讲义教学版"最容易翻车的地方：讲义里的建库 SQL 与代码里的 models.py 偶有细节出入，必须以 models.py 为准。</p>
+<p>关键认知：<strong>模型定义必须与建库 SQL 完全一致</strong>——字段名、类型、表名、默认值一处对不上，启动即崩或查询即错。这也是这类示例工程最容易翻车的地方：建库 SQL 与代码里的 models.py 偶有细节出入，必须以 models.py 为准。</p>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：后端工程搭建——uv 工程 + config.py 数据源配置就绪</span>
@@ -345,7 +345,7 @@ class User(models.Model):
 <tr><td>DATETIME</td><td>fields.DatetimeField(auto_now_add=True)</td><td>创建时间自动填充</td></tr>
 <tr><td>更新时间</td><td>fields.DatetimeField(auto_now=True)</td><td>每次保存自动更新</td></tr>
 </table>
-<p>注意 <strong>Meta.table</strong>：默认表名是模型名（如 user），讲义里全部显式指定 <code>table="t_xxx"</code> 与建库 SQL 对齐。</p>
+<p>注意 <strong>Meta.table</strong>：默认表名是模型名（如 user），本项目里全部显式指定 <code>table="t_xxx"</code> 与建库 SQL 对齐。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -401,14 +401,14 @@ class Title(models.Model):
     updated_at = fields.DatetimeField(auto_now=True)
     class Meta:
         table = &quot;t_titles&quot;</pre>
-<p>设计取舍（讲义源码实录）：<strong>Section/Title 之间的"外键"用普通 IntField 保存 id，而不是 Tortoise 的 fields.ForeignKeyField</strong>。为什么？因为生成时是"批量插入再一次性查询"，用普通 id 字段省去 FK 的异步加载与级联复杂度，查询时自己控制 <code>filter(section_id=...)</code>。</p>
+<p>设计取舍（源码实录）：<strong>Section/Title 之间的"外键"用普通 IntField 保存 id，而不是 Tortoise 的 fields.ForeignKeyField</strong>。为什么？因为生成时是"批量插入再一次性查询"，用普通 id 字段省去 FK 的异步加载与级联复杂度，查询时自己控制 <code>filter(section_id=...)</code>。</p>
 <p>⚠️ 代价与坑：这种简化写法下，<strong>必须自己在业务代码里保证引用一致性</strong>——删板块不会自动删标题（无级联），查询时若标题的 section_id 指向不存在的板块，关联信息就不完整。代码里采用"先写 Section 拿 id 再逐条写 Title"的流程天然避免孤儿数据，但直接手写库的读者要注意。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>想像 Django 那样 title.section.name 直接访问</td><td>没有 FK 字段就没有反向访问器；必须用 section_id="xx"。预取用 select_related 才可用对象链</td></tr>
-<tr><td>手工删了 section 忘删 titles</td><td>无数据库级联，set null 或同步删除要靠业务代码，漏删即出孤儿数据（讲义用"批量插入事务"规避）</td></tr>
+<tr><td>手工删了 section 忘删 titles</td><td>无数据库级联，set null 或同步删除要靠业务代码，漏删即出孤儿数据（代码里用"批量插入事务"规避）</td></tr>
 </table>
 </div>
 </div></div>
@@ -472,7 +472,7 @@ class PublishImage(models.Model):
     created_at = fields.DatetimeField(auto_now_add=True)
     class Meta:
         table = &quot;t_publish_images&quot;</pre>
-<p>再次强调：<strong>PublishImage.image_type 的码值（1/2/3）与 TitleImage.image_type（0/1/2）不同</strong>，这是讲义代码如实存在的不一致，后端转换必须按表处理。</p>
+<p>再次强调：<strong>PublishImage.image_type 的码值（1/2/3）与 TitleImage.image_type（0/1/2）不同</strong>，这是代码里如实存在的不一致，后端转换必须按表处理。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -529,7 +529,7 @@ aerich upgrade                              # 应用迁移到数据库</pre>
 <p>A. default　　B. null　　C. max_length　　D. unique</p>
 <ol><li>模型的表名如何与建库 SQL 的 t_users 对齐？</li></ol>
 <p>A. 模型名写 User　　B. Meta.table = "t_users"　　C. 类名小写　　D. 无法对齐</p>
-<ol><li>讲义中 Section/Title 的外键采用什么实现？</li></ol>
+<ol><li>本章 Section/Title 的外键采用什么实现？</li></ol>
 <p>A. ForeignKeyField　　B. 普通 IntField 存 id　　C. 中间表　　D. 不用关联</p>
 <ol><li>库已被 SQL 建好时，迁移的正确操作是？</li></ol>
 <p>A. 直接 aerich init-db　　B. aerich init → migrate → upgrade　　C. 什么都不用做　　D. 删库重来</p>
@@ -538,7 +538,7 @@ aerich upgrade                              # 应用迁移到数据库</pre>
 <ol><li>aerich init 的 -t 参数指向什么？</li></ol>
 <p>A. 模板文件　　B. config 模块中的 TORTOISE_ORM　　C. 模型文件　　D. 数据库地址</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>智能运营平台.pdf</a>
+<a href="#"><span class="k">参考</span>智能运营平台.pdf</a>
 <a href="https://tortoise.github.io/models.html" target="_blank" rel="noopener"><span class="k">官方</span>Tortoise-ORM 模型文档</a>
 <a href="https://github.com/tortoise/aerich" target="_blank" rel="noopener"><span class="k">官方</span>Aerich 文档（源码仓库）</a>
 </div>

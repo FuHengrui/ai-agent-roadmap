@@ -207,6 +207,6 @@ RNN 家族的常见演进：
 7. Transformer 取代 RNN 的两个核心原因是什么？
 
 @@links
-讲义|RNN原理讲义|#
+参考|RNN原理|#
 文档|PyTorch RNN 文档|https://pytorch.org/docs/stable/generated/torch.nn.RNN.html
 文档|Understanding LSTM Networks（经典图解）|https://colah.github.io/posts/2015-08-Understanding-LSTMs/

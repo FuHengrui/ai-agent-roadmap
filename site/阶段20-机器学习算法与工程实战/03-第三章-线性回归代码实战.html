@@ -286,7 +286,7 @@
 <ol><li><strong>一套固定的代码套路</strong>：numpy 造数据、矩阵运算、模型 fit/predict、可视化——后面所有章节都复用。</li><li><strong>对"模型=参数"的实感</strong>：亲手算出 w0、w1 的那一刻，"机器学习"就祛魅了：它不过是一堆数字的加减乘除。</li></ol>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章推导出解析解 w* = (XᵀX)⁻¹Xᵀy。<strong>本章前半是开发环境准备（Anaconda/Jupyter 简述），后半是代码实战：用 numpy 造模拟数据 → 手写解析解 → sklearn 的 LinearRegression 对比 → 可视化</strong>。下一章进入梯度下降法（讲义2 章节1）：解析解太慢，我们改用"一步步下山"的方式求最优解。</span>
+<span class="node">上一章推导出解析解 w* = (XᵀX)⁻¹Xᵀy。<strong>本章前半是开发环境准备（Anaconda/Jupyter 简述），后半是代码实战：用 numpy 造模拟数据 → 手写解析解 → sklearn 的 LinearRegression 对比 → 可视化</strong>。下一章进入梯度下降法：解析解太慢，我们改用"一步步下山"的方式求最优解。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 开发环境：Anaconda + Jupyter Notebook</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -431,7 +431,7 @@ print(&quot;测试集 RMSE =&quot;, rmse)</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>拿训练集 RMSE 当成"模型水平"</td><td>那是"背答案"成绩；<strong>必须看测试集</strong>，测试集误差才是真实泛化能力</td></tr>
-<tr><td>简单地"前 80 后 20"切分</td><td>数据有顺序相关性时这种切分不公平；正式做法用 <code>train_test_split</code> 随机切（讲义2 实战章节会用）</td></tr>
+<tr><td>简单地"前 80 后 20"切分</td><td>数据有顺序相关性时这种切分不公平；正式做法用 <code>train_test_split</code> 随机切（实战里会用到）</td></tr>
 </table>
 </div>
 </div></div>
@@ -475,7 +475,7 @@ with open(&quot;lin_model.pkl&quot;, &quot;wb&quot;) as f:
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么造模拟数据时要设 np.random.seed？</li><li>写代码说明 X_b = np.c_[np.ones(...), X] 的作用，截距为什么需要这一列全 1？</li><li>手写解析解的代码用到了哪几个 numpy 操作？分别对应公式的哪部分？</li><li>sklearn 的 LinearRegression 怎么读取截距和权重？</li><li>预测时 X 为什么必须传二维数组？一维数组怎么处理？</li><li>为什么评估必须用测试集 RMSE 而不是训练集？</li><li>pickle 保存了什么？加载后为什么不用重新训练就能预测？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>线性回归讲义（环境搭建与代码实战 19 页）</a>
+<a href="#"><span class="k">参考</span>线性回归（环境搭建与代码实战 19 页）</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn LinearRegression API</a>
 <a href="https://numpy.org/doc/stable/reference/routines.linalg.html" target="_blank" rel="noopener"><span class="k">工具</span>numpy 线性代数模块 np.linalg</a>
 <a href="https://jupyter-notebook.readthedocs.io/en/stable/notebook.html" target="_blank" rel="noopener"><span class="k">文档</span>Jupyter Notebook 使用入门</a>

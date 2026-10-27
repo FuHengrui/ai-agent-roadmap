@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第十二章</strong></div>
 <h1>第十二章　WebUI 微调与监控：点按钮训练＋SwanLab 可视化</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前 11 章你练了三条腿：手写（原理）、Unsloth（提速）、LLaMA-Factory（数据侧就绪）。收官之章把 LLaMA-Factory 的 <strong>WebUI 操作</strong>走完：选模型、选数据、填超参、点开始，然后 <strong>SwanLab</strong> 把训练过程变成可视化曲线。全程不用写一行训练代码。</p>
 <p>但"点按钮"不等于"无脑点"：每个下拉框和输入框对应哪个参数（第 6 章 TrainingArguments 与第 9 章 SFTTrainer 配置的映射），训练完怎么启动 Chat 评估——这些是本章的硬功夫。</p>
@@ -324,7 +324,7 @@
 <p>Train 页顶部"模型名称、微调方法、模型路径"是最先要填的三项。它们对应什么、QLoRA 怎么开、LoRA 权重存哪——填错一步训练启动即报错。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Train 页关键字段（对照讲义）：</p>
+<p>Train 页关键字段：</p>
 <table>
 <tr><th>字段</th><th>填什么</th><th>说明</th></tr>
 <tr><td>模型名称</td><td>下拉选（如 qwen2.5 系列）</td><td>模型家族</td></tr>
@@ -407,7 +407,7 @@
 <p>光看终端日志不过瘾也不直观。<strong>SwanLab</strong> 是实验跟踪平台：训练曲线、超参对比、项目归档全部云端可视化。这一节完成接入——并特别示范<strong>密钥纪律</strong>：API Key 走环境变量，绝不写进代码/文档。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>SwanLab 三步接入（讲义流程）：</p>
+<p>SwanLab 三步接入：</p>
 <pre># 2. 登录并拿 API Key（https://swanlab.cn 注册后，个人设置里生成）
 #    示例：你的密钥长这样：&lt;your_swanlab_api_key&gt;（不要抄真实值！）
 
@@ -419,7 +419,7 @@ pip install swanlab
 # 4. 启动 LLaMA-Factory 训练时同时启动 swanlab 日志开关
 llamafactory-cli train config.yaml --use_swanlab</pre>
 <p>关键纪律（必读）：</p>
-<ul><li><strong>API Key 是账号钥匙</strong>；讲义示例里出现的 SwanLab 密钥是疑似真实密钥，本课程一律用 <code>&lt;your_swanlab_api_key&gt;</code> 占位；</li><li>密钥只进环境变量，<strong>不写入 .py/.yaml/.md/任何会被提交的配置</strong>；</li><li>泄露了立即去 SwanLab 设置里吊销重建。</li></ul>
+<ul><li><strong>API Key 是账号钥匙</strong>；示例里出现过的 SwanLab Key 可能是真实密钥，这里一律用 <code>&lt;your_swanlab_api_key&gt;</code> 占位；</li><li>密钥只进环境变量，<strong>不写入 .py/.yaml/.md/任何会被提交的配置</strong>；</li><li>泄露了立即去 SwanLab 设置里吊销重建。</li></ul>
 <p>WebUI 里的选项：训练参数页通常有 "use_swanlab" 开关；勾上后日志会显示 SwanLab 项目 URL，点开就是实时曲线面板。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -509,7 +509,7 @@ llamafactory-cli chat --model_name_or_path Qwen2.5-7B \
 <tr><td>6</td><td>模型转 GGUF、Ollama 部署、API 调用</td><td>第 10 章</td></tr>
 </table>
 <p>给仍在学的人一句总纲：<strong>原理选路线、显存定参数、数据管下限、评估判结果</strong>——这四句话，就是"微调"这门手艺的全部框架。</p>
-<p>课后延伸（自选）：跑一个 DPO 偏好对齐对比实验、给部署模型写一个简单 Web 前端、用你的数据做一次 QLoRA 全流程并留下实验档案。</p>
+<p>延伸练习（自选）：跑一个 DPO 偏好对齐对比实验、给部署模型写一个简单 Web 前端、用你的数据做一次 QLoRA 全流程并留下实验档案。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -533,7 +533,7 @@ llamafactory-cli chat --model_name_or_path Qwen2.5-7B \
 <h4>自测：能不能答上来</h4>
 <ol><li>启动 WebUI 的命令是什么？默认端口是多少？</li><li>WebUI 的四个主标签分别承担什么功能？</li><li>显存 8GB 机器开训 QLoRA 前，Train 页至少要确认哪三件事？</li><li>WebUI 的"学习率 2e-4、梯度累积 2"分别对应你学过的哪个概念？</li><li>SwanLab API Key 应该放哪里？为什么不能写进代码/配置？</li><li>训练曲线里 train/loss 下降但 eval/loss 回升，说明什么？怎么办？</li><li>阶段 12 收官后，四条能力线（手写/Unsloth/框架/部署）各自的核心产物是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>人工智能（副本）：LLaMA-Factory WebUI 微调、SwanLab 监控与评估</a>
+<a href="#"><span class="k">参考</span>人工智能（副本）：LLaMA-Factory WebUI 微调、SwanLab 监控与评估</a>
 <a href="https://github.com/hiyouga/LLaMA-Factory#webui" target="_blank" rel="noopener"><span class="k">官网</span>LLaMA-Factory WebUI 使用文档</a>
 <a href="https://docs.swanlab.cn/" target="_blank" rel="noopener"><span class="k">官网</span>SwanLab 官方文档（API Key 与实验管理）</a>
 </div>

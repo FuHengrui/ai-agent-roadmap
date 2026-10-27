@@ -1,5 +1,5 @@
 @@h1 第四章　Standalone 独立部署模式与高可用
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★★
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 上一章 Local 模式把 Spark 跑通了，但 Local 是"一台机器假装集群"——**真正的生产环境要的是多台机器组成集群**：一台当老大（Master）管分配，多台当工人（Worker）跑任务。本章部署 Spark 自带的 **Standalone 模式**：不依赖 Hadoop，轻量、好理解，是你理解"集群到底是什么"的最好教材。
@@ -16,7 +16,7 @@
 阶段终点：你能独立部署并运维一套 Spark 集群，处理 TB 级数据
 
 @@note info 环境说明
-本章需要多台机器（或虚拟机）。讲义环境是 node1/node2/node3 三台 CentOS 节点，你照此拓扑练习；只有一台电脑时可用虚拟机克隆三台。
+本章需要多台机器（或虚拟机）。典型环境是 node1/node2/node3 三台 CentOS 节点，你照此拓扑练习；只有一台电脑时可用虚拟机克隆三台。
 
 @@point ① Standalone 是什么：Spark 自带的最小集群
 @@need 要解决什么
@@ -54,7 +54,7 @@ Local 模式下"进程里套进程"不算真集群，而 YARN 又依赖 Hadoop �
 
 @@point ② 集群拓扑设计：三台机器怎么分工
 @@need 要解决什么
-搭集群第一件事是**规划拓扑**：谁当 Master、谁当 Worker、各台机器干什么。没规划就乱启动，节点之间谁也找不到谁。本点给出讲义的三节点拓扑，这是你反复要参考的标准布局。
+搭集群第一件事是**规划拓扑**：谁当 Master、谁当 Worker、各台机器干什么。没规划就乱启动，节点之间谁也找不到谁。本点给出标准的三节点拓扑，这是你反复要参考的标准布局。
 
 @@idea 核心思路
 标配三节点（node1/node2/node3，建议同网段、互通 hostname）：
@@ -246,7 +246,7 @@ export SPARK_MASTER_HOST=node1
 启动顺序（关键）：
 
 ```bash
-# 1. 先起 ZooKeeper（三台都起，见讲义 zkServer.sh start）
+# 1. 先起 ZooKeeper（三台都起，命令是 zkServer.sh start）
 # 2. node1 起主 Master + 两个节点起 Worker
 node1: $SPARK_HOME/sbin/start-master.sh
 node1: $SPARK_HOME/sbin/start-workers.sh
@@ -314,7 +314,7 @@ kill -9 <node1 Master PID>
 6. 判断题：高可用（Master 自动切换）能保证正在运行的 Task 不丢。
 
 @@links
-讲义|Spark 分布式计算框架基础（第 4 章：Standalone 模式）|#
+参考|Spark 分布式计算框架基础（第 4 章：Standalone 模式）|#
 软件|spark-3.2.1-bin-hadoop3.2.tgz|#
 官网|Spark Standalone 模式文档|https://spark.apache.org/docs/latest/spark-standalone.html
-资料|讲义部署脚本与示例配置|#
+资料|部署脚本与示例配置|#

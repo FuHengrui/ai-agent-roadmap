@@ -51,7 +51,7 @@ LangChain 早期用 Chain 对象解决这个问题，但写起来又重又僵。
 |---|---|
 | 以为 SimpleSequentialChain 能处理多输入 | 它只有一个输入一个输出，多输入要用 SequentialChain 或 LCEL |
 | 中间结果丢了 | Simple 链对外透明，中间产物默认不可见；要保留得用 SequentialChain 的 return_intermediate |
-| 新项目还用旧 Chain API | 官方已转向 LCEL，旧 API 在新项目中不推荐（讲义明确提示） |
+| 新项目还用旧 Chain API | 官方已转向 LCEL，旧 API 在新项目中不推荐 |
 
 @@point ③ 旧 Chain API 的五个痛点：为什么被 LCEL 取代
 @@need 要解决什么
@@ -271,7 +271,7 @@ LCEL 时代的替代：**RunnableBranch 用确定性的 Python 条件做路由**
    A. 用旧 LLMRouterChain　　B. 用 RunnableBranch（条件明确）或先结构化输出路由意图再 Branch　　C. 写多个独立链硬编码　　D. 让用户自己选
 
 @@links
-讲义|04_LLM框架实战_中级.pdf|#
+参考|04_LLM框架实战_中级.pdf|#
 官网|LangChain LCEL 教程|https://python.langchain.com/docs/concepts/lcel/
 官网|LangChain Runnable 接口|https://python.langchain.com/docs/concepts/runnables/
 官网|LCEL 各组件参考|https://python.langchain.com/docs/how_to/#langchain-expression-language-lcel

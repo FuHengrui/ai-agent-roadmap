@@ -291,7 +291,7 @@
 <p>装 vLLM 之前，机器应该满足什么硬件条件？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的硬件底线：</p>
+<p>硬件底线：</p>
 <table>
 <tr><th>硬件项</th><th>要求</th></tr>
 <tr><td>GPU</td><td>NVIDIA（CUDA 生态）</td></tr>
@@ -357,7 +357,7 @@
 <p>vLLM 依赖的 PyTorch 等包版本敏感，<strong>直接装进系统 Python 容易与其他项目冲突</strong>（依赖地狱）。标准做法：为 vLLM 单独建虚拟环境。</p>
 <pre>python -m venv vllm_env        # 创建
 source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）</pre>
-<p>之后所有 <code>pip install</code> 都只影响该环境，互不污染。参考讲义使用 conda 同样可行（conda activate 建环境），原理一致。</p>
+<p>之后所有 <code>pip install</code> 都只影响该环境，互不污染。用 conda 建环境同样可行（conda activate 建环境），原理一致。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -372,7 +372,7 @@ source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）<
 <p>虚拟环境就绪后，装 vLLM 的命令是什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>核心命令（讲义同款）：</p>
+<p>核心命令：</p>
 <pre>pip install vllm</pre>
 <p>装完验证：</p>
 <pre>python -c &quot;import vllm; print(vllm.__version__)&quot;</pre>
@@ -416,7 +416,7 @@ source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）<
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>vLLM 生态主要在 Linux：官方预编译与容器镜像都以 Linux 为准。Windows 注意事项：</p>
-<ol><li><strong>官方支持有限</strong>：Windows 上 vLLM 需要手动编译或借助 WSL2/Linux 容器，不推荐直接装。</li><li><strong>推荐路线</strong>：Windows → WSL2（Ubuntu）→ vLLM；或直接 Linux 服务器/NGC 容器。</li><li>本课程（讲义）默认 <strong>Linux 服务器/云 GPU 环境</strong>，请按对应 shell 命令执行。</li></ol>
+<ol><li><strong>官方支持有限</strong>：Windows 上 vLLM 需要手动编译或借助 WSL2/Linux 容器，不推荐直接装。</li><li><strong>推荐路线</strong>：Windows → WSL2（Ubuntu）→ vLLM；或直接 Linux 服务器/NGC 容器。</li><li>本书默认 <strong>Linux 服务器/云 GPU 环境</strong>，请按对应 shell 命令执行。</li></ol>
 <p>如果坚持 Windows 直装：需满足 CUDA 环境与编译器，按官方 issue/文档折腾，成本高。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -455,7 +455,7 @@ source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）<
 <h4>自测：能不能答上来</h4>
 <ol><li>vLLM 部署的硬件底线是什么？为什么显存 24GB 是常见门槛？</li><li>预估模型部署显存占用的大致公式是什么？7B 模型 FP16 权重约占多少？</li><li>nvidia-smi 输出中要核对哪三个信息？</li><li>CUDA 版本为什么要 ≥11.8？"驱动、运行库、框架"三者的版本关系是什么？</li><li>为什么要建 Python 虚拟环境？创建与激活的命令分别是什么？</li><li>安装 vLLM 的核心命令是什么？遇到网络慢怎么处理？</li><li>Windows 上装 vLLM 的正确姿势是什么？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>部署讲义（章节1-2）</a>
+<a href="#"><span class="k">参考</span>部署（章节1-2）</a>
 <a href="https://docs.vllm.ai/en/latest/getting_started/installation.html" target="_blank" rel="noopener"><span class="k">站点</span>vLLM 官方安装文档</a>
 </div>
 <div class="pager">

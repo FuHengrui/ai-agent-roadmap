@@ -14,7 +14,7 @@
 **阶段终点**：完成"读数据 → 清洗 → 计算 → 可视化 → 入库"链路，Pandas 就是这条链的中枢
 
 @@note info 学习提示
-本章是 Pandas 全流程入口：**"读"（Excel/CSV/DB）→ 认识结构（Series/DataFrame）→ "写"（文件/DB）**。结构化记忆：先背两个数据结构的三件事（是什么/怎么建/怎么访问），再背三种读法和两种写法的函数名。pymysql 连接数据库一段**密码必须填你自己的**，讲义里的教学占位串只是示例。
+本章是 Pandas 全流程入口：**"读"（Excel/CSV/DB）→ 认识结构（Series/DataFrame）→ "写"（文件/DB）**。结构化记忆：先背两个数据结构的三件事（是什么/怎么建/怎么访问），再背三种读法和两种写法的函数名。pymysql 连接数据库一段**密码必须填你自己的**，文中的教学占位串只是示例。
 
 @@point ① Pandas 是什么：数据分析的主干工具
 @@need 要解决什么
@@ -352,6 +352,6 @@ df.to_sql('结果表', conn, index=False, if_exists='replace')     # 数据库
 6. 读 CSV 中文乱码应怎么排查？写出给 Excel 用的 CSV 应该用什么编码？
 7. Pandas 连 MySQL 需要安装什么库？连接参数里哪两个最容易坑？（一个字符集、一个保密）
 @@links
-讲义|Pandas 讲义（145 页）|#
+参考|Pandas （145 页）|#
 工具|Pandas 官网|https://pandas.pydata.org/
 文档|Pandas IO 工具一览|https://pandas.pydata.org/docs/user_guide/io.html

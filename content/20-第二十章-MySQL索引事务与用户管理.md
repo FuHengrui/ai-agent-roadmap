@@ -408,6 +408,6 @@ MySQL 六章收官——索引/事务/权限三大金刚全部落地：
 6. 脏读、不可重复读、幻读三者的区别是什么？
 7. MySQL 默认的隔离级别是什么？它分别防住了三种异常中的哪些？
 @@links
-讲义|MySQL 讲义（158 页）|#
+参考|MySQL （158 页）|#
 文档|索引与查询优化|https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html
 文档|事务与锁|https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html

@@ -298,7 +298,7 @@
 <p>Codex 具体会做哪些操作？先看清功能全景，避免"只会对话不会用功能"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Codex 的核心功能模块（讲义归纳）：</p>
+<p>Codex 的核心功能模块：</p>
 <table>
 <tr><th>模块</th><th>干什么</th><th>类比</th></tr>
 <tr><td><strong>搜索（Search）</strong></td><td>在项目中搜代码/文件，支持语义搜索</td><td>项目内的"百度"</td></tr>
@@ -417,7 +417,7 @@ Codex：计划如下——
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Codex 支持<strong>外接 VSCode</strong>：把 Codex 的执行区/worktree <strong>链接到 VSCode</strong> 打开，让 AI 的改动<strong>直接在编辑器中可见可改</strong>。</p>
-<p>使用方式（讲义路线）：</p>
+<p>使用方式（操作路线）：</p>
 <ol><li>在 Codex 会话中发起"在 VSCode 中打开"（或对应命令/按钮）；</li><li>Codex 的工作空间/工作树被 VSCode 打开；</li><li>在 VSCode 里查看 AI 改动的文件、继续人工编辑；</li><li>编辑完成后回到 Codex 继续对话（或提交 Git）。</li></ol>
 <p><strong>价值</strong>：VSCode 的查看/编辑/调试体验 + Codex 的自动执行，<strong>"编辑器供人看、Agent 供人使"</strong>——尤其适合 Codex 改完、人还要精修的混合协作。</p>
 <p><strong>注意</strong>：外接 VSCode 打开的是 <strong>Codex 的工作树</strong>，和人本地通用项目目录的关系取决于工作空间类型（临时/持久），别在两边各改各的造成冲突。</p>
@@ -514,7 +514,7 @@ Codex：需要删除文件 cache/tmp.db（超出当前权限）
 <h4>自测：能不能答上来</h4>
 <ol><li>Codex 的核心功能模块有哪些？分别类比成什么？</li><li>搜索和重命名怎么配合使用？重命名时要注意什么（引用联动方面）？</li><li>归档（Archive）与删除的本质区别是什么？</li><li>Steer 是什么？它和"重新描述需求"的区别是什么？举例两条 Steer 指令。</li><li>计划模式（Plan Mode）与批注模式（Annotate Mode）的区别是什么？</li><li>外接 VSCode 的使用流程是什么？打开的是 Codex 的什么？</li><li>三层权限沙箱（Watch/Plan/Auto）分别控制什么层级的操作？越界操作会怎样处理？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Codex 讲义</a>
+<a href="#"><span class="k">参考</span>Codex</a>
 <a href="https://developers.openai.com/codex/" target="_blank" rel="noopener"><span class="k">参考</span>OpenAI Codex 官方文档</a>
 <a href="10-第十章-Codex简介与安装准备.html"><span class="k">上一章</span>Codex 简介与安装</a>
 <a href="12-第十二章-Codex代码管理与记忆扩展.html"><span class="k">下一章</span>Codex 代码管理与记忆</a>

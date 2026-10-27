@@ -408,7 +408,7 @@ async with stdio_client(server) as (read, write):
         result = await session.call_tool(&quot;add&quot;, {&quot;a&quot;: 1, &quot;b&quot;: 2})  # 调用工具</pre>
 <p>要点：</p>
 <ul><li><code>initialize()</code> 建立会话握手 → <code>list_tools()</code> 发现能力 → <code>call_tool()</code> 执行</li><li>学习/实践组合：自己写一个 <code>server_xxx.py</code>（服务端）+ 一个客户端脚本（连接调用），先跑通再谈生产</li></ul>
-<p>实践案例（企业级讲义三连）：<strong>邮件发送 MCP</strong>（把 send_email 注册为工具）、<strong>数据库查询 MCP</strong>（把 SQL 执行封装成工具）、<strong>面向 Agent 的数据图表工具</strong>（把绘图逻辑封装，Agent 说"画个 8 月销售柱状图"→ 工具出图）。</p>
+<p>实践案例（企业级三连）：<strong>邮件发送 MCP</strong>（把 send_email 注册为工具）、<strong>数据库查询 MCP</strong>（把 SQL 执行封装成工具）、<strong>面向 Agent 的数据图表工具</strong>（把绘图逻辑封装，Agent 说"画个 8 月销售柱状图"→ 工具出图）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -519,8 +519,8 @@ with client as mcp_tools:
 <ol><li>stdio 传输模式的限制是？</li></ol>
 <p>A. 只能传输文本　　B. 调用工具时会启动新子进程，适合本地不适合 Web 服务　　C. 速度最慢　　D. 不加密</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>08_LLM框架实战_MCP.pdf</a>
-<a href="#"><span class="k">讲义</span>企业级AI模型部署与工具开发实战.pdf</a>
+<a href="#"><span class="k">参考</span>08_LLM框架实战_MCP.pdf</a>
+<a href="#"><span class="k">参考</span>企业级AI模型部署与工具开发实战.pdf</a>
 <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener"><span class="k">官网</span>MCP 官方文档</a>
 <a href="https://fastmcp.wiki/zh/getting-started/welcome" target="_blank" rel="noopener"><span class="k">中文</span>FastMCP 教程</a>
 <a href="https://github.com/langchain-ai/langchain-mcp-adapters" target="_blank" rel="noopener"><span class="k">官网</span>langchain-mcp-adapters</a>

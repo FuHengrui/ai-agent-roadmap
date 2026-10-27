@@ -1,5 +1,5 @@
 @@h1 第三章　FastAPI 应用骨架搭建
-@@sub 阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★☆
+@@sub 阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
 上一章数据库活了，但代码入口还是空的。国外教程最爱讲"Hello World"，可真实的 FastAPI 应用不止一个路由文件——它要处理**启动时连数据库、挂向量库、初始化记忆系统**，要解决 **Windows 上 asyncio 事件的兼容坑**，要配置跨域让前端能访问，还要按模块挂载四组路由。
@@ -28,7 +28,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.db.database import init_db, close_db
-…（以下省略 33 行，完整代码见讲义/仓库对应位置）
+…（以下省略 33 行，完整代码见仓库对应位置）
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
@@ -79,7 +79,7 @@ DB_MODELS = [
     "app.models.chat",
     "app.models.document",
 ]
-…（以下省略 3 行，完整代码见讲义/仓库对应位置）
+…（以下省略 3 行，完整代码见仓库对应位置）
         db_url=settings.DATABASE_URL,
         modules={"models": DB_MODELS},
     )
@@ -216,7 +216,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 7. 如何用一条命令验证后端真的起来了？自动化文档地址是多少？
 
 @@links
-讲义|LegalMind 法律咨询系统：FastAPI 应用骨架|#
+参考|LegalMind 法律咨询系统：FastAPI 应用骨架|#
 官网|FastAPI Lifespan 文档|https://fastapi.tiangolo.com/advanced/events/
 官网|FastAPI CORS 文档|https://fastapi.tiangolo.com/tutorial/cors/
 官网|Tortoise ORM 文档|https://tortoise.github.io/

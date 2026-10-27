@@ -358,7 +358,7 @@ docker run -d --name mytomcat -p 8080:8080 \
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>用相对路径挂载报错</td><td>-v 的宿主机路径必须是绝对路径；容器内路径也建议绝对路径</td></tr>
 <tr><td>挂载后容器内目录变成空的了</td><td>正常：挂载后容器内该目录<strong>完全跟随宿主机</strong>；镜像里原来这个目录的内容会被"盖住"（首次挂载时一次性初始化）</td></tr>
-<tr><td>复制讲义多行命令时提前回车</td><td>命令报"参数不完整"；多行命令用 <code>\</code> 续行，别提前按回车</td></tr>
+<tr><td>复制多行命令时提前回车</td><td>命令报"参数不完整"；多行命令用 <code>\</code> 续行，别提前按回车</td></tr>
 </table>
 </div>
 </div></div>
@@ -534,7 +534,7 @@ docker exec app-b cat /data/msg.txt     # 输出 hello =&amp;gt; 共享成功</d
 <h4>自测：能不能答上来</h4>
 <ol><li>容器被 docker rm 后，容器里的普通文件和挂载卷里的数据，分别会怎样？</li><li>-v 挂载的三条注意事项是什么？</li><li>匿名挂载、具名挂载、指定路径挂载怎么区分？各在什么场景用？</li><li>-v my-nginx:/etc/nginx:ro 中 ro 的作用是什么？</li><li>怎么查出具名卷在宿主机上的真实路径？</li><li>MySQL 容器化时挂载哪个目录才能保证"数据库文件不丢"？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Docker技术应用与实战讲义（76 页）</a>
+<a href="#"><span class="k">参考</span>Docker技术应用与实战（76 页）</a>
 <a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener"><span class="k">文档</span>Docker 存储管理</a>
 <a href="https://docs.docker.com/engine/reference/commandline/volume/" target="_blank" rel="noopener"><span class="k">文档</span>docker volume 参考</a>
 </div>

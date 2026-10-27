@@ -367,9 +367,9 @@
 <p>装 Codex 前，机器上要有什么"底子"？各自是干什么的？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的 Codex 安装前置依赖：</p>
-<ul><li><strong>Git</strong>：版本控制工具，Codex 的 Git 集成功能（提交、回滚、分叉）依赖它；</li><li><strong>Node.js</strong>：Codex CLI/SDK 的运行时依赖之一（部分功能基于 Node 生态）；</li><li><strong>VSCode</strong>：安装 VSCode 扩展形态时的宿主编辑器（可配合扩展市场安装 Codex 扩展）；</li><li><strong>.NET 运行时（备注）</strong>：某些 Codex 桌面应用/相关组件依赖 .NET 运行时（与 Windows 生态相关，根据讲义提示按需安装）。</li></ul>
-<p>安装建议：<strong>按官方文档的版本要求装</strong>（Node 建议 LTS，Git 最新稳定版）。讲义配套资料里也提供了离线安装包（Codex Installer、Git、Node、VSCode 安装器）。</p>
+<p>Codex 安装的前置依赖：</p>
+<ul><li><strong>Git</strong>：版本控制工具，Codex 的 Git 集成功能（提交、回滚、分叉）依赖它；</li><li><strong>Node.js</strong>：Codex CLI/SDK 的运行时依赖之一（部分功能基于 Node 生态）；</li><li><strong>VSCode</strong>：安装 VSCode 扩展形态时的宿主编辑器（可配合扩展市场安装 Codex 扩展）；</li><li><strong>.NET 运行时（备注）</strong>：某些 Codex 桌面应用/相关组件依赖 .NET 运行时（与 Windows 生态相关，按需安装）。</li></ul>
+<p>安装建议：<strong>按官方文档的版本要求装</strong>（Node 建议 LTS，Git 最新稳定版）。配套资料里也提供了离线安装包（Codex Installer、Git、Node、VSCode 安装器）。</p>
 <p><strong>验证装好了</strong>：终端执行 <code>git --version</code>、<code>node -v</code> 确认版本号输出版本正常。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -389,7 +389,7 @@
 <p><strong>工作空间（Workspace）</strong>是 Codex 的<strong>任务工作区</strong>——每个任务在独立的工作空间中执行，Codex 在其中读写文件、执行命令。</p>
 <p>核心特点：</p>
 <ul><li><strong>隔离性</strong>：任务间互不干扰，不同项目的文件、环境隔离；</li><li><strong>临时性</strong>：工作空间内的环境可按需创建/清理（不用担心污染本机）——<strong>默认临时工作空间</strong>用完即走，<strong>持久工作空间</strong>可跨会话保留；</li><li><strong>上下文集</strong>：当前相关的文件、上下文、会话都在空间内呈现。</li></ul>
-<p>一个任务可以跟一个工作空间挂钩（"<strong>一个任务一个空间</strong>"，讲义强调的用法），完成后可清理或留存。</p>
+<p>一个任务可以跟一个工作空间挂钩（"<strong>一个任务一个空间</strong>"是推荐用法），完成后可清理或留存。</p>
 <pre>命令行使用示例（概念演示）
 codex &quot;帮我写一个 Python 爬虫&quot;
 → 进入/创建工作空间，Codex 在该空间内行动</pre>
@@ -409,7 +409,7 @@ codex &quot;帮我写一个 Python 爬虫&quot;
 <p>CLI 形态怎么装？装完怎么确认能用了？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p><strong>CLI 安装三步走（讲义路线）</strong>：</p>
+<p><strong>CLI 安装三步走</strong>：</p>
 <pre># 1. 安装 Codex CLI（Windows 环境按官方指引）
 npm install -g @openai/codex
 
@@ -419,13 +419,13 @@ codex login
 # 3. 验证安装成功
 codex --version</pre>
 <p>安装要点：</p>
-<ul><li>包名以官方文档为准（示例为 <code>@openai/codex</code>，如官方有更新路径以官网/讲义资料为准）；</li><li><strong>SDK 授权登录</strong>：开发者还可通过 SDK 注册/获取 API 凭证（用于程序化调用），具体凭据存放遵循官方最佳实践（环境变量/配置，不外泄）；</li><li>国内环境的网络、代理、镜像问题，按讲义资料里的说明处理（或使用离线安装包）。</li></ul>
+<ul><li>包名以官方文档为准（示例为 <code>@openai/codex</code>，如官方有更新路径以官网/配套资料为准）；</li><li><strong>SDK 授权登录</strong>：开发者还可通过 SDK 注册/获取 API 凭证（用于程序化调用），具体凭据存放遵循官方最佳实践（环境变量/配置，不外泄）；</li><li>国内环境的网络、代理、镜像问题，按配套资料里的说明处理（或使用离线安装包）。</li></ul>
 <p><strong>验证通过的标准</strong>：<code>codex --version</code> 输出版本号，<code>codex login</code> 后提示已认证，即可进入下一章的功能学习。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>npm 安装超时/镜像问题</td><td>使用国内 npm 镜像（如 npmmirror）或走<strong>讲义配套离线安装包</strong>；别反复重试默认源</td></tr>
+<tr><td>npm 安装超时/镜像问题</td><td>使用国内 npm 镜像（如 npmmirror）或走<strong>配套离线安装包</strong>；别反复重试默认源</td></tr>
 <tr><td>登录时页面打不开</td><td>确认网络与代理；按提示的 OAuth 链接在浏览器完成并回终端确认</td></tr>
 <tr><td>出现"Command not found"</td><td>检查 PATH 是否包含 npm 全局目录；重新打开终端再试 <code>codex</code></td></tr>
 <tr><td>拿到授权/密钥直接贴进代码里</td><td><strong>密钥不进任何文件</strong>；用环境变量保存并妥善管理，绝不写入项目或聊天记录</td></tr>
@@ -437,8 +437,8 @@ codex --version</pre>
 <p>四种形态里，桌面应用有什么需要防坑的额外注意点？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义对<strong>桌面应用</strong>形态补充了几个实务细节：</p>
-<ul><li><strong>安装与启动</strong>：跟随官方安装引导，注意与 VSCode 扩展的协同（两者可共用账号与工作区）；</li><li><strong>首次使用要点</strong>：登录账号、确认工作空间与运行环境（Node/Git 可用性）；</li><li><strong>界面结构</strong>：包含对话区、工作区列表、历史任务等模块（不同版本界面有差异，以实际为准）；</li><li><strong>常见问题</strong>：登录失效、工作区无法访问、界面卡顿等——先查官方 FAQ 或讲义附注，多数可自行解决。</li></ul>
+<p><strong>桌面应用</strong>形态还有几个实务细节：</p>
+<ul><li><strong>安装与启动</strong>：跟随官方安装引导，注意与 VSCode 扩展的协同（两者可共用账号与工作区）；</li><li><strong>首次使用要点</strong>：登录账号、确认工作空间与运行环境（Node/Git 可用性）；</li><li><strong>界面结构</strong>：包含对话区、工作区列表、历史任务等模块（不同版本界面有差异，以实际为准）；</li><li><strong>常见问题</strong>：登录失效、工作区无法访问、界面卡顿等——先查官方 FAQ 或附注，多数可自行解决。</li></ul>
 <p><strong>规律总结</strong>：四种形态的"账号登录→工作空间→对话执行"结构是统一的；<strong>会了 CLI 就懂了大半，其他形态只是换壳换入口</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -452,10 +452,10 @@ codex --version</pre>
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 初次打开 Codex：任务列表与项目归属</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>装好 Codex 后第一次打开，界面上的"任务、对话、项目"到底是什么关系？讲义第 5 页给了明确说明。</p>
+<p>装好 Codex 后第一次打开，界面上的"任务、对话、项目"到底是什么关系？先把它们的关系说清楚。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Codex 的界面组织（讲义原文要点）：</p>
+<p>Codex 的界面组织：</p>
 <ul><li><strong>多工作空间并列</strong>：创建多个文件夹作为工作空间，Codex 可<strong>同时开启多个任务</strong>，且任务列表非常友好；</li><li><strong>任务状态标识</strong>：每个任务都有状态标识——<strong>进行中、等待批准、完成</strong>（对应权限沙箱的交互：等批准的会挂起等你确认）；</li><li><strong>项目归属对话</strong>：可以选择<strong>对话的项目归属</strong>；选择"不使用项目"的对话将归类到<strong>对话区域</strong>。</li></ul>
 <p><strong>一句话理解</strong>：Codex 的界面 = "工作空间/任务"（大容器）+ "对话"（上下文单元）——任务挂靠空间、对话挂靠任务（或独立于项目）。状态标识让你一眼看清<strong>哪些任务在跑、哪些在等你</strong>。</p>
 <p><strong>与工作空间的关系</strong>：这里的"多文件夹多任务"正是第 ⑤ 点"一个任务一个空间"的界面呈现——空间管隔离，任务管状态。</p>
@@ -484,7 +484,7 @@ codex --version</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>Codex 是什么公司推出的？它的"直系前身"和 GitHub Copilot 有什么渊源？</li><li>Codex 的四种形态分别是什么？"想在编辑器里一体化使用"应选哪种形态？</li><li>Codex 与 Trae、Cursor 三者在"核心形态"和"绑定关系"上的主要差异是什么？</li><li>Codex 的安装需要哪些前置软件？各自作用是什么？怎么在终端验证 Git 和 Node 已装好？</li><li>什么是 Codex 的工作空间（Workspace）？"一个任务一个空间"有什么好处？</li><li>CLI 安装三步（安装、授权、验证）分别对应什么命令？</li><li>文中的四个 Codex 形态共享的底层结构是什么？为什么说"会了 CLI 就懂了大半"？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Codex 讲义</a>
+<a href="#"><span class="k">参考</span>Codex</a>
 <a href="https://developers.openai.com/codex/" target="_blank" rel="noopener"><span class="k">参考</span>OpenAI Codex 官方文档</a>
 <a href="09-第九章-Cursor实战Chrome插件开发.html"><span class="k">上一章</span>Cursor 实战 Chrome 插件</a>
 <a href="11-第十一章-Codex功能模块与权限沙箱.html"><span class="k">下一章</span>Codex 功能与权限沙箱</a>

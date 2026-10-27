@@ -488,7 +488,7 @@ cat /etc/passwd | wc -l          # 数一数系统有多少个用户
 grep error app.log | tail -n 20  # 过滤日志 → 只看最后 20 行
 ls /etc | less                   # 目录内容太多 → 分页翻着看</pre>
 <p>方向记牢：<strong>管道左边"产出数据"，右边"消费数据"</strong>，数据流是左→右。</p>
-<p>讲义经典例（数禁登录用户数）：</p>
+<p>一个经典例子（数禁登录用户数）：</p>
 <pre>grep &quot;/sbin/nologin&quot; /etc/passwd | wc -l</pre>
 <p>一条命令完成"找出所有不能登录的账号 → 数出数量"。</p>
 </div>
@@ -570,7 +570,7 @@ ls /a &gt; all.log 2&gt;&amp;1          # 2&gt;&amp;1：错误也合并进 all.l
 <h4>自测：能不能答上来</h4>
 <ol><li>tar -zxvf 是做什么的？解压到指定目录要加什么参数？临时查看包内容用什么参数？</li><li>gzip 压缩完，原文件还在吗？想保留原文件怎么办？</li><li>grep 和 find 的作用分别是什么？哪个是搜"内容"的？</li><li>管道符 | 的作用是什么？请用 ps 和 grep 举例说明。</li><li>把某条命令的报错信息也一并写入日志文件，应该怎么写重定向？</li><li>ls /dev/sda* 和 ls /dev/sda? 的区别是什么？哪个能匹配到 sda10？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Linux入门与实战讲义（159 页）</a>
+<a href="#"><span class="k">参考</span>Linux入门与实战（159 页）</a>
 <a href="https://www.gnu.org/software/tar/manual/" target="_blank" rel="noopener"><span class="k">文档</span>tar 官方手册</a>
 <a href="https://man7.org/linux/man-pages/man1/grep.1.html" target="_blank" rel="noopener"><span class="k">文档</span>grep 使用手册</a>
 <a href="https://man7.org/linux/man-pages/man1/find.1.html" target="_blank" rel="noopener"><span class="k">文档</span>find 使用手册</a>

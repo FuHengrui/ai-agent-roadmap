@@ -286,7 +286,7 @@
 <p>GBDT 尤其值得高度重视：它是 XGBoost、LightGBM、CatBoost 这些"Kaggle 霸主"的祖师爷，也是当前表格数据领域最强的模型家族。<strong>学完本章，你手里就有了对抗绝大多数结构化数据的"终极大招"。</strong></p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章学完单棵决策树（分裂、剪枝）并记下"单树精度一般"。<strong>本章（讲义7 章节5-8）补齐三个算法：随机森林（Bagging）→ Adaboost（样本加权）→ GBDT（负梯度拟合残差）→ 应用 GBDT 分类实战</strong>。下一章起进入阶段 20 收尾实战专题，把回归、分类、聚类、树模型组成"武器库"应对综合场景。</span>
+<span class="node">上一章学完单棵决策树（分裂、剪枝）并记下"单树精度一般"。<strong>本章补齐三个算法：随机森林（Bagging）→ Adaboost（样本加权）→ GBDT（负梯度拟合残差）→ 应用 GBDT 分类实战</strong>。下一章起进入阶段 20 收尾实战专题，把回归、分类、聚类、树模型组成"武器库"应对综合场景。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 集成学习总览：越乱越好 vs 越错越补</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -551,7 +551,7 @@ plt.show()</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>Bagging 和 Boosting 的机制差异是什么？分别用什么方式"制造差异"？</li><li>Bagging 为什么用"有放回"抽样？OOB 样本有什么用途？</li><li>随机森林的"双随机"指什么？各自解决什么问题？</li><li>Adaboost 提高样本权重的规则是什么？它对噪声为什么敏感？</li><li>为什么 GBDT 拟合的是"残差"而不是原始 y？这个残差和梯度有什么关系？</li><li>随机森林和 GBDT 在降低"方差/偏差"上的分工是什么？</li><li>浅树+多棵+小学习率为什么是 GBDT 的经典配置？</li><li>写一段代码：用同一训练/测试切分，对比 Ridge、RandomForest、GBDT 三个模型的测试 RMSE。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>决策树讲义（章节5-8，27 页）</a>
+<a href="#"><span class="k">参考</span>决策树（章节5-8，27 页）</a>
 <a href="https://scikit-learn.org/stable/modules/ensemble.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn ensemble 总览</a>
 <a href="https://xgboost.readthedocs.io/" target="_blank" rel="noopener"><span class="k">文档</span>XGBoost 官方文档</a>
 <a href="https://lightgbm.readthedocs.io/" target="_blank" rel="noopener"><span class="k">文档</span>LightGBM 官方文档</a>

@@ -281,7 +281,7 @@
 <h1>第五章　服务验证与基础调用：curl 与 OpenAI SDK</h1>
 <div class="subtitle">阶段 24 · 大模型时代的模型运维与部署　|　验收实战　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>服务起来了，怎么确认真能用？<strong>验证</strong>环节分两路：用 curl 直接打 HTTP 接口看裸响应，用 OpenAI SDK 走"正经客户端"流程。同时把讲义附带的 <code>server.py</code> 源码吃透——它演示了从客户端视角调用 vLLM 服务的标准写法。本章是部署链路最后的"关门验收"。</p>
+<p>服务起来了，怎么确认真能用？<strong>验证</strong>环节分两路：用 curl 直接打 HTTP 接口看裸响应，用 OpenAI SDK 走"正经客户端"流程。同时把配套的 <code>server.py</code> 源码吃透——它演示了从客户端视角调用 vLLM 服务的标准写法。本章是部署链路最后的"关门验收"。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章完成了模型下载与服务启动。<strong>本章验收：curl 验证 /v1/models 与对话接口、OpenAI SDK 调用、server.py 源码拆解、常见故障排查</strong>。至此阶段24 完结，模型部署"从装到用到验"全链路闭环。</span>
@@ -337,7 +337,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>OpenAI 官方 Python SDK（工业标准）：</p>
 <pre>pip install openai</pre>
-<p>调用代码（讲义 server.py 同款思路）：</p>
+<p>调用代码（和 server.py 同款思路）：</p>
 <pre>from openai import OpenAI
 
 client = OpenAI(
@@ -362,10 +362,10 @@ print(resp.choices[0].message.content)</pre>
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ server.py 源码逐行拆解</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>讲义附带的 server.py 只有 9 行，它演示了什么？</p>
+<p>配套的 server.py 只有 9 行，它演示了什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义附带的服务器端示例源码语义（9 行演示）：</p>
+<p>配套的服务器端示例源码语义（9 行演示）：</p>
 <pre>from openai import OpenAI       # ① 引入官方 SDK
 
 client = OpenAI(
@@ -444,7 +444,7 @@ for chunk in resp:        # 逐块读取
 <p>本地验证通过后，离"线上可用"还差哪些事？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>教学链路（本课程终点）与生产链路之间还有增量：</p>
+<p>教学链路（本章终点）与生产链路之间还有增量：</p>
 <table>
 <tr><th>环节</th><th>生产化动作</th></tr>
 <tr><td>部署形态</td><td>容器化（Docker/NGC）+ 编排</td></tr>
@@ -453,7 +453,7 @@ for chunk in resp:        # 逐块读取
 <tr><td>可观测</td><td>监控指标、日志、告警</td></tr>
 <tr><td>成本</td><td>显存水位、并发上限、量化选型</td></tr>
 </table>
-<p>理解意义：<strong>vLLM 已把"推理服务化"这层做透，运维增量是工程化标准动作</strong>——本课程覆盖到"服务可用+可调用"即达成教学目标。</p>
+<p>理解意义：<strong>vLLM 已把"推理服务化"这层做透，运维增量是工程化标准动作</strong>——本阶段覆盖到"服务可用+可调用"即达成教学目标。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -492,7 +492,7 @@ for chunk in resp:        # 逐块读取
 <h4>自测：能不能答上来</h4>
 <ol><li>用 curl 验证服务就绪的最简单命令是什么？成功响应里要看哪个字段？</li><li>用 curl 发起一次对话请求的完整命令怎么写？三个关键点是什么？</li><li>用 OpenAI SDK 调用 vLLM 时，base_url、api_key、model 分别怎么填？为什么？</li><li>server.py 演示的客户端接入范式是哪几步？</li><li>流式输出在 SDK 代码中如何开启？与普通模式的区别？</li><li>按顺序写出服务故障排查的五个层次。</li><li>教学链路验证通过后，上线生产还差哪些工程化动作？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>部署讲义（章节1-2）</a>
+<a href="#"><span class="k">参考</span>部署（章节1-2）</a>
 <a href="https://github.com/openai/openai-python" target="_blank" rel="noopener"><span class="k">文档</span>OpenAI Python SDK</a>
 <a href="https://docs.vllm.ai/en/latest/getting_started/quickstart.html" target="_blank" rel="noopener"><span class="k">站点</span>vLLM 服务化示例</a>
 </div>

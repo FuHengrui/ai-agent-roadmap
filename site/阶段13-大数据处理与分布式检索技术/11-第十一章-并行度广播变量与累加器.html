@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十一章</strong></div>
 <h1>第十一章　并行度、广播变量与累加器</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>程序能跑、逻辑也对，但<strong>慢</strong>。慢的第一个原因是并行度没配好：分区太少，八核机器只有一个核在工作；第二个原因是<strong>闭包陷阱</strong>：你在 Driver 定义了一个大维表/配置文件，Task 每次都要把它序列化一遍发给 Executor，几万 Task 就复制几万份——内存和网络全废。前者靠<strong>并行度</strong>解决，后者靠<strong>广播变量</strong>（Broadcast）解决；再加一个<strong>累加器</strong>（Accumulator）处理"跨节点计数/求和"这个看似简单却处处是坑的需求。</p>
 <p>这三个是 Spark 内核调优的"老三样"，也是面试必考。学完你能：<strong>为程序正确设置并行度、用广播变量替代闭包变量、用累加器做分布式计数，并避开计数翻倍这种隐蔽 bug</strong>。</p>
@@ -556,8 +556,8 @@ clean.foreach { row =&gt;
 <h4>自测：能不能答上来</h4>
 <ol><li>并行度由哪 4 个因素决定？shuffle 后默认分区数由哪个配置决定？</li><li>repartition 和 coalesce 的区别是什么？"输出前想只留 1 个文件"该用哪个？</li><li>为什么闭包引用一个大维表会导致每个 Task 都带一份？量级差多少？</li><li>广播变量的正确使用方式是什么？它和闭包变量的本质区别在哪？</li><li>累加器为什么在转换算子里用会导致计数翻倍？正确放哪里？</li><li>判断题：广播变量的值可以在任务执行期间被修改并立即生效。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Spark 内核进阶（第 5 章：并行度与分区）</a>
-<a href="#"><span class="k">讲义</span>Spark 内核进阶（第 6 章：广播变量与累加器）</a>
+<a href="#"><span class="k">参考</span>Spark 内核进阶（第 5 章：并行度与分区）</a>
+<a href="#"><span class="k">参考</span>Spark 内核进阶（第 6 章：广播变量与累加器）</a>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#shared-variables" target="_blank" rel="noopener"><span class="k">官网</span>共享变量官方文档</a>
 <a href="https://spark.apache.org/docs/latest/tuning.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark 性能调优指南</a>
 </div>

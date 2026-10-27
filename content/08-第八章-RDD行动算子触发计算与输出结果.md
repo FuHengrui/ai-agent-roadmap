@@ -1,5 +1,5 @@
 @@h1 第八章　RDD 行动算子：触发计算与输出结果
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★☆
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
 上一章的转换算子全是"纸面记录"——你写了 map、filter、join，但**数据一行都没真的算**。那 Spark 到底什么时候干活？答案是：**遇到行动算子（Action）时**。行动算子才是"按启动按钮"的那一下：收集结果、保存文件、遍历输出、统计数量。
@@ -300,7 +300,7 @@ rdd.sample(withReplacement = true, fraction = 0.2, seed = 1)
 6. 判断题：countByKey 统计的是每个 key 的 value 之和。
 
 @@links
-讲义|Spark 分布式计算框架基础（第 10 章：行动算子 1）|#
-讲义|Spark 分布式计算框架基础（第 11 章：行动算子 2）|#
+参考|Spark 分布式计算框架基础（第 10 章：行动算子 1）|#
+参考|Spark 分布式计算框架基础（第 11 章：行动算子 2）|#
 官网|RDD API 文档（Action 部分）|https://spark.apache.org/docs/latest/rdd-programming-guide.html#actions
 资料|sparkdemo.zip（本章行动算子示例源码）|#

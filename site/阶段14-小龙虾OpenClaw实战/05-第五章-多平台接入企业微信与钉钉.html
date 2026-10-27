@@ -286,7 +286,7 @@
 <p>本章把两条平台链路完整走通：企业微信（管理后台建机器人 → 拿到 Bot ID/Secret → 写进 openclaw.json）和钉钉（开发者平台建应用 → 添加机器人能力 → 发布上线 → 拿 Client ID/Client Secret → 配 channel）。学完你获得的不只是两个平台，而是一套<strong>可复制的方法论</strong>：下一章接飞书、QQ、小红书，流程完全一样。</p>
 </div>
 <div class="note info"><span class="t">学习提示</span>
-<p>本章全是平台后台操作，没有复杂代码（全文代码不到 20 行）。建议用<strong>边看边点</strong>的方式学：开一个浏览器跟着步骤走，卡在哪一步就回看哪一步。注意，凡是出现 ID/Secret 的地方，讲义里都只给占位符，真实值由你自己从平台复制——截图里的值一律是打码的。</p></div>
+<p>本章全是平台后台操作，没有复杂代码（全文代码不到 20 行）。建议用<strong>边看边点</strong>的方式学：开一个浏览器跟着步骤走，卡在哪一步就回看哪一步。注意，凡是出现 ID/Secret 的地方，这里都只给占位符，真实值由你自己从平台复制——截图里的值一律是打码的。</p></div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章</strong>（阶段 14 · 配置 AGENTS / SOUL / USER）：你给 OpenClaw 配好了"人格"——AGENTS 定行为规范、SOUL 定性格、USER 定你是谁，AI 开始"认识你"</span>
 <span class="node"><span class="here">本章 ← 你在这里：把 AI 接进真实 IM——企业微信与钉钉，让"聊天即操作"落地（channel 概念 + 双平台实操）</span></span>
@@ -379,12 +379,12 @@
 <p>API 模式创建时，页面让你选接入方式、还要填一个 URL。这个 URL 到底是什么？"长连接"又是什么？填错或理解错，机器人建好了也收不到消息。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义明确：<strong>（推荐）使用长连接方式接入企微机器人</strong>。创建时选择以"<strong>使用 URL 回调</strong>"方式创建，参数说明如下：</p>
+<p>明确一点：<strong>（推荐）使用长连接方式接入企微机器人</strong>。创建时选择以"<strong>使用 URL 回调</strong>"方式创建，参数说明如下：</p>
 <table>
 <tr><th>参数</th><th>含义</th></tr>
 <tr><td>URL</td><td>回调消息的地址，即企微把收到的用户消息转发到哪个地址。<strong>需要看 OpenClaw 的接口说明</strong>，不能随便填个网址</td></tr>
 </table>
-<p>理解"长连接 vs 轮询"：如果机器人客户端每隔几秒主动问服务器"有新消息吗"，这叫<strong>轮询</strong>——浪费资源、有延迟、高峰期容易被打爆；<strong>长连接</strong>是消息一出现服务器就主动推给客户端，实时、省资源。这也是讲义推荐长连接方式的原因，OpenClaw 会与企微保持长连接，消息秒级送达。</p>
+<p>理解"长连接 vs 轮询"：如果机器人客户端每隔几秒主动问服务器"有新消息吗"，这叫<strong>轮询</strong>——浪费资源、有延迟、高峰期容易被打爆；<strong>长连接</strong>是消息一出现服务器就主动推给客户端，实时、省资源。这也是推荐长连接方式的原因，OpenClaw 会与企微保持长连接，消息秒级送达。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -436,7 +436,7 @@
 <p>企微后台这边都准备好了，接下来是 OpenClaw 侧：它怎么"认识"这个机器人？所有平台的凭证和通道配置统一写在哪个文件里、改了为什么没生效？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>OpenClaw 的核心配置文件位于 <strong>/home/admin/.openclaw/openclaw.json</strong>（这是讲义文档给定的部署机路径；本地安装则以你自己的安装目录为准）。把前面拿到的 Bot ID、Secret 等凭证填入对应 channel 配置：</p>
+<p>OpenClaw 的核心配置文件位于 <strong>/home/admin/.openclaw/openclaw.json</strong>（这是官方文档给定的部署机路径；本地安装则以你自己的安装目录为准）。把前面拿到的 Bot ID、Secret 等凭证填入对应 channel 配置：</p>
 <pre>{
   &quot;channels&quot;: {
     &quot;wecom&quot;: {
@@ -451,7 +451,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>改了配置，机器人毫无反应</td><td>配置文件改完必须<strong>重启 OpenClaw</strong> 才会重新加载；没重启 = 白改</td></tr>
-<tr><td>在别的目录又生成了一份 openclaw.json</td><td>配置文件路径以部署时为准（讲义为 /home/admin/.openclaw/openclaw.json），改错文件等于没改，先确认你在改哪个文件</td></tr>
+<tr><td>在别的目录又生成了一份 openclaw.json</td><td>配置文件路径以部署时为准（示例为 /home/admin/.openclaw/openclaw.json），改错文件等于没改，先确认你在改哪个文件</td></tr>
 <tr><td>JSON 少了个逗号/括号，服务起不来</td><td>openclaw.json 是严格 JSON；改完先校验格式（编辑器高亮或 json 校验工具），再重启</td></tr>
 </table>
 </div>
@@ -497,7 +497,7 @@
 <p>机器人能力加上去了，但配置页面一堆字段：哪些必填、哪些可以不管？填完就算完成了吗？很多人在这一步"保存"就以为上线了，其实离真正上线还差一次"确认发布"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>按讲义顺序，一共四步：</p>
+<p>按平台操作顺序，一共四步：</p>
 <ol><li>在"<strong>机器人配置</strong>"页面，填写<strong>所有必填项</strong>，其他<strong>可选项保留默认值</strong>即可</li><li>点击 <strong>发布</strong></li><li>点击页面上方的 <strong>查看版本详情</strong>，点击 <strong>编辑图标</strong> 继续编辑</li><li>完成所有必填项；在"<strong>应用可见范围（可选项）</strong>"中配置<strong>能添加这个钉钉机器人的员工范围</strong>（全校/全公司用就按需勾选，不配则默认）——点击 <strong>保存</strong>，在弹出的窗口点击 <strong>确认发布</strong></li></ol>
 <p>发布后，版本详情页会显示 "<strong>已上线</strong>"，这才是真正的上线状态。</p>
 </div>
@@ -516,7 +516,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>进入"<strong>凭证与基础信息</strong>"页面，找到 <strong>Client ID</strong> 与 <strong>Client Secret</strong> 两个参数：</p>
-<ol><li>复制后保存到<strong>个人记事本或密码管理器</strong>（讲义原文明确提示：<strong>注意数据安全，勿泄露</strong>）</li><li>后续为 OpenClaw 配置钉钉 channel 时使用</li></ol>
+<ol><li>复制后保存到<strong>个人记事本或密码管理器</strong>（平台页面明确提示：<strong>注意数据安全，勿泄露</strong>）</li><li>后续为 OpenClaw 配置钉钉 channel 时使用</li></ol>
 <p>两者关系：<strong>Client ID 是身份标识（相当于用户名），Client Secret 是密钥（相当于密码）</strong>。泄露 Client Secret 的后果不是"换个值"那么简单——别人可以用你应用的身份调用钉钉开放接口，读取你可见范围内的组织和员工信息，甚至冒充你的机器人对外发消息。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -556,9 +556,9 @@
 <tr><td><strong>凭证安全意识</strong></td><td>知道 ID/Secret 各是什么、泄露会怎样、如何用占位符与密码管理器规范保管</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li>企业微信创建机器人时，为什么必须走"手动创建 → API 模式创建"，而不是用模板/图形化创建？</li><li>讲义推荐用"长连接方式"接入企微机器人，和"客户端定时轮询"相比，长连接好在哪里？</li><li>Bot ID/Secret 和 Client ID/Client Secret 分别是哪两个平台的凭证？各自对应 OpenClaw 配置里的什么？</li><li>钉钉机器人配置完成后，版本详情显示什么状态才算真正上线？"保存"和"确认发布"是一回事吗？</li><li>判断题：把 Client Secret 写进教程文档没问题，因为 OpenClaw 只在本地读配置文件，别人看不到。</li></ol>
+<ol><li>企业微信创建机器人时，为什么必须走"手动创建 → API 模式创建"，而不是用模板/图形化创建？</li><li>为什么推荐用"长连接方式"接入企微机器人，和"客户端定时轮询"相比，长连接好在哪里？</li><li>Bot ID/Secret 和 Client ID/Client Secret 分别是哪两个平台的凭证？各自对应 OpenClaw 配置里的什么？</li><li>钉钉机器人配置完成后，版本详情显示什么状态才算真正上线？"保存"和"确认发布"是一回事吗？</li><li>判断题：把 Client Secret 写进教程文档没问题，因为 OpenClaw 只在本地读配置文件，别人看不到。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>openclaw.pdf「OpenClaw多平台接入_企业微信/钉钉」章节</a>
+<a href="#"><span class="k">参考</span>openclaw.pdf「OpenClaw多平台接入_企业微信/钉钉」章节</a>
 <a href="https://openclaw.ai/" target="_blank" rel="noopener"><span class="k">官网</span>OpenClaw 官方网站</a>
 <a href="https://open-dev.dingtalk.com/" target="_blank" rel="noopener"><span class="k">官网</span>钉钉开发者平台</a>
 </div>

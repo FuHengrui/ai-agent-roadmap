@@ -1,5 +1,5 @@
 @@h1 第十一章　LLaMA-Factory 框架：训练方法与数据集注册
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 到目前你练过"手写 LoRA"和"Unsloth 提速"两套方案，但每次还要搭环境、写代码。**LLaMA-Factory** 是"微调界的全家桶"：一个框架覆盖全参数/高效/量化三大类十几种子方法，WebUI / 命令行 / API 三套入口，把微调从"写代码"变成"配配置+点按钮"。
@@ -23,7 +23,7 @@
 微调方法太多了：全参数、LoRA、QLoRA、Freeze、DoRA……再叠加不同轮术，排列组合十几套。LLaMA-Factory 的核心价值就是：**一套框架、统一入口，切换方法只改一个参数**。这一节建立全局认知。
 
 @@idea 核心思路
-LLaMA-Factory 定位（讲义表述整理）：
+LLaMA-Factory 定位：
 
 | 维度 | 说明 |
 |---|---|
@@ -77,11 +77,11 @@ LLaMA-Factory 定位（讲义表述整理）：
 框架有了，装之前先看它的软硬件要求——版本不匹配（python3.9 环境、torch2.0、transformers4.49、peft0.14、trl0.8.6）全是踩雷区。这一节给清单+安装命令+验证。
 
 @@idea 核心思路
-软硬件依赖（讲义明确细项）：
+软硬件依赖：
 
 | 组件 | 建议版本 |
 |---|---|
-| Python | 3.9+（讲义示例环境） |
+| Python | 3.9+（示例环境） |
 | PyTorch | 2.0+（CUDA 版） |
 | transformers | 4.49.0（LLaMA-Factory 对此版本有绑定） |
 | peft | 0.14.0 |
@@ -199,10 +199,10 @@ ShareGPT 格式（多轮对话）：
 
 @@point ⑥ 注册中文医疗数据：一个完整案例
 @@need 要解决什么
-讲义用**中文医疗数据集**做了完整注册示范——这是本阶段"数据集注册"的标准例题。照它走一遍，你就掌握了"任意垂直领域数据进框架"的通用流程。
+这里用**中文医疗数据集**做一个完整注册示范——这是本阶段"数据集注册"的标准例题。照它走一遍，你就掌握了"任意垂直领域数据进框架"的通用流程。
 
 @@idea 核心思路
-流程四步（讲义案例提炼）：
+流程四步：
 1. **备数据**：`chinese_medical.json`（Alpaca 结构，instruction/input/output）；
 2. **放位置**：拷进 `data/` 目录；
 3. **注册**：dataset_info.json 加条目：
@@ -314,6 +314,6 @@ print("原始:", len(data), "清洗后:", len(clean))
 7. 注册新的中文数据集，完整四步流程是什么？
 
 @@links
-讲义|人工智能（副本）：LLaMA-Factory 框架、训练方法与数据集格式|#
+参考|人工智能（副本）：LLaMA-Factory 框架、训练方法与数据集格式|#
 官网|LLaMA-Factory 官方仓库（文档/数据集说明）|https://github.com/hiyouga/LLaMA-Factory
 官网|LLaMA-Factory 数据集格式文档|https://github.com/hiyouga/LLaMA-Factory/blob/main/data/README.md

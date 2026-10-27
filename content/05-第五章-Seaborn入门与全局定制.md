@@ -261,6 +261,6 @@ sns.scatterplot(x=[1, 2, 3], y=[1, 4, 9], ax=axes[1])   # 图二
 7. 顺序型色板（如 Blues）用在有正负符号的数据上有什么问题？应该换什么？
 
 @@links
-讲义|Seaborn 讲义（index.md，39 页）|#
+参考|Seaborn （index.md，39 页）|#
 工具|Seaborn 官网|https://seaborn.pydata.org/
 文档|Seaborn 调色板教程|https://seaborn.pydata.org/tutorial/color_palettes.html

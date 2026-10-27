@@ -224,6 +224,6 @@ print(w.grad, b.grad)               # 张量化求梯度
 7. 推理阶段为什么要用 with torch.no_grad()？不用的代价是什么？
 
 @@links
-讲义|PyTorch入门讲义（自动微分与房价预测）|#
+参考|PyTorch入门（自动微分与房价预测）|#
 文档|PyTorch Autograd 官方教程|https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html
 文档|PyTorch autograd 机制说明|https://pytorch.org/docs/stable/notes/autograd.html

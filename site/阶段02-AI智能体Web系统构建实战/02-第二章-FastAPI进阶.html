@@ -495,7 +495,7 @@ infrastructure → 技术：ORM 模型、Mapper、仓储实现（可替换）</d
 </div></div>
 <div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ DDD 工程总览：一个真实项目的骨架</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>理论说完了，看落地。课程配套的 <code>ddd/</code> 工程用<strong>用户注册、登录、查订单</strong>三个业务，把完整 DDD 架构跑通。先看整体结构，你才会知道每层文件是干嘛的。</p>
+<p>理论说完了，看落地。配套的 <code>ddd/</code> 工程用<strong>用户注册、登录、查订单</strong>三个业务，把完整 DDD 架构跑通。先看整体结构，你才会知道每层文件是干嘛的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>工程目录与职责</strong>（对照代码包）：</p>
@@ -951,12 +951,11 @@ settings = Settings()</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>依赖注入解决的核心问题是什么？<code>Depends()</code> 在路由参数里扮演什么角色？</li><li>路径级、路由级、全局级三种依赖作用域分别挂在哪里？记日志一般用哪级？</li><li>嵌套依赖的执行顺序是什么？"取当前用户"为什么需要依赖"验 token"？</li><li>类依赖为什么用工厂函数注入而不是直接用类？换数据库连接串要改哪里？</li><li>DDD 四层分别管什么？依赖方向的铁律是什么（用箭头画出来）？</li><li>为什么 domain 层要定义 <code>UserRepository</code> 接口而不是直接写实现？换数据库时要改动哪些层？</li><li>值对象 <code>UserID</code> 和实体 <code>User</code> 有什么区别？Mapper 的职责是什么？</li><li>命令/查询模式（Command/Query）与路由直写业务逻辑相比，友好在哪里？</li><li>浏览一次"DependencyException → Handler → Repository → Mapper → ORM"的请求全链路，说说哪一层负责做 HTTP 翻译、哪一层负责校验"用户名不能为空"。</li><li>从"能跑的脚本"到"能长大的工程"，这一章的两个关键武器是什么？什么情况下 DDD 反而是过度设计？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>FastAPI 进阶讲义</a>
+<a href="#"><span class="k">参考</span>FastAPI 进阶</a>
 <a href="#"><span class="k">代码</span>DI1~DI6 依赖注入演示代码</a>
 <a href="#"><span class="k">代码</span>ddd 分层架构示例工程</a>
 <a href="https://fastapi.tiangolo.com/zh/tutorial/dependencies/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 依赖注入官方文档</a>
 <a href="https://fastapi.tiangolo.com/zh/tutorial/dependencies/global-dependencies/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 进阶-全局依赖</a>
-<a href="#"><span class="k">资源</span>阶段 2 资料合集入口</a>
 </div>
 <div class="pager">
 <a href="01-第一章-后端服务开发FastAPI.html">← 第一章　后端服务开发 FastAPI</a>

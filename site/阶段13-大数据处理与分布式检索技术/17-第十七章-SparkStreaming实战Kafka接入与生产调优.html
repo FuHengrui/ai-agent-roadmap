@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十七章</strong></div>
 <h1>第十七章　Spark Streaming 实战：Kafka 接入与生产调优</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　8 课时　|　难度 ★★★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章的 Socket 输入只是教学玩具——<strong>生产环境 90% 的流都来自 Kafka</strong>，因为 Kafka 能存能重放、天然支持"消费状态"管理。而接入 Kafka 有新旧两代 API（Receiver vs Direct），踩的人最多；消费偏移量（offset）管理不当=丢数据或重复消费；Driver 挂掉怎么优雅恢复……这一章把"生产级 Streaming + Kafka"的完整配套讲透：<strong>Direct 模式、偏移量管理、优雅关闭、背压调优</strong>。</p>
 <p>学完这一章你能：<strong>用 Direct 模式从 Kafka 消费实时数据做统计，配置偏移量与 checkpoint 保障不丢不重，并让程序可以优雅停止与恢复</strong>。</p>
@@ -596,8 +596,8 @@ query.awaitTermination()</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>Kafka 的 Topic/Partition/Consumer Group/Offset 分别指什么？</li><li>Direct 模式相比 Receiver 模式的三点优势是什么？并行度由什么决定？</li><li>createDirectStream 得到的是 DStream[ConsumerRecord]，取业务数据要做什么操作？</li><li>消费三种语义（at-most-once / at-least-once / exactly-once）各自含义？生产常用哪种+什么配套？</li><li>优雅关闭为什么不能直接 kill -9？stopGracefully=true 的语义是什么？</li><li>背压（backpressure）解决什么问题？处理耗时超过批间隔时按什么顺序调优？</li><li>判断题：Structured Streaming 的 API 与静态 DataFrame 完全不同，需要另学一套算子。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>SparkStreaming 讲义（第 5 章：Kafka 整合）</a>
-<a href="#"><span class="k">讲义</span>SparkStreaming 讲义（第 6 章：优雅关闭与调优）</a>
+<a href="#"><span class="k">参考</span>SparkStreaming （第 5 章：Kafka 整合）</a>
+<a href="#"><span class="k">参考</span>SparkStreaming （第 6 章：优雅关闭与调优）</a>
 <a href="https://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark Streaming + Kafka 集成指南</a>
 <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank" rel="noopener"><span class="k">官网</span>Structured Streaming 编程指南</a>
 </div>

@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第六章</strong></div>
 <h1>第六章　RDD 数据抽象：为什么需要与五大特性</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★★</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>你部署好了集群，但真正要开始写数据处理代码时，第一个问题来了：<strong>"数据"在 Spark 里到底长什么样？</strong> 你手里是一堆文本文件、几百行日志，怎么把它们变成"能分布到 100 台机器上并行处理"的东西？直接丢给集群？显然不行。</p>
 <p>Spark 给出的答案是 <strong>RDD（弹性分布式数据集）</strong>——它是 Spark 处理数据的<strong>最小抽象单位</strong>，也是你写后续所有算子（map、filter、reduceByKey……）的操作对象。这一章不讲算子，先把 RDD 本身讲透：<strong>它为什么存在、定义是什么、五大特性分别解决什么问题、怎么创建</strong>。地基不打牢，后面算子全是空中楼阁。</p>
@@ -327,7 +327,7 @@ rdd.collect()           各分区算完 → 汇总回来</pre>
 <tr><td><strong>Distributed（分布式）</strong></td><td>数据切成多个分区，分布在集群不同节点上</td></tr>
 <tr><td><strong>Dataset（数据集）</strong></td><td>它是一个"数据集合"的抽象，里面装元素，像集合一样可遍历、可变换</td></tr>
 </table>
-<p>讲义给出的完整定义：<strong>RDD 是 Spark 中最基本的数据抽象，代表一个不可变、可分区、里面的元素可并行计算的集合</strong>。</p>
+<p>完整的定义是：<strong>RDD 是 Spark 中最基本的数据抽象，代表一个不可变、可分区、里面的元素可并行计算的集合</strong>。</p>
 <p>四个要点拆开：</p>
 <table>
 <tr><th>要点</th><th>白话</th></tr>
@@ -456,7 +456,7 @@ rdd = rdd.partitionBy(3, partitionFunc)   # 自定义规则</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>自定义分区器返回值越界</td><td>返回的分区号必须 <code>0 &lt;= n &lt; 分区数</code>，越界直接报 <code>IllegalArgumentException</code>。讲义特意提醒：编号从 0 开始，别超总数</td></tr>
+<tr><td>自定义分区器返回值越界</td><td>返回的分区号必须 <code>0 &lt;= n &lt; 分区数</code>，越界直接报 <code>IllegalArgumentException</code>。特别提醒：编号从 0 开始，别超总数</td></tr>
 <tr><td>以为所有 shuffle 都默认 hash</td><td>reduceByKey/groupByKey 默认 HashPartitioner，但你可以用 <code>partitionBy</code> 改成自定义分区，控制数据落点</td></tr>
 <tr><td>本地性总是 100%？</td><td>理想是"计算挨着数据"，但资源不够或 shuffle 后数据移动会导致部分任务变级（PROCESS_LOCAL/RACK_LOCAL）。UI 的 locality level 可见</td></tr>
 </table>
@@ -484,7 +484,7 @@ makeRDD 只是 parallelize 的别名，别为了两个名字纠结。</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>知道 <code>textFile</code> 但不知道"默认分多少区"</td><td>HDFS 按块（128MB/块）分；本地文件按块大小估算，但总分区数有限制。想控制就显式传 <code>minPartitions</code></td></tr>
-<tr><td>设了 <code>minPartitions=100</code> 实际出来 86</td><td>讲义明确讲过：<strong>最小分区数是参考值，Spark 会按数据量自行调整</strong>（不会为 1 字节文件硬造 100 分区）。这是正常行为不是 bug</td></tr>
+<tr><td>设了 <code>minPartitions=100</code> 实际出来 86</td><td>要记住：<strong>最小分区数是参考值，Spark 会按数据量自行调整</strong>（不会为 1 字节文件硬造 100 分区）。这是正常行为不是 bug</td></tr>
 <tr><td>以为读目录必须逐个列文件</td><td><code>textFile("hdfs://.../input/")</code> 读<strong>整个目录</strong>下所有文件（会合并），用通配符可精细控制：<code>"input/*.txt"</code></td></tr>
 <tr><td><code>parallelize</code> 与 <code>makeRDD</code> 纠结</td><td>完全等价，前者是原生 API，后者是 SparkContext 的便捷封装。用哪个都行，别当成两种机制</td></tr>
 </table>
@@ -501,8 +501,8 @@ makeRDD 只是 parallelize 的别名，别为了两个名字纠结。</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>RDD 四大要点（不可变/可分区/并行计算/封装计算逻辑）里，哪一条是容错（血缘重算）的前提？</li><li>为什么说 RDD 是"菜谱"不是"菜"？这个设计和惰性求值有什么关系？</li><li>五大特性哪些是必选、哪些可选？分区器和数据本地性分别解决什么问题？</li><li><code>textFile("data/a.txt", 100)</code> 实际分区分了 86 个，正常吗？为什么？</li><li>判断题：RDD 创建时数据已经全部加载进集群内存。</li><li><code>makeRDD</code> 和 <code>parallelize</code> 是什么关系？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Spark 分布式计算框架基础（第 6 章：RDD 概述与五大特性）</a>
-<a href="#"><span class="k">讲义</span>Spark 分布式计算框架基础（第 7 章：RDD 创建）</a>
+<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 6 章：RDD 概述与五大特性）</a>
+<a href="#"><span class="k">参考</span>Spark 分布式计算框架基础（第 7 章：RDD 创建）</a>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html" target="_blank" rel="noopener"><span class="k">官网</span>RDD Programming Guide</a>
 <a href="#"><span class="k">资料</span>sparkdemo.zip（本章 RDD 创建示例源码）</a>
 </div>

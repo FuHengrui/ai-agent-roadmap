@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第一章</strong></div>
 <h1>第一章　微调全景：为什么要微调大模型</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　1 课时　|　难度 ★☆☆</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★☆☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>你手里有一个开箱即用的 DeepSeek、GPT，什么都能聊，但一接到正经活儿就露馅：让它当<strong>医疗问答客服</strong>，它答得像个百度百科；让它按<strong>公司格式</strong>写售后工单，它写得五花八门；你甚至试过硬塞"系统提示词"教育它，结果换个人问又打回原形。</p>
 <p>问题出在：预训练大模型学的是"全世界的知识"，没学过"你这个场景的规矩"。这一章就是给你打地基——<strong>为什么非微调不可</strong>、全量微调和高效微调差在哪、什么时候该用哪种。搞清楚这层，后面八章（手写 LoRA、Unsloth、LLaMA-Factory）你才知道自己在折腾什么。</p>
@@ -297,7 +297,7 @@
 <p>先定义清楚"微调"这两个字，不然后面全是名词打架。你说"让模型更专业"，供应商说"这是精调"，同事说"这是 RAG"——其实它们根本不是一回事。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义定义很简单：<strong>微调 = 在已有的大规模预训练模型基础上，用标注数据再训练，把模型往特定任务/场景上优化</strong>。</p>
+<p>定义很简单：<strong>微调 = 在已有的大规模预训练模型基础上，用标注数据再训练，把模型往特定任务/场景上优化</strong>。</p>
 <p>三个关键词拆开看：</p>
 <table>
 <tr><th>词</th><th>含义</th></tr>
@@ -320,7 +320,7 @@
 <p>"预训练模型已经很强了，为什么还要花钱花时间微调？"——这个问题答不上来，你会在"微调"和"提示词工程/RAG"之间反复摇摆，白花几周。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给了三个理由，本质是一条：<strong>通用 ≠ 专用</strong>。</p>
+<p>三个理由，本质是一条：<strong>通用 ≠ 专用</strong>。</p>
 <table>
 <tr><th>理由</th><th>具体表现</th></tr>
 <tr><td>提升准确率</td><td>直接问通用模型"这个工伤算几级"，它给你教材式回答，错不漏但也不对；微调后按你公司的口径答，答错率明显下降</td></tr>
@@ -343,7 +343,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>全量微调（Full Fine-tuning）= 对模型全部参数进行训练</strong>，让模型完全适配新任务。</p>
-<p>讲义列的三个适用场景，就是它的"使用条件"：</p>
+<p>三个适用场景，就是它的"使用条件"：</p>
 <table>
 <tr><th>适用条件</th><th>说明</th></tr>
 <tr><td>需要彻底调整模型行为</td><td>法律、医疗等专业领域的大规模任务，光微调一小块不够</td></tr>
@@ -366,7 +366,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>高效微调（Efficient Fine-tuning）= 只训练模型的一小部分参数</strong>（如插入的 Adapter 层、LoRA 层），其余参数冻结不动。</p>
-<p>讲义给的高效微调适用场景，正好和全量的三个条件反着：</p>
+<p>高效微调的适用场景，正好和全量的三个条件反着：</p>
 <table>
 <tr><th>场景</th><th>为什么高效微调行</th></tr>
 <tr><td>计算资源受限</td><td>训练参数少了 99%+，显存需求断崖式下降</td></tr>
@@ -388,7 +388,7 @@
 <p>打开任何微调框架，都是一堆名词：Adapter、LoRA、Prefix-Tuning、Prompt-Tuning。不把这几兄弟认全，你连文档都看不懂，更别说选型。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义一句话总结了四兄弟，本质是<strong>四种"塞可训练参数"的位置</strong>：</p>
+<p>一句话总结这四兄弟，本质是<strong>四种"塞可训练参数"的位置</strong>：</p>
 <table>
 <tr><th>方法</th><th>一句话原理</th><th>可训练的东西在哪</th></tr>
 <tr><td>Adapter</td><td>在 Transformer 层之间插入小适配层</td><td>模型<strong>内部</strong>新加的几层小网络</td></tr>
@@ -412,7 +412,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>全量指令微调（Full Instruction Tuning）= 用高质量"指令-回答"数据集训练模型的指令理解和执行能力</strong>，让它擅长完成指令驱动的任务（对话生成、文本摘要、代码补全等）。</p>
-<p>讲义给的两个核心机制：</p>
+<p>两个核心机制：</p>
 <table>
 <tr><th>机制</th><th>作用</th></tr>
 <tr><td>用高质量的指令数据集训练</td><td>让模型从"见到问题就给一段话"变成"见到指令就按指令办事"</td></tr>
@@ -433,7 +433,7 @@
 <p>"指令微调"和"普通微调"名字像、操作也像，都叫 fine-tuning。不把它们并排对比一次，你永远会在写数据时搞混：这份数据该按指令格式写还是按领域数据写？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给了一张现成的对比表，直接背下来：</p>
+<p>一张现成的对比表，直接背下来：</p>
 <table>
 <tr><th>比较项</th><th>指令微调（Instruction Tuning）</th><th>普通微调（Fine-tuning）</th></tr>
 <tr><td>目标</td><td>让模型更擅长<strong>遵循人类指令</strong></td><td>让模型<strong>适应特定领域任务</strong></td></tr>
@@ -470,7 +470,7 @@
 <tr><th>你的处境</th><th>推荐路线</th></tr>
 <tr><td>学生、单卡、几百条数据</td><td>手写 LoRA（第 4~7 章）或 Unsloth（第 8~9 章）</td></tr>
 <tr><td>公司、项目要交付、怕折腾</td><td>LLaMA-Factory WebUI（第 11~12 章）</td></tr>
-<tr><td>数据管够、卡管够、任务重大</td><td>全量微调，但这不在本阶段教程主线内</td></tr>
+<tr><td>数据管够、卡管够、任务重大</td><td>全量微调，但这不在本阶段主线内</td></tr>
 </table>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -493,8 +493,8 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>用一句话说清"微调"和"从零训练"的本质区别？</li><li>"项目答得不满意就立刻微调"，这个决策错在哪？先应该排除哪两种方案？</li><li>全量微调的三条适用条件是什么？如果只有 200 条数据，全量微调会出什么问题？</li><li>Adapter、LoRA、Prefix-Tuning、Prompt-Tuning 四兄弟的共同点和差异分别是什么？</li><li>全量指令微调解决的是模型的什么能力？它和普通微调的目标有什么不同？</li><li>指令微调的数据和普通微调的数据，在结构上最大的差别是什么？</li><li>你的项目：单卡 8GB 显存、500 条客服问答、要快速交付。按本章决策漏斗，第一步应该做什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>大模型 DeepSeek 微调与应用：微调基础概念</a>
-<a href="#"><span class="k">讲义</span>大模型 DeepSeek 微调与应用：全量微调与高效微调</a>
+<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：微调基础概念</a>
+<a href="#"><span class="k">参考</span>大模型 DeepSeek 微调与应用：全量微调与高效微调</a>
 <a href="https://huggingface.co/docs/peft/" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face PEFT（高效微调库）</a>
 <a href="https://huggingface.co/docs/transformers/" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face Transformers 文档</a>
 </div>

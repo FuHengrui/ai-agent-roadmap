@@ -1,10 +1,10 @@
 @@h1 第五章　手写 LoRA 微调（二）：数据准备与预处理
-@@sub 阶段 12 · 大模型高效微调与对齐技术　|　2 课时　|　难度 ★★★
+@@sub 阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 模型工作台搭好了，但**模型吃不了中文句子，只能吃数字（token）**。你手上有原始问答数据，它们长这样："指令：请翻译……回应：……"。要让 LoRA 学会"按指令回答"，至少要做四件事：找一个合适的公开数据集、看懂它的字段、拆成训练/验证集、把文本转成模型能吃的 token 序列——这四件事合起来叫**数据准备与预处理**。
 
-很多微调翻车不是模型问题，而是数据问题：字段名对不上、标签算错、序列截断导致回答被切掉、批次大小和最大长度不匹配。这一章用讲义指定的 **LaMini-instruction 数据集**走一遍完整的数据流水线，每一个坑都标注出来。
+很多微调翻车不是模型问题，而是数据问题：字段名对不上、标签算错、序列截断导致回答被切掉、批次大小和最大长度不匹配。这一章用 **LaMini-instruction 数据集**走一遍完整的数据流水线，每一个坑都标注出来。
 
 @@map 这一章在整个知识库里的位置
 上一章（手写 LoRA 一）：环境 + DeepSeek 模型加载完成——"锅"和"火"都有了
@@ -18,7 +18,7 @@
 教材第一步是"先看到数据长什么样"。LaMini-instruction 是谁、里面有什么字段、为什么适合当微调教材？不搞清楚字段结构，后面所有处理代码都是瞎写。
 
 @@idea 核心思路
-讲义给出的数据集档案：
+数据集档案：
 
 | 属性 | 内容 |
 |---|---|
@@ -44,14 +44,14 @@ print(dataset[:2])            # 看前两条样本
 |---|---|
 | 加载时网络失败/data 卡住 | 与模型同理，可设置 HF 镜像；或用 `trust_remote_code=True` 处理个别数据集需要自定义代码的情况 |
 | 以为"所有指令数据集都长这样" | 有的数据集有第三个字段 input（如 Alpaca 风格），有的叫"prompt/output"。**每次先 print(column_names) 再写处理函数**，别想当然 |
-| 一次加载全量数据太大 | 讲义用 `split="train[:10]"` 先读 10 条做测试！正式训练再换 `split="train"`。先小后大，避免白等下载 |
+| 一次加载全量数据太大 | 用 `split="train[:10]"` 先读 10 条做测试！正式训练再换 `split="train"`。先小后大，避免白等下载 |
 
 @@point ② 手动拆分：训练集与验证集
 @@need 要解决什么
 一个数据集不能全拿去训练——没有"没见过的数据"来验证，你无法知道模型是不是过拟合/背答案。所以要把数据按比例拆成**训练集**（学）和**验证集**（考）。
 
 @@idea 核心思路
-讲义用 `train_test_split` 手动拆：
+这里用 `train_test_split` 手动拆：
 
 ```python
 from datasets import load_dataset
@@ -82,7 +82,7 @@ print(len(train_dataset_raw), len(eval_dataset_raw))  # 9000 / 1000
 模型吃 token 不吃汉字。数据准备的核心函数就是"把 instruction+response 拼成模板 → 分词器编码成 input_ids → 再把 response 部分标成 labels"。这段代码是微调数据的"翻译官"，一定要逐行读懂。
 
 @@idea 核心思路
-讲义 preprocess_function 拆解：
+preprocess_function 拆解：
 
 ```python
 from transformers import AutoTokenizer
@@ -160,7 +160,7 @@ map 的行为：
 
 为什么 batched 快：分词器（tokenizer）内部对批量输入有**批量优化**（如 padding 一次到位、batch 内并行），逐条调用等于放弃这些优化，10000 条数据能慢到天荒地老。
 
-讲义里 preprocess_function 接收的 `examples` 是**字典：列名→该列的一个 batch 列表**（所以函数里用 `examples["instruction"]` 取到的是列表、再列表推导式逐个拼模板）——这就是 batched 模式的数据形态。
+这里的 preprocess_function 接收的 `examples` 是**字典：列名→该列的一个 batch 列表**（所以函数里用 `examples["instruction"]` 取到的是列表、再列表推导式逐个拼模板）——这就是 batched 模式的数据形态。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -204,20 +204,20 @@ print(tokenizer.decode(sample["labels"]))  # 应看到原 response
 
 @@point ⑦ 指令格式的取舍：这里为什么用"指令:\n回应:"
 @@need 要解决什么
-你可能注意到：LaMini 没有 chat 模板，讲义直接拼 `"指令: {instruction}\n回应:"`。为什么不套用 DeepSeek 的官方 Chat 模板？不同模板对训练结果影响有多大？——理解模板，你才不会被"哪个模板对"搞晕。
+你可能注意到：LaMini 没有 chat 模板，就直接拼 `"指令: {instruction}\n回应:"`。为什么不套用 DeepSeek 的官方 Chat 模板？不同模板对训练结果影响有多大？——理解模板，你才不会被"哪个模板对"搞晕。
 
 @@idea 核心思路
 模板的本质：**告诉模型"哪段是输入、哪段该输出"的格式约定**。
 
 | 方案 | 格式示例 | 适合 |
 |---|---|---|
-| 讲义简化模板 | `指令: xxx\n回应:` | 教学/快速起步，可控、直观 |
+| 简化模板 | `指令: xxx\n回应:` | 教学/快速起步，可控、直观 |
 | 模型官方 Chat 模板 | `<|user|>...<|assistant|>...`（tokenizer.apply_chat_template） | 生产项目，与模型预训练格式一致 |
 | Alpaca 模板 | `### Instruction: ...\n### Response:` | 第 9 章 Unsloth 使用 |
 
 会不会"格式错了模型学不会"？——微调本质上会**学会你的格式**：只要训练/推理用同一模板，模型就能跟着学会"看到回应:就接话"。所以一致性 > 完美性：**训测同模板**比"用最官方模板但训测不一致"强得多。
 
-讲义主线统一用"指令:/回应:"模板，后文推理测试也是同一格式（第 7 章），正符合"一致性"原则。
+这里主线统一用"指令:/回应:"模板，后文推理测试也是同一格式（第 7 章），正符合"一致性"原则。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -274,6 +274,6 @@ print(tokenizer.decode(sample["labels"]))  # 应看到原 response
 7. 预处理产出空 labels 样本会导致什么？怎么提前预防？
 
 @@links
-讲义|大模型 DeepSeek 微调与应用：加载数据集与数据预处理|#
+参考|大模型 DeepSeek 微调与应用：加载数据集与数据预处理|#
 官网|Hugging Face Datasets 文档（map/加载）|https://huggingface.co/docs/datasets/
 数据集|MBZUAI/LaMini-instruction|https://huggingface.co/datasets/MBZUAI/LaMini-instruction

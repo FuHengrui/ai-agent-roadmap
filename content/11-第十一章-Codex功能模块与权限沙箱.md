@@ -22,7 +22,7 @@
 Codex 具体会做哪些操作？先看清功能全景，避免"只会对话不会用功能"。
 
 @@idea 核心思路
-Codex 的核心功能模块（讲义归纳）：
+Codex 的核心功能模块：
 
 | 模块 | 干什么 | 类比 |
 |---|---|---|
@@ -164,7 +164,7 @@ Codex 改的文件在"另一个环境"里看不到，怎么让修改直接落在
 @@idea 核心思路
 Codex 支持**外接 VSCode**：把 Codex 的执行区/worktree **链接到 VSCode** 打开，让 AI 的改动**直接在编辑器中可见可改**。
 
-使用方式（讲义路线）：
+使用方式（操作路线）：
 
 1. 在 Codex 会话中发起"在 VSCode 中打开"（或对应命令/按钮）；
 2. Codex 的工作空间/工作树被 VSCode 打开；
@@ -287,7 +287,7 @@ Codex：需要删除文件 cache/tmp.db（超出当前权限）
 7. 三层权限沙箱（Watch/Plan/Auto）分别控制什么层级的操作？越界操作会怎样处理？
 
 @@links
-讲义|Codex 讲义|#
+参考|Codex |#
 参考|OpenAI Codex 官方文档|https://developers.openai.com/codex/
 上一章|Codex 简介与安装|10-第十章-Codex简介与安装准备.html
 下一章|Codex 代码管理与记忆|12-第十二章-Codex代码管理与记忆扩展.html

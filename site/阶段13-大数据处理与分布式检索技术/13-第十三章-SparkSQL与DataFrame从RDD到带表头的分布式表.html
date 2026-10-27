@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十三章</strong></div>
 <h1>第十三章　SparkSQL 与 DataFrame：从 RDD 到&quot;带表头的分布式表&quot;</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　8 课时　|　难度 ★★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>RDD 很好，但用久了你会烦：<strong>没有字段名</strong>（<code>_._1</code>、<code>_._2</code> 全靠自己记）、<strong>没有列类型约束</strong>（脏数据混进来才知道错）、<strong>没有自动优化</strong>（同样的聚合你写 3 遍 SDK 各不同）。SparkSQL 就是 Spark 的"升级版数据模型"：<strong>给数据加上表头（Schema）</strong>，让你可以<strong>像查数据库一样用 SQL 查分布式数据</strong>，背后还有 Catalyst 优化器帮你自动写出最优执行计划。</p>
 <p>本阶段后半程的主角是 <strong>DataFrame / Dataset</strong>：它们和 RDD 是什么关系、怎么互相转换、为什么 SparkSQL 更快。学完你能：<strong>看懂"RDD → DataFrame"的升级逻辑，会创建和转换 DataFrame，明白"为什么 Spark 官方建议优先用 SparkSQL"</strong>。</p>
@@ -578,8 +578,8 @@ spark.read.schema(schema).json(&quot;...&quot;)   // 指定 schema 即跳过推�
 <h4>自测：能不能答上来</h4>
 <ol><li>RDD 时代的三个痛点是什么？SparkSQL 分别怎么解决？</li><li>Spark 2.0 之后 DataFrame 和 Dataset 的关系是什么？为什么说 DataFrame 是弱类型的？</li><li>DataFrame 的每一行是什么对象？要不要把整个 DataFrame 转回 RDD 写逻辑？为什么？</li><li>创建 DataFrame 的三种方式分别是什么？读 csv 时最容易漏的配置是什么？</li><li>Catalyst 的"谓词下推"和"列裁剪"分别优化了什么？对 UDF 能生效吗？</li><li>判断题：spark.sql.shuffle.partitions 同时控制 RDD 算子的默认并行度。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>SparkSQL 讲义（第 1 章：SparkSQL 概述）</a>
-<a href="#"><span class="k">讲义</span>SparkSQL 讲义（第 2 章：DataFrame 与 Dataset）</a>
+<a href="#"><span class="k">参考</span>SparkSQL （第 1 章：SparkSQL 概述）</a>
+<a href="#"><span class="k">参考</span>SparkSQL （第 2 章：DataFrame 与 Dataset）</a>
 <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html" target="_blank" rel="noopener"><span class="k">官网</span>Spark SQL 编程指南</a>
 <a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html" target="_blank" rel="noopener"><span class="k">官网</span>Catalyst 优化器介绍</a>
 </div>

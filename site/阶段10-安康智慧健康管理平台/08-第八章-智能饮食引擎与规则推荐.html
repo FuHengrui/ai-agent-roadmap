@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第八章</strong></div>
 <h1>第八章　智能饮食引擎：DietAdvisor 剖析</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　2 课时　|　难度 ★★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>第七章只摸了 <code>diet_advisor</code> 的边，本章把它拆开看——<strong>DietAdvisor 是"规则式 AI"的典型代表</strong>：不用大模型，用静态医学规则（食谱库 + 阈值判断）就能给出合理的饮食建议。本章解决三件事：<strong>一是 10 条糖尿病推荐食谱库的设计</strong>，<strong>二是营养汇总与语义化评判的逻辑</strong>，<strong>三是"结合当前血糖动态调整推荐"的分支逻辑</strong>。</p>
 <p>关键认知：<strong>不是所有智能都要上大模型</strong>。规则引擎零成本、零延迟、结果可解释——本项目用规则引擎做"基础推荐"，用大模型做"生成式建议"，两层互补。看懂 DietAdvisor 就懂了"轻量 AI"的设计思路。</p>
@@ -495,7 +495,7 @@ async def recommend_meal(patient_id: int, meal_type: str):
     recent_bg = await BloodSugar.get_or_none(
         patient_id=patient_id).order_by(&quot;-created_at&quot;).first()
     return diet_advisor.recommend_meal(meal_type, recent_bg.value)</pre>
-<p>注意：这里讲义代码 <code>BloodSugar.get_or_none(...).order_by(...)</code> 是<strong>一个真实值得警惕的写法</strong>——<code>get_or_none</code> 返回单条记录的协程对象，再链 <code>.order_by()</code> 并不正确；若要"最近一次记录"，应写：</p>
+<p>注意：示例代码里 <code>BloodSugar.get_or_none(...).order_by(...)</code> 这种写法<strong>真实值得警惕</strong>——<code>get_or_none</code> 返回单条记录的协程对象，再链 <code>.order_by()</code> 并不正确；若要"最近一次记录"，应写：</p>
 <pre>recent_bg = await BloodSugar.filter(patient_id=patient_id) \
     .order_by(&quot;-measured_at&quot;).first()</pre>
 <p>并处理"无记录"的 None 情况。读代码要带着"它写对了吗"的眼睛。</p>
@@ -537,9 +537,9 @@ async def recommend_meal(patient_id: int, meal_type: str):
 <tr><td><strong>引擎接线纪律</strong></td><td>单例导出、I/O 才 async、同步方法不碰数据库、路由喂数据引擎纯计算</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li>什么场景应该用规则引擎而不是大模型？本项目两者如何分工？</li><li>RECOMMENDED_FOODS 的 meal 字段为什么用 "午餐/晚餐" 这种写法？</li><li>半开区间 [start, start+1天) 的结束端为什么用 __lt 而不是 __lte？</li><li>total_calories 用 <code>or 0</code> 与 avg_gi 用 <code>if not None</code> 过滤，两种空值处理各适用什么场景？</li><li>血糖 &gt;8.0 与正常时，推荐逻辑分别如何取舍（排序与条数）？</li><li>找出讲义代码里 "最近一次血糖" 写法的隐患，并写出正确写法。</li><li>为什么 get_daily_nutrition 必须 async 而 recommend_meal 不需要？</li></ol>
+<ol><li>什么场景应该用规则引擎而不是大模型？本项目两者如何分工？</li><li>RECOMMENDED_FOODS 的 meal 字段为什么用 "午餐/晚餐" 这种写法？</li><li>半开区间 [start, start+1天) 的结束端为什么用 __lt 而不是 __lte？</li><li>total_calories 用 <code>or 0</code> 与 avg_gi 用 <code>if not None</code> 过滤，两种空值处理各适用什么场景？</li><li>血糖 &gt;8.0 与正常时，推荐逻辑分别如何取舍（排序与条数）？</li><li>找出示例代码里 "最近一次血糖" 写法的隐患，并写出正确写法。</li><li>为什么 get_daily_nutrition 必须 async 而 recommend_meal 不需要？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>安康智慧健康管理平台：糖尿病AI健康助手讲义</a>
+<a href="#"><span class="k">参考</span>安康智慧健康管理平台：糖尿病AI健康助手</a>
 <a href="https://baike.baidu.com/item/血糖生成指数" target="_blank" rel="noopener"><span class="k">百科</span>升糖指数（GI）</a>
 </div>
 <div class="pager">

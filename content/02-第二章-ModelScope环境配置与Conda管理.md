@@ -37,7 +37,7 @@
 @@idea 核心思路
 在 **Launcher 页（启动页）** 用鼠标点选主工作区的不同文件选项来新建文件。通常你只需要两个：
 
-- **Python 3（ipykernel）**：新建一个 Jupyter Notebook（.ipynb），边写边跑，适合课程练手、数据探索。
+- **Python 3（ipykernel）**：新建一个 Jupyter Notebook（.ipynb），边写边跑，适合练手、数据探索。
 - **Text File / Markdown File**：新建脚本或说明文档，适合保存整理好的代码。
 
 别手动敲文件名带 .py 还是 .ipynb——在 Launcher 里**点对应的图标**，系统自动帮你建好正确类型。每次进入界面，如果 Launcher 被关了，点左上角"+"号或"文件→新建 Launcher"重新打开。
@@ -217,6 +217,6 @@ pip install numpy torch
 8. 写出创建名为 py310、Python 3.10 环境的命令并激活它。
 
 @@links
-讲义|大模型开发工具平台讲义（ModelScope Notebook 部分，9 页）|#
+参考|大模型开发工具平台（ModelScope Notebook 部分，9 页）|#
 工具|Miniconda 官方下载|https://docs.conda.io/en/latest/miniconda.html
 文档|Conda 用户手册（创建环境）|https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html

@@ -281,6 +281,6 @@ ax.set_xlabel('x轴'); ax.set_ylabel('y轴'); ax.set_zlabel('z轴')
 7. 画 3D 图的必要条件是什么？为什么建议"能用 2D 就别上 3D"？
 
 @@links
-讲义|matplotlib 讲义（52 页）|#
+参考|matplotlib （52 页）|#
 工具|Matplotlib 官网|https://matplotlib.org/
 文档|Matplotlib 图表指南|https://matplotlib.org/stable/plot_types/index.html

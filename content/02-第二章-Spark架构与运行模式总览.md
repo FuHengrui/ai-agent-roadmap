@@ -1,5 +1,5 @@
 @@h1 第二章　Spark 架构与运行模式总览
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　6 课时　|　难度 ★★☆
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
 上一章你知道了 Spark 能把一堆机器组织起来一起算。但"组织"到底怎么组织？你在笔记本上写一个 `sc.textFile(...)`，然后它凭什么让 100 台机器动起来、算完的结果又是怎么回到你面前的？如果完全没有概念，后面看日志、调参数、排查报错都会像看天书——**"Driver"“Executor”“Task"这些词你会反复见到，但不知道谁是谁**。
@@ -244,7 +244,7 @@ INFO DAGScheduler: Job 0 finished: reduce at ...         ← 一个 Job 干完
 7. 日志里出现 `DAGScheduler: Job 0 finished` 说明哪个环节完成了？
 
 @@links
-讲义|Spark 分布式计算框架课程介绍（docx）：架构与运行模式节|#
-讲义|01-Spark 分布式计算框架基础（第 2 章：架构）|#
+参考|Spark 分布式计算框架介绍（docx）：架构与运行模式节|#
+参考|01-Spark 分布式计算框架基础（第 2 章：架构）|#
 官网|Spark 集群模式概览|https://spark.apache.org/docs/latest/cluster-overview.html
-资料|讲义源码目录 sparkdemo.zip|#
+资料|配套源码目录 sparkdemo.zip|#

@@ -24,7 +24,7 @@ master:  A --- B --- C          ← 主线永远干净可发布
 dev:                        D --- E   ← 新功能在别的分支上开发，不污染主线
 ```
 
-典型场景（也是讲义的分支综合练习）：
+典型场景（也是一个完整的分支综合练习）：
 1. 在 `dev` 分支开发新需求；
 2. 突然有紧急 bug → 切回 `master`，从主线拉一个 `fix` 分支修复；
 3. 测试通过 → 合并 `fix` 回 `master` 并推送上线；
@@ -318,7 +318,7 @@ git checkout dev              # 切回 dev，继续未完成的功能
 7. 紧急 bug 打断开发的标准处理流程是怎样的？
 
 @@links
-讲义|Git版本控制管理讲义（86 页）|#
+参考|Git版本控制管理（86 页）|#
 文档|Git 分支 · 分支简介|https://git-scm.com/book/zh/v2/Git-分支-分支简介
 文档|Git 分支 · 分支的新建与合并|https://git-scm.com/book/zh/v2/Git-分支-分支的新建与合并
 文档|Git 官方文档|https://git-scm.com/doc

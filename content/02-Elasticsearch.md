@@ -539,7 +539,7 @@ public class NewsService {
 | 磁盘涨 | 定期 `DELETE` 过期索引、改冷热分层（热节点 SSD/冷节点 HDD） |
 | 写入慢 | 批量 `_bulk`、调大 refresh_interval、关副本写入再开 |
 
-**综合案例：百度式新闻搜索**（讲义配套 escase 项目的核心链路）：
+**综合案例：百度式新闻搜索**（配套项目 escase 的核心链路）：
 ```text
 采集(Logstash) → 新闻表(MySQL) → 同步进 ES(news 索引，ik_pinyin 分词)
         ↓
@@ -576,8 +576,8 @@ public class NewsService {
    A. term 是精确匹配（keyword），match 是分词匹配（text）　　B. 两者一样　　C. term 更快但只支持英文　　D. match 不支持中文
 
 @@links
-讲义|章节2_Elasticsearch.pdf|#
-讲义|es.rar（SpringBoot+ES Java 工程源码，选读）|#
+参考|章节2_Elasticsearch.pdf|#
+参考|es.rar（SpringBoot+ES Java 工程源码，选读）|#
 软件|elasticsearch-8.10.4、kibana、logstash 安装包（章节2/软件/）|#
 官网|Elastic 官网|https://www.elastic.co/cn
 插件|IK 分词器仓库|https://github.com/medcl/elasticsearch-analysis-ik

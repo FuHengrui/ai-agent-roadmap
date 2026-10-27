@@ -285,7 +285,7 @@
 <p>这不仅是理论的三种流派，更是工程上的三个模式：深度学习框架里的 <code>batch_size</code> 参数、训练日志里的 epoch 轮数，全部源自这一章。学会这三个概念，你就看懂了几乎所有训练日志。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章建立了梯度下降的通用框架（初始化→算梯度→更新→收敛）。<strong>本章把"按什么粒度算梯度"说透：BGD/SGD/Mini-Batch 各自的流程、优缺点、适用场景，并讲清 epoch 与 batch 的区别</strong>。下一章（讲义章节3）上代码：手写三种梯度下降、实现学习率衰减，对比它们的收敛轨迹。</span>
+<span class="node">上一章建立了梯度下降的通用框架（初始化→算梯度→更新→收敛）。<strong>本章把"按什么粒度算梯度"说透：BGD/SGD/Mini-Batch 各自的流程、优缺点、适用场景，并讲清 epoch 与 batch 的区别</strong>。下一章上代码：手写三种梯度下降、实现学习率衰减，对比它们的收敛轨迹。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 批量梯度下降 BGD：全量视野的稳行</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -362,7 +362,7 @@
 <ul><li><strong>batch（批次）</strong>：一次参数更新所用的样本数（batch_size）。它描述"<strong>每步吃多少</strong>"。</li><li><strong>epoch（轮次）</strong>：<strong>全部训练数据完整过一遍模型</strong>记为 1 epoch。它描述"<strong>整桌菜吃了几遍</strong>"。</li><li><strong>steps per epoch（每轮步数）</strong> = 样本总数 ÷ batch_size（向上取整）。比如 1000 条数据、batch_size=100，则每 epoch 更新 10 次。</li></ul>
 <p>关系式（务必记牢）：</p>
 <pre>总更新次数 = epoch 数 × (样本数 ÷ batch_size)</pre>
-<p>一个平平无奇的例子：1000 条数据，batch_size=100，训练 5 epochs → 更新 5×(1000/100)=50 次。 "背唐诗"类比（讲义原文精神）：背 100 首唐诗<strong>从头到尾过一遍</strong> = 1 epoch；一次背 3 首 = batch_size=3。</p>
+<p>一个平平无奇的例子：1000 条数据，batch_size=100，训练 5 epochs → 更新 5×(1000/100)=50 次。 "背唐诗"类比：背 100 首唐诗<strong>从头到尾过一遍</strong> = 1 epoch；一次背 3 首 = batch_size=3。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -470,7 +470,7 @@
 <h4>自测：能不能答上来</h4>
 <ol><li>分别用一个词概括 BGD、SGD、Mini-Batch 的核心特点。</li><li>为什么 SGD 的损失曲线会抖动？它的一个"意外优点"是什么？</li><li>Mini-Batch 为什么成为深度学习默认配置？给出三个原因。</li><li>1000 条数据、batch_size=200、训练 3 epochs，参数共更新多少次？写出计算式。</li><li>epoch 和 batch 的区别是什么？举例说明。</li><li>学习率衰减解决什么问题？给出一种简单的衰减公式。</li><li>在线学习（流式数据）场景为什么必须用 SGD/Mini-Batch 而不用 BGD？</li><li>画出三种方法的损失曲线形态并说明判读要点。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>梯度下降讲义（三种梯度下降法 7 页）</a>
+<a href="#"><span class="k">参考</span>梯度下降（三种梯度下降法 7 页）</a>
 <a href="https://scikit-learn.org/stable/modules/sgd.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn SGDRegressor 参数说明</a>
 <a href="https://cs229.stanford.edu/" target="_blank" rel="noopener"><span class="k">文档</span>机器学习课程·梯度下降（斯坦福 CS229）</a>
 </div>

@@ -325,27 +325,27 @@ def _make_token(user_id: int) -&gt; str:
     payload = {
         &quot;sub&quot;: str(user_id),
         &quot;iat&quot;: int(time.time()),
-        &quot;exp&quot;: int(time.time()) + JWT_ACCESS_EXPIRE_SECONDS,  # 讲义默认7天
+        &quot;exp&quot;: int(time.time()) + JWT_ACCESS_EXPIRE_SECONDS,  # 默认 7 天
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)  # HS256
 
 @router.post(&quot;/login&quot;)
 async def login(username: str, password: str):
     user = await User.filter(username=username).first()
-    # 讲义实现：密码明文比对
+    # 示例实现：密码明文比对
     if not user or user.password != password:
         raise HTTPException(status_code=401, detail=&quot;用户名或密码错误&quot;)
     token = _make_token(user.id)
     return {&quot;code&quot;: 200, &quot;message&quot;: &quot;登录成功&quot;,
             &quot;data&quot;: {&quot;token&quot;: token, &quot;user&quot;: {&quot;id&quot;: user.id, &quot;username&quot;: user.username}}}</pre>
 <p>要点：</p>
-<ul><li><strong>payload 用 sub 存用户 id</strong>（JWT 标准字段），iat/exp 用 Unix 时间戳。</li><li>登录接口是<strong>白名单</strong>——不需要鉴权；其余业务接口统一上锁。</li><li>讲义为教学清晰用了<strong>明文密码比对</strong>，生产必须换哈希（见下方坑位）。</li></ul>
+<ul><li><strong>payload 用 sub 存用户 id</strong>（JWT 标准字段），iat/exp 用 Unix 时间戳。</li><li>登录接口是<strong>白名单</strong>——不需要鉴权；其余业务接口统一上锁。</li><li>这一版为教学清晰用了<strong>明文密码比对</strong>，生产必须换哈希（见下方坑位）。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>数据库有用户但登录总失败</td><td>password 比对细节：字段裁剪、空格、转义；或密码字段读的是旧列。先 SELECT 出来对比</td></tr>
-<tr><td>明文密码入库</td><td>讲义为教学显式简化；生产必须 bcrypt/argon2 哈希 + 加盐，密码字段 255 长度就是为此预留</td></tr>
+<tr><td>明文密码入库</td><td>为教学做了显式简化；生产必须 bcrypt/argon2 哈希 + 加盐，密码字段 255 长度就是为此预留</td></tr>
 <tr><td>登录接口也被锁</td><td>鉴权依赖对 login 例外处理；把鉴权依赖只加在需保护的路由组上，别全局套</td></tr>
 </table>
 </div>
@@ -428,7 +428,7 @@ async def get_current_user_id(
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <table>
-<tr><th>问题</th><th>现状(讲义)</th><th>生产要求</th></tr>
+<tr><th>问题</th><th>现状(示例版)</th><th>生产要求</th></tr>
 <tr><td>密码存储</td><td>明文比对</td><td>bcrypt/argon2 哈希 + 每用户盐</td></tr>
 <tr><td>JWT_SECRET</td><td>明文在 .env、示例值</td><td>32+ 随机字节、环境变量注入，永不入库</td></tr>
 <tr><td>过期时长</td><td>7 天</td><td>按产品定（如 2h + refresh token 轮换）</td></tr>
@@ -452,7 +452,7 @@ async def get_current_user_id(
 <p>A. 效率低　　B. 它本身就是白名单，挂了无法登录　　C. 语法不支持　　D. 数据库限制</p>
 <ol><li>令牌过期时应该返回？</li></ol>
 <p>A. HTTP 200　　B. HTTP 401（登录已过期）　　C. HTTP 403　　D. HTTP 500</p>
-<ol><li>讲义中密码比对方式是什么？生产建议是？</li></ol>
+<ol><li>示例中密码比对方式是什么？生产建议是？</li></ol>
 <p>A. 明文比对；哈希+加盐　　B. 哈希比对；明文　　C. AES 加密；base64　　D. 不作比对</p>
 <ol><li>前端请求如何携带 token？</li></ol>
 <p>A. URL 参数　　B. Authorization: Bearer &lt;token&gt; 头　　C. Cookie 无头　　D. 请求体</p>
@@ -479,7 +479,7 @@ print(payload)   # {&#x27;sub&#x27;: &#x27;1&#x27;, &#x27;iat&#x27;: 1710..., &#
 </div>
 </div></div>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>智能运营平台.pdf</a>
+<a href="#"><span class="k">参考</span>智能运营平台.pdf</a>
 <a href="https://pyjwt.readthedocs.io/" target="_blank" rel="noopener"><span class="k">官方</span>PyJWT 文档</a>
 <a href="https://fastapi.tiangolo.com/tutorial/security/" target="_blank" rel="noopener"><span class="k">官方</span>FastAPI Security 教程</a>
 </div>

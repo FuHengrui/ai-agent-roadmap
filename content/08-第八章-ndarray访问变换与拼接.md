@@ -323,6 +323,6 @@ a.sum()                  # 不带 axis：全部元素求和 = 66
 6. concatenate([a, b], axis=1) 要求 a、b 的哪个维度必须一致？报错时第一步该做什么？
 7. hstack 对一维数组和对二维数组的行为分别是什么？
 @@links
-讲义|numpy 讲义（68 页）|#
+参考|numpy （68 页）|#
 工具|NumPy 官网|https://numpy.org/
 文档|NumPy 索引教程|https://numpy.org/doc/stable/user/basics.indexing.html

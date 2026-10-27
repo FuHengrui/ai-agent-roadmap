@@ -281,7 +281,7 @@
 <h1>第二章　环境准备与安装部署</h1>
 <div class="subtitle">阶段 15 · Hermes-Agent 自我进化的超级智能体　|　平台实操　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>第一章把 Hermes-Agent 介绍得天花乱坠，但<strong>装不上一切都是零</strong>。安装这个环节有两大拦路虎：一是 Windows 用户的原生支持还处于实验阶段，直接装大概率翻车；二是讲义反复强调的"pip 镜像、npm 镜像不还原就是天坑"，新手根本不知道还有这茬。</p>
+<p>第一章把 Hermes-Agent 介绍得天花乱坠，但<strong>装不上一切都是零</strong>。安装这个环节有两大拦路虎：一是 Windows 用户的原生支持还处于实验阶段，直接装大概率翻车；二是"pip 镜像、npm 镜像不还原就是天坑"这句被反复强调的话，新手根本不知道还有这茬。</p>
 <p><strong>"一键安装"到底一键在哪、哪些坑是这"一键"绕不开的？</strong> 本来的前置条件只有 Git，但 Windows 用户要先把 WSL2 装好；安装时模型选错没关系，<code>hermes model</code> 随时能改；接入应用可以跳过，后面单独接。</p>
 <p>学完这一章，你手里有一台<strong>跑起来的 Hermes-Agent</strong>：知道 Windows 下怎么把环境备齐、一键脚本装什么、装完怎么选模型、启动成功长什么样、以及第一组必须记住的 hermes 命令。下一章就可以接微信/QQ/飞书了。</p>
 </div>
@@ -299,7 +299,7 @@
 <p>安装说明里列了一堆东西（Python、Node、ripgrep、ffmpeg），新手容易以为要手动逐个装。需要明确：哪些必须自己装、哪些是安装脚本包办。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义明确：<strong>唯一的前提条件是 Git</strong>。安装程序会自动处理其他所有事项——你<strong>无需手动安装</strong> Python、Node.js、ripgrep 或 ffmpeg，安装程序会自动检测缺失的组件并安装。</p>
+<p>结论很明确：<strong>唯一的前提条件是 Git</strong>。安装程序会自动处理其他所有事项——你<strong>无需手动安装</strong> Python、Node.js、ripgrep 或 ffmpeg，安装程序会自动检测缺失的组件并安装。</p>
 <p>Git 下载：https://git-scm.com/?hl=zh-cn （官方中文页面），一直 Next 装完即可。装完可在终端验证：<code>git --version</code> 能打印版本号就算可用。</p>
 <p>安装脚本自动代劳的组件及用途：</p>
 <table>
@@ -325,7 +325,7 @@
 <p>如果你是 Windows 用户（本阶段多数用户是），直接双击安装大概率失败——因为<strong>原生 Windows 支持仍处于实验阶段</strong>。需要一条官方推荐的 Windows 安装路径。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义明确：<strong>原生 Windows 支持仍处于实验阶段，请安装 WSL2 后在其中运行 Hermes Agent</strong>。WSL2 是微软官方提供的"Windows 里的 Linux 子系统"，装了它，Linux 命令、Linux 环境都能在 Windows 里跑。</p>
+<p>结论很明确：<strong>原生 Windows 支持仍处于实验阶段，请安装 WSL2 后在其中运行 Hermes Agent</strong>。WSL2 是微软官方提供的"Windows 里的 Linux 子系统"，装了它，Linux 命令、Linux 环境都能在 Windows 里跑。</p>
 <p>安装 WSL2 的官方姿势：</p>
 <ol><li><strong>以管理员身份打开 PowerShell</strong>；</li><li>输入：<code>wsl --install</code>；</li><li>按提示<strong>重新启动计算机</strong>。</li></ol>
 <p>重启后可以验证/安装指定发行版：</p>
@@ -336,8 +336,8 @@ wsl --install -d Ubuntu-24.04   # 安装 Ubuntu 24.04 发行版</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>装完 WSL 没生效，命令找不到</td><td>大概率是重启没完成。讲义特别提示：<strong>官网说只重启一次，实际可能要 2-3 次</strong></td></tr>
-<tr><td>用"关机再开机"代替"重启"</td><td>讲义特别提示：<strong>是重启，不是关机再开机</strong>——两者生效机制不同，务必选"重启"</td></tr>
+<tr><td>装完 WSL 没生效，命令找不到</td><td>大概率是重启没完成。特别提示：<strong>官网说只重启一次，实际可能要 2-3 次</strong></td></tr>
+<tr><td>用"关机再开机"代替"重启"</td><td>特别注意：<strong>是重启，不是关机再开机</strong>——两者生效机制不同，务必选"重启"</td></tr>
 <tr><td>装了 WSL1 或旧发行版</td><td>用 <code>wsl --list --verbose</code> 看 VERSION 是否为 2；不是 2 则 <code>wsl --set-default-version 2</code> 或按提示升级</td></tr>
 <tr><td>管理员 PowerShell 拼写/权限不对</td><td>开始菜单搜"PowerShell"→ 右键"以管理员身份运行"，再执行 <code>wsl --install</code></td></tr>
 </table>
@@ -351,16 +351,16 @@ wsl --install -d Ubuntu-24.04   # 安装 Ubuntu 24.04 发行版</pre>
 <p>Hermes-Agent 安装<strong>无需任何前置依赖手工处理</strong>（Git 除外），支持 Linux、macOS 和 WSL2，<strong>一键自动安装所有组件</strong>。安装命令只有一行：</p>
 <pre>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</pre>
 <p>要点拆解：</p>
-<ul><li><code>curl -fsSL</code>：静默跟随重定向下载脚本（-f 失败不报错、-s 静默、-S 显示错误、-L 跟随跳转）；</li><li>脚本下载后直接交给 bash 执行，自动检测缺什么装什么；</li><li>想看到每一步的执行过程、便于排查问题，可加 <code>-x</code>：<code>... | bash -x</code>（讲义第 55 页专门提到）。</li></ul>
-<p><strong>网络提示（讲义原文强调）</strong>：安装时无需翻墙；"非要翻墙，请你自重（如果实在下载不动，那你翻吧）"。</p>
+<ul><li><code>curl -fsSL</code>：静默跟随重定向下载脚本（-f 失败不报错、-s 静默、-S 显示错误、-L 跟随跳转）；</li><li>脚本下载后直接交给 bash 执行，自动检测缺什么装什么；</li><li>想看到每一步的执行过程、便于排查问题，可加 <code>-x</code>：<code>... | bash -x</code>（这一点值得专门记住）。</li></ul>
+<p><strong>网络提示</strong>：安装时无需翻墙；"非要翻墙，请你自重（如果实在下载不动，那你翻吧）"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>装到一半失败，报各种组件错误</td><td>先看是不是<strong>没还原 pip/npm 镜像</strong>（下一节专讲）；再看 WSL 里网络是否正常</td></tr>
 <tr><td>想找"Windows 原生安装包"</td><td>别找了，原生 Windows 实验性——规规矩矩在 WSL2 里装</td></tr>
-<tr><td>复制命令时网址少了个 s / 拼错</td><td>地址是 <code>hermes-agent.nousresearch.com/install.sh</code>，与前章官网域名一致；从讲义复制最稳</td></tr>
-<tr><td>等了很久没动静以为卡死</td><td>自动安装依赖阶段"安装时间有点长"，保持网络畅通耐心等（讲义原话）</td></tr>
+<tr><td>复制命令时网址少了个 s / 拼错</td><td>地址是 <code>hermes-agent.nousresearch.com/install.sh</code>，与前章官网域名一致；从官方页面复制最稳</td></tr>
+<tr><td>等了很久没动静以为卡死</td><td>自动安装依赖阶段确实"安装时间有点长"，保持网络畅通耐心等</td></tr>
 </table>
 </div>
 </div></div>
@@ -369,7 +369,7 @@ wsl --install -d Ubuntu-24.04   # 安装 Ubuntu 24.04 发行版</pre>
 <p>这一步是给"用国内镜像源"的用户专门排雷的。很多人装 Python/Node 项目时配过清华、阿里等镜像，这些配置在 Hermes 安装时反而会导致安装失败——而且会失败得莫名其妙。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义原文（加粗警告）：<strong>程序员注意！请将 pip 镜像和 npm 镜像还原（别问，问就是坑，大坑，天坑）</strong>。</p>
+<p>加粗警告：<strong>程序员注意！请将 pip 镜像和 npm 镜像还原（别问，问就是坑，大坑，天坑）</strong>。</p>
 <p>原因：安装脚本会自动调用 pip / npm 下载组件，如果你之前配置了国内镜像源（如清华 PyPI、淘宝 npm），部分镜像的同步延迟或缺包会导致安装脚本认为"依赖装不上"或装到旧版本，从而中断或行为异常。<strong>还原成官方源</strong>再跑安装脚本，是最省心的做法。</p>
 <p>常见镜像还原操作示例（改回官方源）：</p>
 <pre># pip —— 删除或注释用户级镜像配置
@@ -394,10 +394,10 @@ npm config set registry https://registry.npmjs.org/</pre>
 <p>命令敲下去之后会发生什么？中间要不要输入什么？走到哪一步算成功？提前要知道全流程，避免瞎等或误操作。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给出的安装流程大致四步：</p>
+<p>安装流程大致四步：</p>
 <table>
 <tr><th>步骤</th><th>发生什么</th><th>你要做什么</th></tr>
-<tr><td>1. 自动装依赖</td><td>检测并安装 uv/Python/Node/ripgrep/ffmpeg 等，时间较长</td><td>保持网络畅通，耐心等待（讲义：安装时间有点长）</td></tr>
+<tr><td>1. 自动装依赖</td><td>检测并安装 uv/Python/Node/ripgrep/ffmpeg 等，时间较长</td><td>保持网络畅通，耐心等待（安装时间有点长）</td></tr>
 <tr><td>2. 输入密码</td><td>提示输入 WSL 的密码</td><td>输入 WSL（Ubuntu）用户密码，进入下一步</td></tr>
 <tr><td>3. 选择模型</td><td>向导询问选哪个 LLM 服务商/模型</td><td>选熟悉的或额度够的（如 DeepSeek）；<strong>全部跟着推荐走也可以</strong></td></tr>
 <tr><td>4. 接入应用</td><td>询问是否接入微信/QQ/飞书等</td><td>这里<strong>可以先跳过</strong>，后面单独接入（第 3 章）</td></tr>
@@ -419,10 +419,10 @@ npm config set registry https://registry.npmjs.org/</pre>
 <p>安装向导让你选模型时，选错了、额度用完了、想换一家服务商，怎么办？是重新装一遍吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>不需要重装。<strong>执行 <code>hermes model</code> 可以随时重新选择 LLM 服务商和模型</strong>（讲义：提示"如果选择错了怎么办？执行 hermes model 重新选择（后续课程有演示~）"）。</p>
+<p>不需要重装。<strong>执行 <code>hermes model</code> 可以随时重新选择 LLM 服务商和模型</strong>（向导提示的原话是"如果选择错了怎么办？执行 hermes model 重新选择"）。</p>
 <p>也就是说：模型选择不是"安装时一次性决定"，而是一条<strong>独立的管理命令</strong>。安装时先随便选一个能用的（或跟着推荐走），后面随时可以换：</p>
 <pre>hermes model        # 重新选择 LLM 服务商和模型</pre>
-<p>这背后是 Hermes 的"多模型路由"设计（讲义第 55 页提到其亮点之一就是多模型路由）：同一套 Agent 框架可以对接不同服务商，模型只是"大脑供应商"，可插拔。这也意味着选模型时<strong>优先选自己有额度的</strong>（如 DeepSeek），别硬选用不起的旗舰模型。</p>
+<p>这背后是 Hermes 的"多模型路由"设计（它的亮点之一就是多模型路由）：同一套 Agent 框架可以对接不同服务商，模型只是"大脑供应商"，可插拔。这也意味着选模型时<strong>优先选自己有额度的</strong>（如 DeepSeek），别硬选用不起的旗舰模型。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -439,7 +439,7 @@ npm config set registry https://registry.npmjs.org/</pre>
 <p>安装向导里有一大块"接入应用（微信/QQ/飞书）"，很多人会纠结：现在接还是不接？接的话那一堆授权选项怎么选？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义给的官方建议是：<strong>接入应用，这里可以先跳过，后续我们单独接入</strong>。</p>
+<p>官方建议是：<strong>接入应用，这里可以先跳过，后续我们单独接入</strong>。</p>
 <p>理由很实在：安装阶段的重点是先把核心跑起来、把模型配置好；接入平台涉及扫码、配对审批、授权策略一堆选项，混在安装流程里容易手忙脚乱出错。第 3 章会用一整章专门演示 <code>hermes gateway setup</code> 的完整接入流程（QQ 扫码、微信设备配对、飞书接入、DM/群聊策略）。</p>
 <p>而且接入是可逆的、可后补的——跳过不影响安装成功，随时想接随时执行 <code>hermes gateway setup</code>。</p>
 </div>
@@ -459,7 +459,7 @@ npm config set registry https://registry.npmjs.org/</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>启动命令就是：</p>
 <pre>hermes</pre>
-<p>启动成功后你会进入一个交互式对话界面（CLI 对话），可以像聊天一样直接与 Agent 对话。讲义第 8 页标注"到这里就成功了!"——即能进入对话、Agent 能正常回应，就是安装成功的标志。</p>
+<p>启动成功后你会进入一个交互式对话界面（CLI 对话），可以像聊天一样直接与 Agent 对话。界面上直接标注"到这里就成功了!"——即能进入对话、Agent 能正常回应，就是安装成功的标志。</p>
 <p>启动不顺利时的排查顺序（按频率）：</p>
 <ol><li>WSL 是否就绪：<code>wsl --list --verbose</code>，VERSION 应为 2；</li><li>Git 是否可用：<code>git --version</code>；</li><li>pip/npm 镜像是否已还原（第 ④ 点）；</li><li>安装是否真的完整：重新执行一次安装命令，脚本会幂等地补装缺失组件。</li></ol>
 </div>
@@ -478,7 +478,7 @@ npm config set registry https://registry.npmjs.org/</pre>
 <p>安装完面对一个全新 CLI，最需要一份"高频命令速查表"，知道什么时候该敲哪条。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义第 56 页给了完整的常用命令表，全部背下来：</p>
+<p>完整的常用命令表如下，全部背下来：</p>
 <table>
 <tr><th>命令</th><th>说明</th></tr>
 <tr><td><code>hermes</code></td><td>启动交互式对话</td></tr>
@@ -508,7 +508,7 @@ npm config set registry https://registry.npmjs.org/</pre>
 <p>装是装在 WSL2（Linux）里的，但日常文件在 Windows 桌面/磁盘上：Agent 写出来的东西我怎么在 Windows 里打开？Windows 的资料怎么喂给 WSL 里的 Agent？需要一条文件互通的通道。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>WSL2 与 Windows 之间有两条互通的"桥"（讲义第 34 页专门图解 Windows 与 WSL 交互）：</p>
+<p>WSL2 与 Windows 之间有两条互通的"桥"（有一张图专门讲这个）：</p>
 <p><strong>① Windows 里看 WSL 文件</strong>：打开任意文件夹（如"此电脑"），在地址栏输入 <code>\\wsl$</code> 回车，就能看到已安装的 WSL 发行版（如 Ubuntu）；进入发行版找到目标目录（例如 <code>home/你的用户名/</code>），Windows 拖拽/复制粘贴都行。</p>
 <p><strong>② WSL 里看 Windows 文件</strong>：WSL 里 Windows 磁盘挂在 <code>/mnt/c/</code>、<code>/mnt/d/</code> 等位置，例如 Windows 桌面在 WSL 里就是 <code>/mnt/c/Users/你的用户名/Desktop/</code>，直接 cp 即可。</p>
 <p>如果 Agent 在 WSL 里生成了 <code>~/ai-agents-showcase/</code> 下的文件，而你希望它出现在 Windows 桌面，<strong>Agent 会自动帮你复制过去</strong>（第 4 章案例里有完整演示）。</p>
@@ -553,9 +553,9 @@ hermes skills list      # ④ 技能目录初始化完成</pre>
 <table>
 <tr><th>症状</th><th>最可能原因</th><th>对症处理</th></tr>
 <tr><td><code>wsl --install</code> 无反应/报错</td><td>需要管理员权限/未启用虚拟化</td><td>管理员 PowerShell 重试；BIOS 打开虚拟化</td></tr>
-<tr><td>重启多次还是没 WSL</td><td>用的是"关机再开机"</td><td>讲义强调：<strong>必须选"重启"</strong>，可能需 2-3 次</td></tr>
+<tr><td>重启多次还是没 WSL</td><td>用的是"关机再开机"</td><td>要特别注意：<strong>必须选"重启"</strong>，可能需 2-3 次</td></tr>
 <tr><td>安装脚本中途失败</td><td>pip/npm 镜像未还原</td><td>还原官方源后重跑脚本</td></tr>
-<tr><td>组件一直装不动</td><td>网络受限</td><td>讲义：无意翻墙先自己扛；实在下载不动可考虑，但先自查网络</td></tr>
+<tr><td>组件一直装不动</td><td>网络受限</td><td>无需翻墙，先自己扛；实在下载不动可考虑，但先自查网络</td></tr>
 <tr><td>启动后模型报错</td><td>模型无额度/Key 错误</td><td><code>hermes model</code> 换有额度的服务商</td></tr>
 <tr><td>找不到 hermes 命令</td><td>PATH 未生效</td><td>新开 WSL 终端；重跑安装脚本</td></tr>
 <tr><td>WSL 里装好了但 Windows 用不了</td><td>用错了执行环境</td><td>Hermes 装在 WSL 内，必须在 WSL 终端里执行</td></tr>
@@ -576,16 +576,16 @@ hermes skills list      # ④ 技能目录初始化完成</pre>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
 <tr><td><strong>WSL2（Windows 用户）</strong>：管理员 PowerShell <code>wsl --install</code>，重启 2-3 次，可选装 Ubuntu-24.04</td><td>原生 Windows 实验性，WSL2 是官方推荐的稳定运行环境</td></tr>
 <tr><td><strong>一键安装</strong>：`curl -fsSL https://hermes-agent.nousresearch.com/install.sh \</td><td>bash`</td><td>唯一前提 Git，其余组件脚本自动装；无需翻墙</td></tr>
-<tr><td><strong>镜像坑</strong>：装前还原 pip 和 npm 镜像源</td><td>讲义钦定天坑，不还原装一半必翻车</td></tr>
+<tr><td><strong>镜像坑</strong>：装前还原 pip 和 npm 镜像源</td><td>头号天坑，不还原装一半必翻车</td></tr>
 <tr><td><strong>模型选择</strong>：跟着推荐走或选 DeepSeek 等有额度的；选错用 <code>hermes model</code> 随时改</td><td>模型可插拔、"多模型路由"，不必一次选对</td></tr>
 <tr><td><strong>启动验证</strong>：<code>hermes</code> 进入对话即成功；四连查（version/model/config/skills）</td><td>用最小验证确认安装链路完整，再往下走</td></tr>
 <tr><td><strong>命令速查</strong>：gateway setup（接平台）/ tools（配工具）/ config show（看配置）/ update（升级）</td><td>高频命令先背下来，后续章节反复使用</td></tr>
 </table>
 <p>一句话记住本章：<strong>Git 装好 → Windows 装 WSL2 → pip/npm 镜像还原 → 一行命令装完 → hermes 启动对话 → 模型错了随时换——安装，就这么回事。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>使用 Hermes-Agent 唯一必需的前置软件是什么？安装程序会自动代劳安装哪几类组件？</li><li>Windows 用户为什么必须先装 WSL2？安装 WSL2 的命令是什么？讲义在"重启"这件事上给了哪两条特别提示？</li><li>写出完整的一键安装命令（含网址）。安装过程中讲义对"翻墙"和"pip/npm 镜像"分别给出了什么警告？</li><li>安装向导有哪四个主要步骤？其中"接入应用"这一步的建议是什么（装还是跳过）？</li><li>模型选错了怎么办？请写出对应的命令，并解释"多模型路由"为什么让模型选择成为可随时调整的环节。</li><li>请写出至少 5 条 hermes 常用命令及其用途。</li><li>从 Windows 访问 WSL 文件应在文件资源管理器地址栏输入什么？反过来，WSL 里访问 Windows 桌面（假设用户名为 &lt;你的用户名&gt;）的路径是什么？</li></ol>
+<ol><li>使用 Hermes-Agent 唯一必需的前置软件是什么？安装程序会自动代劳安装哪几类组件？</li><li>Windows 用户为什么必须先装 WSL2？安装 WSL2 的命令是什么？关于"重启"这件事有哪两条特别提示？</li><li>写出完整的一键安装命令（含网址）。安装过程对"翻墙"和"pip/npm 镜像"分别给出了什么警告？</li><li>安装向导有哪四个主要步骤？其中"接入应用"这一步的建议是什么（装还是跳过）？</li><li>模型选错了怎么办？请写出对应的命令，并解释"多模型路由"为什么让模型选择成为可随时调整的环节。</li><li>请写出至少 5 条 hermes 常用命令及其用途。</li><li>从 Windows 访问 WSL 文件应在文件资源管理器地址栏输入什么？反过来，WSL 里访问 Windows 桌面（假设用户名为 &lt;你的用户名&gt;）的路径是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Hermes-Agent 讲义（第 3-8、34、55-56 页）</a>
+<a href="#"><span class="k">参考</span>Hermes-Agent （第 3-8、34、55-56 页）</a>
 <a href="https://git-scm.com/?hl=zh-cn" target="_blank" rel="noopener"><span class="k">前置</span>Git 官方下载（中文）</a>
 <a href="https://learn.microsoft.com/zh-cn/windows/wsl/" target="_blank" rel="noopener"><span class="k">官方</span>Microsoft WSL 文档</a>
 <a href="https://hermes-agent.nousresearch.com/install.sh" target="_blank" rel="noopener"><span class="k">安装</span>一键安装脚本</a>

@@ -281,12 +281,12 @@
 <h1>第九章　保险花销预测实战：一个完整的回归项目</h1>
 <div class="subtitle">阶段 20 · 机器学习算法与工程实战　|　项目实战　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>前八章学了一堆"招式"，这一章<strong>全部串起来打一套组合拳</strong>：用公开的 insurance 数据集（个人年龄、性别、BMI 等特征 → 预测医疗花销 charges）跑一个完整回归项目。讲义给了两个版本：</p>
+<p>前八章学了一堆"招式"，这一章<strong>全部串起来打一套组合拳</strong>：用公开的 insurance 数据集（个人年龄、性别、BMI 等特征 → 预测医疗花销 charges）跑一个完整回归项目。两个版本：</p>
 <ul><li><strong>基础版（常规流程）</strong>：读数据 → EDA → 对数矫正 → 哑变量 → 清洗 → 切分 → 标准化 → 多项式 → Ridge → 评估。这是一条"标准流水线"，任何表格回归任务都能照搬。</li><li><strong>进阶版（深度 EDA 驱动）</strong>：先花大力气探索数据，发现"性别、地域和花销基本无关"、"BMI≥30 是医学分水岭"、"有无孩子观念不同"——然后<strong>砍特征、做语义分箱</strong>，用更小的模型拿到更好的成绩。</li></ul>
 <p><strong>两个版本的对比是本项目最大的价值</strong>：机器学习的上限不在算法，在于对数据的理解（EDA）。"杀鸡不用牛刀"——懂得数据，可以事半功倍。</p>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章备齐武器：Ridge/Lasso/ElasticNet、多项式升维、归一化纪律。<strong>本章在真实表格数据上打完整流水线（讲义章节8 基础版 + 章节9 进阶版）</strong>，并在结尾用进阶版的点睛之笔（不要盲目全套操作）垫定"数据理解 &gt; 操作堆砌"的价值观。下一章进入分类算法：线性回归的近亲——逻辑回归与 Softmax。</span>
+<span class="node">上一章备齐武器：Ridge/Lasso/ElasticNet、多项式升维、归一化纪律。<strong>本章在真实表格数据上打完整流水线（基础版 + 进阶版）</strong>，并在结尾用进阶版的点睛之笔（不要盲目全套操作）垫定"数据理解 &gt; 操作堆砌"的价值观。下一章进入分类算法：线性回归的近亲——逻辑回归与 Softmax。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 认识数据：insurance 花销数据集</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -337,7 +337,7 @@ plt.hist(data[&#x27;charges&#x27;])</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>独热编码（One-Hot / 哑变量）</strong>：把每个类别值变成一列 0/1。</p>
 <pre>data = pd.get_dummies(data)   # 文本列自动拆成 0/1 列</pre>
-<ul><li>sex→[sex_male, sex_female]（或含原列，注意 drop_first 惯例），region→4 列，smoker→1 列。</li><li>原理与第三章"全 1 列"同族：把离散信息变成数值特征。</li><li>备选工具：sklearn 的 LabelEncoder / OneHotEncoder，或 DataFrame 的 map 自定义映射（讲义允许任选——理解语义即可）。</li></ul>
+<ul><li>sex→[sex_male, sex_female]（或含原列，注意 drop_first 惯例），region→4 列，smoker→1 列。</li><li>原理与第三章"全 1 列"同族：把离散信息变成数值特征。</li><li>备选工具：sklearn 的 LabelEncoder / OneHotEncoder，或 DataFrame 的 map 自定义映射（任选其一——理解语义即可）。</li></ul>
 <p>做完 get_dummies 后，data 变成了全数值表，可以直接进模型了。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -359,7 +359,7 @@ y = data[&#x27;charges&#x27;]                # 目标向量
 x.fillna(0, inplace=True)   # 空值填充为 0（本数据集可能无空值，纯演示）
 y.fillna(0, inplace=True)</pre>
 <ul><li><code>drop(..., axis=1)</code>：按列删（axis=1 是列，axis=0 是行——axis 记反是高频错）。</li><li><code>fillna(0)</code>：缺失补 0。真实项目要根据业务定策略（均值/中位数/模型预测填充），<strong>直接补 0 是简单演示</strong>；严肃做法用 SimpleImputer。</li></ul>
-<p><strong>坑预警</strong>：这一版讲义用的老导入 <code>from sklearn.cross_validation import train_test_split</code> 已经在新版本中被移除——<strong>必须用新路径 <code>sklearn.model_selection</code></strong>（见下一节），这是版本迁移的经典坑。</p>
+<p><strong>坑预警</strong>：早期示例里的老导入 <code>from sklearn.cross_validation import train_test_split</code> 已经在新版本中被移除——<strong>必须用新路径 <code>sklearn.model_selection</code></strong>（见下一节），这是版本迁移的经典坑。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -431,7 +431,7 @@ reg.fit(x_train_poly, np.log1p(y_train))   # y 也要 log 矫正！</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>对多项式特征也直接测试集 fit_transform</td><td>老规矩：poly 参数只看训练集，测试集只 transform</td></tr>
-<tr><td>只升维不加密正则</td><td>degree=2 就开始过拟合；alpha=10 是讲义验证过的组合</td></tr>
+<tr><td>只升维不加密正则</td><td>degree=2 就开始过拟合；alpha=10 是实测验证过的组合</td></tr>
 </table>
 </div>
 </div></div>
@@ -450,7 +450,7 @@ np.sqrt(mean_squared_error(y_true=np.log1p(y_train),
 # 测试集 RMSE（log 空间）
 np.sqrt(mean_squared_error(y_true=np.log1p(y_test), y_pred=y_predict))</pre>
 <p>要点：</p>
-<ul><li><strong>RMSE = sqrt(MSE)</strong>：把平方单位还原，与 y 同量纲，直观可比（log 空间下"低 0.1"意味着花销猜测误差缩小约 10%）。</li><li><strong>训练/测试都算</strong>：对比两者差异看是否过拟合（训练远低测试=过拟合信号）。</li><li>若要"元"为单位：<code>np.exp(reg.predict(...))</code> 还原再算 RMSE（讲义亦有此做法）——两种口径都能用，报告时写清口径即可。</li></ul>
+<ul><li><strong>RMSE = sqrt(MSE)</strong>：把平方单位还原，与 y 同量纲，直观可比（log 空间下"低 0.1"意味着花销猜测误差缩小约 10%）。</li><li><strong>训练/测试都算</strong>：对比两者差异看是否过拟合（训练远低测试=过拟合信号）。</li><li>若要"元"为单位：<code>np.exp(reg.predict(...))</code> 还原再算 RMSE——两种口径都能用，报告时写清口径即可。</li></ul>
 <p>评估铁律再强调：<strong>以测试集 RMSE 为最终成绩</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -532,7 +532,7 @@ data = data.apply(greater, axis=1, args=(30, 0,))</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>insurance 数据集的目标变量是什么？为什么它的分布是右偏的？</li><li>np.log 矫正右偏的原理是什么？预测结果为什么需要还原？</li><li>get_dummies 把文本类别变成什么？有什么替代工具？</li><li>新版 sklearn 中 train_test_split 从哪个模块导入？旧版路径有什么问题？</li><li>为什么对测试集只能 transform 不能 fit_transform（标准化/多项式都适用）？</li><li>进阶版砍掉 region、sex 的依据是什么？用了哪些 EDA 手段？</li><li>apply(greater, axis=1, args=(30,0,)) 中的 args 起什么作用？</li><li>基础版和进阶版的核心区别是什么？这告诉我们机器学习的上限在哪里？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>梯度下降讲义（保险花销预测实战 10 页）</a>
+<a href="#"><span class="k">参考</span>梯度下降（保险花销预测实战 10 页）</a>
 <a href="https://www.kaggle.com/datasets/mirichoi0218/insurance" target="_blank" rel="noopener"><span class="k">文档</span>kaggle medical cost personal dataset</a>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn train_test_split API</a>
 </div>

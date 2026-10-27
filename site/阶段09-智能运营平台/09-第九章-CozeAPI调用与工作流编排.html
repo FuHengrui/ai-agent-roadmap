@@ -367,7 +367,7 @@ for message in chat.messages:
 <p>"实时热搜"不能靠 Bot 人设里写"请搜索"（不可控），要在工作流里<strong>显式编排</strong>：先搜、再生成、再收口。HotTopic_Workflow 就是这份编排。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>HotTopic_Workflow 的节点链（讲义实录）：</p>
+<p>HotTopic_Workflow 的节点链（实际链路）：</p>
 <pre>开始（接收主题）→ 搜索热点插件（头条/微博/知乎/抖音热点聚合）
 → 大模型节点（人设 + 热点数据 + 主题 → 5 板块 50 标题 JSON）
 → JSON 序列化/收口节点（清洗、补全、规范 JSON）
@@ -474,7 +474,7 @@ def hot_topic(theme: str) -&gt; str:
 </div>
 </div></div>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>智能运营平台.pdf</a>
+<a href="#"><span class="k">参考</span>智能运营平台.pdf</a>
 <a href="https://www.coze.cn/open/docs/developer_guides/coze_api_overview" target="_blank" rel="noopener"><span class="k">官方</span>Coze Python SDK</a>
 <a href="https://www.coze.cn/docs/guides/workflow_overview" target="_blank" rel="noopener"><span class="k">官方</span>Coze 工作流使用指南</a>
 </div>

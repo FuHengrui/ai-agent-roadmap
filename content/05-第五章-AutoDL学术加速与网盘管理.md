@@ -243,6 +243,6 @@ AutoDL 实例的磁盘分工（默认逻辑）：
 8. 系统盘和数据盘分别适合放什么？如何检查磁盘占用？如何防数据丢失？
 
 @@links
-讲义|大模型开发工具平台讲义（AutoDL 部分，16 页）|#
+参考|大模型开发工具平台（AutoDL 部分，16 页）|#
 工具|AutoDL 官网|https://www.autodl.com/
 工具|阿里云盘官网|https://www.alipan.com/

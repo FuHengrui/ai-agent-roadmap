@@ -470,7 +470,7 @@ print(w.grad, b.grad)               # 张量化求梯度</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>训练循环中"算梯度"这一步为什么必须自动化？真实模型有几百万参数意味着什么？</li><li>requires_grad=True 应该打在哪些张量上？数据张量需要吗？为什么？</li><li>loss.backward() 执行后，参数的梯度存储在哪里？</li><li>为什么标准训练循环里需要 optimizer.zero_grad()？忘记它会导致什么？</li><li>对于 y = x*w + b、L = (y - y_true)²，手动推导 dL/dw 和 dL/db 的表达式。</li><li>多特征、多样本时，一次计算梯度的张量化写法有什么好处？</li><li>推理阶段为什么要用 with torch.no_grad()？不用的代价是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>PyTorch入门讲义（自动微分与房价预测）</a>
+<a href="#"><span class="k">参考</span>PyTorch入门（自动微分与房价预测）</a>
 <a href="https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch Autograd 官方教程</a>
 <a href="https://pytorch.org/docs/stable/notes/autograd.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch autograd 机制说明</a>
 </div>

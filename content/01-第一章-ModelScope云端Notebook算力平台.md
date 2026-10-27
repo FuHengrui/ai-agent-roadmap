@@ -199,6 +199,6 @@ PAI-DSW 提供**持久化存储目录 `/mnt/workspace/`**：放在这里的 Note
 7. 为什么跑了半小时的实例突然被关机？如何避免？
 
 @@links
-讲义|大模型开发工具平台讲义（ModelScope Notebook 部分，9 页）|#
+参考|大模型开发工具平台（ModelScope Notebook 部分，9 页）|#
 工具|ModelScope 魔搭社区|https://modelscope.cn/
 文档|阿里云 PAI-DSW 文档|https://help.aliyun.com/zh/pai/user-guide/overview-15

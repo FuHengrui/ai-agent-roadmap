@@ -280,7 +280,7 @@ while (true) {
    A. 改 LLM 类　　B. 改 Settings 里的 llm_provider 一个字段　　C. 改前端　　D. 改 .env 文件名
 
 @@links
-讲义|章节9_API接口.pdf|#
+参考|章节9_API接口.pdf|#
 源码|rag_project/src/api 与 frontend（API 与前端全量源码）|#
 官网|FastAPI 依赖注入|https://fastapi.tiangolo.com/tutorial/dependencies/
 官网|Pydantic Settings|https://docs.pydantic.dev/latest/concepts/pydantic_settings/

@@ -12,7 +12,7 @@
 装 vLLM 之前，机器应该满足什么硬件条件？
 
 @@idea 核心思路
-讲义给出的硬件底线：
+硬件底线：
 
 | 硬件项 | 要求 |
 |---|---|
@@ -92,7 +92,7 @@ python -m venv vllm_env        # 创建
 source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）
 ```
 
-之后所有 `pip install` 都只影响该环境，互不污染。参考讲义使用 conda 同样可行（conda activate 建环境），原理一致。
+之后所有 `pip install` 都只影响该环境，互不污染。用 conda 建环境同样可行（conda activate 建环境），原理一致。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -105,7 +105,7 @@ source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）
 虚拟环境就绪后，装 vLLM 的命令是什么？
 
 @@idea 核心思路
-核心命令（讲义同款）：
+核心命令：
 
 ```
 pip install vllm
@@ -160,7 +160,7 @@ vLLM 生态主要在 Linux：官方预编译与容器镜像都以 Linux 为准�
 
 1. **官方支持有限**：Windows 上 vLLM 需要手动编译或借助 WSL2/Linux 容器，不推荐直接装。
 2. **推荐路线**：Windows → WSL2（Ubuntu）→ vLLM；或直接 Linux 服务器/NGC 容器。
-3. 本课程（讲义）默认 **Linux 服务器/云 GPU 环境**，请按对应 shell 命令执行。
+3. 本书默认 **Linux 服务器/云 GPU 环境**，请按对应 shell 命令执行。
 
 如果坚持 Windows 直装：需满足 CUDA 环境与编译器，按官方 issue/文档折腾，成本高。
 
@@ -211,5 +211,5 @@ vLLM 生态主要在 Linux：官方预编译与容器镜像都以 Linux 为准�
 7. Windows 上装 vLLM 的正确姿势是什么？为什么？
 
 @@links
-讲义|部署讲义（章节1-2）|#
+参考|部署（章节1-2）|#
 站点|vLLM 官方安装文档|https://docs.vllm.ai/en/latest/getting_started/installation.html

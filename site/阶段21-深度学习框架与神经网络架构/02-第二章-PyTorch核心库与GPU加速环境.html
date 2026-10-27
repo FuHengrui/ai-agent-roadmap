@@ -288,7 +288,7 @@
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① PyTorch 是什么</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>PyTorch 在深度学习生态里到底扮演什么角色，为什么本课程选它？</p>
+<p>PyTorch 在深度学习生态里到底扮演什么角色，为什么本书选它？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>PyTorch 是一个<strong>开源的机器学习库</strong>，主要用于计算机视觉（CV）、自然语言处理（NLP）、语音识别等领域的研究和开发。它由 Facebook（Meta）的人工智能研究团队开发，在机器学习和深度学习社区中广泛使用。</p>
@@ -322,7 +322,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>只装 torch、跑 torchvision 代码报错</td><td>每个扩展库要单独安装：<code>pip install torchvision</code>；缺少哪个装哪个</td></tr>
-<tr><td>不知道自己的任务该装什么</td><td>本课程主线是全连接网络做表格数据，装 torch 即可；涉及图像时再补 torchvision</td></tr>
+<tr><td>不知道自己的任务该装什么</td><td>本书主线是全连接网络做表格数据，装 torch 即可；涉及图像时再补 torchvision</td></tr>
 </table>
 </div>
 </div></div>
@@ -472,7 +472,7 @@ print(x * 2)                        # 张量基本运算可用</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>torch、torchvision、torchaudio 三个库的分工分别是什么？做表格数据分类需要装哪些？</li><li>pip 和 conda 安装 PyTorch 各自的优缺点是什么？为什么建议用虚拟环境？</li><li>为什么 GPU 比 CPU 更适合深度学习训练？请从核心数量与任务类型角度解释。</li><li>CUDA 和 cuDNN 的关系是什么？只装 CUDA 不装 cuDNN 会怎样？</li><li><code>torch.cuda.is_available()</code> 返回 False 的可能原因有哪些？逐一说明排查思路。</li><li>你的机器没有 NVIDIA 显卡，应该装哪个版本？如果之后想用 GPU，可以怎么解决？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>PyTorch入门讲义（PyTorch介绍与安装）</a>
+<a href="#"><span class="k">参考</span>PyTorch入门（PyTorch介绍与安装）</a>
 <a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 官网安装页面</a>
 <a href="https://developer.nvidia.com/cuda-gpus" target="_blank" rel="noopener"><span class="k">文档</span>NVIDIA CUDA 支持显卡列表</a>
 <a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="noopener"><span class="k">工具</span>CUDA 官网（驱动与工具包）</a>

@@ -232,6 +232,6 @@ criterion = nn.CrossEntropyLoss(ignore_index=PAD_ID)
 7. 从 Seq2Seq 的角度解释：为什么 LSTM 长句翻译仍然差？下一步怎么改进？
 
 @@links
-讲义|Seq2Seq讲义|#
+参考|Seq2Seq|#
 文档|Neural Machine Translation by Jointly Learning to Align and Translate（注意力开山之作）|https://arxiv.org/abs/1409.0473
 文档|PyTorch Seq2Seq 翻译教程|https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html

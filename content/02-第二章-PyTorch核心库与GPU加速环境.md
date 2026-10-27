@@ -9,7 +9,7 @@
 
 @@point ① PyTorch 是什么
 @@need 要解决什么
-PyTorch 在深度学习生态里到底扮演什么角色，为什么本课程选它？
+PyTorch 在深度学习生态里到底扮演什么角色，为什么本书选它？
 
 @@idea 核心思路
 PyTorch 是一个**开源的机器学习库**，主要用于计算机视觉（CV）、自然语言处理（NLP）、语音识别等领域的研究和开发。它由 Facebook（Meta）的人工智能研究团队开发，在机器学习和深度学习社区中广泛使用。
@@ -53,7 +53,7 @@ PyTorch 装的时候经常看到 torch、torchvision、torchaudio 几个包，�
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 只装 torch、跑 torchvision 代码报错 | 每个扩展库要单独安装：`pip install torchvision`；缺少哪个装哪个 |
-| 不知道自己的任务该装什么 | 本课程主线是全连接网络做表格数据，装 torch 即可；涉及图像时再补 torchvision |
+| 不知道自己的任务该装什么 | 本书主线是全连接网络做表格数据，装 torch 即可；涉及图像时再补 torchvision |
 
 @@point ③ 安装方式：pip 与 conda
 @@need 要解决什么
@@ -227,7 +227,7 @@ print(x * 2)                        # 张量基本运算可用
 6. 你的机器没有 NVIDIA 显卡，应该装哪个版本？如果之后想用 GPU，可以怎么解决？
 
 @@links
-讲义|PyTorch入门讲义（PyTorch介绍与安装）|#
+参考|PyTorch入门（PyTorch介绍与安装）|#
 文档|PyTorch 官网安装页面|https://pytorch.org/get-started/locally/
 文档|NVIDIA CUDA 支持显卡列表|https://developer.nvidia.com/cuda-gpus
 工具|CUDA 官网（驱动与工具包）|https://developer.nvidia.com/cuda-downloads

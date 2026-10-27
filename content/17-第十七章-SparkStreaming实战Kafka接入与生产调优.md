@@ -1,5 +1,5 @@
 @@h1 第十七章　Spark Streaming 实战：Kafka 接入与生产调优
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　8 课时　|　难度 ★★★★☆
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★☆
 
 @@why 这一章在解决什么问题
 上一章的 Socket 输入只是教学玩具——**生产环境 90% 的流都来自 Kafka**，因为 Kafka 能存能重放、天然支持"消费状态"管理。而接入 Kafka 有新旧两代 API（Receiver vs Direct），踩的人最多；消费偏移量（offset）管理不当=丢数据或重复消费；Driver 挂掉怎么优雅恢复……这一章把"生产级 Streaming + Kafka"的完整配套讲透：**Direct 模式、偏移量管理、优雅关闭、背压调优**。
@@ -384,7 +384,7 @@ spark-submit --master yarn --deploy-mode cluster \
 7. 判断题：Structured Streaming 的 API 与静态 DataFrame 完全不同，需要另学一套算子。
 
 @@links
-讲义|SparkStreaming 讲义（第 5 章：Kafka 整合）|#
-讲义|SparkStreaming 讲义（第 6 章：优雅关闭与调优）|#
+参考|SparkStreaming （第 5 章：Kafka 整合）|#
+参考|SparkStreaming （第 6 章：优雅关闭与调优）|#
 官网|Spark Streaming + Kafka 集成指南|https://spark.apache.org/docs/latest/streaming-kafka-0-10-integration.html
 官网|Structured Streaming 编程指南|https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html

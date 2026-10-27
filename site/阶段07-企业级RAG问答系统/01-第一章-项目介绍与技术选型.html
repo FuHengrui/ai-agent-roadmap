@@ -322,13 +322,13 @@
 │ ④ 支持多文档批量检索          │         │ ④ 用户反馈与答案纠错闭环       │
 │ ⑤ 可配置的大模型提供商        │         │ ⑤ 移动端 App                 │
 └─────────────────────────────┘         └─────────────────────────────┘</pre>
-<p>判断标准一句话：<strong>用户能不能"上传→提问→拿到有出处的答案"走过完整闭环</strong>。能，就是 MVP 合格；不能，说明功能砍得不对。讲解义里反复强调的也是这个闭环——先让一条链路走通，再谈锦上添花。</p>
+<p>判断标准一句话：<strong>用户能不能"上传→提问→拿到有出处的答案"走过完整闭环</strong>。能，就是 MVP 合格；不能，说明功能砍得不对。这里反复强调的也是这个闭环——先让一条链路走通，再谈锦上添花。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>以为"多文档上传"必须配"权限管理"，否则不敢上线</td><td>权限是<strong>运营问题</strong>不是<strong>技术问题</strong>：MVP 阶段可以先把文档人工审核后入库，权限留在二期。把权限塞进 MVP 会拖垮进度</td></tr>
-<tr><td>以为 MVP 就要"支持所有格式"</td><td>讲义 MVP 只做 4 种格式（PDF/Word/MD/HTML），Excel、图片等<strong>排在以后</strong>。格式覆盖广 = 解析工作量爆炸，先把最常用的做透</td></tr>
+<tr><td>以为 MVP 就要"支持所有格式"</td><td>MVP 只做 4 种格式（PDF/Word/MD/HTML），Excel、图片等<strong>排在以后</strong>。格式覆盖广 = 解析工作量爆炸，先把最常用的做透</td></tr>
 <tr><td>把"回答质量"当 MVP 验收标准</td><td>第一版验收的是<strong>链路通</strong>：解析入库成功、检索能命中、答案有出处。质量优化是持续迭代的事，不是第一版的完工线</td></tr>
 </table>
 </div>
@@ -364,7 +364,7 @@
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>以为"向量库就够存了，为什么还要数据库层"</td><td>向量库只管"哪些向量离我近"，但<strong>文档本身、标题、来源文件、上传时间</strong>这些元数据也要管理，否则"答案出自哪份文档"无法回答。项目里 <code>DocumentStore</code> 就是干这个的</td></tr>
 <tr><td>以为 5 层必须一次全部建好</td><td>分层是<strong>逻辑边界</strong>不是<strong>物理分工</strong>：MVP 里解析层和嵌入层可以是同一个服务进程。先把层分清楚，别急着拆微服务</td></tr>
-<tr><td>把"前端"当可有可无</td><td>企业用户不是程序员，没有网页界面系统就"不存在"。讲义把 frontend 单独成一个目录，前端也是交付物之一</td></tr>
+<tr><td>把"前端"当可有可无</td><td>企业用户不是程序员，没有网页界面系统就"不存在"。工程里 frontend 单独成一个目录，前端也是交付物之一</td></tr>
 </table>
 </div>
 </div></div>
@@ -373,7 +373,7 @@
 <p>RAG 的核心是"海量向量里找近邻"。市面上向量数据库一抓一大把，<strong>选错了要么过度设计（部署复杂、维护成本高），要么性能翻车（几万条就卡）</strong>。选型不是选"最强的"，是选"匹配当前规模的"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>讲义里对比了四类主流方案，先看各自定位：</p>
+<p>先对比四类主流方案，看各自定位：</p>
 <table>
 <tr><th>方案</th><th>本质</th><th>适合场景</th><th>代价</th></tr>
 <tr><td><strong>Milvus</strong></td><td>分布式向量数据库，独立集群</td><td>千万级向量、高并发生产环境</td><td>组件多（etcd/MinIO/Pulsar），部署运维重</td></tr>
@@ -407,7 +407,7 @@
 <tr><td>成本</td><td>按 token 计费</td><td>一次性部署，之后免费</td></tr>
 <tr><td>中文效果</td><td>好</td><td>BGE 系列中文效果好，社区公认</td></tr>
 </table>
-<p>选型结论（讲义的核心立场）：<strong>对"企业私有文档"，本地嵌入是长期正解</strong>（数据不出内网是大前提），但直接上手本地模型有门槛，所以 MVP 阶段可以先用在线 API 跑通链路，接口留好，随时能切。</p>
+<p>选型结论：<strong>对"企业私有文档"，本地嵌入是长期正解</strong>（数据不出内网是大前提），但直接上手本地模型有门槛，所以 MVP 阶段可以先用在线 API 跑通链路，接口留好，随时能切。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -424,7 +424,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>关键决策：<strong>选"OpenAI 兼容接口"的模型厂商，用一个统一客户端调用。</strong></p>
-<p>比对结论（讲义）：</p>
+<p>比对结论：</p>
 <table>
 <tr><th>候选</th><th>特点</th><th>本项目判断</th></tr>
 <tr><td>智谱 GLM（<code>zhipu</code>）</td><td>中文好、<code>glm-4</code> 系列支持 OpenAI 兼容接口</td><td>✅ 入选</td></tr>
@@ -502,8 +502,8 @@ client = OpenAI(
 <ol><li>关于"在线 API 嵌入 vs 本地嵌入"，项目立场是？</li></ol>
 <p>A. 永远用在线 API　　B. 永远用本地　　C. MVP 先用在线跑通，接口留好，长期私有化用本地　　D. 两者不能共存</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>章节1_项目介绍.pdf</a>
-<a href="#"><span class="k">讲义</span>章节2_技术选型.pdf</a>
+<a href="#"><span class="k">参考</span>章节1_项目介绍.pdf</a>
+<a href="#"><span class="k">参考</span>章节2_技术选型.pdf</a>
 <a href="#"><span class="k">源码</span>rag_project 完整工程源码</a>
 <a href="https://docs.trychroma.com" target="_blank" rel="noopener"><span class="k">官网</span>Chroma 向量库</a>
 <a href="https://github.com/huggingface/sentence-transformers" target="_blank" rel="noopener"><span class="k">官网</span>sentence-transformers（本地嵌入）</a>

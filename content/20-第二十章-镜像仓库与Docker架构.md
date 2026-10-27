@@ -297,7 +297,7 @@ docker -H tcp://127.0.0.1:1234 ps
 6. 镜像分层的三个好处分别是什么？
 7. 把 Docker 的完整生产链路（构建→运行→发布→部署）按顺序写出来。
 @@links
-讲义|Docker技术应用与实战讲义（76 页）|#
+参考|Docker技术应用与实战（76 页）|#
 文档|Docker Hub|https://hub.docker.com/
 文档|阿里云容器镜像服务 ACR|https://www.aliyun.com/product/acr
 文档|Docker 官方文档|https://docs.docker.com/

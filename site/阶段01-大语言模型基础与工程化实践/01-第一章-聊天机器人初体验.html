@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 1 · 大语言模型基础与工程化实践 › <strong>第一章</strong></div>
 <h1>第一章　聊天机器人初体验</h1>
-<div class="subtitle">阶段 1 · 大语言模型基础与工程化实践　|　14 课时　|　难度 ★☆☆</div>
+<div class="subtitle">阶段 1 · 大语言模型基础与工程化实践　|　|　难度 ★☆☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>你有没有想过，ChatGPT 那种东西到底是怎么跑起来的？更实际一点：<strong>能不能在自己电脑上跑一个——不用联网、不花钱、聊天内容不外传？</strong></p>
 <p>这一章就是干这件事的。它<strong>不教你大模型的原理</strong>（那是后面阶段的事），也<strong>不要求你会 Python</strong>。它只做一件事：<strong>把开发环境搭起来，亲手跑通一个最小的聊天机器人</strong>。</p>
@@ -322,11 +322,11 @@
 </table>
 </div>
 <div class="step trap"><span class="label">硬件不够怎么办</span>
-<p>讲义写的要求是「<strong>8GB+ 内存</strong>」，建议留 10GB 磁盘，无 GPU 也能跑小模型。但 4GB 档位的老机器跑 <code>qwen3:4b</code> 会非常吃力，甚至起不来。按自己的情况选：</p>
+<p>要求是「<strong>8GB+ 内存</strong>」，建议留 10GB 磁盘，无 GPU 也能跑小模型。但 4GB 档位的老机器跑 <code>qwen3:4b</code> 会非常吃力，甚至起不来。按自己的情况选：</p>
 <table>
 <tr><th>内存</th><th>建议</th></tr>
 <tr><td>4GB 左右</td><td>先用最小的 <code>qwen:0.5b</code> 把流程跑通——<strong>理解每一步在做什么，比模型多聪明重要</strong></td></tr>
-<tr><td>8GB 以上</td><td>按讲义原方案跑 <code>qwen3:4b</code></td></tr>
+<tr><td>8GB 以上</td><td>按推荐方案跑 <code>qwen3:4b</code></td></tr>
 <tr><td>想跑更大的</td><td>放到有独显的机器，或用云端算力，不要在本地硬扛</td></tr>
 </table>
 </div>
@@ -517,12 +517,12 @@ ZeroDivisionError: division by zero         ← ① 错误类型和原因</div>
 <tr><td><strong>AI 应用工程师</strong></td><td>用现成模型搭产品</td><td>后端、数据库、<strong>大模型 API</strong>、RAG/Agent</td></tr>
 <tr><td><strong>数据工程师</strong></td><td>数据采集、清洗、管道</td><td>SQL、分布式、调度</td></tr>
 </table>
-<p><strong>这套课程主要奔着第二个去的</strong>——不要求你会训练模型，要求你会<strong>把模型用起来</strong>。这是个好消息：门槛低得多，岗位需求还很多。</p>
+<p><strong>这套笔记主要奔着第二个去的</strong>——不要求你会训练模型，要求你会<strong>把模型用起来</strong>。这是个好消息：门槛低得多，岗位需求还很多。</p>
 </div>
 </div></div>
 <div class="note info"><span class="t">必须听的正确学习方法</span>
-<p>讲义里专门有一节讲这个，这里把要点提炼出来：</p>
-<ul><li><strong>敲，不要只看。</strong> 视频里老师敲什么你敲什么。看懂和敲出来是两码事</li><li><strong>允许自己忘。</strong> 忘了就查，查多了自然记住。<strong>不要因为记不住就停下来背</strong></li><li><strong>先跑通，再深究。</strong> 遇到不懂的先跳过，把流程跑通；回头再看，很多地方自动就懂了</li><li><strong>出错了才是学习发生的时候。</strong> 一次就过说明太难的不够，或者你在抄</li></ul></div>
+<p>先记住四条学习方法：</p>
+<ul><li><strong>敲，不要只看。</strong> 照着敲一遍。看懂和敲出来是两码事</li><li><strong>允许自己忘。</strong> 忘了就查，查多了自然记住。<strong>不要因为记不住就停下来背</strong></li><li><strong>先跑通，再深究。</strong> 遇到不懂的先跳过，把流程跑通；回头再看，很多地方自动就懂了</li><li><strong>出错了才是学习发生的时候。</strong> 一次就过说明太难的不够，或者你在抄</li></ul></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三个东西</strong>：</p>
 <table>
@@ -534,9 +534,8 @@ ZeroDivisionError: division by zero         ← ① 错误类型和原因</div>
 <h4>自测：能不能答上来</h4>
 <ol><li>Ollama 和 Qwen 分别负责什么？只装 Ollama 不 pull 模型会怎样？</li><li><code>chat.py</code> 里的 <code>API_URL</code> 为什么是 <code>127.0.0.1</code>？换成别人的 IP 会怎样？</li><li>本地跑模型相比用网页版 AI，最大的好处和最大的代价分别是什么？</li><li>如果机器内存只有 4GB，应该优先选什么样的模型？为什么？</li><li>看到一个 <code>IndentationError</code>，你会先检查什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>聊天机器人快速入门</a>
+<a href="#"><span class="k">参考</span>聊天机器人快速入门</a>
 <a href="#"><span class="k">源码</span>chat 示例代码</a>
-<a href="#"><span class="k">资料</span>本章资料下载地址</a>
 <a href="https://ollama.com/download" target="_blank" rel="noopener"><span class="k">官网</span>Ollama 下载</a>
 <a href="https://ollama.com/library/qwen3" target="_blank" rel="noopener"><span class="k">官网</span>Qwen 模型库</a>
 </div>

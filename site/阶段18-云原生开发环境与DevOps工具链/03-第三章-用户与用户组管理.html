@@ -315,7 +315,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>用户组（group）= 一批具有相同权限的用户组成的集合</strong>。思路是：授权给"组"，组内所有人自动生效；新人进来加入组就行，不用动任何权限设置。</p>
-<p>用户和组有四种关系（讲义原话直接记）：</p>
+<p>用户和组有四种关系（这四条直接记）：</p>
 <table>
 <tr><th>关系</th><th>含义</th></tr>
 <tr><td>一对一</td><td>一个用户只能属于一个组（这个组就是他的<strong>基本组</strong>）</td></tr>
@@ -465,7 +465,7 @@ passwd                  # 不带用户名：改自己的密码（普通用户只
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>useradd 后直接登录，一直说密码错误</td><td>没设过密码！先 <code>passwd 用户名</code> 设一遍</td></tr>
 <tr><td>输入密码屏幕上一个字都不显示</td><td>这是正常设计（安全），不是键盘坏了；输完回车即可</td></tr>
-<tr><td>passwd 提示"密码太短/太简单"被拒</td><td>系统有密码策略（默认 8 位起且不能太简单）；上课环境可自行设置，生产环境别为省事降级</td></tr>
+<tr><td>passwd 提示"密码太短/太简单"被拒</td><td>系统有密码策略（默认 8 位起且不能太简单）；练习环境可自行设置，生产环境别为省事降级</td></tr>
 <tr><td>想给服务账号设个弱口令方便测试</td><td>教学环境弱口令仅用于本地练习；生产环境一律强密码 + 锁定不登录</td></tr>
 </table>
 </div>
@@ -551,7 +551,7 @@ exit             # 退回之前的身份</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>root、系统用户、普通用户的 UID 分别是什么范围？</li><li>如何创建一个"程序可以跑、但人不能登录"的账号？</li><li>userdel 的 -r 参数是干什么的？不加会怎样？</li><li>passwd -l 和 passwd -u 分别是做什么的？</li><li><code>su - dev</code> 和 <code>su dev</code> 有什么区别？为什么推荐带 -？</li><li>sudo 和 su 最大的区别是什么？</li><li>为什么编辑 /etc/sudoers 必须用 visudo 而不是 vi？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>Linux入门与实战讲义（159 页）</a>
+<a href="#"><span class="k">参考</span>Linux入门与实战（159 页）</a>
 <a href="https://man7.org/linux/man-pages/man8/useradd.8.html" target="_blank" rel="noopener"><span class="k">文档</span>useradd 使用手册</a>
 <a href="https://man7.org/linux/man-pages/man1/passwd.1.html" target="_blank" rel="noopener"><span class="k">文档</span>passwd 使用手册</a>
 <a href="https://www.sudo.ws/docs/man/sudoers.man.html" target="_blank" rel="noopener"><span class="k">文档</span>sudoers 配置文档</a>

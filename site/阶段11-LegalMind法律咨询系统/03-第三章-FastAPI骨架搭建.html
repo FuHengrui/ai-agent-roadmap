@@ -279,7 +279,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 11 · LegalMind 法律咨询系统 › <strong>第三章</strong></div>
 <h1>第三章　FastAPI 应用骨架搭建</h1>
-<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　2 课时　|　难度 ★★☆</div>
+<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章数据库活了，但代码入口还是空的。国外教程最爱讲"Hello World"，可真实的 FastAPI 应用不止一个路由文件——它要处理<strong>启动时连数据库、挂向量库、初始化记忆系统</strong>，要解决 <strong>Windows 上 asyncio 事件的兼容坑</strong>，要配置跨域让前端能访问，还要按模块挂载四组路由。 本章把这套"骨架"一次搭好。学完这章，你的 <code>uvicorn app.main:app</code> 一跑，就是一个<strong>带完整生命周期的真实应用</strong>：启动即建表、即连向量库、即有健康检查，为第 4 章起的每个模块提供挂载点。</p>
 </div>
@@ -306,7 +306,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.db.database import init_db, close_db
-…（以下省略 33 行，完整代码见讲义/仓库对应位置）
+…（以下省略 33 行，完整代码见仓库对应位置）
 app.include_router(auth.router, prefix=&quot;/api/auth&quot;, tags=[&quot;auth&quot;])
 app.include_router(chat.router, prefix=&quot;/api/chat&quot;, tags=[&quot;chat&quot;])
 app.include_router(documents.router, prefix=&quot;/api/documents&quot;, tags=[&quot;documents&quot;])
@@ -359,7 +359,7 @@ DB_MODELS = [
     &quot;app.models.chat&quot;,
     &quot;app.models.document&quot;,
 ]
-…（以下省略 3 行，完整代码见讲义/仓库对应位置）
+…（以下省略 3 行，完整代码见仓库对应位置）
         db_url=settings.DATABASE_URL,
         modules={&quot;models&quot;: DB_MODELS},
     )
@@ -487,7 +487,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>lifespan 里 yield 之前和之后的代码分别做什么？为什么初始化都放这里而非模块顶层？</li><li>init_db 里 <code>modules={"models": [...]}</code> 漏了某个模型模块会发生什么？</li><li>CORS 报错是前端还是后端的问题？修在哪一端？</li><li>include_router 的 prefix 加在哪里？chat.py 里 <code>@router.post("/stream")</code> 对外路径是什么？</li><li>Windows 上为什么需要 <code>WindowsSelectorEventLoopPolicy</code>？只设 policy 在 uvicorn 新版够吗？</li><li><code>generate_schemas(safe=True)</code> 的 safe 参数解决了什么问题？</li><li>如何用一条命令验证后端真的起来了？自动化文档地址是多少？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>LegalMind 法律咨询系统：FastAPI 应用骨架</a>
+<a href="#"><span class="k">参考</span>LegalMind 法律咨询系统：FastAPI 应用骨架</a>
 <a href="https://fastapi.tiangolo.com/advanced/events/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI Lifespan 文档</a>
 <a href="https://fastapi.tiangolo.com/tutorial/cors/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI CORS 文档</a>
 <a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise ORM 文档</a>

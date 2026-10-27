@@ -293,7 +293,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>主流两个模型仓库：</p>
 <ul><li><strong>HuggingFace Hub</strong>：国际最全，但国内网络下载慢/不稳。</li><li><strong>ModelScope（魔搭，阿里）</strong>：国内平台，<strong>速度与稳定性好</strong>，大量开源模型（Qwen、Llama 中文版等）同步托管。</li></ul>
-<p>讲义的选择：<strong>国内部署用 ModelScope 下载</strong>。下载到的模型是本地目录（包含权重、配置、tokenizer 等文件），vLLM 直接加载该目录。</p>
+<p>这里的选择：<strong>国内部署用 ModelScope 下载</strong>。下载到的模型是本地目录（包含权重、配置、tokenizer 等文件），vLLM 直接加载该目录。</p>
 <pre>模型目录示例:
 qwen3-0.6b/
 ├── config.json
@@ -474,7 +474,7 @@ max-model-len=8192  上下文最长8192</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>国内部署首选哪个模型仓库？优势是什么？</li><li>用 ModelScope CLI 下载模型的完整命令是什么？<code>--local_dir</code> 起什么作用？</li><li><code>vllm serve</code> 启动服务的核心命令是什么？默认暴露什么接口？</li><li><code>--served-model-name</code> 的作用是什么？与模型 ID 有什么关系？</li><li><code>--tensor-parallel-size</code> 与 <code>--gpu-memory-utilization</code> 分别解决什么问题？</li><li><code>--max-model-len</code> 与请求参数 <code>max_tokens</code> 的区别是什么？</li><li>写出一个支持外部访问、对外模型名为 qwen 的完整启动命令，并解释每个参数。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="#"><span class="k">讲义</span>部署讲义（章节1-2）</a>
+<a href="#"><span class="k">参考</span>部署（章节1-2）</a>
 <a href="https://docs.vllm.ai/en/latest/models/engine_args.html" target="_blank" rel="noopener"><span class="k">站点</span>vLLM 引擎参数文档</a>
 <a href="https://modelscope.cn" target="_blank" rel="noopener"><span class="k">站点</span>ModelScope 魔搭社区</a>
 </div>
