@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第九章</strong></div>
 <h1>第九章　Spark 内核：Job / Stage / Task 与宽窄依赖</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面的章节你学会了写算子，但 Spark <strong>内部究竟怎么把你的代码跑起来的</strong>——没人跟你说过。这也是"能写但不会调优"的分水岭：看到报错不知道卡在哪、两个数据源 join 慢成狗不知道为什么、缓存到底该 cache 还是 checkpoint……</p>
 <p>这一切的答案都在<strong>执行流程</strong>里：你写的一段程序经过三个层次被拆解——<strong>Job（作业）→ Stage（阶段）→ Task（任务）</strong>；而拆解的标尺是<strong>宽窄依赖</strong>（shuffle 边界）。这一章把这条链路从头到尾讲透：你写的 <code>rdd.map(...).reduceByKey(...)</code> 是怎么变成 DAG、怎么被切成 Stage、怎么调度到 Executor 上跑的。</p>

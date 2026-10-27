@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十三章</strong></div>
 <h1>第十三章　SparkSQL 与 DataFrame：从 RDD 到&quot;带表头的分布式表&quot;</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>RDD 很好，但用久了你会烦：<strong>没有字段名</strong>（<code>_._1</code>、<code>_._2</code> 全靠自己记）、<strong>没有列类型约束</strong>（脏数据混进来才知道错）、<strong>没有自动优化</strong>（同样的聚合你写 3 遍 SDK 各不同）。SparkSQL 就是 Spark 的"升级版数据模型"：<strong>给数据加上表头（Schema）</strong>，让你可以<strong>像查数据库一样用 SQL 查分布式数据</strong>，背后还有 Catalyst 优化器帮你自动写出最优执行计划。</p>
 <p>本阶段后半程的主角是 <strong>DataFrame / Dataset</strong>：它们和 RDD 是什么关系、怎么互相转换、为什么 SparkSQL 更快。学完你能：<strong>看懂"RDD → DataFrame"的升级逻辑，会创建和转换 DataFrame，明白"为什么 Spark 官方建议优先用 SparkSQL"</strong>。</p>

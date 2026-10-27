@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第四章</strong></div>
 <h1>第四章　Standalone 独立部署模式与高可用</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章 Local 模式把 Spark 跑通了，但 Local 是"一台机器假装集群"——<strong>真正的生产环境要的是多台机器组成集群</strong>：一台当老大（Master）管分配，多台当工人（Worker）跑任务。本章部署 Spark 自带的 <strong>Standalone 模式</strong>：不依赖 Hadoop，轻量、好理解，是你理解"集群到底是什么"的最好教材。</p>
 <p>更重要的是：集群有个致命问题——<strong>Master（老大）挂了，整个集群就瘫了</strong>。本章还要带你做<strong>高可用（HA）</strong>：用 ZooKeeper 让集群"老大挂了自动换人"，业务不中断。这是从"能用"走向"上线"的关键一步。</p>

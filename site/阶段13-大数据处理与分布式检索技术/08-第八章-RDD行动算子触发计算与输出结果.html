@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第八章</strong></div>
 <h1>第八章　RDD 行动算子：触发计算与输出结果</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章的转换算子全是"纸面记录"——你写了 map、filter、join，但<strong>数据一行都没真的算</strong>。那 Spark 到底什么时候干活？答案是：<strong>遇到行动算子（Action）时</strong>。行动算子才是"按启动按钮"的那一下：收集结果、保存文件、遍历输出、统计数量。</p>
 <p>更需要警惕的是：<strong>很多行动算子行为相似但风险天差地别</strong>。<code>collect()</code> 会把全部数据拉回 Driver（大数据直接 OOM），<code>take(5)</code> 只取 5 条很安全；<code>foreach</code> 在 Executor 跑、<code>collect</code> 后遍历在 Driver 跑——用错一个，要么内存爆炸，要么结果完全不对。</p>

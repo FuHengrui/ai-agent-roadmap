@@ -1,5 +1,5 @@
 @@h1 第五章　Spark On YARN 与 spark-submit
-@@sub 阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★
+@@sub 阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★
 
 @@why 这一章在解决什么问题
 上一章你搭了 Spark 自己的 Standalone 集群。但真实企业里，Hadoop 生态往往**早就存在**：HDFS 存数据，YARN 管资源。这时候再为 Spark 单独搭一套 Standalone，等于**同一个机房养两套资源调度**——浪费、难管、还容易打架。企业的标准答案是：**让 Spark 跑在 YARN 上**，和 MR、Flink、Tez 等框架**共享同一批资源**。

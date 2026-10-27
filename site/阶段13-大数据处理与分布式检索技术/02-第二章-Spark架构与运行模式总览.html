@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第二章</strong></div>
 <h1>第二章　Spark 架构与运行模式总览</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章你知道了 Spark 能把一堆机器组织起来一起算。但"组织"到底怎么组织？你在笔记本上写一个 <code>sc.textFile(...)</code>，然后它凭什么让 100 台机器动起来、算完的结果又是怎么回到你面前的？如果完全没有概念，后面看日志、调参数、排查报错都会像看天书——<strong>"Driver"“Executor”“Task"这些词你会反复见到，但不知道谁是谁</strong>。</p>
 <p>这一章把 Spark 的<strong>骨架</strong>装进你脑子：集群里有哪几种角色、各管什么事、一份代码从提交到出结果的完整路径。学完再去碰部署模式（Local/Standalone/YARN），你会发现它们只是"谁当老板"的区别而已。</p>

@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第六章</strong></div>
 <h1>第六章　RDD 数据抽象：为什么需要与五大特性</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>你部署好了集群，但真正要开始写数据处理代码时，第一个问题来了：<strong>"数据"在 Spark 里到底长什么样？</strong> 你手里是一堆文本文件、几百行日志，怎么把它们变成"能分布到 100 台机器上并行处理"的东西？直接丢给集群？显然不行。</p>
 <p>Spark 给出的答案是 <strong>RDD（弹性分布式数据集）</strong>——它是 Spark 处理数据的<strong>最小抽象单位</strong>，也是你写后续所有算子（map、filter、reduceByKey……）的操作对象。这一章不讲算子，先把 RDD 本身讲透：<strong>它为什么存在、定义是什么、五大特性分别解决什么问题、怎么创建</strong>。地基不打牢，后面算子全是空中楼阁。</p>

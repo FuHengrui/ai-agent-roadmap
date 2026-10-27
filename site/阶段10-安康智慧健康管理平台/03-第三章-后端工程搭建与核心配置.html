@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第三章</strong></div>
 <h1>第三章　后端工程搭建与核心配置</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章我们在 MySQL 里把 7 张表建好了，但 Python 代码还不认识数据库——连接串在哪、ORM 怎么配、工程目录怎么摆，全是空白。本章解决两件事：<strong>一是用 uv 建起 FastAPI 工程</strong>（目录结构、依赖安装），<strong>二是写好 config.py 数据源配置</strong>，让应用能找到 MySQL。</p>
 <p>关键认知：<strong>配置是"一处错误、处处躺枪"的重灾区</strong>——数据库密码里带特殊符号会拆了连接串、<code>.env</code> 没加载应用读不到 Key、Tortoise 扫描的模型路径写错直接不建表。本章把这些坑一次踩平。</p>

@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第十一章</strong></div>
 <h1>第十一章　RAG 医学知识库</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>大模型有通识但"不专精"——糖尿病的最新指南、食物 GI 表、用药规范，模型可能记错或乱编。本章搭建<strong>RAG（检索增强生成）</strong>：把 20 条医学知识提前存进向量库，回答问题时先检索最相关的几条，再"带着资料"让模型回答。本章解决三件事：<strong>一是 ChromaDB 向量库的接入</strong>（持久化、集合、余弦相似度），<strong>二是中文嵌入模型与批量入库</strong>（MiniLM 多语言模型 + 批次写入），<strong>三是检索→过滤→格式化上下文的完整链路</strong>（RAGEngine）。</p>
 <p>关键认知：<strong>RAG 的本质是"给模型开卷考试"</strong>——模型不是凭记忆瞎答，而是先查资料、再按资料作答，从根上减少幻觉。</p>

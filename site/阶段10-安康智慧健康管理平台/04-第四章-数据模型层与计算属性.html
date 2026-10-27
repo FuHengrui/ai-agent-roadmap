@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第四章</strong></div>
 <h1>第四章　数据模型层：Tortoise-ORM 建模</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章配置好了数据库连接，但代码里还没有"患者""血糖记录"这样的对象——ORM 层就是<strong>把 7 张 SQL 表翻译成 Python 类</strong>，让你能写 <code>Patient.get(id=1)</code> 而不是手拼 <code>SELECT * FROM patients</code>。本章解决三件事：<strong>一是掌握 Tortoise 模型的标准写法</strong>（字段、外键、Meta），<strong>二是把这套系统里最有教学价值的计算属性讲透</strong>（BMI、血糖状态、GI 等级、血糖变化），<strong>三是理解 models/__init__.py 统一导出的机制</strong>。</p>
 <p>关键认知：<strong>模型是"静态的，像表结构"，计算属性（@property）是"动态的，不落库"</strong>——属性在读取时即时计算，比如 blood_sugar 的 status 是"算"出来的（value 小于 3.9 是低血糖），不占数据库列。这是 AI 引擎能直接拿到"语义化状态"（而不是一串数字）的关键。</p>

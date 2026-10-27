@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第七章</strong></div>
 <h1>第七章　RDD 转换算子：核心数据处理工具</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>RDD 有了，但你还没法"处理"它。原始数据长什么样都有：混乱的文本要拆词、脏数据要过滤、日志要按用户分组、订单要和商品表关联……<strong>这些"变换数据"的操作，Spark 统称为转换算子（Transformation）</strong>。它们是你在 RDD 上写代码的主要方式，一个真正的 Spark 程序 80% 的代码都由转换算子构成。</p>
 <p>转换算子有一个核心特点必须先记住：<strong>惰性（lazy）</strong>——调用它们只是"记下要做的事"，不立刻执行。这个特点让 Spark 能优化执行计划，也让新手反复困惑"为什么没跑"。本章把最常用的转换算子逐个讲透：<strong>它解决什么问题、怎么写、有哪些坑</strong>。你会建立自己的"算子工具箱"。</p>

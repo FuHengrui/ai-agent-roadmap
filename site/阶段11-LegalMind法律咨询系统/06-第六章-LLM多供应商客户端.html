@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 11 · LegalMind 法律咨询系统 › <strong>第六章</strong></div>
 <h1>第六章　大语言模型多供应商客户端</h1>
-<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★☆</div>
+<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>LegalMind 的所有智能都来自大模型：意图识别、法律问答、文书生成。但大模型有一个现实问题——<strong>供应商会变、模型名会变、价格会变</strong>。把 <code>openai.ChatCompletion</code> 写死在代码里，DeepSeek 出个更便宜的就要改全项目；把 prompt 散落在 agent 里，调一次话术要翻五个文件。 本章用一个 <code>model_client.py</code> 把"换供应商"这件事收敛成<strong>一个配置文件</strong>：<code>LLM_PROVIDER</code> 写 deepseek 就调 DeepSeek，写 openai 就调 OpenAI，底层走 LangChain 统一接口。同时把<strong>所有 prompt 模板</strong>收进 <code>prompts.py</code> 单独管理——意图识别、法律问答、文书模板各占一地，改文案不动代码。</p>
 </div>

@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十章</strong></div>
 <h1>第十章　Pipeline 流水线、Cache 缓存与 Checkpoint</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章讲了"一个 Stage 内的窄依赖算子可以连续跑"——但什么叫连续跑？为什么能快？这背后是 <strong>Pipeline 流水线机制</strong>。而第二个用户体验差到爆的问题：<strong>重复计算</strong>——同一段数据被多个 Job 用，每个 Job 都从头算一遍，慢得离谱。解决它的两把钥匙是 <strong>Cache（缓存）</strong> 与 <strong>Checkpoint（检查点）</strong>，但这两个东西长得像、用法完全不同：<code>cache()</code> 只是把数据放内存；<code>checkpoint()</code> 会把数据落盘<strong>并且切断血缘</strong>。选错了，要么内存白占、要么多一次全量 IO。</p>
 <p>学完这一章，你能：<strong>为"这段数据要被复用"的场景，正确选择 Pipeline/Cache/Checkpoint 三种手段，并解释各自的代价</strong>。</p>

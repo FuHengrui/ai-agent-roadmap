@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第五章</strong></div>
 <h1>第五章　手写 LoRA 微调（二）：数据准备与预处理</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>模型工作台搭好了，但<strong>模型吃不了中文句子，只能吃数字（token）</strong>。你手上有原始问答数据，它们长这样："指令：请翻译……回应：……"。要让 LoRA 学会"按指令回答"，至少要做四件事：找一个合适的公开数据集、看懂它的字段、拆成训练/验证集、把文本转成模型能吃的 token 序列——这四件事合起来叫<strong>数据准备与预处理</strong>。</p>
 <p>很多微调翻车不是模型问题，而是数据问题：字段名对不上、标签算错、序列截断导致回答被切掉、批次大小和最大长度不匹配。这一章用 <strong>LaMini-instruction 数据集</strong>走一遍完整的数据流水线，每一个坑都标注出来。</p>

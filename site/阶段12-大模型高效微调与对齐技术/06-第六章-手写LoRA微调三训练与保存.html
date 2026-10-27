@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 12 · 大模型高效微调与对齐技术 › <strong>第六章</strong></div>
 <h1>第六章　手写 LoRA 微调（三）：训练与保存</h1>
-<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 12 · 大模型高效微调与对齐技术　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>模型工作台和数据都备好了，现在要<strong>点火</strong>：把 LoRA 挂到模型上、配好训练超参、跑起 Trainer、把训练好的权重保存下来。这一章是全流程的高潮，也是报错高发区——<code>get_peft_model</code> 报找不到模块、训练显存爆炸、loss 不下降、保存完不知道存了啥，每个坑都能卡你一整天。</p>
 <p>学完这一章，你会得到两个可复用的关键产物：<strong>挂好 LoRA 的可训练模型</strong> + <strong>训练结束后保存下来的 LoRA 权重目录</strong>（几十到几百 MB，而不是几个 GB 的完整模型——这正是 LoRA 的意义）。</p>

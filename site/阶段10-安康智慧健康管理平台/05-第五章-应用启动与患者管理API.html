@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第五章</strong></div>
 <h1>第五章　应用启动与患者管理 API</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>第四章写好了 7 个模型类，但代码还跑不起来——FastAPI 应用入口没建、路由没挂、数据库生命周期没注册。本章解决三件事：<strong>一是从 main.py 把整个应用组装起来</strong>（CORS、路由注册、Tortoise 生命周期、lifespan），<strong>二是写第一个完整的 CRUD 模块（患者管理）</strong>，<strong>三是吃透 Pydantic v2 的 Schema 三件套</strong>（Create/Update/Response）和 <code>from_attributes</code> 配置。</p>
 <p>关键认知：<strong>Schema 是 API 的"出入关口"</strong>——请求体校验、响应序列化、计算属性导出全靠它。模型管"怎么存"，Schema 管"怎么对外"，两者分离才安全。</p>

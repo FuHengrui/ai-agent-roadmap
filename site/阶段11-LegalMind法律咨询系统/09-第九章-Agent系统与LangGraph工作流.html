@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 11 · LegalMind 法律咨询系统 › <strong>第九章</strong></div>
 <h1>第九章　Agent 系统与 LangGraph 工作流</h1>
-<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前几章攒了一堆零件：意图识别、案例检索、法律问答、文书生成——但<strong>谁来决定先用哪个、怎么串起来</strong>？写死 if-else 只能处理"能预测的顺序"，可用户的真实请求千变万化：有人问问题（问答）、有人要写诉状（文书）、有人想查判例（检索）。顺序是<strong>运行时由意图决定的</strong>。 正好可以用 LangGraph 来解决：这种"按条件分叉的多步任务"正是有向状态图的强项。LegalMind 用 LangGraph 把所有能力编排成一张图——<strong>总是先走意图识别，再按识别结果条件路由到检索/文书</strong>，工作流完成一次完整协作。学完本章，你的 AI 系统从"单打独斗的工具集合"升级为"会自己排兵布阵的 Agent 系统"。</p>
 </div>

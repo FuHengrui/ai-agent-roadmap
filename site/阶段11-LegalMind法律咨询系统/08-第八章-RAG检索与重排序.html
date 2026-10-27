@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 11 · LegalMind 法律咨询系统 › <strong>第八章</strong></div>
 <h1>第八章　RAG 检索与重排序</h1>
-<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>第 7 章向量库建好了，但"检索"远不止"向量搜一下"这么简单。法律场景有两个硬需求：<strong>案号和法条编号要能精确命中</strong>（向量检索在这上面会漏），<strong>命中结果要按相关度排好序</strong>（向量分高的未必是最该引用的）。 LegalMind 的 RetrievalAgent 用 <strong>"多路召回 + 重排序"</strong> 的组合拳：向量检索（语义）+ BM25 关键词检索（字面）双路召回 15 条候选，再用词重叠打分重排，截取最相关的 5 条进 prompt。这条路就是当下 RAG 系统的标准骨架。学完本章，你掌握的不只是"查案例"，而是<strong>一套可以复用到任何垂直领域的检索范式</strong>。</p>
 </div>

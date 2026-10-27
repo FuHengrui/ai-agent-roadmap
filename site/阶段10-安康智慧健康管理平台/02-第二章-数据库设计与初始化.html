@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第二章</strong></div>
 <h1>第二章　数据库设计与初始化</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章画完了系统蓝图，但系统要存"患者是谁、血糖多少、吃了什么、用了什么药"——这些数据得有个家。本章解决两件事：<strong>一是设计 7 张业务表的结构</strong>（字段、类型、约束、外键），<strong>二是把建库 SQL 跑起来</strong>，让 MySQL 里真的有这 7 张表。</p>
 <p>关键认知：<strong>后面所有章节（CRUD、统计、报告、AI 对话）都建立在表结构之上</strong>。表设计错了，后面改起来伤筋动骨——比如血糖表没存测量时间，趋势分析就做不了；运动表没存运动前后血糖，bs_change 就是空中楼阁。所以本章是"地基中的地基"。</p>

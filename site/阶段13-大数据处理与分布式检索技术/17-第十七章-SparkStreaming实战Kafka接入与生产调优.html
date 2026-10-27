@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十七章</strong></div>
 <h1>第十七章　Spark Streaming 实战：Kafka 接入与生产调优</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★☆</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章的 Socket 输入只是教学玩具——<strong>生产环境 90% 的流都来自 Kafka</strong>，因为 Kafka 能存能重放、天然支持"消费状态"管理。而接入 Kafka 有新旧两代 API（Receiver vs Direct），踩的人最多；消费偏移量（offset）管理不当=丢数据或重复消费；Driver 挂掉怎么优雅恢复……这一章把"生产级 Streaming + Kafka"的完整配套讲透：<strong>Direct 模式、偏移量管理、优雅关闭、背压调优</strong>。</p>
 <p>学完这一章你能：<strong>用 Direct 模式从 Kafka 消费实时数据做统计，配置偏移量与 checkpoint 保障不丢不重，并让程序可以优雅停止与恢复</strong>。</p>

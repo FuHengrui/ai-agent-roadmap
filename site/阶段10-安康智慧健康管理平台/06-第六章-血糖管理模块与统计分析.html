@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第六章</strong></div>
 <h1>第六章　血糖管理模块与统计分析</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>血糖是糖尿病管理的核心数据。上一章的患者模块是纯 CRUD，本章的血糖模块第一次引入<strong>"业务引擎"</strong>：记录有 <code>status</code> 语义，查询有时间范围过滤，统计接口调用 <code>health_analyzer</code> 算出平均值/达标率/趋势/风险等级。本章解决三件事：<strong>一是血糖记录的 CRUD</strong>（注意与患者的差异），<strong>二是 Tortoise 查询的进阶语法</strong>（Q 表达式、双下划线过滤、排序、时间范围），<strong>三是 health_analyzer 的统计引擎</strong>（首次接触 core 引擎如何被路由调用）。</p>
 <p>关键认知：<strong>路由负责"接请求"，core 引擎负责"算结果"</strong>——统计逻辑绝不写进路由，这是本项目模块划分的核心纪律。</p>

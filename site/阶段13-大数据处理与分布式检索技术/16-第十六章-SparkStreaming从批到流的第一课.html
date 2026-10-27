@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 13 · 大数据处理与分布式检索技术 › <strong>第十六章</strong></div>
 <h1>第十六章　Spark Streaming：从&quot;批&quot;到&quot;流&quot;的第一课</h1>
-<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　|　难度 ★★★★</div>
+<div class="subtitle">阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面的分析都是"一次算完一批"（批处理）：昨天的日志今天算。但<strong>实时世界等不了</strong>：双 11 大屏的实时成交额、风控对每笔交易的即时判断、推荐系统对刚发生的点击立刻响应——数据<strong>一到就要算</strong>。这就是流处理。</p>
 <p>Spark 对实时的答案叫 <strong>Spark Streaming</strong>，核心思想很优雅：<strong>把"连续不断的数据"切成"一段一段的小批"，每一小批用你熟悉的 Spark 批处理来算</strong>（微批次模型）。这意味着前面学的 RDD 算子、内核、调优<strong>全部直接复用</strong>——学它几乎没有新算子的负担，只有几个新概念：DStream、窗口、有状态。</p>

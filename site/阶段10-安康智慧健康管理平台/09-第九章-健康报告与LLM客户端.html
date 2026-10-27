@@ -280,7 +280,7 @@
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">建立知识库</a> › 阶段 10 · 安康智慧健康管理平台 › <strong>第九章</strong></div>
 <h1>第九章　健康报告与 LLM 客户端</h1>
-<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　|　难度 ★★★★</div>
+<div class="subtitle">阶段 10 · 安康智慧健康管理平台（糖尿病AI健康助手）　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>血糖分析算出了数字，可患者要看的是"医生怎么说"——<strong>把统计数字变成人话</strong>，这就是 LLM 的工作。本章同时拿下两件事：<strong>一是 LLMClient 封装</strong>（为什么把 LangChain 的 ChatOpenAI 包一层），<strong>二是健康报告生成接口</strong>（周报/月报自动生成：统计 → 摘要 → LLM 建议 → 落库展示）。</p>
 <p>关键认知：<strong>LLM 是"文本生成器"，不是"计算器"</strong>——所有数字必须由 health_analyzer 算好、拼进提示词，LLM 只负责"组织语言给建议"。把计算交给模型是新手最常见的错误。</p>
