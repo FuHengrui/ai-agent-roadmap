@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>怎么读 · 建立知识库</title>
+<title>怎么读 · AI Agent 学习路线</title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <div class="layout">
 
 <nav class="sidebar">
-  <div class="brand">建立知识库<small>AI Agent 学习路线</small></div>
+  <div class="brand">AI Agent 学习路线<small>从 Python 到 Agent 部署</small></div>
   <h2>总览</h2>
   <a href="index.html">需求地图</a>
   <a href="README.html" class="cur">怎么读</a>
@@ -281,13 +281,14 @@
 
 <main class="main"><div class="wrap">
 
-  <h1>怎么读</h1>
+<h1>怎么读</h1>
   <div class="subtitle">写给第一次翻开它的人 —— 一章 20 分钟，别从头硬啃</div>
 
   <div class="why">
-    <span class="tag">先说最重要的一句</span>
-    <p><strong>这不是"某一门课的笔记" —— 它是一套能独立用的材料。</strong></p>
-    <p>238 章，从「Python 是什么」一直讲到「把大模型部署成服务」。<strong>不用配合任何别的东西，打开就能学。</strong></p>
+    <span class="tag">先说这是什么</span>
+    <p><strong>这是一套按需求重写的 AI 笔记。</strong>24 个阶段、238 章，从「Python 是什么」一直讲到「把大模型部署成服务」。</p>
+    <p>每个知识点都先问<strong>「它要解决什么问题」</strong>，再讲怎么做，最后记下<strong>哪里会踩坑</strong>——所以它既能顺着读，也能当排查手册查。</p>
+    <p>没有视频：正文把该讲的讲完了，剩下的靠你动手敲一遍。</p>
   </div>
 
   <h2>一、这是什么（30 秒看懂）</h2>
@@ -296,7 +297,7 @@
     <tr><td><strong>覆盖范围</strong></td><td>24 个阶段、238 章、2,189 个知识点</td></tr>
     <tr><td><strong>从哪到哪</strong></td><td>从「Python 是什么」一直到「把大模型部署成一个服务」</td></tr>
     <tr><td><strong>写法</strong></td><td>每个知识点先讲<strong>「它要解决什么问题」</strong>，再讲怎么做，最后说哪里会踩坑</td></tr>
-    <tr><td><strong>不是什么</strong></td><td>不是视频、不是报错大全 —— <strong>它是一本书</strong></td></tr>
+    <tr><td><strong>多出来的东西</strong></td><td><strong>2,070 处「坑在哪」</strong>、1,628 道自测题 —— 都是自己踩过、自己出的</td></tr>
     <tr><td><strong>怎么用最有效</strong></td><td>边看边动手。<strong>看懂只能到"懂"，敲一遍才到"会"</strong></td></tr>
   </table>
 
@@ -316,9 +317,9 @@
       <td>跳过语言基础，从"大模型是什么、提示词怎么写"开始</td>
     </tr>
     <tr>
-      <td>想直接做出东西来</td>
+      <td>已经能读代码，想看一个完整项目怎么落地</td>
       <td><a href="阶段03-Agent项目启蒙/01-第一章-智能会议系统.html">阶段 3</a></td>
-      <td>那是一个"从需求到成品"的完整案例，看一遍就懂全流程</td>
+      <td>那一章给的是需求文档 + 成品代码，<strong>讲解很少</strong>，适合自己啃代码的人</td>
     </tr>
     <tr>
       <td>卡在环境配置上，装不起来</td>
@@ -328,7 +329,7 @@
     <tr>
       <td>要面试，想快速过一遍</td>
       <td>每章末尾的<strong>「自测」</strong></td>
-      <td>全书共 1,600 多道题，就是现成的题库</td>
+      <td>共 1,628 道题，就是现成的题库</td>
     </tr>
     <tr>
       <td>想看懂模型内部原理</td>
@@ -338,7 +339,7 @@
   </table>
 
   <h2>三、一章怎么读（20 分钟）</h2>
-  <p>每一章都是同一个骨架，照着这个顺序走：</p>
+  <p>每一章都是同一个骨架，第一次读照着这个顺序走：</p>
 
   <div class="point">
     <div class="head"><span class="no">1</span>先读开头的黄框 —— 2 分钟</div>
@@ -368,7 +369,7 @@
         <tr><th style="width:26%">段</th><th>怎么读</th></tr>
         <tr><td><strong>要解决什么</strong></td><td><strong>读两遍。</strong>这是全篇的锚——先接受"我需要它"，后面的内容才有落点</td></tr>
         <tr><td><strong>核心思路</strong></td><td>正常读。<strong>遇到看不懂的代码别停</strong>，先看它想干什么</td></tr>
-        <tr><td><strong>坑在哪</strong></td><td>★ <strong>别跳过，这是全书最值钱的地方</strong>（下面第五节专门说）</td></tr>
+        <tr><td><strong>坑在哪</strong></td><td>★ <strong>别跳过，这是最值钱的地方</strong>（下面第五节专门说）</td></tr>
       </table>
     </div>
   </div>
@@ -383,11 +384,11 @@
   </div>
 
   <div class="point">
-    <div class="head"><span class="no">5</span>动手 —— 这一章不写在书里</div>
+    <div class="head"><span class="no">5</span>动手 —— 这一步正文里没有</div>
     <div class="body">
       <div class="step trap"><span class="label">最重要的一步</span>
-        <p><strong>读完不等于学会。</strong>书里的代码要自己敲一遍、跑一遍、改几个参数看结果变不变。</p>
-        <p>这一步这个知识库替你做不了。</p>
+        <p><strong>读完不等于学会。</strong>里面的代码要自己敲一遍、跑一遍、改几个参数看结果变不变。</p>
+        <p>这一步没人能替你做。</p>
       </div>
     </div>
   </div>
@@ -404,10 +405,9 @@
   </table>
 
   <div class="note info">
-    <span class="t">小技巧</span>
+    <span class="t">两种用法，不冲突</span>
     <p style="margin:6px 0 0">
-      页数多的时候用 <code>Ctrl + F</code> 直接搜你卡住的那个词——比如搜 <code>端口占用</code>、<code>显存</code>、<code>数据泄漏</code>。
-      这个知识库最实用的用法其实是<strong>「当字典查」，不是「当小说读」</strong>。
+      第一次读<strong>顺着走</strong>（一章 20 分钟）；之后它就是个<strong>排查手册</strong>——卡住了，用侧边栏的「搜索」或 <code>Ctrl + F</code> 直接找那个词，比如 <code>端口占用</code>、<code>显存</code>、<code>数据泄漏</code>。
     </p>
   </div>
 
@@ -419,7 +419,7 @@
     <p>操作类的坑，你搜一下能搜到；但<strong>「你以为是这样、其实是那样」这种认知上的坑</strong>——没人会主动告诉你，你只会在踩了之后才知道。</p>
   </div>
 
-  <p>全书的「坑」大致分两类：</p>
+  <p>整套笔记的「坑」大致分两类：</p>
 
   <table>
     <tr><th style="width:22%">类型</th><th style="width:39%">长什么样</th><th>例子</th></tr>
@@ -440,11 +440,11 @@
   <h2>六、卡住了怎么办</h2>
   <table>
     <tr><th style="width:38%">症状</th><th>先做这个</th></tr>
-    <tr><td>报了个错，不知道什么意思</td><td><code>Ctrl + F</code> 搜报错里的关键词 —— 八成就写在某个「坑在哪」里</td></tr>
+    <tr><td>报了个错，不知道什么意思</td><td>用搜索框或 <code>Ctrl + F</code> 搜报错里的关键词 —— 八成就写在某个「坑在哪」里</td></tr>
     <tr><td>代码跑不通，但不知道哪错了</td><td>把报错<strong>完整地</strong>贴给 AI（别只贴一行），让它先告诉你"哪一行出的事"</td></tr>
     <tr><td>这一章完全看不懂</td><td><strong>回去看「在全局框架里的位置」</strong>——十有八九是上一章没看</td></tr>
     <tr><td>环境装不起来</td><td>跳到阶段 17 / 18 / 19，那三块专门解决这个</td></tr>
-    <tr><td>看懂了但不会写</td><td>正常。<strong>看和写之间隔着十遍练习</strong>，这句话不是安慰</td></tr>
+    <tr><td>看懂了但不会写</td><td>正常。<strong>看和写之间隔着十遍练习</strong></td></tr>
   </table>
 
   <h2>七、学到什么程度算学会了</h2>
@@ -457,60 +457,16 @@
   <div class="note warn">
     <span class="t">一条最实用的判断标准</span>
     <p style="margin:6px 0 0">
-      学完一个知识点，合上书问自己：<strong>「它要解决什么问题？」</strong>
+      学完一个知识点，合上页面问自己：<strong>「它要解决什么问题？」</strong>
       如果你只能说出"它是什么"，说明还停在<strong>背</strong>的阶段。
       能说出"没有它的话，哪里会很难受"——那才是学会了。
     </p>
   </div>
 
-  <h2>八、为什么没有视频（以及为什么这不算缺陷）</h2>
-
-  <p><strong>很多人打开第一反应是：「有视频吗？」</strong></p>
-  <p>没有。而且这是想过的。</p>
-
-  <table>
-    <tr><th style="width:26%">你可能觉得缺</th><th>其实</th></tr>
-    <tr><td><strong>视频</strong></td>
-        <td>写代码这件事，<strong>看视频的时候手是闲着的</strong> —— 看完还是不会写。这里的设计就是逼你动手</td></tr>
-    <tr><td><strong>配着讲的人</strong></td>
-        <td>每一节开头的「<strong>这一章在解决什么问题</strong>」就是干这个的</td></tr>
-    <tr><td><strong>操作截图</strong></td>
-        <td>界面类章节会明确告诉你「<strong>开着软件边看边点</strong>」，并把「找不到入口」写进「坑在哪」</td></tr>
-  </table>
-
-  <h3>有几样，是视频给不了的</h3>
-  <table>
-    <tr><th style="width:36%">这里有的</th><th>视频里有吗</th></tr>
-    <tr><td><strong>5,000 多条「坑在哪」</strong></td><td>❌ 会的人不踩坑（太熟了），所以不会讲</td></tr>
-    <tr><td><strong>1,600 多道自测题</strong></td><td>❌ 没有</td></tr>
-    <tr><td><strong>全文可搜</strong></td><td>❌ 视频只能拖进度条</td></tr>
-    <tr><td><strong>看到哪停到哪</strong></td><td>❌ 视频一暂停就断</td></tr>
-    <tr><td><strong>238 章的全貌</strong></td><td>❌ 视频得连着看几十小时才知道讲到哪</td></tr>
-  </table>
-
-  <h3>如果你就是想要视频陪着手感 —— B 站够用</h3>
-  <p><strong>免费的就行，不用花几千块。</strong>建议这么配：</p>
-  <table>
-    <tr><th style="width:32%">这块内容</th><th>怎么找</th></tr>
-    <tr><td><strong>阶段 1–2</strong>（Python 基础）</td><td>搜「Python 入门」，挑播放量高的。这块 B 站资源非常足</td></tr>
-    <tr><td><strong>阶段 5 以后</strong>（AI 应用）</td><td>直接搜技术名：「LangChain 教程」「RAG 实战」「LoRA 微调」</td></tr>
-    <tr><td><strong>项目类</strong>（阶段 9–11 等）</td><td>这类完整项目 B 站比较少 —— <strong>正好按这里的章节自己走一遍</strong></td></tr>
-  </table>
-
-  <div class="note warn">
-    <span class="t">★ 如果视频讲的和这里不一样</span>
-    <p style="margin:6px 0 0">
-      <strong>以这里的为准。</strong>
-      视频录完就固定了，软件版本会变；<strong>这份文字是跟着新版本维护的</strong>。
-      视频当"看人做一遍"用，步骤照这里来。
-    </p>
-  </div>
-
   <div class="note info">
-    <span class="t">最后一句</span>
+    <span class="t">从哪下手</span>
     <p style="margin:6px 0 0">
-      <strong>别再"等准备好了再开始"。</strong>
-      打开你最感兴趣的那一章，边看边敲 —— <strong>你现在就能开始。</strong>
+      别从第一页硬啃：<strong>找一个你正卡住的问题</strong>，在目录或搜索里找到对应的那一章，先把那个问题解决掉。
     </p>
   </div>
 

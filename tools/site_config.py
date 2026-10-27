@@ -22,8 +22,8 @@
 加新章节：在 NAV 里加一条，并在 content/ 下建同名 .md，然后跑 build_site.py。
 """
 
-SITE_TITLE = "建立知识库"
-SITE_SUB = "AI Agent 学习路线"
+SITE_TITLE = "AI Agent 学习路线"
+SITE_SUB = "从 Python 到 Agent 部署"
 
 # ---- 阶段目录名 / 显示名 ----
 S1_DIR = "阶段01-大语言模型基础与工程化实践"

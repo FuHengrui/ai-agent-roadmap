@@ -88,7 +88,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 try:
     from site_config import NAV, SITE_TITLE, SITE_SUB  # type: ignore
 except Exception:  # noqa: BLE001
-    NAV, SITE_TITLE, SITE_SUB = [], "建立知识库", "AI Agent 学习路线"
+    NAV, SITE_TITLE, SITE_SUB = [], "AI Agent 学习路线", "从 Python 到 Agent 部署"
 
 # 哪些章节已经有源文件（没有的渲染成灰色「待整理」，不做成死链）
 AVAILABLE = {i for i, c in enumerate(NAV) if (CONTENT / (c["src"] + ".md")).exists()}

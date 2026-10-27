@@ -45,7 +45,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 #   它们内部都把 stdout 重新包过一层 TextIOWrapper，两个一起 import 会把底层
 #   buffer 关掉（ValueError: I/O operation on closed file），所以那边改成了
 #   sys.stdout.reconfigure()，这里也就不能再自己包一层。
-from build_site import CONTENT, NAV, parse  # noqa: E402
+from build_site import CONTENT, NAV, parse, SITE_TITLE  # noqa: E402
 from sync_index import AVAILABLE, sidebar_html  # noqa: E402
 
 try:
@@ -288,7 +288,7 @@ def main() -> int:
     out.write_text("window.KB_SEARCH=" + payload + ";\n", encoding="utf-8", newline="\n")
 
     page = SEARCH_HTML.format(
-        brand="建立知识库", nav=sidebar_html("search.html"),
+        brand=SITE_TITLE, nav=sidebar_html("search.html"),
         nch=len(chs), npt=npt,
     )
     (SITE / "search.html").write_text(page, encoding="utf-8", newline="\n")
