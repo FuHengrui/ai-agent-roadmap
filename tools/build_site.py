@@ -415,7 +415,7 @@ def nav_html(cur_idx: int) -> str:
          '  <h2>总览</h2>',
          '  <a href="%s"%s>需求地图</a>' % (link_root(cur_idx, "index.html"),
                                             ' class="cur"' if cur_idx < 0 else ""),
-         '  <a href="%s">怎么用这个知识库</a>' % link_root(cur_idx, "README.html"),
+         '  <a href="%s">怎么读</a>' % link_root(cur_idx, "README.html"),
          '  <a href="%s">搜索</a>' % link_root(cur_idx, "search.html")]
     last_stage = None
     for i, c in enumerate(NAV):
