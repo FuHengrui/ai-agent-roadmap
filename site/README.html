@@ -302,40 +302,87 @@
     <tr><td><strong>怎么用最有效</strong></td><td>边看边动手。<strong>看懂只能到"懂"，敲一遍才到"会"</strong></td></tr>
   </table>
 
-  <h2>二、最快的用法：把链接丢给 AI</h2>
-  <p>你正在用的 AI 都行 —— DeepSeek、豆包、Kimi、通义、ChatGPT、Claude 都能干。把<strong>这一页的链接</strong>（或你要学的那一章链接）发过去，让它替你干下面这些活：</p>
+  <h2>二、把链接丢给 AI，让它带你做</h2>
 
+  <p>这一步能省掉你一半的时间，但有个前提：<strong>先分清你手里的是哪类 AI</strong>。</p>
+
+  <h3>两类 AI，别搞混</h3>
   <table>
-    <tr><th style="width:24%">让它干什么</th><th>怎么跟它说</th></tr>
-    <tr><td><strong>配环境</strong></td><td>「我 Windows 11、没装过 Python，按这个链接的第三章给我一步步装，每条命令先说它会改什么」</td></tr>
-    <tr><td><strong>出题 + 批改</strong></td><td>「按这章的知识点出 5 道题，先别给答案；我答完你判分，并指出我漏掉的关键点」</td></tr>
-    <tr><td><strong>排错</strong></td><td>「我在做这章的练习，报错如下：……。先判断是哪一步出的问题，再给最小修复，别重写整个项目」</td></tr>
-    <tr><td><strong>排学习计划</strong></td><td>「我要 4 周做出一个 RAG 问答系统，按这个站点的目录给我排周计划，每周说清验收标准」</td></tr>
+    <tr><th style="width:26%">类型</th><th style="width:30%">长什么样</th><th>能干什么 / 不能干什么</th></tr>
+    <tr>
+      <td><strong>聊天 AI</strong><br>（网页、App）</td>
+      <td>DeepSeek、豆包、Kimi、通义、ChatGPT 网页版、Claude 网页版</td>
+      <td>能讲步骤、出题、看报错、改代码片段。<strong>但它碰不到你的电脑</strong>——装软件、跑命令、读文件，都得你自己复制粘贴</td>
+    </tr>
+    <tr>
+      <td><strong>能动手的 AI</strong><br>（装在编辑器 / 终端里）</td>
+      <td>Cursor、Trae、Claude Code、Codex CLI、通义灵码</td>
+      <td>能直接改你的文件、替你敲命令、自己看报错。<strong>要装、要授权</strong>，个别要付费或填 API Key</td>
+    </tr>
   </table>
 
-  <p>下面三段可以直接复制，把 <code>&lt;链接&gt;</code> 换成你要学的那一章地址：</p>
+  <p><strong>一句话判断</strong>：能让它<em>自己</em>在你电脑上装东西的，才是「能动手的 AI」；只是跟你聊天的，再聪明也只能给你抄命令。</p>
 
-  <h3>① 让它带你配环境</h3>
-<pre><code>我在学这份笔记的第三章：&lt;链接&gt;
-我的环境：Windows 11 / 内存 8GB / 没装过 Python。
-请按这一章的顺序，一步一步给我要执行的命令。每条命令先说：它会改什么、装在哪。
-我给完输出你再给下一条；遇到报错先问我，不要自己猜着往下走。</code></pre>
-
-  <h3>② 让它出题、批改</h3>
-<pre><code>下面是这一章的内容：&lt;链接&gt;
-请按知识点出 5 道题，只出题、先不给答案。
-我答完后你判分，指出我漏掉的关键点；如果我答得含糊，追问一句“为什么”。</code></pre>
-
-  <h3>③ 让它帮你排错</h3>
-<pre><code>我在做这一章的练习：&lt;链接&gt;
-报错原文（完整粘贴）：
-……
-请先判断是哪一步出的问题，再给最小修复步骤，不要重写整个项目。</code></pre>
+  <h3>路线 A：手里只有网页版 AI（最常见）</h3>
+  <p>也能用，就是多一步「复制粘贴」。流程固定成四步，别跳：</p>
+  <table>
+    <tr><th style="width:12%">步</th><th>做什么</th></tr>
+    <tr><td><strong>1</strong></td><td>把下面的提示词（含这一章的链接）发给 AI</td></tr>
+    <tr><td><strong>2</strong></td><td>它给你<strong>一条</strong>命令，你在「终端」里敲——Windows 上按 <code>Win + R</code>，输 <code>powershell</code> 回车，出来的黑框框就是</td></tr>
+    <tr><td><strong>3</strong></td><td>敲完把黑框框里的输出<strong>整段选中复制</strong>（右键→标记→框选→回车），原样贴回给 AI</td></tr>
+    <tr><td><strong>4</strong></td><td>它给下一条。装完一个，再回来说一句「下一步」</td></tr>
+  </table>
 
   <div class="note warn">
-    <span class="t">一个前提</span>
+    <span class="t">它说「打不开这个链接」怎么办</span>
     <p style="margin:6px 0 0">
-      AI 会瞎编，尤其是<strong>版本号和 API</strong>。它给的命令先看一遍再敲；内容和这一章对不上时，<strong>以这里的为准</strong>——这里的版本是跟着维护的。
+      很多网页版 AI 读不了外部链接。<strong>打开那一章，Ctrl + A 全选 → Ctrl + C 复制 → 整段贴给它</strong>，再说「这是我正在学的一章」。
+      贴完再发提示词，它就有内容可依了。
+    </p>
+  </div>
+
+  <h3>路线 B：用 Cursor / Trae（能直接动手）</h3>
+  <p>这两个是编辑器，装上就能用，界面上有对话框。用法：<strong>新建一个空文件夹 → 用 Cursor 打开它 → 把下面的提示词发过去</strong>。它会自己在文件夹里建文件、敲命令、跑起来给你看，你只需要盯着它做了没有、报错没有。</p>
+  <p>好处是不用你复制粘贴；坏处是它<strong>改错了你也看不出来</strong>——所以每做完一步，让它「说一下你刚改了什么」。</p>
+
+  <h3>三段提示词，直接复制</h3>
+  <p>把 <code>&lt;链接&gt;</code> 换成你要学的那一章地址。第一段是最常用的。</p>
+
+  <p><strong>① 让它配环境（含「我什么都不懂」声明）</strong></p>
+<pre><code>我在学这份笔记的第一章：&lt;链接&gt;
+
+我的情况：Windows 11，内存 8GB，Python 没装过，命令行也没用过，
+我什么都不懂，脾气还不好，没耐心。
+
+请你结合这一章要学的内容，和我这台机器的配置，
+帮我把学习环境和要用的工具一次配好。
+
+请按这个规矩来：
+1. 一次只给我一条命令，先说清这条命令干什么、会装在哪；
+2. 别讲原理，别一次给一堆，我看不完；
+3. 我给完输出你再给下一条；报错了我把整段贴给你，
+   你先判断是哪一步出的问题，不要猜着往下走；
+4. 我问的蠢问题，直接回答，别评价我。</code></pre>
+
+  <p><strong>② 让它出题、批改</strong></p>
+<pre><code>下面是这一章的内容：&lt;链接&gt;（打不开我就贴正文给你）
+
+请按知识点出 5 道题，只出题、先别给答案。
+我答完后你判分，指出我漏掉的关键点；
+我答错的时候别直接给答案，先给一句提示，让我再想一次。
+讲的时候当我完全没基础，术语出现一次就解释一次。</code></pre>
+
+  <p><strong>③ 让它帮你排错</strong></p>
+<pre><code>我在做这一章的练习：&lt;链接&gt;
+报错原文（我完整粘贴，不删行）：
+……
+请先判断是哪一步出的问题，再给最小修复步骤。
+不要让我重装 Python、重装系统、删掉重来——先给最小的那个改法。</code></pre>
+
+  <div class="note info">
+    <span class="t">一句提醒</span>
+    <p style="margin:6px 0 0">
+      AI 会瞎编，尤其是<strong>版本号和 API</strong>。它给的命令先看一遍再敲；说法和这一章冲突时，<strong>以这里的为准</strong>——这里的版本是跟着维护的。
     </p>
   </div>
 
