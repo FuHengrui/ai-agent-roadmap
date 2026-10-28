@@ -500,13 +500,13 @@ node1: $SPARK_HOME/sbin/start-master.sh
 node1: $SPARK_HOME/sbin/start-workers.sh
 # 3. node2 起备胎 Master（同样 start-master.sh，ZK 会知道谁是备）
 node2: $SPARK_HOME/sbin/start-master.sh</pre>
-<p>验证：正常时 8080 页面只有 node1 的 Master 是 ALIVE，node2 的是 STANDBY；<strong>杀掉 node1 的 Master 进程，几秒后 node2 自动变 ALIVE</strong>——这就是高可用在工作。</p>
+<p>验证：正常时 8080 页面只有 node1 的 Master 是 ALIVE，node2 的是 STANDBY；<strong>杀掉 node1 的 Master 进程，1~2 分钟内 node2 自动变 ALIVE</strong>——这就是高可用在工作。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>起完两个 Master 都显示 ALIVE</td><td>说明 ZK 配置没生效（没配 SPARK_DAEMON_JAVA_OPTS 或 ZK 没起）。先 <code>zkServer.sh status</code> 确认 ZK 三台都在，再重启 Master</td></tr>
-<tr><td>备胎 Master 抢权失败一直 STANDBY</td><td>正常！备胎本该 STANDBY。<strong>主动把主 Master 杀掉测试</strong>，几秒内看它是否变 ALIVE</td></tr>
+<tr><td>备胎 Master 抢权失败一直 STANDBY</td><td>正常！备胎本该 STANDBY。<strong>主动把主 Master 杀掉测试</strong>，1~2 分钟内看它是否变 ALIVE</td></tr>
 <tr><td>改了 spark-env.sh 但 Master 没重启</td><td>配置只在启动时读。<strong>改配置 → 杀 Master 进程 → 重启</strong>，缺一步都白改</td></tr>
 <tr><td>客户端提交时 master 地址写死 node1</td><td>高可用下应写 <code>spark://node1:7077,node2:7077</code>（逗号分隔两个候选），这样 node1 挂了客户端自动找 node2</td></tr>
 </table>
@@ -526,7 +526,7 @@ jps
 # ③ 功能自检：提交一个 wordcount，确认真的跑在集群
 spark-submit --master spark://node1:7077 ... 
 
-# ④ 高可用自检：杀掉主 Master，看备胎几秒内 ALIVE
+# ④ 高可用自检：杀掉主 Master，看备胎1~2 分钟内 ALIVE
 kill -9 &lt;node1 Master PID&gt;
 # 浏览器刷新两节点 8080：node2 应变为 ALIVE
 
