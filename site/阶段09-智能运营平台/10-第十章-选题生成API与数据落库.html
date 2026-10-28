@@ -285,7 +285,10 @@
 <p>AI 的大脑（选题 Bot）装好了，后端也要会"使唤"它并把结果存下来。本章是<strong>前后端与 AI 第一次真正打通</strong>的关键一战：前端点"开始生成" → 后端调 Coze 选题 Bot → 拿到 50 标题 JSON → 提取清洗 → 写入 t_sections/t_titles → 前端能查主题列表、能按主题加载全部内容。</p>
 <p>本章画重点：<strong>AI 输出是"半可信"的</strong>——模型可能多打一个反引号、少一个冒号、把解释文字和 JSON 混在一起。所以"从 AI 文本里可靠地抠出 JSON"（_extract_json）是本项目最容易翻车、也最见功力的环节。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 9 章的 Coze 调用调通了就能开始，这章不用装新东西，重点在接口和落库。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能跑通 /start 生成到落库、再从 /themes 查回来，能从乱文本里抠出 JSON，就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：Coze API 调用与工作流——AI 调用层就绪</span>
 <span class="node"><span class="here">本章 ← 你在这里：选题生成 API——/start → Coze → 解析 → 落库 → 可查询</span></span>

@@ -5,6 +5,12 @@
 上一章骨架跑起来了，Postgres 里却一张表都没有。没有表，用户注册没地方存、案例没地方放、聊天记录没地方写。本章用 **Tortoise ORM**（Python 原生 async ORM）把第一章蓝图里的四张核心表落成代码：`User`（用户）、`Case`（案例）、`ChatSession/ChatMessage`（会话与消息）、`GeneratedDocument`（文书）。
 重点是搞懂三件事：**UUID 主键怎么选**、**Postgres 数组（法条列表）在 ORM 里怎么表达**、**外键关系怎么挂**。学完本章，数据库里会有完整表结构，第 9 章的聊天接口和第 3 章的建表逻辑全部打通。
 
+@@prep 开始之前
+第 3 章的骨架能启动就能开始，这章不用装新东西，写的是四个模型类。
+
+@@goal 学到这儿就够了
+能写出 User/Case/会话/文书这几张表的模型、启动即自动建表，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章（第三章 FastAPI 骨架）：init_db() 已在 lifespan 里调用 Tortoise.generate_schemas(safe=True)，就等模型类
 **本章** 你在这里：定义四个 Model 类 + 事务写法——建表、写库、查库的 ORM 能力

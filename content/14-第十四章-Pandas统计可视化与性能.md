@@ -6,6 +6,12 @@
 
 学完你能回答：value_counts 和萧群、pivot_table 和 crosstab 的区别、df.plot 和 matplotlib 的关系、Pandas 三大主流图怎么出、大表读取怎么提速、向量化为什么比循环快。
 
+@@prep 开始之前
+上一章的合并和时间索引会了就能开始，这章不用装新东西，装好 matplotlib 即可。
+
+@@goal 学到这儿就够了
+能用 pivot_table 和 crosstab 做出统计表，能用 df.plot 直出图，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 **上一章**：数据合并与时间序列——跨表、跨时间
 **本章** ← 你在这里：Pandas 收官——透视统计、直出图表、性能优化，Pandas 五章到此闭环

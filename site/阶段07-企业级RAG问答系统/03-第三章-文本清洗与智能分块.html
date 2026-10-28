@@ -285,7 +285,10 @@
 <p>上一章把 PDF 解析成了文本，但你先别急着入库——<strong>刚解析出来的文本根本不能直接喂给大模型</strong>：页眉页脚一页一页重复、页码混在正文中间、Word 转换出来一堆空行、英文单词被断行切开……这些噪音会让向量检索"精准命中垃圾"。</p>
 <p>更关键的是第二个问题：<strong>一整份 PDF 搁那儿，向量化成一个向量是没用的</strong>——用户问的是文档里某一个小问题，你要的是"能精准定位到相关那一小段"。所以解析完之后，还要做两道工序：<strong>清洗（去噪音）</strong> 和 <strong>分块（切小块）</strong>。这一章把这两道工序做扎实。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>接着上一章的工程和 uv 环境往下写就行，这章不用再装新东西——清洗和分块都在本地跑。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清清洗要干掉哪几类噪音、整篇向量化为什么没用，能自己调块大小和重叠把文档切好，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：项目搭建与文档解析——四种格式的文档被统一读成了文本</span>
 <span class="node"><span class="here">本章 ← 你在这里：文本清洗与智能分块——把"原始文本"变成"干净的、可精确定位的小块"</span></span>

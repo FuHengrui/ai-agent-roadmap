@@ -6,6 +6,12 @@
 
 **Agent Skills（技能系统）** 解决这个问题：把"开发流程 + 参考文档 + 开发工具 + 静态资源"打包成一个标准文件夹（SKILL.md + references/ + scripts/ + assets/），即插即用——就像给 Agent 装配"职业技能包"。Claude Code 生态里这类技能已成标准（本套件的前端设计、PPT、文档、表格技能都是）。
 
+@@prep 开始之前
+要有 Claude Code 这类能读 ~/.claude/skills 的 Agent；不用装环境，但要真写一个技能。
+
+@@goal 学到这儿就够了
+能说清 SKILL.md 里元信息和正文各写什么、四个目录怎么分工，能写出一个能被加载的技能包，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：A2A 协议——Agent 之间互联互通
 **本章** ← 你在这里：Agent Skills 技能系统——可复用的技能包（阶段 8 收尾章）

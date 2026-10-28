@@ -285,7 +285,10 @@
 <p>上一章给了两件武器：归一化（治量纲）和正则化（治过拟合）。这一章把它们<strong>组装成可用的完整算法</strong>：普通线性回归的正则化衍生三兄弟——<strong>Ridge（岭回归）、Lasso、ElasticNet</strong>，外加工程味十足的 <strong>SGDRegressor</strong>。然后解决另一个大问题：<strong>数据不是直线关系怎么办？</strong> 答案是<strong>多项式升维</strong>——把特征 x 变成 x²、x³ 再送进线性模型，让"直线"弯起来。</p>
 <p>这一章结束，线性回归模块就完整了：从"直来直去"的基准版，进化到"会转弯、会防过拟合、会自己选特征"的成熟模型。这也是 Kaggle 小项目里最常用的一类基线模型。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的 L1、L2 和 λ 懂了就能开始，这章不用装新东西，Ridge、Lasso 在 sklearn 里直接调。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 Ridge、Lasso、ElasticNet 各适合什么数据，能用多项式升维并选对 degree，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章讲清归一化与正则化的原理（L1/L2、λ）。<strong>本章落地为四个具体算法：衍生算法 + 多项式升维</strong>。下一章就是本模块的大结局：用"保险花销预测"把线性回归、归一化、正则化、多项式升维整套流程跑一遍完整实战。</span>
 </div>

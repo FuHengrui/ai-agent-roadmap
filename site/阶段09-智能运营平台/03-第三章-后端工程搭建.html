@@ -285,7 +285,10 @@
 <p>数据库建好了，接下来要建起后端服务。这一章解决三件基础但决定成败的事：<strong>用 uv 把 Python 工程规范地初始化出来</strong>（虚拟环境 + 依赖管理）、<strong>把五类外部配置正确读进应用</strong>（.env + .python-version + pyproject）、<strong>把 Tortoise ORM 的数据源配置写对</strong>——尤其是 MySQL 密码带特殊字符时那个"连接串编码"的坑。</p>
 <p>为什么这么早谈技术细节？因为后端的 main.py、models、Aerich 迁移全都依赖 config.py 正确工作，<strong>配置错了，后面十行代码九行报错</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>需要上一章的 MySQL 库已建好、能连；这章要装 uv，用它建工程装依赖。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能用 uv 建出工程、依赖写进 pyproject，config.py 真能连上 MySQL，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：数据库设计与初始化——8 张表建好、SQL 导入完成</span>
 <span class="node"><span class="here">本章 ← 你在这里：后端工程搭建——uv 建工程、装依赖、写 config.py</span></span>

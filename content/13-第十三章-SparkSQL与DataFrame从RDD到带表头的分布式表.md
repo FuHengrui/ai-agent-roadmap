@@ -6,6 +6,12 @@ RDD 很好，但用久了你会烦：**没有字段名**（`_._1`、`_._2` 全�
 
 本阶段后半程的主角是 **DataFrame / Dataset**：它们和 RDD 是什么关系、怎么互相转换、为什么 SparkSQL 更快。学完你能：**看懂"RDD → DataFrame"的升级逻辑，会创建和转换 DataFrame，明白"为什么 Spark 官方建议优先用 SparkSQL"**。
 
+@@prep 开始之前
+还是第三章那套环境，不用装新东西；RDD 的算子先写过，才看得出 DataFrame 补了什么。
+
+@@goal 学到这儿就够了
+能说清 DataFrame 比 RDD 多了什么、Catalyst 优化了什么，并会三种方式造出来，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 前 12 章：RDD 全体系（算子、内核、实战）
 **本章** ← 你在这里：SparkSQL 开篇——DataFrame 数据模型、SparkSession、与 RDD 的关系

@@ -6,6 +6,12 @@
 
 学完这一章，你能：**为"这段数据要被复用"的场景，正确选择 Pipeline/Cache/Checkpoint 三种手段，并解释各自的代价**。
 
+@@prep 开始之前
+还是第三章的 Local 环境，不用装新东西；上一章的 Stage 划分看过，这章才接得上。
+
+@@goal 学到这儿就够了
+数据要复用时能选对 cache 还是 checkpoint，并说清两者的代价和血缘差别，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：内核第一块（Job/Stage/Task、宽窄依赖、shuffle 机制）
 **本章** ← 你在这里：内核第二块——Pipeline 执行、缓存三兄弟（cache/persist/checkpoint）

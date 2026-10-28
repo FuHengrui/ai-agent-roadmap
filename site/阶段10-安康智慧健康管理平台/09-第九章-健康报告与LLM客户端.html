@@ -285,7 +285,10 @@
 <p>血糖分析算出了数字，可患者要看的是"医生怎么说"——<strong>把统计数字变成人话</strong>，这就是 LLM 的工作。本章同时拿下两件事：<strong>一是 LLMClient 封装</strong>（为什么把 LangChain 的 ChatOpenAI 包一层），<strong>二是健康报告生成接口</strong>（周报/月报自动生成：统计 → 摘要 → LLM 建议 → 落库展示）。</p>
 <p>关键认知：<strong>LLM 是"文本生成器"，不是"计算器"</strong>——所有数字必须由 health_analyzer 算好、拼进提示词，LLM 只负责"组织语言给建议"。把计算交给模型是新手最常见的错误。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>要有一个能用的模型 Key（DashScope 兼容端点）；第 8 章的引擎跑通了就能开始。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能封装出 LLMClient、让周报从统计数字生成成一段建议，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：DietAdvisor 规则引擎</span>
 <span class="node"><span class="here">本章 ← 你在这里：LLM 客户端 + 健康报告——第一次让大模型开口说话</span></span>

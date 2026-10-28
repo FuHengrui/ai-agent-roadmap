@@ -286,7 +286,10 @@
 <ul><li>为什么你敲 <code>java</code>、<code>mysql</code> 命令系统"认得"？因为 PATH 环境变量里存着命令的地址。很多人配 JAVA_HOME 时把 PATH 覆盖了，重启后连 ls 都找不到——这个坑后面装 JDK 必踩。</li><li>为什么新加一块硬盘，系统里根本"看不到"它？因为硬盘要经过<strong>分区 → 格式化 → 挂载</strong>三步才出现在目录树里，而且默认挂载重启就丢。不会配 fstab，重启一次数据目录就消失了。</li></ul>
 <p>这一章先讲环境变量（PATH、export、profile 文件、source），再完整走一遍"新硬盘从零到能用且重启不丢"的全流程（df/lsblk 查看、fdisk 分区、mkfs 格式化、mount 挂载、fstab 永久挂载）。配完这章，你才算真正"驯服"了这台机器。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的命令会连起来用就能开始，这章不用装新东西；挂新硬盘在虚拟机里做更安全。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 PATH 怎么决定命令能不能找到，能分区、格式化、挂载新盘并写进 fstab，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章</strong>：打包压缩与文件查找管道——会备份、会找了</span>
 <span class="node"><span class="here">本章 ← 你在这里：环境变量（命令从哪来）+ 磁盘管理（数据放哪去）</span></span>

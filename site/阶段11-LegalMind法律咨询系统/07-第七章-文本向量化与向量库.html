@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章 LLM 会说话了，但它是"无记忆的百科全书"——你问它"和我情况最像的判例"，它只能背书，因为它<strong>没有检索能力</strong>。法律咨询真正的价值在"检索到对的案例"这一步。 裁判文书是<strong>非结构化长文本</strong>，不能靠 SQL 的 LIKE 模糊匹配（"该案是离婚纠纷赔偿多少多少"这种语义根本对不上关键词）。本章用 <strong>BGE 嵌入模型把文本变成向量 + ChromaDB 向量库存取</strong>：语义相近的案例在向量空间里距离近，一查一个准。学完本章，<code>build_index.py</code> 跑完，法律语料就变成"可被语义检索的向量库"。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 6 章能调模型就能开始；这章要下 BGE 中文嵌入模型（约 90MB）建向量库。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能跑完索引脚本、用语义搜到相近案例，说清向量为什么比 LIKE 准，就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（第六章 LLM 客户端）：模型能对话了，但只能依据 prompt 里给的内容回答</span>
 <span class="node"><span class="here">本章 你在这里：把 cases 表的裁判文书切片 → 嵌入成向量 → 存进 ChromaDB——给 RAG 备好"弹药库"</span></span>

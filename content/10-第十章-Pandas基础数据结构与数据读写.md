@@ -6,6 +6,12 @@
 
 这一章把两步走完：**先认识 Series/DataFrame 怎么创建，再打通读写（Excel/CSV/MySQL）**。学完你能回答：Series 和 ndarray 的关系、DataFrame 怎么从字典/文件/数据库来、读 Excel 和 CSV 的差异点、DataFrame 怎么存回文件和数据库。
 
+@@prep 开始之前
+上一章的 NumPy 会用就能开始，Pandas 随 Anaconda 已有；读 Excel 要 openpyxl。
+
+@@goal 学到这儿就够了
+能建 Series 和 DataFrame，能用 read_excel、read_csv 读进来并保存，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 **上一章**：NumPy 计算进阶——数值计算的底座
 **本章** ← 你在这里：Pandas 开篇——Series/DataFrame 两大结构 + Excel/CSV/MySQL 读写，数据科学的核心工具正式登场

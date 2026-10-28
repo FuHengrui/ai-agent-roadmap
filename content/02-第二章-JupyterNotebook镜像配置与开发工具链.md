@@ -6,6 +6,12 @@
 
 这一章就是"顺滑化"三件套：**换国内镜像源 → 上手 Jupyter Notebook → 配好 IDE 与项目依赖管理**。学完你能回答：conda/pip 怎么换源、Jupyter 怎么装怎么启动怎么操作、PyCharm/VSCode 怎么选、requirements.txt 和 pyproject.toml 是干嘛的、uv 为什么是效率神器。
 
+@@prep 开始之前
+上一章的 Anaconda 装好、conda 能用就能开始；这章要动手换源、装并启动 Jupyter。
+
+@@goal 学到这儿就够了
+能说清换源改的是哪个文件、Jupyter 两种单元格和双模式怎么用，能新建并跑通一个笔记本，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 **上一章**：装好 Anaconda 并掌握 conda 虚拟环境——环境"能跑"了
 **本章** ← 你在这里：把环境调到"好用"——换源提速、Jupyter 交互开发、IDE 配置、依赖管理

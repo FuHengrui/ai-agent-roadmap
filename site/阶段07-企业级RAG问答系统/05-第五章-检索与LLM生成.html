@@ -285,7 +285,10 @@
 <p>库建好了，用户提问了，真正的"临门一脚"来了：<strong>怎么从几十万块文本里把"最相关的那几块"捞出来，再让大模型"只照着这几块"回答？</strong> 这里有两个大坑等着新手：一是检索边界不设防——捞出来一堆低相关的垃圾，大模型照单全收开始编；二是提示词不会写——上下文和问题糊在一起，模型答得"毛估估"。</p>
 <p>这一章把问答半条链焊完：先讲检索服务怎么配（top_k、相似度阈值、metadata 过滤），再讲 LLM 怎么统一封装（同步/流式），最后讲 RAG 提示词模板——<strong>为什么"不知道要直说"、上下文怎么去重截断</strong>。这是整个系统"出活"质量的关键一章。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>接着前四章的项目往下写，不用装新东西；但 .env 里得填好至少一家大模型的 Key，否则生成那步跑不出来。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 top_k 和阈值各在挡什么、提示词为什么写不知道就直说，能把检索到生成串起来答一次，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：嵌入模型与向量存储——小块文本入库成向量，检索有库可查</span>
 <span class="node"><span class="here">本章 ← 你在这里：检索与 LLM 生成——提问时检索相关块，拼提示词让模型照着答</span></span>

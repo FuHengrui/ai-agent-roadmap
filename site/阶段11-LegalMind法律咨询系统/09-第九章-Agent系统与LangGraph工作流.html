@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前几章攒了一堆零件：意图识别、案例检索、法律问答、文书生成——但<strong>谁来决定先用哪个、怎么串起来</strong>？写死 if-else 只能处理"能预测的顺序"，可用户的真实请求千变万化：有人问问题（问答）、有人要写诉状（文书）、有人想查判例（检索）。顺序是<strong>运行时由意图决定的</strong>。 正好可以用 LangGraph 来解决：这种"按条件分叉的多步任务"正是有向状态图的强项。LegalMind 用 LangGraph 把所有能力编排成一张图——<strong>总是先走意图识别，再按识别结果条件路由到检索/文书</strong>，工作流完成一次完整协作。学完本章，你的 AI 系统从"单打独斗的工具集合"升级为"会自己排兵布阵的 Agent 系统"。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 8 章的检索链路通了就能开始；langgraph 已装好，这章不用装新东西。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能把四个 Agent 编成状态图、按意图自动分叉到检索或文书，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（第八章 RAG 检索）：RetrievalAgent 已可用，检索质量可调</span>
 <span class="node"><span class="here">本章 你在这里：把四个 Agent 装进 LangGraph 状态机——分工、路由、记忆，一次编排</span></span>

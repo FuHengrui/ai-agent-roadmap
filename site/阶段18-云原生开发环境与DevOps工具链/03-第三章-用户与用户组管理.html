@@ -285,7 +285,10 @@
 <p>一台 Linux 服务器往往几十个人用：开发、运维、业务人员都往里挤。问题来了——<strong>系统怎么知道谁是 root、谁只能看不能动？你怎么给新同事开账号、给离职的人销号？</strong></p>
 <p>Windows 那套"一个管理员密码包打天下"在服务器上根本行不通：谁拿到 root 密码就能删全世界。Linux 的答案是<strong>用户 + 用户组 + 权限</strong>这套体系：一人一个账号，身份决定能干什么。本章就搞定账号的增删改查、密码管理，以及 su / sudo 这两种"临时变身管理员"的方式——这是进服务器的第一张门禁卡。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的虚拟机连得上就能开始，这章不用装新东西，useradd、passwd 这些要自己敲。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 UID/GID 和 /etc/passwd 是什么，能建用户、改属组、用 su/sudo 切身份，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章</strong>：虚拟机网络配置与 XShell 远程连接——你已经能远程登录服务器</span>
 <span class="node"><span class="here">本章 ← 你在这里：搞清"谁"在用这台机器，管理账号与身份</span></span>

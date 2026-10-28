@@ -285,7 +285,10 @@
 <p>前五章把"入库、检索、生成"都做完了——但这些都是<strong>库函数和类</strong>，用户没法用。企业级系统的最后一棒，是把它变成<strong>浏览器里能点的网页</strong>：上传文档、输入问题、看到答案和出处。这中间隔着两层功夫：一是把能力包成标准的 HTTP 接口（FastAPI），二是写一个前端页面把这些接口调起来。</p>
 <p>这一章解决：API 怎么设计（请求/响应模型、健康检查、依赖注入）、上传接口怎么和"仅解析"跟"解析+入库"两种模式兼容、前端怎么接流式输出、以及<strong>联调时最容易踩的跨域（CORS）坑</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>后端沿用上一章的工程；前端要能跑起 Vue3 页面，联调前先用 curl 确认接口活着，再配 CORS。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清三个路由各管什么、sources 为什么是溯源关键，能排查一次 CORS 报错并看到流式输出，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：检索与 LLM 生成——问答链路在代码层闭合（检索→拼上下文→生成）</span>
 <span class="node"><span class="here">本章 ← 你在这里：API 接口与前端联调——把能力包成 HTTP，浏览器可用</span></span>

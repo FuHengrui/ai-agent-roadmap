@@ -285,7 +285,10 @@
 <p>"跑个深度学习模型，笔记本风扇都快起飞了""实验室没 GPU 服务器，租云平台又太贵""想学 AI 但电脑配置太拉胯"——这三句话是绝大多数入门同学的现状。深度学习模型训练和推理依赖大规模 GPU 算力，本地显卡不支持 CUDA 就寸步难行。这一章要解决的问题只有一句：<strong>怎么在普通电脑上，白嫖到一块够用的云端 GPU/TPU，把模型跑起来。</strong></p>
 <p>本章全是平台操作（登录、绑定、授权、看额度），<strong>全文代码不到 10 行</strong>。建议<strong>边看边点</strong>：开一个浏览器跟着步骤走，卡在哪一步就回看哪一步。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>只需浏览器，注册 ModelScope 并绑定阿里云账号、领免费额度，就能开第一台 Notebook。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 PAI-DSW 与 EAIS 的差别和免费额度怎么算，能自己开出一台能跑代码的 Notebook，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">前面阶段讲了 Python、大模型原理、微调、Agent、OpenClaw、Web 系统构建……但"在哪跑"这个问题一直没系统解决：本地 4GB 内存、无独显跑不动小模型微调，只能干看。从这一章开始，进入<strong>开发工具平台</strong>环节：<strong>本章先解决"有没有 GPU 用"（ModelScope 云端 Notebook），下一章解决"环境怎么配"（Conda 与 Web-IDE），再后面用 AutoDL 讲"按任务选 GPU 与远程开发"</strong>。学完这两章，你就有了一个浏览器里能白嫖 GPU 的深度学习练手基地。</span>
 </div>

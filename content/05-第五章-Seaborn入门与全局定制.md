@@ -6,6 +6,12 @@
 
 这一章解决 Seaborrn 的"**选型与全局定制**"：为什么数据分析用它、怎么装、自带数据集哪来的、四套全局风格怎么设、调色板体系怎么玩。学完你能回答：Seaborn 和 Matplotlib 的关系、set_style/set_context/set_palette 各自管什么、调色板的"离散/连续"两类怎么选。
 
+@@prep 开始之前
+上一章的 Matplotlib 会用就能开始，先 pip install seaborn，自带数据集要联网下一次。
+
+@@goal 学到这儿就够了
+能说清 Seaborn 和 Matplotlib 的分工，能用四件套一次改全局风格并指定 ax，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 **上一章**：Matplotlib 常用图表类型——底层绘图库"全都能画"
 **本章** ← 你在这里：Seaborn 入门——建立在 Matplotlib 之上的统计绘图库，默认就好看、默认带统计量

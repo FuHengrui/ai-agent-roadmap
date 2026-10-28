@@ -285,7 +285,10 @@
 <p>第二章结尾留了个悬念：解析解 w* = (XᵀX)⁻¹Xᵀy 一步到位，但遇到特征多、数据大、损失非凸的场景就"算不动了"。这一章学<strong>梯度下降法（Gradient Descent）</strong>——它不追求一步到位，而是<strong>一步一步试探着往下走</strong>，最终也走到山谷最低点。它是深度学习的"心脏"：PyTorch、TensorFlow 训练神经网络，底层全是梯度下降。</p>
 <p>这章的思维模型值得单独强调：<strong>把求最优解想象成"蒙眼下山"</strong>——你看不到全局，只能靠脚下的坡度判断往哪迈，一步步走，总能走到最低处。把"山谷→梯度→步长（学习率）→收敛"这条线理解透，机器学习就再没有秘密了。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装环境，纸笔跟着推更新公式；上一章解析解的三条硬伤先看过，才知道它补什么。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清梯度指向哪、更新公式每步在做什么，能判断学习率太大太小各会怎样，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">前三章建立线性模型、MSE 损失和解析解，并暴露了解析解的三条硬伤。<strong>本章回答"为什么要有梯度下降、梯度下降凭什么能走到最优点"</strong>。下一章讲它的三个变体（批量/随机/小批量），再下一章上代码，随后进入归一化、正则化，把"学得稳"的问题一并解决。</span>
 </div>

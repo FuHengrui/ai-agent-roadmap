@@ -286,7 +286,10 @@
 <p>Spark 对实时的答案叫 <strong>Spark Streaming</strong>，核心思想很优雅：<strong>把"连续不断的数据"切成"一段一段的小批"，每一小批用你熟悉的 Spark 批处理来算</strong>（微批次模型）。这意味着前面学的 RDD 算子、内核、调优<strong>全部直接复用</strong>——学它几乎没有新算子的负担，只有几个新概念：DStream、窗口、有状态。</p>
 <p>学完这一章你能：<strong>理解微批次架构、用 DStream 做无状态/有状态/窗口实时统计，并为 Streaming 程序配置 checkpoint</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装新东西，Local 环境就能跑；Socket 输入要有人往 9999 端口喂数据，本机开着终端就行。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清微批和真流的差别，用 DStream 写出无状态、有状态、窗口三种统计，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">前 15 章：批处理全体系（RDD → SQL）</span>
 <span class="node"><span class="here">本章 ← 你在这里：实时第一课——Streaming 架构与 DStream 编程</span></span>

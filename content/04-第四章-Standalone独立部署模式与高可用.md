@@ -8,6 +8,12 @@
 
 学完这一章，你能：**手写 Standalone 集群的配置与启动脚本，搭出带高可用的双 Master 集群**。
 
+@@prep 开始之前
+要动手，也得有机器：三台 CentOS 节点（可一台虚拟机克隆）加 ZooKeeper，上一章的 Local 先跑通。
+
+@@goal 学到这儿就够了
+能手写 Master/Worker 配置起一套集群，再用 ZooKeeper 做 Master 高可用，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章（Local 模式与 WordCount）：你在单机上跑通了第一个 Spark 程序
 **本章** ← 你在这里：把程序搬到真正的多机集群（Standalone），并给它装上"老大挂了自动换人"的高可用

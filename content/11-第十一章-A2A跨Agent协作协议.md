@@ -6,6 +6,12 @@
 
 A2A（Agent-to-Agent Protocol，Google 于 2025 年 4 月发布）标准化了 Agent 之间的通信——不管用什么框架、部署在哪台服务器，Agent 都能发现彼此、派发任务、传回结果。这是 Agent 生态"互联互通"的协议基础。
 
+@@prep 开始之前
+要装 a2a-sdk，能把 Agent 起成本地服务；上一章的 LangGraph 环境留着做集成。
+
+@@goal 学到这儿就够了
+能说清 Agent Card、任务、产物装什么、状态怎么流转，能把 Agent 包成 Server 调通，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：Agent 实战与 LangSmith——单进程内多 Agent 协作（Supervisor）
 **本章** ← 你在这里：A2A 协议——跨框架、跨服务器的 Agent 协作

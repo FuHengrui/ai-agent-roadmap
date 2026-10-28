@@ -286,7 +286,10 @@
 <p>更需要警惕的是：<strong>很多行动算子行为相似但风险天差地别</strong>。<code>collect()</code> 会把全部数据拉回 Driver（大数据直接 OOM），<code>take(5)</code> 只取 5 条很安全；<code>foreach</code> 在 Executor 跑、<code>collect</code> 后遍历在 Driver 跑——用错一个，要么内存爆炸，要么结果完全不对。</p>
 <p>学完这一章，你能：<strong>为每个需求选对行动算子（取数/统计/保存/遍历），并规避 collect 类算子的内存陷阱</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>继续用第三章的 Local 环境，不用装新东西；转换算子的惰性先弄明白，这章正好接上。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能按需求选对 collect、take、foreach，并说清谁有 OOM 风险，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（转换算子）：你会把 RDD 变换来变换去，但还没真正"算出结果"</span>
 <span class="node"><span class="here">本章 ← 你在这里：行动算子——按启动按钮的最后一环，触发计算、产出结果</span></span>

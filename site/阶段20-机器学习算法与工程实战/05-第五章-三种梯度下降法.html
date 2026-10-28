@@ -285,7 +285,10 @@
 <p>上一章给了梯度下降的"骨架"（方向+步长+循环），但漏了一个关键参数：<strong>每走一步，用多少数据来算梯度？</strong> 用全部 → 太慢；用 1 条 → 太飘。这一章讲清三种选择：<strong>批量梯度下降（BGD）、随机梯度下降（SGD）、小批量梯度下降（Mini-Batch GD）</strong>，以及配套的 <strong>epoch（轮次）与 batch（批次）</strong> 概念。</p>
 <p>这不仅是理论的三种流派，更是工程上的三个模式：深度学习框架里的 <code>batch_size</code> 参数、训练日志里的 epoch 轮数，全部源自这一章。学会这三个概念，你就看懂了几乎所有训练日志。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的更新公式会写就能开始，这章不用装环境，三种方法的流程在纸上对比着看。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清三种方法各用多少样本算梯度、优缺点在哪，能分清 epoch 与 batch，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章建立了梯度下降的通用框架（初始化→算梯度→更新→收敛）。<strong>本章把"按什么粒度算梯度"说透：BGD/SGD/Mini-Batch 各自的流程、优缺点、适用场景，并讲清 epoch 与 batch 的区别</strong>。下一章上代码：手写三种梯度下降、实现学习率衰减，对比它们的收敛轨迹。</span>
 </div>

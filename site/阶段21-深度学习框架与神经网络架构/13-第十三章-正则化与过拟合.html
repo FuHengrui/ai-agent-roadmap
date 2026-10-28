@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>模型把训练数据背得太熟、在没见过的数据上表现稀烂，这叫<strong>过拟合</strong>——深度学习最普遍的敌人。这一章讲清过拟合的成因与迹象，并给出一套实用武器：<strong>训练集/验证集/测试集划分、数据增强、正则化（L1/L2）、Dropout、BatchNorm</strong>。重点讲透 Dropout 的 inverted 实现和 BatchNorm 为什么能稳定训练。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>沿用前面的 PyTorch 环境，不用装新东西；上一章的训练循环要能自己写出来。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能判断模型是不是过拟合、能说清 Dropout 和 BatchNorm 怎么起作用，能给训练加上正则，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章解决了"怎么更快收敛"。<strong>本章解决"收敛之后到底有没有用"：正则化与过拟合，让模型在新数据上依然能打</strong>。下一章用完整实战（乳腺癌二分类）把前面所有知识串起来。</span>
 </div>

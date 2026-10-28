@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>训练神经网络靠的是梯度下降，而梯度就是"损失函数对每个参数的偏导数"。真实模型动辄几百万个参数，手推偏导根本不现实。这一章讲 PyTorch <strong>自动微分（Autograd）</strong>：它是怎么自动算出所有梯度的、<code>requires_grad</code> 和 <code>backward</code> 怎么用、手动推导和自动计算的结果为什么一致——并以一个<strong>房价预测模型</strong>为案例跑通完整闭环。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>沿用前面的 PyTorch，不用装新东西；上一章的形状变换顺手复习一下，后面搭模型要用。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 requires_grad 和 backward 各干什么，能跑通房价预测的求梯度闭环，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章学完张量的索引与形状变换。<strong>本章进入框架最核心的自动微分：用 PyTorch 自动算梯度，并用房价回归实战把"数据→模型→损失→梯度"跑通</strong>。下一章补全训练另一半：优化器与完整训练循环（线性回归案例）。</span>
 </div>

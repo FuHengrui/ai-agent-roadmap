@@ -6,6 +6,12 @@
 
 学完这一章，你能：**在本机启动 spark-shell/pyspark，写一个能跑的 WordCount，并从 Web UI 看到它真的跑起来**。
 
+@@prep 开始之前
+这章要动手：先装 JDK 8+ 配好 JAVA_HOME，再用资料「软件」里的 Spark 3.2.1 解压包。
+
+@@goal 学到这儿就够了
+能在本机跑通 WordCount，并说清 Local 模式的线程数是怎么设的，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章（Spark 架构与运行模式总览）：你有了骨架——Driver/Executor/Task 谁是谁
 **本章** ← 你在这里：用 Local 模式把这个骨架第一次跑起来，写出第一个 rdd 程序

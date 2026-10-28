@@ -8,6 +8,12 @@
 
 学完这一章，你就有两个可复用的套路：手写版（懂原理）与 Unsloth 版（重效率），按需选用。
 
+@@prep 开始之前
+第 8 章的环境装好、显存够就能开始；这章要下 Alpaca 数据，不用再装工具。
+
+@@goal 学到这儿就够了
+能用 SFTTrainer 跑完一遍训练、把耗时和显存跟手写版对比出来，就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：Unsloth 环境就绪、选型原则
 **本章** ← 你在这里：FastLanguageModel 加载+4bit → Unsloth LoraConfig → Alpaca 数据 → SFTTrainer 训练 → 对比

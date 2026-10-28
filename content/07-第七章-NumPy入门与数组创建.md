@@ -6,6 +6,12 @@
 
 这一章先把数组的"**创建 12 式**"练熟：array/arange/random/zeros 全家/empty/full/eye/linspace/logspace，顺带把 dtype 和属性（ndim/shape/dtype/size）钉死。学完你能回答：ndarray 比 list 快在哪、13 种创建方式怎么选、dtype 为什么重要、随机数四兄弟各什么用。
 
+@@prep 开始之前
+上一章的环境就能开始，NumPy 随 Anaconda 已装好，没有再 pip 装一下。
+
+@@goal 学到这儿就够了
+能说清 ndarray 为什么快，能用 array、arange、zeros 造出指定形状的数组，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 **上一章**：Seaborn 统计图表——数据的"可视出口"
 **本章** ← 你在这里：NumPy 章节开篇——数组创建与基本认知，数据科学"计算底座"的第一块砖

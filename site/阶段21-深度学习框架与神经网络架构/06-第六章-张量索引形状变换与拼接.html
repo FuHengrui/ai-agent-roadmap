@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>训练数据要"取数"（选出某几行、某几列、符合条件的样本），网络输出要"整形"（把一批特征排成批、加一维通道、换维度顺序），多路特征要"拼接"（concat/stack）。这一章把<strong>张量的索引、切片、形状变换、维度交换、内存连续性、拼接堆叠</strong>六大操作一次讲全——它们是数据预处理和模型代码里出现频率最高的操作。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>还是那套 PyTorch 环境，不用装新东西；想跟着敲就开着 REPL 边看形状边试。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 view 和 reshape 的区别、cat 与 stack 该用哪个，能写出取数整形的代码，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章学了张量的运算和广播。<strong>本章学"取数"（索引切片）与"整形"（形状变换、维度交换、拼接）</strong>。下一章讲自动微分——PyTorch 最核心的魔法：自动计算梯度。</span>
 </div>

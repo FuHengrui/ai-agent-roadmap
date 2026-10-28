@@ -286,7 +286,10 @@
 <p>解决方案叫 RAG（检索增强生成）：先让系统"查资料"再让模型"回答"。查资料就得有个<strong>专门的仓库</strong>，这个仓库就是<strong>向量数据库</strong>：它能让"意思相近"的内容（比如"养老金要交几年"和"养老保险缴费年限"）在千万条文档里被秒速捞出来。</p>
 <p>这一章把向量数据库讲透：它凭什么能搜"意思"、市面上 FAISS / Milvus / Chroma 这些该怎么选，并且每个主流产品都带你跑一遍真实代码。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>有 Python 就能开始，先装 faiss-cpu；要跑 Milvus 再装 Docker，其余产品不用急着部署。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清向量库凭什么搜意思、ANN 在算什么，拿到需求能说出该选 FAISS 还是 Milvus，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（阶段 5）：你掌握了模型原理与提示词工程——有了"会讲话的大脑"</span>
 <span class="node"><span class="here">本章 ← 你在这里：给大脑装一个"自己的资料库"——向量数据库</span></span>

@@ -285,7 +285,10 @@
 <p>上一章的分块还只是<strong>文本</strong>。文本不能直接"检索相关性"——你得先把它变成计算机能手拉手的"向量"，再存进一个能"按相似度找邻居"的仓库。这两件事，就是这个 RAG 项目里<strong>最核心、最"AI"的一段</strong>：嵌入模型负责"翻译"，向量库负责"存储和找近邻"。</p>
 <p>这一章解决三个问题：文本怎么变成向量（嵌入）、谁来变（在线 API vs 本地模型）、变完之后存哪、怎么按相似度查（向量存储）。它会引出贯穿全项目的两条抽象接口：<code>BaseEmbedding</code> 和 <code>BaseVectorStore</code>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的工程要能跑，还要有智谱 API Key；本地嵌入会下 BGE 模型，留点磁盘和网速。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清在线和本地嵌入怎么取舍、Chroma 里存了哪些字段，能用 metadata 过滤检索出结果，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：文本清洗与智能分块——把文档变成了干净的小块文本</span>
 <span class="node"><span class="here">本章 ← 你在这里：嵌入模型与向量存储——把小块变成向量、存进向量库</span></span>

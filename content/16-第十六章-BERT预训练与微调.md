@@ -4,6 +4,12 @@
 @@why 这一章在解决什么问题
 ELMo 的"双向"只是前向后向拼接，不是真融合；而且迁移要靠特征拼接，改造成本高。**BERT（Bidirectional Encoder Representations from Transformers）** 用两个创新一举解决：**① Masked Language Model（掩码语言模型）做到真双向预训练；② "预训练 + 微调"范式——直接对预训练模型做小改动微调，一个模型适配四大类 NLP 任务**。它定义了现代 NLP 的应用方式。
 
+@@prep 开始之前
+要装 transformers，第一次跑还要联网下 bert-base-chinese 的权重。
+
+@@goal 学到这儿就够了
+能说清 BERT 怎么做到真双向、预训练加微调怎么换头适配任务，能跑通一次中文分类微调，这章就算过了。
+
 @@map 上一章→本章→下一章
 上一章 ELMo 留下"伪双向、迁移重"的缺口。**本章 BERT 用 Transformer 编码器 + 掩码语言模型补上双向缺口，并把迁移方式升级为微调**。下一章 GPT 从"编码器"转向"解码器"，用生成式预训练在生成类任务上登顶——预训练三巨头聚齐。
 

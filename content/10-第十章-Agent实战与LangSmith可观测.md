@@ -9,6 +9,12 @@
 
 生产级 Agent = 能干活（组装）+ 能观测（LangSmith）。
 
+@@prep 开始之前
+要注册 LangSmith 账号、建 Key 填进 .env；LangGraph 环境沿用上一章，三个实战都要跑。
+
+@@goal 学到这儿就够了
+能说清工具、记忆、图为什么缺一不可、Trace 看什么，能组装一个带追踪的 Agent，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：Human-in-the-Loop——关键动作等人类把关
 **本章** ← 你在这里：Agent 实战与 LangSmith——组合全部能力 + 可观测

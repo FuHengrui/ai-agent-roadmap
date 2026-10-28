@@ -286,7 +286,10 @@
 <p>这一切的答案都在<strong>执行流程</strong>里：你写的一段程序经过三个层次被拆解——<strong>Job（作业）→ Stage（阶段）→ Task（任务）</strong>；而拆解的标尺是<strong>宽窄依赖</strong>（shuffle 边界）。这一章把这条链路从头到尾讲透：你写的 <code>rdd.map(...).reduceByKey(...)</code> 是怎么变成 DAG、怎么被切成 Stage、怎么调度到 Executor 上跑的。</p>
 <p>学完这一章，你能：<strong>看着 Spark UI 的 DAG 图，讲出每个 Stage 在干什么、为什么这样切、瓶颈在哪</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装新东西，但得有个能跑 WordCount 的环境——跑一遍对着 Spark UI 的 DAG 图看，比干读强。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能看着 DAG 图讲出 Job 怎么切成 Stage、宽窄依赖的界线在哪、每个 Stage 在干什么，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">前面三章：会创建 RDD、会用转换/行动算子写程序了</span>
 <span class="node"><span class="here">本章 ← 你在这里：内核第一块——执行流程、Stage 划分、宽窄依赖</span></span>

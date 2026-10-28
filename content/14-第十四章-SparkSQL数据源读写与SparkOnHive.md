@@ -6,6 +6,12 @@
 
 学完这一章你能：**用统一 API 读写 5 大数据源、懂得每个格式的取舍、把结果用正确的 SaveMode 和分区方式落盘，并能通过 Spark 直接操作 Hive 表**。
 
+@@prep 开始之前
+本地环境就够，准备几个 JSON/CSV 小文件；Hive 那节有 Metastore 才跟着做。
+
+@@goal 学到这儿就够了
+能说清五种数据源怎么选、SaveMode 怎么用，以及 Spark 与 Hive 各管什么，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：SparkSQL 开篇（DataFrame 模型、SparkSession、Catalyst）
 **本章** ← 你在这里：数据源全家桶——读进来、写出去、接 Hive

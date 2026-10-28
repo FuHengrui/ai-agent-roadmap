@@ -285,7 +285,10 @@
 <p>程序能跑、逻辑也对，但<strong>慢</strong>。慢的第一个原因是并行度没配好：分区太少，八核机器只有一个核在工作；第二个原因是<strong>闭包陷阱</strong>：你在 Driver 定义了一个大维表/配置文件，Task 每次都要把它序列化一遍发给 Executor，几万 Task 就复制几万份——内存和网络全废。前者靠<strong>并行度</strong>解决，后者靠<strong>广播变量</strong>（Broadcast）解决；再加一个<strong>累加器</strong>（Accumulator）处理"跨节点计数/求和"这个看似简单却处处是坑的需求。</p>
 <p>这三个是 Spark 内核调优的"老三样"，也是面试必考。学完你能：<strong>为程序正确设置并行度、用广播变量替代闭包变量、用累加器做分布式计数，并避开计数翻倍这种隐蔽 bug</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装新东西，用之前的 Local 环境就行；上一章的缓存和 checkpoint 看过，这章接着讲调优。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能给程序设对并行度、用广播变量替掉闭包大变量、用累加器计数而不翻倍，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：内核第二块（pipeline、缓存、checkpoint）</span>
 <span class="node"><span class="here">本章 ← 你在这里：内核第三块——并行度调控 + 共享变量三件套</span></span>

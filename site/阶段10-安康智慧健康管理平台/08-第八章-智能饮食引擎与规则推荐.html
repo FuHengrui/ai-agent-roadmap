@@ -285,7 +285,10 @@
 <p>第七章只摸了 <code>diet_advisor</code> 的边，本章把它拆开看——<strong>DietAdvisor 是"规则式 AI"的典型代表</strong>：不用大模型，用静态医学规则（食谱库 + 阈值判断）就能给出合理的饮食建议。本章解决三件事：<strong>一是 10 条糖尿病推荐食谱库的设计</strong>，<strong>二是营养汇总与语义化评判的逻辑</strong>，<strong>三是"结合当前血糖动态调整推荐"的分支逻辑</strong>。</p>
 <p>关键认知：<strong>不是所有智能都要上大模型</strong>。规则引擎零成本、零延迟、结果可解释——本项目用规则引擎做"基础推荐"，用大模型做"生成式建议"，两层互补。看懂 DietAdvisor 就懂了"轻量 AI"的设计思路。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 7 章的饮食模块能录入了就能开始，这章纯写规则，不用装新东西也不用模型。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能写出食谱库和营养评判规则、按血糖高低调整推荐，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：饮食/用药/运动记录模块</span>
 <span class="node"><span class="here">本章 ← 你在这里：DietAdvisor——本项目第一个真正的"业务智能"</span></span>

@@ -10,6 +10,12 @@
 
 再看懂新旧 API 差异，最后升级到 PostgreSQL 生产持久化。
 
+@@prep 开始之前
+沿用上一章的 LangGraph 环境；内存版不用额外服务，Postgres 那节再准备 Docker 和数据库。
+
+@@goal 学到这儿就够了
+能说清短期记忆和长期记忆各存什么、靠什么隔离，能给 Agent 接上这两种记忆并跨轮记住你，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：LangGraph 工具系统——Agent 会干活了
 **本章** ← 你在这里：LangGraph 记忆系统——Agent 能记住了

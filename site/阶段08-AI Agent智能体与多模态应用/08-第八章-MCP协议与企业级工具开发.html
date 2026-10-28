@@ -286,7 +286,10 @@
 <p>MCP（Model Context Protocol，Anthropic 提出的开放协议）把工具变成<strong>标准的独立服务</strong>：Agent（Client）通过统一协议连接外部工具服务（Server），一套工具到处用。LangGraph、Claude、OpenAI 都能连同一个 MCP Server。</p>
 <p>结论先行：<strong>MCP 不是要替代 @tool</strong>。简单工具用 @tool 就够了；需要跨框架共享、独立部署扩展的工具，才上 MCP。这章的判断标准，你学完就能掌握。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>要装 fastmcp 和 MCP 适配器，模型 Key 沿用上一章；Server 和 Client 各起一个进程。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 MCP 三端各是什么、三种通信怎么选，能把工具包成 Server 再让 Agent 调通，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：LangGraph 记忆系统——Agent 有记忆了</span>
 <span class="node"><span class="here">本章 ← 你在这里：MCP 协议与企业级工具开发——Agent 连接外部系统</span></span>

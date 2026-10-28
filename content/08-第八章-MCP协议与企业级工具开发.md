@@ -8,6 +8,12 @@ MCP（Model Context Protocol，Anthropic 提出的开放协议）把工具变成
 
 结论先行：**MCP 不是要替代 @tool**。简单工具用 @tool 就够了；需要跨框架共享、独立部署扩展的工具，才上 MCP。这章的判断标准，你学完就能掌握。
 
+@@prep 开始之前
+要装 fastmcp 和 MCP 适配器，模型 Key 沿用上一章；Server 和 Client 各起一个进程。
+
+@@goal 学到这儿就够了
+能说清 MCP 三端各是什么、三种通信怎么选，能把工具包成 Server 再让 Agent 调通，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：LangGraph 记忆系统——Agent 有记忆了
 **本章** ← 你在这里：MCP 协议与企业级工具开发——Agent 连接外部系统

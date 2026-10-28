@@ -285,7 +285,10 @@
 <p>前面所有模块都在造零件，本章把它们<strong>装成一台会对话的机器</strong>：患者发一句"最近血糖高了怎么办"，系统要识别意图 → 调取患者档案 → 检索医学知识 → 生成建议 → 评估风险。五个步骤有先后、有分支，用 LangGraph 状态图表达。本章解决三件事：<strong>一是 LangGraph 状态图的基本概念</strong>（State/TypedDict/节点/边/编译），<strong>二是五节点工作流的设计</strong>（每个节点干什么、状态怎么流转），<strong>三是 chat 路由如何接住工作流</strong>（对话持久化与响应构造）。</p>
 <p>关键认知：<strong>LangGraph 把"流程"变成了"可编排的状态图"</strong>——每一步都显式声明输入输出，比在一段函数里写 if 金字塔清晰得多，也方便后续加分支、加人工确认。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 11 章的向量库检索通了就能开始；langgraph 已在依赖里，这章不用装新东西。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能画出五节点状态图并跑通一次问诊对话、说清状态怎么流转，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：RAG 医学知识库（资料库就绪）</span>
 <span class="node"><span class="here">本章 ← 你在这里：LangGraph 工作流——把档案/统计/RAG/LLM/风险全部编排成对话</span></span>

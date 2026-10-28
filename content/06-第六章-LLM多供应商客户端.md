@@ -5,6 +5,12 @@
 LegalMind 的所有智能都来自大模型：意图识别、法律问答、文书生成。但大模型有一个现实问题——**供应商会变、模型名会变、价格会变**。把 `openai.ChatCompletion` 写死在代码里，DeepSeek 出个更便宜的就要改全项目；把 prompt 散落在 agent 里，调一次话术要翻五个文件。
 本章用一个 `model_client.py` 把"换供应商"这件事收敛成**一个配置文件**：`LLM_PROVIDER` 写 deepseek 就调 DeepSeek，写 openai 就调 OpenAI，底层走 LangChain 统一接口。同时把**所有 prompt 模板**收进 `prompts.py` 单独管理——意图识别、法律问答、文书模板各占一地，改文案不动代码。
 
+@@prep 开始之前
+要准备一家的 API Key（DeepSeek 或 OpenAI）；第 5 章的认证通了就能开始。
+
+@@goal 学到这儿就够了
+能改一行配置换供应商、把 prompt 收进独立文件，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章（第五章 用户认证）：JWT 已可用，认证不再是问题
 **本章** 你在这里：搭 LLM 层——多供应商客户端 + Prompt 模板管理，给 Agent 提供"会说话的大脑"

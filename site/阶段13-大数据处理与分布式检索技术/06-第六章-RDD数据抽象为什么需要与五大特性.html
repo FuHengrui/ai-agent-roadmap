@@ -286,7 +286,10 @@
 <p>Spark 给出的答案是 <strong>RDD（弹性分布式数据集）</strong>——它是 Spark 处理数据的<strong>最小抽象单位</strong>，也是你写后续所有算子（map、filter、reduceByKey……）的操作对象。这一章不讲算子，先把 RDD 本身讲透：<strong>它为什么存在、定义是什么、五大特性分别解决什么问题、怎么创建</strong>。地基不打牢，后面算子全是空中楼阁。</p>
 <p>学完这一章，你能：<strong>说清 RDD 五大特性各自的意义，并用两种方式（并行化集合/读文件）创建出 RDD</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>用第三章那套 Local 环境就够，不用装新东西；上一章的 spark-submit 看过，这里开始转回写代码。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说出五大特性各自解决什么问题，并用并行化集合和读文件两种方式造出 RDD，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（Spark On YARN）：你有了能跑的生产集群，但还没有"数据进入 Spark 的载体"</span>
 <span class="node"><span class="here">本章 ← 你在这里：RDD——Spark 数据抽象的核心，五大特性 + 创建方式</span></span>

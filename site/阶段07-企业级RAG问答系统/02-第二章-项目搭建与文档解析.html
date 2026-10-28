@@ -285,7 +285,10 @@
 <p>上一章定好了架构，但"解析文档"这关一上来就劝退很多人：一个 PDF 文件远不是"读出来"那么简单——有的扫描件是图片、有的表格跨页被切断、有的 Word 里塞着表格、还有的网页本身是 HTML……<strong>每种格式的解析方式完全不同，如果每种都各写各的，代码马上乱成一锅粥。</strong></p>
 <p>这一章做两件事：先把工程的骨架立起来（目录怎么组织、依赖怎么装、密钥怎么存），然后解决入库的第一关——<strong>把 PDF / Word / Markdown / HTML 四种格式统一解析成标准文本</strong>。核心思路是"一个接口、多种实现、按扩展名自动路由"。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>先装好 Python 和 uv，去智谱、通义各申请一个 Key 填进 .env；依赖用 uv sync 一次装齐。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清目录为什么按能力分层、四种格式怎么统一成文本，能新增一个解析器而上层不改，这一章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：项目介绍与技术选型——定了架构五层和所有选型</span>
 <span class="node"><span class="here">本章 ← 你在这里：项目搭建与文档解析——立起工程骨架，把四种文档统一"读进来"</span></span>

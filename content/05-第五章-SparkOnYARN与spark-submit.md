@@ -8,6 +8,12 @@
 
 学完这一章，你能：**把 Spark 程序以 YARN 模式提交到 Hadoop 集群，并能说清 Client/Cluster 两种方式的差异与选型**。
 
+@@prep 开始之前
+最好手上有一套 Hadoop/YARN 环境；没有也别卡住，重点看两种部署方式的区别和提交参数。
+
+@@goal 学到这儿就够了
+能说清 Client 与 Cluster 的选型差别，会用 spark-submit 提交到 YARN，这章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章（Standalone）：你有了 Spark 自己的多机集群，理解了 Master/Worker/HA
 **本章** ← 你在这里：让 Spark 寄生在 Hadoop 的 YARN 上——企业主流生产形态

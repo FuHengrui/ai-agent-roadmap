@@ -6,6 +6,12 @@
 
 学完这一章，你会得到两个可复用的关键产物：**挂好 LoRA 的可训练模型** + **训练结束后保存下来的 LoRA 权重目录**（几十到几百 MB，而不是几个 GB 的完整模型——这正是 LoRA 的意义）。
 
+@@prep 开始之前
+第 5 章的数据集 token 化完成就能开始，这章不用装新东西，只是要显卡跑训练。
+
+@@goal 学到这儿就够了
+能挂上 LoRA、配好超参跑完训练并保存出几十 MB 的权重，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章（手写 LoRA 二）：数据准备完成——train/eval 数据集已 token 化、验收通过
 **本章** ← 你在这里：LoraConfig + get_peft_model 挂载 → TrainingArguments 配参 → Trainer.train() → 保存 LoRA 权重

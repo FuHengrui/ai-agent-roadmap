@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p><code>docker pull</code> 的现成镜像，经常"差点意思"：你想跑 Tomcat 9 + JDK 8 + 自己的环境变量，仓库里没有一个完全对味的。 难道每次都要：拉镜像 → run 容器 → 手动装东西 → commit 固化？太原始了，也不可复现——你同事照着做一遍，结果可能完全不同。 <strong>Dockerfile 就是"镜像的配方文件"</strong>：用几行指令把"怎么拼装这个环境"写清楚，<code>docker build</code> 一键产出可复现的镜像。 版本、依赖、指令全在文件里，能和代码一起进 Git——<strong>环境从此可版本管理</strong>。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的数据卷会挂就能开始，这章不用装新东西，要能拉 tomcat 基础镜像并在本地 build。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能用 FROM/RUN/COPY/CMD 写出 Dockerfile，并说清 CMD 与 ENTRYPOINT 的区别，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章</strong>：容器数据卷——让数据活下来</span>
 <span class="node"><span class="here">本章 ← 你在这里：从"用别人的镜像"到"造自己的镜像"</span></span>

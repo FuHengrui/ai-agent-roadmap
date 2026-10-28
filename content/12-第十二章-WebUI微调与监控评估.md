@@ -8,6 +8,12 @@
 
 学完这一章，你拥有第三条可交付能力：**配置驱动的微调 + 可视化监控**，与手写/Unsloth 并存备用。
 
+@@prep 开始之前
+要有第 11 章注册好的数据集；这章还要注册 SwanLab 账号拿 API Key 做监控。
+
+@@goal 学到这儿就够了
+能在 WebUI 里点完一次 QLoRA 训练、看 SwanLab 曲线并启动 Chat 评估，就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：LLaMA-Factory 环境与数据集注册完成
 **本章** ← 你在这里：启动 WebUI → 覆盖微调（QLoRA+医疗数据）→ SwanLab 监控 → 启动 Chat 评估

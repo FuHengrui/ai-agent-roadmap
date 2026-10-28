@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章注意力是"解码器看源句"，这一章要回答一个更根本的问题：<strong>一个句子内部，词与词之间怎么互相看？</strong> "它站在河边"里的"它"要靠看后半句才能确认。自注意力（Self-Attention）让序列里<strong>每个词同时和所有词算关系</strong>，一步直达、全位置并行——这正是 Transformer 取代 RNN 的发动机。这一章把自注意力的完整计算过程用"我爱学习"的实例彻底算一遍。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装环境，纸笔跟着把「我爱学习」算一遍就行；上一章的 Q/K/V 要先会。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清自注意力里 Q/K/V 为什么都来自同一个序列，能按四步手算出注意力权重，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章掌握了 Q/K/V 和缩放点积注意力。<strong>本章把注意力的 Q/K/V 全部换成"自己"：同一序列内部的自注意力</strong>。下一章再进一级：多头注意力（多视角并行）+ 位置编码（补上顺序信息）——至此 Transformer 的单层零件全部到齐。</span>
 </div>

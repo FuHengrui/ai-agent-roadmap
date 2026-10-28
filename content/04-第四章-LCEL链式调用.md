@@ -8,6 +8,12 @@ LangChain 早期用 Chain 对象解决这个问题，但写起来又重又僵。
 
 本章先带你理解"为什么要链"（旧 Chain 时代的痛点），再重点掌握 LCEL 的三大核心 Runnable（Passthrough / Lambda / Map）和条件路由 Branch，最后用 LCEL 重写旧式链，感受新范式的简洁。
 
+@@prep 开始之前
+接着上一章的 LangChain 环境和模型 Key 就行，不用再装新东西——这章全是管道符组合。
+
+@@goal 学到这儿就够了
+能说清 LCEL 为什么取代旧 Chain、四种 Runnable 各干什么，能用 | 拼出带分支的链，这一章就算过了。
+
 @@map 这一章在整个知识库里的位置
 上一章：LangChain 基础——模型、提示词、输出解析的单个积木
 **本章** ← 你在这里：LCEL 链式调用——把积木用 `|` 连成流水线

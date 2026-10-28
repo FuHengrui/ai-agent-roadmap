@@ -286,7 +286,10 @@
 <ul><li><strong>基础版（常规流程）</strong>：读数据 → EDA → 对数矫正 → 哑变量 → 清洗 → 切分 → 标准化 → 多项式 → Ridge → 评估。这是一条"标准流水线"，任何表格回归任务都能照搬。</li><li><strong>进阶版（深度 EDA 驱动）</strong>：先花大力气探索数据，发现"性别、地域和花销基本无关"、"BMI≥30 是医学分水岭"、"有无孩子观念不同"——然后<strong>砍特征、做语义分箱</strong>，用更小的模型拿到更好的成绩。</li></ul>
 <p><strong>两个版本的对比是本项目最大的价值</strong>：机器学习的上限不在算法，在于对数据的理解（EDA）。"杀鸡不用牛刀"——懂得数据，可以事半功倍。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的 Ridge 和多项式会用了就能开始，这章要自己下载 insurance.csv，Kaggle 上有。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能从 EDA 到切分、编码、标准化、建模、RMSE 评估跑完整条流水线，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章备齐武器：Ridge/Lasso/ElasticNet、多项式升维、归一化纪律。<strong>本章在真实表格数据上打完整流水线（基础版 + 进阶版）</strong>，并在结尾用进阶版的点睛之笔（不要盲目全套操作）垫定"数据理解 &gt; 操作堆砌"的价值观。下一章进入分类算法：线性回归的近亲——逻辑回归与 Softmax。</span>
 </div>

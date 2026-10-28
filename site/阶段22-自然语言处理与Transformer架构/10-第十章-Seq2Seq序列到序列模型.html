@@ -284,7 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面的模型都是"一条文本进，一个标签/一串标签出"。机器翻译、文本摘要、对话生成要的是<strong>变长的输入变成另一个变长的输出</strong>："我爱你" → "I love you"。这一章引入 <strong>Seq2Seq（序列到序列）模型</strong>：一个 RNN 把输入"读"成状态（编码器），另一个 RNN 把状态"写"成输出（解码器），并介绍开始符、停止符这些让它能"知道何时说完整句"的机制。</p>
 </div>
-
+<div class="chapter-meta">
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>还是那套 PyTorch 环境，这章不用装新东西；上一章的 GRU 与双向 RNN 先有个数。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清编码器解码器各干什么、开始符与停止符为什么必须有，能画出一次翻译的流程，这章就算过了。</p></div></div>
+</div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章把 RNN 家族学完了。<strong>本章第一次组装"两个网络"：编码器把源序列压成状态向量，解码器据此逐词吐目标序列</strong>——这是机器翻译/摘要/对话的通用骨架。下一章解决它的致命弱点：编码器把整句压成一个向量信息不够，需要"注意力机制"按需翻看原文。</span>
 </div>
