@@ -432,7 +432,7 @@ rdd.foreachPartition(write_batch)</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>在 foreach/map 里建 DB 连接</td><td>每条数据建一个连接，Direct 疯狂报 OOM/超时。<strong>连接类资源一律 foreachPartition 每分区建一次</strong></td></tr>
+<tr><td>在 foreach/map 里建 DB 连接</td><td>每条数据建一个连接，Driver 端疯狂报 OOM/超时。<strong>连接类资源一律 foreachPartition 每分区建一次</strong></td></tr>
 <tr><td>foreach 里打印"没看到输出"</td><td>foreach 在 <strong>Executor</strong> 执行，local 模式看得见（同进程），集群模式打印在 worker 日志里，不在 Driver 终端。想回显用 <code>collect().foreach(print)</code>（仅小数据）</td></tr>
 <tr><td>在 foreach 里改了 Driver 变量的值</td><td><strong>改不了</strong>——foreach 在 Executor 上跑的是序列化副本，Driver 的变量不会变。跨 Executor 共享用累加器（内核章见），跨 Executor 汇总用累加器、传大只读数据用广播变量（第十一章见）；广播变量本身是<strong>只读</strong>的</td></tr>
 </table>

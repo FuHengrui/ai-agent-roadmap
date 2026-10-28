@@ -167,7 +167,7 @@ rdd.foreachPartition(write_batch)
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 在 foreach/map 里建 DB 连接 | 每条数据建一个连接，Direct 疯狂报 OOM/超时。**连接类资源一律 foreachPartition 每分区建一次** |
+| 在 foreach/map 里建 DB 连接 | 每条数据建一个连接，Driver 端疯狂报 OOM/超时。**连接类资源一律 foreachPartition 每分区建一次** |
 | foreach 里打印"没看到输出" | foreach 在 **Executor** 执行，local 模式看得见（同进程），集群模式打印在 worker 日志里，不在 Driver 终端。想回显用 `collect().foreach(print)`（仅小数据） |
 | 在 foreach 里改了 Driver 变量的值 | **改不了**——foreach 在 Executor 上跑的是序列化副本，Driver 的变量不会变。跨 Executor 共享用累加器（内核章见），跨 Executor 汇总用累加器、传大只读数据用广播变量（第十一章见）；广播变量本身是**只读**的 |
 
