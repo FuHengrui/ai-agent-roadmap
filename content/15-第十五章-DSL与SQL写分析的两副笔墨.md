@@ -206,7 +206,7 @@ df.withColumn("cum", sum("amount").over(win2))   // 截止每天的累计销售�
 |---|---|
 | 并列要"都算 Top3"用了 row_number | 并列需求用 rank/dense_rank（按业务口径：并列第 2 是否占用名额）。row_number 是硬排不给并列 |
 | 忘了 partitionBy 只 orderBy | 窗口就是全表一个大分区=全局排序取 TopN，多数情况不对。**先想"按什么分组"** |
-| 窗口排序的某列有 null | orderBy 默认 null 排最后（desc 时反而在最前！）。用 `orderBy(desc_nulls_last(col("x")))` 控制 |
+| 窗口排序的某列有 null | Spark 的默认：ASC 时 null 在前、DESC 时 null 在后（所以 desc_nulls_last 就是默认值）；要让 DESC 时 null 仍在前，用 desc_nulls_first。用 `orderBy(desc_nulls_last(col("x")))` 控制 |
 | 窗口 + distinct/orderBy 次序问题 | 先 distinct 再去窗口，别窗口里 distinct；先去重再开窗是一般顺序 |
 
 @@point ⑤ spark.sql 与临时视图：SQL 老司机的正确姿势
@@ -291,7 +291,7 @@ df.withColumn("masked", callUDF("mask_phone", col("phone")))
 |---|---|
 | UDF 注册了 SQL 用不了 | 注册要 `udf` 方法名与 SQL 调用名一致；scala 里 `_` 转函数、Python 用 @udf 装饰器。检查注册是否在当前 session |
 | UDF 处理 null 崩溃 | 输入列有 null → 函数收到 null 要自己兜底（判空返回 null/默认值），Spark 不会帮你跳过 |
-| UDF 慢到怀疑人生 | 先看是不是 Python 非向量化 UDF——改用 pandas UDF（`@udf(returnType, PandasUDFType.SCALAR)`）或用内置表达式重写 |
+| UDF 慢到怀疑人生 | 先看是不是 Python 非向量化 UDF——改用 pandas UDF（`@pandas_udf(returnType, PandasUDFType.SCALAR)   # 装饰器是 pandas_udf，不是 udf`）或用内置表达式重写 |
 | UDF 里用了外部大字典 | 又踩闭包陷阱：字典随 Task 复制。**先广播字典**，UDF 里用广播变量取值 |
 
 @@point ⑦ UDAF：自定义聚合函数
@@ -332,7 +332,7 @@ evaluate   → 最终一个值
 |---|---|
 | UDAF 结果和手算不一致 | 检查 update/merge 是否**可交换可结合**（shuffle 会乱序合并）。顺序敏感的状态（如"取第一个非空"）在 distributed 下不可靠 |
 | evaluate 里对缓冲顺序敏感 | 缓冲字段位置要写死并与定义一致。改 Schema 时四个钩子同步改，漏一个必错 |
-| Python 里写 UDAF 麻烦 | PySpark 原生只支持 UDF；聚合逻辑用 `groupBy.agg(expr("..."))` 内置拼，或把聚合下沉到 SQL/UDF 组合 |
+| Python 里写 UDAF 麻烦 | PySpark 没有 Scala 那套 UDAF 钩子，但可以用 @pandas_udf(..., PandasUDFType.GROUPED_AGG) 做分组聚合；聚合逻辑用 `groupBy.agg(expr("..."))` 内置拼，或把聚合下沉到 SQL/UDF 组合 |
 | 想对"分组内排序后再聚合" | 窗口函数 + 内置聚合函数就能做（row_number 后聚合），别急着写 UDAF |
 
 @@point ⑧ explain：让执行计划告诉你"为什么慢"

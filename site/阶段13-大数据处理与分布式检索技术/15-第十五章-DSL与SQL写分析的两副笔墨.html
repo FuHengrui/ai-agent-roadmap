@@ -459,7 +459,7 @@ df.withColumn(&quot;cum&quot;, sum(&quot;amount&quot;).over(win2))   // 截止�
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>并列要"都算 Top3"用了 row_number</td><td>并列需求用 rank/dense_rank（按业务口径：并列第 2 是否占用名额）。row_number 是硬排不给并列</td></tr>
 <tr><td>忘了 partitionBy 只 orderBy</td><td>窗口就是全表一个大分区=全局排序取 TopN，多数情况不对。<strong>先想"按什么分组"</strong></td></tr>
-<tr><td>窗口排序的某列有 null</td><td>orderBy 默认 null 排最后（desc 时反而在最前！）。用 <code>orderBy(desc_nulls_last(col("x")))</code> 控制</td></tr>
+<tr><td>窗口排序的某列有 null</td><td>Spark 的默认：ASC 时 null 在前、DESC 时 null 在后（所以 desc_nulls_last 就是默认值）；要让 DESC 时 null 仍在前，用 desc_nulls_first。用 <code>orderBy(desc_nulls_last(col("x")))</code> 控制</td></tr>
 <tr><td>窗口 + distinct/orderBy 次序问题</td><td>先 distinct 再去窗口，别窗口里 distinct；先去重再开窗是一般顺序</td></tr>
 </table>
 </div>
@@ -534,7 +534,7 @@ df.withColumn(&quot;masked&quot;, callUDF(&quot;mask_phone&quot;, col(&quot;phon
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>UDF 注册了 SQL 用不了</td><td>注册要 <code>udf</code> 方法名与 SQL 调用名一致；scala 里 <code>_</code> 转函数、Python 用 @udf 装饰器。检查注册是否在当前 session</td></tr>
 <tr><td>UDF 处理 null 崩溃</td><td>输入列有 null → 函数收到 null 要自己兜底（判空返回 null/默认值），Spark 不会帮你跳过</td></tr>
-<tr><td>UDF 慢到怀疑人生</td><td>先看是不是 Python 非向量化 UDF——改用 pandas UDF（<code>@udf(returnType, PandasUDFType.SCALAR)</code>）或用内置表达式重写</td></tr>
+<tr><td>UDF 慢到怀疑人生</td><td>先看是不是 Python 非向量化 UDF——改用 pandas UDF（<code>@pandas_udf(returnType, PandasUDFType.SCALAR)   # 装饰器是 pandas_udf，不是 udf</code>）或用内置表达式重写</td></tr>
 <tr><td>UDF 里用了外部大字典</td><td>又踩闭包陷阱：字典随 Task 复制。<strong>先广播字典</strong>，UDF 里用广播变量取值</td></tr>
 </table>
 </div>
@@ -569,7 +569,7 @@ evaluate   → 最终一个值</pre>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>UDAF 结果和手算不一致</td><td>检查 update/merge 是否<strong>可交换可结合</strong>（shuffle 会乱序合并）。顺序敏感的状态（如"取第一个非空"）在 distributed 下不可靠</td></tr>
 <tr><td>evaluate 里对缓冲顺序敏感</td><td>缓冲字段位置要写死并与定义一致。改 Schema 时四个钩子同步改，漏一个必错</td></tr>
-<tr><td>Python 里写 UDAF 麻烦</td><td>PySpark 原生只支持 UDF；聚合逻辑用 <code>groupBy.agg(expr("..."))</code> 内置拼，或把聚合下沉到 SQL/UDF 组合</td></tr>
+<tr><td>Python 里写 UDAF 麻烦</td><td>PySpark 没有 Scala 那套 UDAF 钩子，但可以用 @pandas_udf(..., PandasUDFType.GROUPED_AGG) 做分组聚合；聚合逻辑用 <code>groupBy.agg(expr("..."))</code> 内置拼，或把聚合下沉到 SQL/UDF 组合</td></tr>
 <tr><td>想对"分组内排序后再聚合"</td><td>窗口函数 + 内置聚合函数就能做（row_number 后聚合），别急着写 UDAF</td></tr>
 </table>
 </div>

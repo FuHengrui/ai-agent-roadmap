@@ -399,7 +399,7 @@ daily.write.mode(&quot;overwrite&quot;).partitionBy(&quot;dt&quot;).saveAsTable(
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>Top10 排序有 null 列</td><td>orderBy 默认 null 行为：desc 时 null 在前！<code>orderBy(desc_nulls_last(col("count")))</code> 或清洗时去 null</td></tr>
+<tr><td>Top10 排序有 null 列</td><td>orderBy 默认 null 行为：ASC 时 null 在前、DESC 时 null 在后！<code>orderBy(desc_nulls_last(col("count")))</code> 或清洗时去 null</td></tr>
 <tr><td>指标 SQL 里列名拼错</td><td>countDistinct("user_id") 写错字段运行时才报。先用 <code>.columns</code> / printSchema 对字段</td></tr>
 <tr><td>每天一个任务的指标重跑翻倍</td><td>saveAsTable mode 选错：用 overwrite（今天覆盖）或 insertInto 指定分区（append 分区级）。重跑要"只重算当日分区"</td></tr>
 <tr><td>PV/UV 都写在两张表里不好对账</td><td>同一天 PV、UV 汇总在一行（daily_metric），报表侧 join 简单；对账也快：用 count(*) 交叉验证</td></tr>
