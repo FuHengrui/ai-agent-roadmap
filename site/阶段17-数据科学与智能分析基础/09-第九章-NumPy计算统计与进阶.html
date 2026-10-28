@@ -297,7 +297,7 @@
 <span class="node"><span class="here">阶段终点：完成"读数据 → 清洗 → 计算 → 可视化 → 入库"链路；数字统计的计算底座本章交付</span></span>
 </div>
 <div class="note info"><span class="t">学习提示</span>
-<p>前三章里 axis 是"取哪个方向"，本章它再次出现（统计按轴算）——<strong>建议把上一章第 ⑩ 点再看一遍再往下</strong>。广播（第 ⑨ 点）是本章唯一的"抽象难点"，先记结论：形状对齐、后对齐、能补 1 就补 1；掩码（第 ⑩ 点）则是数据科学使用率最高的筛选手段，务必练熟。</p></div>
+<p>前三章里 axis 是"取哪个方向"，本章它再次出现（统计按轴算）——<strong>建议把上一章第 ⑩ 点再看一遍再往下</strong>。广播（第 ⑧ 点）是本章唯一的"抽象难点"，先记结论：形状对齐、后对齐、能补 1 就补 1；掩码（第 ⑨ 点）则是数据科学使用率最高的筛选手段，务必练熟。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 通用函数 ufunc：逐元素计算的灵魂</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p><strong>数组 + 数组、sin、exp 这些"逐元素"运算为什么能一行完成？</strong> 先搞懂 ufunc 概念，后面所有计算都有底。</p>
@@ -531,7 +531,7 @@ a[(a == 0) | (a == 1)]  # 或条件：| 表示或</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>a &gt; 5 and a &lt; 8 报 ValueError</td><td>numpy 数组不支持 and/or，改用 &amp;（且）/</td><td>（或），且外层加括号</td></tr>
+<tr><td>a &gt; 5 and a &lt; 8 报 ValueError</td><td>numpy 数组不支持 and/or，改用 <code>&amp;</code>（且）/ `\</td><td>`（或），且外层加括号</td></tr>
 <tr><td>掩码形状和数组不匹配</td><td>掩码必须与对应维度长度一致（广播规则见上一点）</td></tr>
 <tr><td>比较结果"看不到 True/False"</td><td>打印掩码确认；条件写反改符号即可</td></tr>
 </table>
@@ -549,7 +549,7 @@ a[(a == 0) | (a == 1)]  # 或条件：| 表示或</pre>
 <tr><td>矩阵乘</td><td>@ / dot（* 是逐元素！）</td><td>中间维必须相等</td></tr>
 <tr><td>排序</td><td>sort / argsort</td><td>argsort 下标记姓名重排</td></tr>
 <tr><td>广播</td><td>形状对齐规则</td><td>从后对齐、补 1</td></tr>
-<tr><td>掩码</td><td>a[a &gt; 5] 布尔索引</td><td>&amp; /</td><td>别写成 and/or</td></tr>
+<tr><td>掩码</td><td>a[a &gt; 5] 布尔索引</td><td><code>&amp;</code> / `\</td><td>`（别写成 and/or）</td></tr>
 </table>
 <p>一句话记住本章：<strong>统计用 mean 族、矩阵乘用 @、筛选用掩码 a[条件]、排序下标用 argsort——再配合"广播从后对齐"的规则，NumPy 的计算能力就是你的了；下一章开始，Pandas 的所有列运算都站在这里。</strong></p>
 <h4>自测：能不能答上来</h4>
