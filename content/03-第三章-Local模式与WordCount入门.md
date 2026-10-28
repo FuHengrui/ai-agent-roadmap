@@ -7,7 +7,7 @@
 学完这一章，你能：**在本机启动 spark-shell/pyspark，写一个能跑的 WordCount，并从 Web UI 看到它真的跑起来**。
 
 @@prep 开始之前
-这章要动手：先装 JDK 8+ 配好 JAVA_HOME，再用资料「软件」里的 Spark 3.2.1 解压包。
+这章要动手：先装 JDK 8 或 11（Spark 3.2.1 不支持 17+）并配好 JAVA_HOME，再用资料「软件」里的 Spark 3.2.1 解压包。
 
 @@goal 学到这儿就够了
 能在本机跑通 WordCount，并说清 Local 模式的线程数是怎么设的，这章就算过了。
@@ -20,7 +20,7 @@
 阶段终点：你能独立用 Spark 处理 TB 级数据的全套流程
 
 @@note info 环境说明
-本章基于 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8+ 并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。
+本章基于 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8 或 11（3.2.1 不认 17 及以上）并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。
 
 @@point ① 环境准备：JDK、Spark 解压与目录结构
 @@need 要解决什么
@@ -55,7 +55,7 @@ PATH 追加 %SPARK_HOME%\bin
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | `java -version` 有输出但 Spark 报"JAVA_HOME is not set" | 说明系统 Java 通过别的方式可用，但环境变量 JAVA_HOME 没配。**必须设 JAVA_HOME 变量**，指向 JDK 安装根目录（不是 bin 目录） |
-| Windows 上 spark-shell 一闪而过/乱码 | 双击脚本是坑。在命令行里跑 `spark-shell.cmd`；中文乱码可设 `PYTHONIOENCODING=utf-8` 或用 cmd 的 `chcp 65001` |
+| Windows 上 spark-shell 一闪而过/乱码 | 双击脚本是坑。在命令行里跑 `spark-shell.cmd`；中文乱码：spark-shell（Scala/JVM）用 `chcp 65001` 或加 `-Dfile.encoding=UTF-8`；只有 `pyspark` 才靠 `PYTHONIOENCODING=utf-8` |
 | 下载的 spark 版本和 Hadoop 版本对不上 | 包名里的 `-bin-hadoop3.2` 表示配套 Hadoop 3.2。版本错了运行时会出现奇怪的类加载错误。配套的就是 hadoop3.2 的包，照着来 |
 
 @@point ② Local 模式启动：spark-shell 与 pyspark
@@ -85,7 +85,7 @@ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@...
 |---|---|
 | 报 `Failed to locate the winutils binary in the Hadoop binaries` | Windows 下常见兼容提示。在 `%SPARK_HOME%` 放一个 `bin/winutils.exe`（GitHub 有），或忽略（纯 local 不做 HDFS 时部分版本可不影响） |
 | `pyspark` 里 import 不到 | 用 `pyspark` 命令进入的 shell 已经配好环境；如果自己写脚本 import 报错，用 `pip install pyspark==3.2.1` 在同版本环境跑 |
-| 端口 4040 打不开 | Web UI 在**程序运行期间**才有。命令行被占用或自然退出后 UI 就没了，要先让任务跑着、再从浏览器访问 http://localhost:4040 |
+| 端口 4040 打不开 | Web UI 只在**程序运行期间**存在，任务一退出就没了；4040 被占用时 Spark 会自动顺延到 4041，去日志里确认实际端口再访问 |
 
 @@point ③ WordCount 需求：先想清楚要算什么
 @@need 要解决什么
@@ -105,7 +105,7 @@ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@...
 
 | 步骤 | 算子 | 类型 |
 |---|---|---|
-| 读行 | `sc.textFile("data.txt")` | 创建 RDD |
+| 读行 | `sc.textFile("data/word.txt")` | 创建 RDD |
 | 拆词 | `.flatMap(_.split(" "))` | 转换算子 |
 | 记数 | `.map(word => (word, 1))` | 转换算子 |
 | 求和 | `.reduceByKey(_ + _)` | 转换算子（shuffle） |

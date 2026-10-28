@@ -149,7 +149,7 @@ vim config/jvm.options
 ./bin/elasticsearch -d        # 后台运行
 
 # 4. 验证
-curl http://localhost:9200    # 返回 JSON，带 cluster_name 即成功
+curl -k -u elastic https://localhost:9200   # 输初始密码；返回 JSON 且带 cluster_name 即成功
 ```
 
 **为什么必须非 root**：ES 的 JVM 沙箱安全机制要求不能以超级用户运行，这是硬约束不是 bug。ES 8 默认开启安全认证，首次启动会打印一个临时的 `elastic` 用户密码，**务必存好**，后面 Kibana 连接和所有请求都要用它。
@@ -160,7 +160,7 @@ curl http://localhost:9200    # 返回 JSON，带 cluster_name 即成功
 | can not run elasticsearch as root | 创建普通用户 `su` 切换后再启动 |
 | 内存不足 fatal error | 默认 `-Xms1g`，机器小就把 jvm.options 改成 `-Xms512m -Xmx512m` |
 | 启动太慢 / 卡住 | 磁盘 IO 慢；先 `./bin/elasticsearch -d` 看 `/logs/elasticsearch.log` |
-| 忘记初始密码 | `./bin/elasticsearch-setup-passwords auto` 重置 |
+| 忘记初始密码 | 用 `./bin/elasticsearch-reset-password -u elastic` 重设（`setup-passwords` 在 8.x 已废弃） |
 
 @@point ⑥ 索引操作：PUT 建 / GET 查 / DELETE 删
 @@need 要解决什么
@@ -242,10 +242,11 @@ POST /_bulk
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| **写完立刻查，查不到** | ES 是**近实时（NRT）**：默认 1 秒 refresh 之后才可被搜到。写完马上搜不到是正常现象，不是没写进去（用 `GET /_doc/{id}` 能立刻读到） |
+| **写完立刻查，查不到** | ES 是**近实时（NRT）**：默认 1 秒 refresh 之后才可被搜到。写完马上搜不到是正常现象，不是没写进去（用 `GET /news/_doc/{id}` 能立刻读到） |
 | **以为"更新"是原地改** | 底层是**标记旧版本 + 写新版本**。所以更新一点都不便宜，频繁更新会让磁盘短暂膨胀 |
 | 逐条 `POST` 写几千条 | 每条一次网络往返，慢到不能用。生产必须用 `_bulk` 批量 |
 | 删了大量数据，磁盘没变小 | 要等后台**段合并**才物理释放。这是正常的，别急着以为没删掉 |
+| 建完索引状态一直是 yellow | 单机只有一个节点，副本分片没地方放。练习时把 `number_of_replicas` 设成 0，或再加一个节点 |
 | 以为 `_bulk` 会报错就整体回滚 | `_bulk` **不是事务**：部分成功、部分失败是常态，必须**逐条检查返回结果**里的 `errors` 字段 |
 
 @@point ⑧ 字段类型与属性：mapping 里的决定性配置
@@ -423,7 +424,7 @@ GET /news/_search
 | **`term` 和 `match` 用反了** | 最容易犯的错。`term` 是**精确匹配、不分词**（配 keyword）；`match` 是**分词匹配**（配 text）。**拿 `term` 查 text 字段就是查不到**（值被拆成词了） |
 | 以为 `match_phrase` 和 `match` 差不多 | `match_phrase` 要求**词序相邻**："缴费年限"不会被拆散匹配；`match` 只要词出现就行，顺序无所谓 |
 | 拿 `match` 查 keyword 字段 | 能查到但语义不对（keyword 整体一个词）。**keyword 就该用 term** |
-| 搜不到就怀疑数据没写进去 | 先 `_analyze` 看词怎么切的、再 `GET /_doc/{id}` 确认数据在——**别直接改查询** |
+| 搜不到就怀疑数据没写进去 | 先 `_analyze` 看词怎么切的、再 `GET /news/_doc/{id}` 确认数据在——**别直接改查询** |
 
 @@point ⑬ 复合检索：bool 与排序、分页、高亮
 @@need 要解决什么
@@ -449,7 +450,7 @@ GET /news/_search
 要点：
 - `must` = AND；`should` = OR（至少有 1 个命中即可，可配 `minimum_should_match`）
 - **`filter` 不参与相关度打分**：过滤条件多的时候一定要放 filter，能省大量计算
-- `highlight` 返回 `_source` 的 `highlight.title`，前端拿 `</em>` 标签包住的命中词直接渲染标红
+- `highlight` 返回 `_source` 的 `highlight.title`，客户端拿到 `<em>…</em>` 包住的命中词，按标签渲染成标红
 
 **工厂级小技巧**：分页别用大 `from`（1000 之后非常慢），用 `search_after` 游标；深度分页用 scroll。生产系统搜"第 5000 页"的场景，用 from/size 会拖垮集群。
 
@@ -535,13 +536,13 @@ public class NewsService {
 **集群三板斧**：
 - 分片（shard）：一份数据切成多个分片分散在多台机器，横向扩容的物理基础
 - 副本（replica）：每个分片都有副本，**主分片挂了副本顶上**，还能分摊读压力
-- 三节点起步：`discovery.seed_hosts` 把三台机器拉进一个 cluster，`node.master` / `node.data` 分配角色
+- 三节点起步：`discovery.seed_hosts` 把三台机器拉进一个 cluster，`node.roles` 分配角色（8.x 已删掉 `node.master` / `node.data`）
 
 **优化自查清单**：
 | 症状 | 优化动作 |
 |---|---|
 | 查询慢 | 分片数过大（每分片数据 <5G 反而慢）、改成过滤查询、加缓存 |
-| 内存炸 | JVM 别超过物理内存一半（留一半给 OS 文件缓存），`indices.fielddata.cache` 限量 |
+| 内存炸 | JVM 别超过物理内存一半（留一半给 OS 文件缓存），`indices.fielddata.cache.size` 限量 |
 | 磁盘涨 | 定期 `DELETE` 过期索引、改冷热分层（热节点 SSD/冷节点 HDD） |
 | 写入慢 | 批量 `_bulk`、调大 refresh_interval、关副本写入再开 |
 

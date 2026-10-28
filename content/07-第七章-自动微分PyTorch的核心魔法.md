@@ -2,7 +2,7 @@
 @@sub 阶段 21 · 深度学习框架与神经网络架构　|　PyTorch 入门　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
-训练神经网络靠的是梯度下降，而梯度就是"损失函数对每个参数的偏导数"。真实模型动辄几百万个参数，手推偏导根本不现实。这一章讲 PyTorch **自动微分（Autograd）**：它是怎么自动算出所有梯度的、`requires_grad` 和 `backward` 怎么用、手动推导和自动计算的结果为什么一致——并以一个**房价预测模型**为案例跑通完整闭环。
+训练神经网络靠的是梯度下降，而梯度就是"损失函数对每个参数的偏导数"。真实模型动辄几百万个参数，手推偏导根本不现实。这一章讲 PyTorch **自动微分（Autograd）**：它是怎么自动算出所有梯度的、`requires_grad` 和 `backward` 怎么用、手动推导和自动计算的结果为什么一致——并以一个**房价预测模型**为案例，把「前向 → 损失 → 梯度」这一段跑通。
 
 @@prep 开始之前
 沿用前面的 PyTorch，不用装新东西；上一章的形状变换顺手复习一下，后面搭模型要用。
@@ -11,7 +11,7 @@
 能说清 requires_grad 和 backward 各干什么，能跑通房价预测的求梯度闭环，这章就算过了。
 
 @@map 上一章→本章→下一章
-上一章学完张量的索引与形状变换。**本章进入框架最核心的自动微分：用 PyTorch 自动算梯度，并用房价回归实战把"数据→模型→损失→梯度"跑通**。下一章补全训练另一半：优化器与完整训练循环（线性回归案例）。
+上一章学完张量的索引与形状变换。**本章进入框架最核心的自动微分：用 PyTorch 自动算梯度，并用房价回归实战把"数据→模型→损失→梯度"跑通**。下一章：神经网络结构与激活函数——把单个运算扩成一层层神经元；优化器与完整训练循环在第十一章。
 
 @@point ① 训练神经网络到底要算什么
 @@need 要解决什么
@@ -63,6 +63,7 @@ PyTorch 的自动微分模块 Autograd 到底帮我做了什么？
 创建张量时设置 **`requires_grad=True`**，或事后 `.requires_grad_(True)`：
 
 ```python
+import torch
 w = torch.tensor([1.5], requires_grad=True)  # 参数：要梯度
 b = torch.tensor([10.0], requires_grad=True) # 参数：要梯度
 x = torch.tensor([50.0])                     # 输入：不要梯度
@@ -89,7 +90,7 @@ x = torch.tensor([50.0])                     # 输入：不要梯度
 
 ```python
 predicted = house_size * w + b          # 前向
-loss = torch.nn.MSELoss()(predicted, real_price)  # 损失
+loss = torch.nn.MSELoss()(predicted, torch.tensor([real_price]))  # 损失：target 必须是张量
 loss.backward()                          # 反向，自动算梯度
 print(w.grad, b.grad)                    # 梯度在这里！
 ```
@@ -158,7 +159,7 @@ PyTorch 侧用 requires_grad + MSELoss + backward 算出相同数值。**手推�
 把模型扩展成**多特征线性回归**，每个特征一个权重：
 
 ```python
-def predict_advanced(size, age, floor, loc_x, loc_y, w1..w5, b):
+def predict_advanced(size, age, floor, loc_x, loc_y, w1, w2, w3, w4, w5, b):
     return size*w1 + age*w2 + floor*w3 + loc_x*w4 + loc_y*w5 + b
 ```
 

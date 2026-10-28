@@ -282,14 +282,14 @@
 <h1>第七章　自动微分：PyTorch 的核心魔法</h1>
 <div class="subtitle">阶段 21 · 深度学习框架与神经网络架构　|　PyTorch 入门　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>训练神经网络靠的是梯度下降，而梯度就是"损失函数对每个参数的偏导数"。真实模型动辄几百万个参数，手推偏导根本不现实。这一章讲 PyTorch <strong>自动微分（Autograd）</strong>：它是怎么自动算出所有梯度的、<code>requires_grad</code> 和 <code>backward</code> 怎么用、手动推导和自动计算的结果为什么一致——并以一个<strong>房价预测模型</strong>为案例跑通完整闭环。</p>
+<p>训练神经网络靠的是梯度下降，而梯度就是"损失函数对每个参数的偏导数"。真实模型动辄几百万个参数，手推偏导根本不现实。这一章讲 PyTorch <strong>自动微分（Autograd）</strong>：它是怎么自动算出所有梯度的、<code>requires_grad</code> 和 <code>backward</code> 怎么用、手动推导和自动计算的结果为什么一致——并以一个<strong>房价预测模型</strong>为案例，把「前向 → 损失 → 梯度」这一段跑通。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>沿用前面的 PyTorch，不用装新东西；上一章的形状变换顺手复习一下，后面搭模型要用。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 requires_grad 和 backward 各干什么，能跑通房价预测的求梯度闭环，这章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章学完张量的索引与形状变换。<strong>本章进入框架最核心的自动微分：用 PyTorch 自动算梯度，并用房价回归实战把"数据→模型→损失→梯度"跑通</strong>。下一章补全训练另一半：优化器与完整训练循环（线性回归案例）。</span>
+<span class="node">上一章学完张量的索引与形状变换。<strong>本章进入框架最核心的自动微分：用 PyTorch 自动算梯度，并用房价回归实战把"数据→模型→损失→梯度"跑通</strong>。下一章：神经网络结构与激活函数——把单个运算扩成一层层神经元；优化器与完整训练循环在第十一章。</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 训练神经网络到底要算什么</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -334,7 +334,8 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>创建张量时设置 <strong><code>requires_grad=True</code></strong>，或事后 <code>.requires_grad_(True)</code>：</p>
-<pre>w = torch.tensor([1.5], requires_grad=True)  # 参数：要梯度
+<pre>import torch
+w = torch.tensor([1.5], requires_grad=True)  # 参数：要梯度
 b = torch.tensor([10.0], requires_grad=True) # 参数：要梯度
 x = torch.tensor([50.0])                     # 输入：不要梯度</pre>
 <ul><li><strong>模型参数</strong>（权重、偏置）都必须 requires_grad=True。</li><li><strong>输入数据/标签</strong>通常不需要梯度。</li></ul>
@@ -356,7 +357,7 @@ x = torch.tensor([50.0])                     # 输入：不要梯度</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong><code>loss.backward()</code></strong> 一行完成对整个计算图的反向传播。之后梯度会<strong>自动填充到参数张量的 .grad 属性</strong>里：</p>
 <pre>predicted = house_size * w + b          # 前向
-loss = torch.nn.MSELoss()(predicted, real_price)  # 损失
+loss = torch.nn.MSELoss()(predicted, torch.tensor([real_price]))  # 损失：target 必须是张量
 loss.backward()                          # 反向，自动算梯度
 print(w.grad, b.grad)                    # 梯度在这里！</pre>
 <p>关键在于：<strong>你只写前向代码，反向的链式求导全交给框架</strong>。这就是自动微分最直接的价值体现。</p>
@@ -418,7 +419,7 @@ dL_db = 2 * err                # 手推：对 b 求导</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>把模型扩展成<strong>多特征线性回归</strong>，每个特征一个权重：</p>
-<pre>def predict_advanced(size, age, floor, loc_x, loc_y, w1..w5, b):
+<pre>def predict_advanced(size, age, floor, loc_x, loc_y, w1, w2, w3, w4, w5, b):
     return size*w1 + age*w2 + floor*w3 + loc_x*w4 + loc_y*w5 + b</pre>
 <p>更重要的是<strong>一次算一批房子的梯度</strong>——把 4 套房打包成张量，PyTorch 一步算完：</p>
 <pre>sizes   = torch.tensor([[100.], [80.], [120.], [90.]])  # 4 套房

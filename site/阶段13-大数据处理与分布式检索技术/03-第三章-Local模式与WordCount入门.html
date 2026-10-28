@@ -286,7 +286,7 @@
 <p>学完这一章，你能：<strong>在本机启动 spark-shell/pyspark，写一个能跑的 WordCount，并从 Web UI 看到它真的跑起来</strong>。</p>
 </div>
 <div class="chapter-meta">
-<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>这章要动手：先装 JDK 8+ 配好 JAVA_HOME，再用资料「软件」里的 Spark 3.2.1 解压包。</p></div></div>
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>这章要动手：先装 JDK 8 或 11（Spark 3.2.1 不支持 17+）并配好 JAVA_HOME，再用资料「软件」里的 Spark 3.2.1 解压包。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能在本机跑通 WordCount，并说清 Local 模式的线程数是怎么设的，这章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
@@ -297,7 +297,7 @@
 <span class="node">阶段终点：你能独立用 Spark 处理 TB 级数据的全套流程</span>
 </div>
 <div class="note info"><span class="t">环境说明</span>
-<p>本章基于 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8+ 并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。</p></div>
+<p>本章基于 Spark 3.2.1（spark-3.2.1-bin-hadoop3.2），配套压缩包在资料「软件」目录。你的电脑需要先装好 JDK 8 或 11（3.2.1 不认 17 及以上）并配好 JAVA_HOME——这一步不过，后面全是"端口/网关"报错。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 环境准备：JDK、Spark 解压与目录结构</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>"我按教程敲了代码，怎么一跑就报 Java 相关的错？"——八成是环境变量没配。环境这部分不讲清楚，后面每次报错你都在猜。先把地基打好：<strong>JDK 装没装、SPARK_HOME 配没配、spark 解压包里的东西是什么</strong>。</p>
@@ -327,7 +327,7 @@ PATH 追加 %SPARK_HOME%\bin</div>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td><code>java -version</code> 有输出但 Spark 报"JAVA_HOME is not set"</td><td>说明系统 Java 通过别的方式可用，但环境变量 JAVA_HOME 没配。<strong>必须设 JAVA_HOME 变量</strong>，指向 JDK 安装根目录（不是 bin 目录）</td></tr>
-<tr><td>Windows 上 spark-shell 一闪而过/乱码</td><td>双击脚本是坑。在命令行里跑 <code>spark-shell.cmd</code>；中文乱码可设 <code>PYTHONIOENCODING=utf-8</code> 或用 cmd 的 <code>chcp 65001</code></td></tr>
+<tr><td>Windows 上 spark-shell 一闪而过/乱码</td><td>双击脚本是坑。在命令行里跑 <code>spark-shell.cmd</code>；中文乱码：spark-shell（Scala/JVM）用 <code>chcp 65001</code> 或加 <code>-Dfile.encoding=UTF-8</code>；只有 <code>pyspark</code> 才靠 <code>PYTHONIOENCODING=utf-8</code></td></tr>
 <tr><td>下载的 spark 版本和 Hadoop 版本对不上</td><td>包名里的 <code>-bin-hadoop3.2</code> 表示配套 Hadoop 3.2。版本错了运行时会出现奇怪的类加载错误。配套的就是 hadoop3.2 的包，照着来</td></tr>
 </table>
 </div>
@@ -355,7 +355,7 @@ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@...</div>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>报 <code>Failed to locate the winutils binary in the Hadoop binaries</code></td><td>Windows 下常见兼容提示。在 <code>%SPARK_HOME%</code> 放一个 <code>bin/winutils.exe</code>（GitHub 有），或忽略（纯 local 不做 HDFS 时部分版本可不影响）</td></tr>
 <tr><td><code>pyspark</code> 里 import 不到</td><td>用 <code>pyspark</code> 命令进入的 shell 已经配好环境；如果自己写脚本 import 报错，用 <code>pip install pyspark==3.2.1</code> 在同版本环境跑</td></tr>
-<tr><td>端口 4040 打不开</td><td>Web UI 在<strong>程序运行期间</strong>才有。命令行被占用或自然退出后 UI 就没了，要先让任务跑着、再从浏览器访问 http://localhost:4040</td></tr>
+<tr><td>端口 4040 打不开</td><td>Web UI 只在<strong>程序运行期间</strong>存在，任务一退出就没了；4040 被占用时 Spark 会自动顺延到 4041，去日志里确认实际端口再访问</td></tr>
 </table>
 </div>
 </div></div>
@@ -372,7 +372,7 @@ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@...</div>
 <p>映射到 Spark 算子：</p>
 <table>
 <tr><th>步骤</th><th>算子</th><th>类型</th></tr>
-<tr><td>读行</td><td><code>sc.textFile("data.txt")</code></td><td>创建 RDD</td></tr>
+<tr><td>读行</td><td><code>sc.textFile("data/word.txt")</code></td><td>创建 RDD</td></tr>
 <tr><td>拆词</td><td><code>.flatMap(_.split(" "))</code></td><td>转换算子</td></tr>
 <tr><td>记数</td><td><code>.map(word =&gt; (word, 1))</code></td><td>转换算子</td></tr>
 <tr><td>求和</td><td><code>.reduceByKey(_ + _)</code></td><td>转换算子（shuffle）</td></tr>

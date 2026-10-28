@@ -46,7 +46,7 @@ Dockerfile 只是一个文本文件（名字就叫 `Dockerfile`，无扩展名�
 | 部分 | 关键字 | 必须吗 | 干什么 |
 |---|---|---|---|
 | ① 基础镜像 | FROM | **必须**（第一行） | 站在谁的肩上 |
-| ② 维护者信息 | MAINTAINER | 可选 | 这镜像谁做的 |
+| ② 维护者信息 | LABEL maintainer="…" | 可选 | 这镜像谁做的（`MAINTAINER` 自 17.05 起已废弃） |
 | ③ 镜像操作指令 | RUN / COPY / ADD / ENV 等 | 按需 | 往镜像里装东西、改配置 |
 | ④ 容器启动指令 | CMD / ENTRYPOINT | 按需 | 容器 run 起来时执行什么 |
 
@@ -55,8 +55,7 @@ Dockerfile 只是一个文本文件（名字就叫 `Dockerfile`，无扩展名�
 FROM java:8
 
 # 维护者信息（写占位信息即可，别写真名真邮箱）
-MAINTAINER yourname yourname@gmail.com
-
+LABEL maintainer="yourname@example.com"
 # 镜像操作指令：构建时执行
 RUN echo "开始安装 Tomcat..."
 
@@ -71,7 +70,7 @@ CMD /usr/local/tomcat/bin/catalina.sh
 |---|---|
 | Dockerfile 第一行不是 FROM 直接报错 | FROM 必须第一行（注释除外），它决定了整个构建的基座 |
 | 把 CMD 当"构建时命令"用 | CMD 只影响容器启动；构建时的安装动作要写 RUN |
-| 忘了 MAINTAINER | 不写也能构建，但"这镜像谁维护的"无从追溯；团队协作建议写占位名 |
+| 忘了写维护者 | 不写也能构建，但"这镜像谁维护的"无从追溯；团队协作建议用 `LABEL maintainer="…"` |
 
 @@point ③ FROM：站在巨人的肩膀上
 @@need 要解决什么
@@ -79,9 +78,12 @@ CMD /usr/local/tomcat/bin/catalina.sh
 
 @@idea 核心思路
 ```dockerfile
-FROM centos              # 从 centos 最新版开始（不写 tag=latest）
-FROM java:8              # 从 java 8 标签开始（更可控）
-FROM ubuntu:22.04        # 指定具体版本
+# 从 centos 最新版开始（不写 tag=latest）
+FROM centos
+# 从 java 8 标签开始（更可控）
+FROM java:8
+# 指定具体版本
+FROM ubuntu:22.04
 ```
 
 选基础镜像的原则：**够用就选官方精简的**（如 openjdk、centos、alpine），体积小、漏洞少；越底层，你后面要装的越多。
@@ -124,12 +126,16 @@ RUN 的中间结果会被**缓存**：下次构建时，如果这条 RUN 没变�
 
 @@idea 核心思路
 ```dockerfile
-WORKDIR /usr/local      # 之后所有命令默认在这个目录下执行
-RUN mkdir docker        # 等价于 mkdir /usr/local/docker
+# 之后所有命令默认在这个目录下执行
+WORKDIR /usr/local
+# 等价于 mkdir /usr/local/docker
+RUN mkdir docker
 
 WORKDIR /a
-WORKDIR b               # 相对上一个：/a/b
-WORKDIR c               # 再相对：/a/b/c
+# 相对上一个：/a/b
+WORKDIR b
+# 再相对：/a/b/c
+WORKDIR c
 ```
 
 - WORKDIR 类似 `cd`，但**它是写进镜像的"默认目录"**，影响其后的 RUN、CMD、ENTRYPOINT、ADD、COPY；
@@ -149,14 +155,20 @@ WORKDIR c               # 再相对：/a/b/c
 @@idea 核心思路
 ```dockerfile
 # COPY：单纯拷贝，不做任何加工
-COPY ./start.sh /start.sh          # 相对路径 → 工作目录
-COPY ./conf/ /etc/myapp/           # 整个目录拷过去
+# 相对路径 → 工作目录
+COPY ./start.sh /start.sh
+# 整个目录拷过去
+COPY ./conf/ /etc/myapp/
 
 # ADD：COPY 增强版（会自动解压 tar 包，支持远程 URL）
-ADD ./apache-tomcat-9.0.50.tar.gz /usr/local/   # tar 会自动解压
-ADD hom* /mydir/                   # 通配符，所有 hom 开头的文件
-ADD test /absoluteDir/             # 拷到绝对路径
-ADD test relativeDir               # 拷到 WORKDIR/relativeDir
+# tar 会自动解压
+ADD ./apache-tomcat-9.0.50.tar.gz /usr/local/
+# 通配符，所有 hom 开头的文件
+ADD hom* /mydir/
+# 拷到绝对路径
+ADD test /absoluteDir/
+# 拷到 WORKDIR/relativeDir
+ADD test relativeDir
 ```
 
 区别一句话：
@@ -203,7 +215,8 @@ ENV PATH=$JAVA_HOME/bin:$PATH
 
 @@idea 核心思路
 ```dockerfile
-EXPOSE 8080   # 告诉使用者：我这个镜像的容器默认监听 8080
+# 告诉使用者：我这个镜像的容器默认监听 8080
+EXPOSE 8080
 ```
 
 - EXPOSE 只做**文档化声明**，让 `docker ps` 和 `docker run -P`（自动映射）知道该暴露哪些端口；
@@ -227,8 +240,10 @@ EXPOSE 8080   # 告诉使用者：我这个镜像的容器默认监听 8080
 @@idea 核心思路
 ```dockerfile
 # 两种格式
-CMD echo "hello Dockerfile"       # shell 格式
-CMD ["java", "-version"]          # exec 格式（推荐，无多余 shell 层）
+# shell 格式
+CMD echo "hello Dockerfile"
+# exec 格式（推荐，无多余 shell 层）
+CMD ["java", "-version"]
 
 # 第三种写法：作为 ENTRYPOINT 的默认参数（下一点讲）
 CMD ["-b"]
@@ -263,8 +278,10 @@ CMD ["ls", "-a"]
 
 # 镜像2：ENTRYPOINT 配 CMD（CMD 变成"默认参数"）
 FROM centos
-ENTRYPOINT ["ls"]       # 主命令，打不死
-CMD ["-a"]              # 默认参数，可被替换
+# 主命令，打不死
+ENTRYPOINT ["ls"]
+# 默认参数，可被替换
+CMD ["-a"]
 ```
 
 行为对比：
@@ -296,11 +313,14 @@ CMD ["-a"]              # 默认参数，可被替换
 ```dockerfile
 # VOLUME：在镜像里声明"这里要挂卷"（容器没挂也自动生成匿名卷）
 VOLUME ["/data"]
-VOLUME ["/var/www", "/var/log/apache2"]     # 可声明多个
+# 可声明多个
+VOLUME ["/var/www", "/var/log/apache2"]
 
 # USER：之后 RUN/CMD/ENTRYPOINT 用什么用户跑（默认 root）
-USER 你的用户名          # 只写用户
-USER 用户:用户组         # 用户+组
+# 只写用户
+USER 你的用户名
+# 用户+组
+USER 用户:用户组
 #    run 时可用 -u 临时覆盖
 
 # ONBUILD：给"别人的镜像"埋的触发器
@@ -360,9 +380,8 @@ docker build -t tomcat:1.0 .
 # 1. 基础镜像：自带 JDK 8
 FROM java:8
 
-# 2. 维护者（占位信息）
-MAINTAINER yourname yourname@gmail.com
-
+# 2. 维护者（占位信息；用 LABEL，不用已废弃的 MAINTAINER）
+LABEL maintainer="yourname@example.com"
 # 3. 把 Tomcat 9 压缩包拷进镜像并自动解压到 /usr/local
 ADD ./apache-tomcat-9.0.50.tar.gz /usr/local
 
@@ -441,8 +460,8 @@ RUN rm -rf /etc/yum.repos.d/* && \
 | 问题 | 答案 |
 |---|---|
 | 为什么自己造镜像 | 现成镜像版本/JDK/变量都对不上，且不可复现 |
-| Dockerfile 是什么 | 文本配方文件，四部分：FROM / MAINTAINER / 构建指令 / 启动指令 |
-| 每部分怎么用 | FROM 必须第一行；MAINTAINER 写占位；RUN 构建时跑；CMD 运行时跑 |
+| Dockerfile 是什么 | 文本配方文件，四部分：FROM / LABEL maintainer / 构建指令 / 启动指令 |
+| 每部分怎么用 | FROM 必须第一行；LABEL maintainer 写占位；RUN 构建时跑；CMD 运行时跑 |
 | 搬文件用谁 | 纯拷贝用 COPY；要解压 tar 才用 ADD |
 | 端口怎么开 | EXPOSE 只是声明，真正开放要 -p/-P 映射 |
 | CMD vs ENTRYPOINT | CMD 可被替换；ENTRYPOINT 打不死、参数可追加 |

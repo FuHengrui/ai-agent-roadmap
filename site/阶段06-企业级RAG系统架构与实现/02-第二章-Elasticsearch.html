@@ -420,7 +420,7 @@ vim config/jvm.options
 ./bin/elasticsearch -d        # 后台运行
 
 # 4. 验证
-curl http://localhost:9200    # 返回 JSON，带 cluster_name 即成功</pre>
+curl -k -u elastic https://localhost:9200   # 输初始密码；返回 JSON 且带 cluster_name 即成功</pre>
 <p><strong>为什么必须非 root</strong>：ES 的 JVM 沙箱安全机制要求不能以超级用户运行，这是硬约束不是 bug。ES 8 默认开启安全认证，首次启动会打印一个临时的 <code>elastic</code> 用户密码，<strong>务必存好</strong>，后面 Kibana 连接和所有请求都要用它。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -429,7 +429,7 @@ curl http://localhost:9200    # 返回 JSON，带 cluster_name 即成功</pre>
 <tr><td>can not run elasticsearch as root</td><td>创建普通用户 <code>su</code> 切换后再启动</td></tr>
 <tr><td>内存不足 fatal error</td><td>默认 <code>-Xms1g</code>，机器小就把 jvm.options 改成 <code>-Xms512m -Xmx512m</code></td></tr>
 <tr><td>启动太慢 / 卡住</td><td>磁盘 IO 慢；先 <code>./bin/elasticsearch -d</code> 看 <code>/logs/elasticsearch.log</code></td></tr>
-<tr><td>忘记初始密码</td><td><code>./bin/elasticsearch-setup-passwords auto</code> 重置</td></tr>
+<tr><td>忘记初始密码</td><td>用 <code>./bin/elasticsearch-reset-password -u elastic</code> 重设（<code>setup-passwords</code> 在 8.x 已废弃）</td></tr>
 </table>
 </div>
 </div></div>
@@ -505,10 +505,11 @@ POST /_bulk
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td><strong>写完立刻查，查不到</strong></td><td>ES 是<strong>近实时（NRT）</strong>：默认 1 秒 refresh 之后才可被搜到。写完马上搜不到是正常现象，不是没写进去（用 <code>GET /_doc/{id}</code> 能立刻读到）</td></tr>
+<tr><td><strong>写完立刻查，查不到</strong></td><td>ES 是<strong>近实时（NRT）</strong>：默认 1 秒 refresh 之后才可被搜到。写完马上搜不到是正常现象，不是没写进去（用 <code>GET /news/_doc/{id}</code> 能立刻读到）</td></tr>
 <tr><td><strong>以为"更新"是原地改</strong></td><td>底层是<strong>标记旧版本 + 写新版本</strong>。所以更新一点都不便宜，频繁更新会让磁盘短暂膨胀</td></tr>
 <tr><td>逐条 <code>POST</code> 写几千条</td><td>每条一次网络往返，慢到不能用。生产必须用 <code>_bulk</code> 批量</td></tr>
 <tr><td>删了大量数据，磁盘没变小</td><td>要等后台<strong>段合并</strong>才物理释放。这是正常的，别急着以为没删掉</td></tr>
+<tr><td>建完索引状态一直是 yellow</td><td>单机只有一个节点，副本分片没地方放。练习时把 <code>number_of_replicas</code> 设成 0，或再加一个节点</td></tr>
 <tr><td>以为 <code>_bulk</code> 会报错就整体回滚</td><td><code>_bulk</code> <strong>不是事务</strong>：部分成功、部分失败是常态，必须<strong>逐条检查返回结果</strong>里的 <code>errors</code> 字段</td></tr>
 </table>
 </div>
@@ -679,7 +680,7 @@ GET /news/_search
 <tr><td><strong><code>term</code> 和 <code>match</code> 用反了</strong></td><td>最容易犯的错。<code>term</code> 是<strong>精确匹配、不分词</strong>（配 keyword）；<code>match</code> 是<strong>分词匹配</strong>（配 text）。<strong>拿 <code>term</code> 查 text 字段就是查不到</strong>（值被拆成词了）</td></tr>
 <tr><td>以为 <code>match_phrase</code> 和 <code>match</code> 差不多</td><td><code>match_phrase</code> 要求<strong>词序相邻</strong>："缴费年限"不会被拆散匹配；<code>match</code> 只要词出现就行，顺序无所谓</td></tr>
 <tr><td>拿 <code>match</code> 查 keyword 字段</td><td>能查到但语义不对（keyword 整体一个词）。<strong>keyword 就该用 term</strong></td></tr>
-<tr><td>搜不到就怀疑数据没写进去</td><td>先 <code>_analyze</code> 看词怎么切的、再 <code>GET /_doc/{id}</code> 确认数据在——<strong>别直接改查询</strong></td></tr>
+<tr><td>搜不到就怀疑数据没写进去</td><td>先 <code>_analyze</code> 看词怎么切的、再 <code>GET /news/_doc/{id}</code> 确认数据在——<strong>别直接改查询</strong></td></tr>
 </table>
 </div>
 </div></div>
@@ -703,7 +704,7 @@ GET /news/_search
   }
 }</pre>
 <p>要点：</p>
-<ul><li><code>must</code> = AND；<code>should</code> = OR（至少有 1 个命中即可，可配 <code>minimum_should_match</code>）</li><li><strong><code>filter</code> 不参与相关度打分</strong>：过滤条件多的时候一定要放 filter，能省大量计算</li><li><code>highlight</code> 返回 <code>_source</code> 的 <code>highlight.title</code>，前端拿 <code>&lt;/em&gt;</code> 标签包住的命中词直接渲染标红</li></ul>
+<ul><li><code>must</code> = AND；<code>should</code> = OR（至少有 1 个命中即可，可配 <code>minimum_should_match</code>）</li><li><strong><code>filter</code> 不参与相关度打分</strong>：过滤条件多的时候一定要放 filter，能省大量计算</li><li><code>highlight</code> 返回 <code>_source</code> 的 <code>highlight.title</code>，客户端拿到 <code>&lt;em&gt;…&lt;/em&gt;</code> 包住的命中词，按标签渲染成标红</li></ul>
 <p><strong>工厂级小技巧</strong>：分页别用大 <code>from</code>（1000 之后非常慢），用 <code>search_after</code> 游标；深度分页用 scroll。生产系统搜"第 5000 页"的场景，用 from/size 会拖垮集群。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -783,12 +784,12 @@ public class NewsService {
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>集群三板斧</strong>：</p>
-<ul><li>分片（shard）：一份数据切成多个分片分散在多台机器，横向扩容的物理基础</li><li>副本（replica）：每个分片都有副本，<strong>主分片挂了副本顶上</strong>，还能分摊读压力</li><li>三节点起步：<code>discovery.seed_hosts</code> 把三台机器拉进一个 cluster，<code>node.master</code> / <code>node.data</code> 分配角色</li></ul>
+<ul><li>分片（shard）：一份数据切成多个分片分散在多台机器，横向扩容的物理基础</li><li>副本（replica）：每个分片都有副本，<strong>主分片挂了副本顶上</strong>，还能分摊读压力</li><li>三节点起步：<code>discovery.seed_hosts</code> 把三台机器拉进一个 cluster，<code>node.roles</code> 分配角色（8.x 已删掉 <code>node.master</code> / <code>node.data</code>）</li></ul>
 <p><strong>优化自查清单</strong>：</p>
 <table>
 <tr><th>症状</th><th>优化动作</th></tr>
 <tr><td>查询慢</td><td>分片数过大（每分片数据 &lt;5G 反而慢）、改成过滤查询、加缓存</td></tr>
-<tr><td>内存炸</td><td>JVM 别超过物理内存一半（留一半给 OS 文件缓存），<code>indices.fielddata.cache</code> 限量</td></tr>
+<tr><td>内存炸</td><td>JVM 别超过物理内存一半（留一半给 OS 文件缓存），<code>indices.fielddata.cache.size</code> 限量</td></tr>
 <tr><td>磁盘涨</td><td>定期 <code>DELETE</code> 过期索引、改冷热分层（热节点 SSD/冷节点 HDD）</td></tr>
 <tr><td>写入慢</td><td>批量 <code>_bulk</code>、调大 refresh_interval、关副本写入再开</td></tr>
 </table>

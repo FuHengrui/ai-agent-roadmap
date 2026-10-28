@@ -319,7 +319,7 @@
 <table>
 <tr><th>部分</th><th>关键字</th><th>必须吗</th><th>干什么</th></tr>
 <tr><td>① 基础镜像</td><td>FROM</td><td><strong>必须</strong>（第一行）</td><td>站在谁的肩上</td></tr>
-<tr><td>② 维护者信息</td><td>MAINTAINER</td><td>可选</td><td>这镜像谁做的</td></tr>
+<tr><td>② 维护者信息</td><td>LABEL maintainer="…"</td><td>可选</td><td>这镜像谁做的（<code>MAINTAINER</code> 自 17.05 起已废弃）</td></tr>
 <tr><td>③ 镜像操作指令</td><td>RUN / COPY / ADD / ENV 等</td><td>按需</td><td>往镜像里装东西、改配置</td></tr>
 <tr><td>④ 容器启动指令</td><td>CMD / ENTRYPOINT</td><td>按需</td><td>容器 run 起来时执行什么</td></tr>
 </table>
@@ -327,8 +327,7 @@
 FROM java:8
 
 # 维护者信息（写占位信息即可，别写真名真邮箱）
-MAINTAINER yourname yourname@gmail.com
-
+LABEL maintainer=&quot;yourname@example.com&quot;
 # 镜像操作指令：构建时执行
 RUN echo &quot;开始安装 Tomcat...&quot;
 
@@ -341,7 +340,7 @@ CMD /usr/local/tomcat/bin/catalina.sh</pre>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>Dockerfile 第一行不是 FROM 直接报错</td><td>FROM 必须第一行（注释除外），它决定了整个构建的基座</td></tr>
 <tr><td>把 CMD 当"构建时命令"用</td><td>CMD 只影响容器启动；构建时的安装动作要写 RUN</td></tr>
-<tr><td>忘了 MAINTAINER</td><td>不写也能构建，但"这镜像谁维护的"无从追溯；团队协作建议写占位名</td></tr>
+<tr><td>忘了写维护者</td><td>不写也能构建，但"这镜像谁维护的"无从追溯；团队协作建议用 <code>LABEL maintainer="…"</code></td></tr>
 </table>
 </div>
 </div></div>
@@ -350,9 +349,12 @@ CMD /usr/local/tomcat/bin/catalina.sh</pre>
 <p>自己从零拼一个 Linux + JDK + Tomcat？那不叫自制，叫造轮子。FROM 让你从别人做好的基础镜像开始。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>FROM centos              # 从 centos 最新版开始（不写 tag=latest）
-FROM java:8              # 从 java 8 标签开始（更可控）
-FROM ubuntu:22.04        # 指定具体版本</pre>
+<pre># 从 centos 最新版开始（不写 tag=latest）
+FROM centos
+# 从 java 8 标签开始（更可控）
+FROM java:8
+# 指定具体版本
+FROM ubuntu:22.04</pre>
 <p>选基础镜像的原则：<strong>够用就选官方精简的</strong>（如 openjdk、centos、alpine），体积小、漏洞少；越底层，你后面要装的越多。 tag 建议写死，避免"今天构建和三个月后构建出两个环境"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -390,12 +392,16 @@ RUN [&quot;yum&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;wget&quot;]</pr
 <p>后面的 RUN、CMD、COPY 等命令默认在根目录执行，路径全得写绝对路径，烦且容易错。能不能"先 cd 过去"？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>WORKDIR /usr/local      # 之后所有命令默认在这个目录下执行
-RUN mkdir docker        # 等价于 mkdir /usr/local/docker
+<pre># 之后所有命令默认在这个目录下执行
+WORKDIR /usr/local
+# 等价于 mkdir /usr/local/docker
+RUN mkdir docker
 
 WORKDIR /a
-WORKDIR b               # 相对上一个：/a/b
-WORKDIR c               # 再相对：/a/b/c</pre>
+# 相对上一个：/a/b
+WORKDIR b
+# 再相对：/a/b/c
+WORKDIR c</pre>
 <ul><li>WORKDIR 类似 <code>cd</code>，但<strong>它是写进镜像的"默认目录"</strong>，影响其后的 RUN、CMD、ENTRYPOINT、ADD、COPY；</li><li><code>docker run</code> 时可用 <code>-w</code> 参数临时覆盖镜像里设的工作目录（本次运行有效，不改镜像）。</li></ul>
 <p>选择建议：给应用建一个专属目录（如 <code>/opt/myapp</code>）作 WORKDIR，别全堆根目录。</p>
 </div>
@@ -413,14 +419,20 @@ WORKDIR c               # 再相对：/a/b/c</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre># COPY：单纯拷贝，不做任何加工
-COPY ./start.sh /start.sh          # 相对路径 → 工作目录
-COPY ./conf/ /etc/myapp/           # 整个目录拷过去
+# 相对路径 → 工作目录
+COPY ./start.sh /start.sh
+# 整个目录拷过去
+COPY ./conf/ /etc/myapp/
 
 # ADD：COPY 增强版（会自动解压 tar 包，支持远程 URL）
-ADD ./apache-tomcat-9.0.50.tar.gz /usr/local/   # tar 会自动解压
-ADD hom* /mydir/                   # 通配符，所有 hom 开头的文件
-ADD test /absoluteDir/             # 拷到绝对路径
-ADD test relativeDir               # 拷到 WORKDIR/relativeDir</pre>
+# tar 会自动解压
+ADD ./apache-tomcat-9.0.50.tar.gz /usr/local/
+# 通配符，所有 hom 开头的文件
+ADD hom* /mydir/
+# 拷到绝对路径
+ADD test /absoluteDir/
+# 拷到 WORKDIR/relativeDir
+ADD test relativeDir</pre>
 <p>区别一句话：</p>
 <table>
 <tr><th></th><th>COPY</th><th>ADD</th></tr>
@@ -461,7 +473,8 @@ ENV PATH=$JAVA_HOME/bin:$PATH</pre>
 <p>你的镜像里跑的是 Tomcat，外界要访问 8080。很多人以为写了 EXPOSE 8080 就通了——大错，这一步只是"声明"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>EXPOSE 8080   # 告诉使用者：我这个镜像的容器默认监听 8080</pre>
+<pre># 告诉使用者：我这个镜像的容器默认监听 8080
+EXPOSE 8080</pre>
 <ul><li>EXPOSE 只做<strong>文档化声明</strong>，让 <code>docker ps</code> 和 <code>docker run -P</code>（自动映射）知道该暴露哪些端口；</li><li><strong>它不会真的把端口对外开放</strong>；</li><li>想真正访问，必须 <code>docker run -p 宿主机端口:8080</code> 映射发布（第 16 章讲过），或用 <code>-P</code> 一次发布所有 EXPOSE 端口。</li></ul>
 <pre>镜像(EXPOSE 8080) ──光声明不开门──► docker run -p 9090:8080 ──► 宿主机 9090 ──► 浏览器可访问</pre>
 </div>
@@ -479,8 +492,10 @@ ENV PATH=$JAVA_HOME/bin:$PATH</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre># 两种格式
-CMD echo &quot;hello Dockerfile&quot;       # shell 格式
-CMD [&quot;java&quot;, &quot;-version&quot;]          # exec 格式（推荐，无多余 shell 层）
+# shell 格式
+CMD echo &quot;hello Dockerfile&quot;
+# exec 格式（推荐，无多余 shell 层）
+CMD [&quot;java&quot;, &quot;-version&quot;]
 
 # 第三种写法：作为 ENTRYPOINT 的默认参数（下一点讲）
 CMD [&quot;-b&quot;]</pre>
@@ -509,8 +524,10 @@ CMD [&quot;ls&quot;, &quot;-a&quot;]
 
 # 镜像2：ENTRYPOINT 配 CMD（CMD 变成&quot;默认参数&quot;）
 FROM centos
-ENTRYPOINT [&quot;ls&quot;]       # 主命令，打不死
-CMD [&quot;-a&quot;]              # 默认参数，可被替换</pre>
+# 主命令，打不死
+ENTRYPOINT [&quot;ls&quot;]
+# 默认参数，可被替换
+CMD [&quot;-a&quot;]</pre>
 <p>行为对比：</p>
 <table>
 <tr><th>场景</th><th>只有 CMD</th><th>ENTRYPOINT + CMD</th></tr>
@@ -537,11 +554,14 @@ CMD [&quot;-a&quot;]              # 默认参数，可被替换</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <pre># VOLUME：在镜像里声明&quot;这里要挂卷&quot;（容器没挂也自动生成匿名卷）
 VOLUME [&quot;/data&quot;]
-VOLUME [&quot;/var/www&quot;, &quot;/var/log/apache2&quot;]     # 可声明多个
+# 可声明多个
+VOLUME [&quot;/var/www&quot;, &quot;/var/log/apache2&quot;]
 
 # USER：之后 RUN/CMD/ENTRYPOINT 用什么用户跑（默认 root）
-USER 你的用户名          # 只写用户
-USER 用户:用户组         # 用户+组
+# 只写用户
+USER 你的用户名
+# 用户+组
+USER 用户:用户组
 #    run 时可用 -u 临时覆盖
 
 # ONBUILD：给&quot;别人的镜像&quot;埋的触发器
@@ -593,9 +613,8 @@ docker build -t tomcat:1.0 .</div>
 <pre># 1. 基础镜像：自带 JDK 8
 FROM java:8
 
-# 2. 维护者（占位信息）
-MAINTAINER yourname yourname@gmail.com
-
+# 2. 维护者（占位信息；用 LABEL，不用已废弃的 MAINTAINER）
+LABEL maintainer=&quot;yourname@example.com&quot;
 # 3. 把 Tomcat 9 压缩包拷进镜像并自动解压到 /usr/local
 ADD ./apache-tomcat-9.0.50.tar.gz /usr/local
 
@@ -661,8 +680,8 @@ RUN rm -rf /etc/yum.repos.d/* &amp;&amp; \
 <table>
 <tr><th>问题</th><th>答案</th></tr>
 <tr><td>为什么自己造镜像</td><td>现成镜像版本/JDK/变量都对不上，且不可复现</td></tr>
-<tr><td>Dockerfile 是什么</td><td>文本配方文件，四部分：FROM / MAINTAINER / 构建指令 / 启动指令</td></tr>
-<tr><td>每部分怎么用</td><td>FROM 必须第一行；MAINTAINER 写占位；RUN 构建时跑；CMD 运行时跑</td></tr>
+<tr><td>Dockerfile 是什么</td><td>文本配方文件，四部分：FROM / LABEL maintainer / 构建指令 / 启动指令</td></tr>
+<tr><td>每部分怎么用</td><td>FROM 必须第一行；LABEL maintainer 写占位；RUN 构建时跑；CMD 运行时跑</td></tr>
 <tr><td>搬文件用谁</td><td>纯拷贝用 COPY；要解压 tar 才用 ADD</td></tr>
 <tr><td>端口怎么开</td><td>EXPOSE 只是声明，真正开放要 -p/-P 映射</td></tr>
 <tr><td>CMD vs ENTRYPOINT</td><td>CMD 可被替换；ENTRYPOINT 打不死、参数可追加</td></tr>
