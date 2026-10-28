@@ -424,7 +424,7 @@
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>想改网页内容却写在 popup.js 里</td><td>网页 DOM 的操作要在 <strong>content 脚本</strong>里做；popup 与网页是隔离的</td></tr>
 <tr><td>popup 打开就闪退</td><td>检查 popup.js 有无运行时报错（右键 popup → 检查）；控制台看 error</td></tr>
-<tr><td>页面样式用 CDN 引线</td><td>插件页<strong>建议本地化资源</strong>（离线可用、避免 CSP 限制）；审查网络依赖</td></tr>
+<tr><td>页面样式用 CDN 引外链</td><td>插件页<strong>建议本地化资源</strong>（离线可用、避免 CSP 限制）；审查网络依赖</td></tr>
 </table>
 </div>
 </div></div>
@@ -438,8 +438,9 @@
 <p><strong>常见报错速查：</strong></p>
 <table>
 <tr><th>报错</th><th>常见原因</th></tr>
-<tr><td>Manifest is not valid</td><td>manifest.json 语法/字段错误（缺逗号、字段名拼错）</td></tr>
+<tr><td>Manifest is not valid JSON（后面会跟 Line/column）</td><td>manifest.json 语法错：缺逗号、引号不配对、字段名拼错</td></tr>
 <tr><td>Permission not declared</td><td>使用了未在 permissions 声明的 API</td></tr>
+<tr><td>想要"从右侧滑出"却做不出来</td><td>那是 <code>chrome.sidePanel</code>（Chrome 114+，manifest 加 <code>side_panel</code> 与 <code>sidePanel</code> 权限，再 <code>setPanelBehavior</code>），本章示例用的是 <code>action.default_popup</code> 弹窗，两种不是一回事</td></tr>
 <tr><td>Cannot access contents of the page</td><td>被页面 CSP 或受保护页面（商店页/系统页）拦截</td></tr>
 <tr><td>Service worker registration failed</td><td>MV3 后台脚本（service worker）注册失败，检查脚本路径</td></tr>
 </table>
@@ -488,8 +489,8 @@
 <p>本实战的需求是"<strong>精美句子收集插件</strong>"，包含 4 个功能：</p>
 <p><strong>1. 文本选中记录功能</strong></p>
 <ul><li>用户用鼠标在网页中选中一段文字，鼠标释放后自动弹出插件图标/悬浮小按钮（靠近选中文本）；</li><li>点击"保存"后弹出快捷保存面板，支持：编辑句子内容（可选）、选择/新建分类（写作、演讲、情感、灵感等）、可选添加标签或备注；</li><li>自动记录当前网页标题和网址作为来源信息。</li></ul>
-<p><strong>2. 插件主界面（右侧滑出面板）</strong></p>
-<ul><li>点击插件图标（右上角）打开侧边栏面板；</li><li>面板含：分类列表、精美语句展示区（按时间/分类/搜索排序）、搜索框、每条句子的"复制"/"编辑"/"删除"按钮、"喜欢/星标"标记。</li></ul>
+<p><strong>2. 插件主界面（点图标弹出的面板）</strong></p>
+<ul><li>点击插件图标（地址栏右侧）打开这个面板；</li><li>面板含：分类列表、精美语句展示区（按时间/分类/搜索排序）、搜索框、每条句子的"复制"/"编辑"/"删除"按钮、"喜欢/星标"标记。</li></ul>
 <p><strong>3. 快速粘贴功能</strong></p>
 <ul><li>鼠标右键菜单或快捷面板中支持快速复制句子到剪贴板；</li><li>可考虑提供快捷键唤出常用句面板（如 Alt+M）。</li></ul>
 <p><strong>4. 数据本地持久化存储</strong></p>
@@ -547,7 +548,7 @@
 </table>
 <p>一句话记住本章：<strong>用 Cursor 开发 Chrome 插件就是 Vibe Coding 的样板间——Agent 建骨架、@Docs 喂规范、Ask 排错、Manual 精修，最后打包分发；流程学会了，换成任何项目都能照此循环。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>用 Cursor 开发 Chrome 插件的四个阶段分别是什么？每个阶段核心调用哪种模式/能力？</li><li>manifest.json 的核心作用是什么？写出 MV3 的 manifest 中至少 5 个关键字段。</li><li>Manifest V3 与 V2 相比，后台脚本改成了什么？</li><li>插件开发的离线安装（开发者模式加载）完整步骤是什么？与在线安装（应用商店）的分工是什么？</li><li>打包扩展程序会生成哪两类文件？私钥 .pem 丢失会有什么后果？</li><li>popup、options、content 三种页面的触发方式和典型用途分别是什么？修改网页 DOM 应该在哪种页面类型中做？</li><li>调试插件的"三板斧"是什么？"Manifest is not valid"报错常见原因是什么？</li></ol>
+<ol><li>用 Cursor 开发 Chrome 插件的四个阶段分别是什么？每个阶段核心调用哪种模式/能力？</li><li>manifest.json 的核心作用是什么？写出 MV3 的 manifest 中至少 5 个关键字段。</li><li>Manifest V3 与 V2 相比，后台脚本改成了什么？</li><li>插件开发的离线安装（开发者模式加载）完整步骤是什么？与在线安装（应用商店）的分工是什么？</li><li>打包扩展程序会生成哪两类文件？私钥 .pem 丢失会有什么后果？</li><li>popup、options、content 三种页面的触发方式和典型用途分别是什么？修改网页 DOM 应该在哪种页面类型中做？</li><li>调试插件的"三板斧"是什么？"Manifest is not valid JSON"报错常见原因是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://cursor.com/cn/downloads" target="_blank" rel="noopener"><span class="k">工具</span>Cursor 官网</a>
 <a href="https://developer.chrome.com/docs/extensions/" target="_blank" rel="noopener"><span class="k">参考</span>Chrome 扩展开发文档</a>

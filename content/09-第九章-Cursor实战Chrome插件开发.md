@@ -178,7 +178,7 @@ Chrome 插件的一切都从 manifest.json 开始。它的核心结构长什么�
 |---|---|
 | 想改网页内容却写在 popup.js 里 | 网页 DOM 的操作要在 **content 脚本**里做；popup 与网页是隔离的 |
 | popup 打开就闪退 | 检查 popup.js 有无运行时报错（右键 popup → 检查）；控制台看 error |
-| 页面样式用 CDN 引线 | 插件页**建议本地化资源**（离线可用、避免 CSP 限制）；审查网络依赖 |
+| 页面样式用 CDN 引外链 | 插件页**建议本地化资源**（离线可用、避免 CSP 限制）；审查网络依赖 |
 
 @@point ⑤ 调试与排错：控制台、错误信息、重载三板斧
 @@need 要解决什么
@@ -196,8 +196,9 @@ Chrome 插件的一切都从 manifest.json 开始。它的核心结构长什么�
 
 | 报错 | 常见原因 |
 |---|---|
-| Manifest is not valid | manifest.json 语法/字段错误（缺逗号、字段名拼错） |
+| Manifest is not valid JSON（后面会跟 Line/column） | manifest.json 语法错：缺逗号、引号不配对、字段名拼错 |
 | Permission not declared | 使用了未在 permissions 声明的 API |
+| 想要"从右侧滑出"却做不出来 | 那是 `chrome.sidePanel`（Chrome 114+，manifest 加 `side_panel` 与 `sidePanel` 权限，再 `setPanelBehavior`），本章示例用的是 `action.default_popup` 弹窗，两种不是一回事 |
 | Cannot access contents of the page | 被页面 CSP 或受保护页面（商店页/系统页）拦截 |
 | Service worker registration failed | MV3 后台脚本（service worker）注册失败，检查脚本路径 |
 
@@ -247,8 +248,8 @@ Chrome 插件的一切都从 manifest.json 开始。它的核心结构长什么�
 - 点击"保存"后弹出快捷保存面板，支持：编辑句子内容（可选）、选择/新建分类（写作、演讲、情感、灵感等）、可选添加标签或备注；
 - 自动记录当前网页标题和网址作为来源信息。
 
-**2. 插件主界面（右侧滑出面板）**
-- 点击插件图标（右上角）打开侧边栏面板；
+**2. 插件主界面（点图标弹出的面板）**
+- 点击插件图标（地址栏右侧）打开这个面板；
 - 面板含：分类列表、精美语句展示区（按时间/分类/搜索排序）、搜索框、每条句子的"复制"/"编辑"/"删除"按钮、"喜欢/星标"标记。
 
 **3. 快速粘贴功能**
@@ -316,7 +317,7 @@ Chrome 插件的一切都从 manifest.json 开始。它的核心结构长什么�
 4. 插件开发的离线安装（开发者模式加载）完整步骤是什么？与在线安装（应用商店）的分工是什么？
 5. 打包扩展程序会生成哪两类文件？私钥 .pem 丢失会有什么后果？
 6. popup、options、content 三种页面的触发方式和典型用途分别是什么？修改网页 DOM 应该在哪种页面类型中做？
-7. 调试插件的"三板斧"是什么？"Manifest is not valid"报错常见原因是什么？
+7. 调试插件的"三板斧"是什么？"Manifest is not valid JSON"报错常见原因是什么？
 
 @@links
 参考|Cursor |#

@@ -315,7 +315,7 @@
 <tr><th>维度</th><th>传统模型</th><th>大模型</th></tr>
 <tr><td><strong>数据</strong></td><td>几万条样本</td><td>万亿级 Token（几乎整个互联网）</td></tr>
 <tr><td><strong>算力</strong></td><td>单张显卡</td><td>上万张 GPU 集群训练数月</td></tr>
-<tr><td><strong>参数</strong></td><td>几百万</td><td>千亿级（如 685B = 6850 亿）</td></tr>
+<tr><td><strong>参数</strong></td><td>几百万</td><td>千亿级（如 DeepSeek-V3 的 671B ≈ 6710 亿）</td></tr>
 <tr><td><strong>泛化</strong></td><td>只会干一件事</td><td>一个模型能写诗、编程、看病历</td></tr>
 </table>
 <p>在上一阶段，深度学习已经能识别猫、下围棋；大模型在此基础上把"专才"变成了"通才"——<strong>不再为每个任务单独训练模型，一个模型吃遍所有任务</strong>，这就是它颠覆性的地方。</p>
@@ -526,6 +526,7 @@ AI:&quot;你好小王&quot;
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 看懂版本后缀：Max/Plus/Flash 都是什么</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>第一次打开百炼平台模型列表：<code>qwen3-max</code>、<code>qwen3-plus</code>、<code>qwen3-flash</code>、<code>qwen3-vl-plus</code>、<code>DeepSeek-V3.2-Exp</code>、<code>R1</code>……<strong>看着都像"通义千问"，到底选哪个？</strong> 选错要么慢要么贵要么不支持你要的功能。</p>
+<p>本章代码统一用 <code>qwen-plus</code>：便宜、快、够用。想更强就把 <code>model=</code> 换成 <code>qwen3-max</code>，想要极快换 <code>qwen3-flash</code>——<strong>只改这一处</strong>，别的都不用动。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>型号 = 品牌 + 能力分级 + 特性后缀</strong>。以通义千问（Qwen）系列为例：</p>
@@ -580,7 +581,7 @@ AI:&quot;你好小王&quot;
 <tr><td>1.5B（小模型）</td><td>8GB 内存</td><td>RTX 3060（12GB）可流畅</td></tr>
 <tr><td>7B（中等）</td><td>16GB</td><td>RTX 4080（16GB）</td></tr>
 <tr><td>14B</td><td>32GB</td><td>RTX 4090（24GB）勉强到瓶颈</td></tr>
-<tr><td>32B</td><td>64GB</td><td>双 4090 交火</td></tr>
+<tr><td>32B</td><td>64GB</td><td>4×4090（4bit 量化可压到 2×4090）</td></tr>
 <tr><td>70B（Llama3-70B）</td><td>140GB</td><td>4×A100（80GB）</td></tr>
 <tr><td>671B（DeepSeek-V3 满血）</td><td>1TB+</td><td>8×H200，成本千万级</td></tr>
 </table>
@@ -609,7 +610,8 @@ AI:&quot;你好小王&quot;
 <p><strong>第 2 步：装 SDK</strong> OpenAI 出的 <code>openai</code> Python 库已是事实标准——绝大多数国产模型都兼容 OpenAI 协议，只需改一个 <code>base_url</code> 就能指到国内平台：</p>
 <pre>pip install openai</pre>
 <p><strong>第 3 步：写 10 行代码</strong></p>
-<pre>from openai import OpenAI
+<pre>import os
+from openai import OpenAI
 
 # 密钥从环境变量读取，绝不写死在代码里（安全红线）
 key = os.environ[&quot;DASHSCOPE_API_KEY&quot;]
@@ -771,7 +773,8 @@ print(chat(&quot;再帮我分析一下上一条中最核心的情绪矛盾点。
 <div class="step idea"><span class="label">核心思路</span>
 <p>两个能力对应两套接口：</p>
 <p><strong>1. 图像识别 —— 视觉语言模型（VL）</strong> 选 <code>qwen-vl-plus</code> 这类带视觉能力的模型，把图片作为消息的一部分传过去：</p>
-<pre>from openai import OpenAI
+<pre>import os
+from openai import OpenAI
 
 client = OpenAI(
     api_key=os.environ[&quot;DASHSCOPE_API_KEY&quot;],
@@ -791,26 +794,21 @@ resp = client.chat.completions.create(
 )
 print(resp.choices[0].message.content)</pre>
 <p>关键点：<strong>content 从字符串变成了一组内容的列表</strong>，图片和文字并行放进 <code>content</code> 数组，模型就能"看图说话"。</p>
-<p><strong>2. 图像生成 —— 文生图模型</strong> 文本模型不产图，要用专门的生图模型（百炼的 <code>wanx-image</code> 系列等），并切换成另一套接口协议：</p>
-<pre>import dashscope
-from dashscope import MultiModalConversation
+<p><strong>2. 图像生成 —— 文生图模型</strong> 文本模型不产图，要用专门的<strong>文生图</strong>模型（如 <code>wanx2.1-t2i-turbo</code>、<code>qwen-image</code>），而且走的是另一套接口 <code>ImageSynthesis</code>：</p>
+<pre>import os
+import dashscope
+from dashscope import ImageSynthesis
 
 dashscope.api_key = os.environ[&quot;DASHSCOPE_API_KEY&quot;]
 
-resp = MultiModalConversation.call(
+resp = ImageSynthesis.call(
     model=&quot;wanx2.1-t2i-turbo&quot;,
-    messages=[{
-        &quot;role&quot;: &quot;user&quot;,
-        &quot;content&quot;: [
-            {&quot;text&quot;: &quot;一只戴着贝雷帽的橘猫，水彩风格，浅色背景&quot;},
-        ],
-    }],
+    prompt=&quot;一只戴着贝雷帽的橘猫，水彩风格，浅色背景&quot;,
+    n=1,
     size=&quot;1024*1024&quot;,
-    result_format=&quot;message&quot;,
-    watermark=False,
 )
-print(resp.output.choices[0][&quot;message&quot;][&quot;content&quot;][0][&quot;url&quot;])  # 生成图的 URL</pre>
-<p><strong>别把两类接口搞混</strong>：识图走 OpenAI 兼容协议；生图走 DashScope 原生协议（<code>dashscope</code> 包 / <code>MultiModalConversation</code>）。想看懂流程，先跑通识别，再试生成。</p>
+print(resp.output.results[0].url)   # 生成图的 URL</pre>
+<p><strong>别把三类接口搞混</strong>：文本对话走 OpenAI 兼容协议；识图（多模态对话）走 <code>MultiModalConversation</code>；<strong>文生图走 <code>ImageSynthesis</code></strong>——返回结构也不一样，图在 <code>output.results[0].url</code>。想看懂流程，先跑通对话，再试识图，最后试生图。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -850,13 +848,16 @@ resp = client.chat.completions.create(
     tools=tools,                      # ← 把工具清单交给模型
 )</pre>
 <p><strong>第 2 步：模型返回"工具调用请求"，你执行后把结果回传</strong></p>
-<pre># 模型没有直接回答，而是返回了工具调用请求
+<pre>import json
+
+# 模型没有直接回答，而是返回了工具调用请求
 tool_call = resp.choices[0].message.tool_calls[0]
 print(tool_call.function.name)        # get_weather
-print(tool_call.function.arguments)   # {&quot;city&quot;: &quot;北京&quot;}
+print(tool_call.function.arguments)   # {&quot;city&quot;: &quot;北京&quot;}（注意：这是 JSON 字符串）
 
 # ★ 真正执行函数的是你，不是模型
-result = get_weather(tool_call.function.arguments[&quot;city&quot;])
+args = json.loads(tool_call.function.arguments)   # 先解析成 dict
+result = get_weather(args[&quot;city&quot;])               # get_weather 是你自己写的函数
 
 # 把执行结果作为&quot;tool&quot;角色消息回传，模型基于结果组织最终回答
 messages = [
@@ -867,7 +868,7 @@ messages.append(resp.choices[0].message)                    # 带上 tool_calls 
 messages.append({
     &quot;role&quot;: &quot;tool&quot;,
     &quot;tool_call_id&quot;: tool_call.id,      # ★ 必须配对，模型靠它识别是哪次调用
-    &quot;content&quot;: result,
+    &quot;content&quot;: json.dumps(result, ensure_ascii=False),   # content 必须是字符串
 })
 
 final = client.chat.completions.create(model=&quot;qwen-plus&quot;, messages=messages, tools=tools)
@@ -903,7 +904,7 @@ print(final.choices[0].message.content)   # &quot;北京今天晴，23℃，适�
 <a href="https://github.com/openai/openai-python" target="_blank" rel="noopener"><span class="k">官网</span>OpenAI Python SDK（GitHub）</a>
 <a href="https://www.deepseek.com" target="_blank" rel="noopener"><span class="k">官网</span>DeepSeek 官网</a>
 <a href="https://huggingface.co" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face（开源模型下载）</a>
-<a href="https://www.qwenlm.ai" target="_blank" rel="noopener"><span class="k">官网</span>通义千问开源社区（QwenLM）</a>
+<a href="https://qwen.ai" target="_blank" rel="noopener"><span class="k">官网</span>通义千问（官方站点）</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>大模型理论基础</span></div>
 </div>
 <div class="pager">
