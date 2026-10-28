@@ -387,9 +387,14 @@ t + pd.Timedelta(days=3)            # 2026-10-04：时间点可加减</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>import pandas as pd
 
-df = pd.DataFrame({&#x27;日期&#x27;: [&#x27;2026-10-01&#x27;, &#x27;2026/10/02&#x27;, &#x27;2026年10月3日&#x27;]})
+df = pd.DataFrame({&#x27;日期&#x27;: [&#x27;2026-10-01&#x27;, &#x27;2026-10-02&#x27;, &#x27;2026-10-03&#x27;]})
 
-df[&#x27;日期&#x27;] = pd.to_datetime(df[&#x27;日期&#x27;])      # 自动识别格式
+df[&#x27;日期&#x27;] = pd.to_datetime(df[&#x27;日期&#x27;])      # 同一种格式时最省事
+# 格式混着来（&#x27;2026/10/02&#x27;、&#x27;2026年10月3日&#x27;）就别指望它自动猜：
+#   pandas 2.x 起不再逐元素猜格式，直接报错或变 NaT
+# 先统一分隔符，或显式告诉它：
+# df[&#x27;日期&#x27;] = df[&#x27;日期&#x27;].str.replace(&#x27;年&#x27;, &#x27;-&#x27;).str.replace(&#x27;月&#x27;, &#x27;-&#x27;).str.replace(&#x27;日&#x27;, &#x27;&#x27;)
+# df[&#x27;日期&#x27;] = pd.to_datetime(df[&#x27;日期&#x27;], format=&#x27;mixed&#x27;)
 df[&#x27;日期&#x27;].dt.year        # 取年：2026 2026 2026
 df[&#x27;日期&#x27;].dt.month       # 取月
 df[&#x27;日期&#x27;].dt.dayofweek   # 星期几（0=周一）

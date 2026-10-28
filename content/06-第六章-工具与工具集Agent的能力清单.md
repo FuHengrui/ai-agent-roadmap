@@ -352,7 +352,7 @@ hermes chat --toolsets "web,terminal"  # ① 本次任务限定工具集
 | **工具=函数**：Agent 的每个动作都是调用工具 | 破除"模型自带能力"误解，理解"手脚"从哪来 |
 | **工具集=按平台开关的组** | 按场景加载、省 token、隔离干扰、边界可控 |
 | **八大类地图**：网络/终端文件/浏览器/媒体/编排/记忆/自动化/集成 | 40+ 工具归位到 8 个格子里，见名知类 |
-| **17 个常见工具集名**：web、terminal、file、browser、vision、memory... | 命令参数就是这些名字，开门钥匙 |
+| **18 个常见工具集名**：web、terminal、file、browser、vision、memory... | 命令参数就是这些名字，开门钥匙 |
 | **三组命令**：hermes chat --toolsets / hermes tools / /tools enable|disable | 查、配、调三件套，覆盖所有操作场景 |
 | **边界三连**：工具≠技能（动作 vs 手册）、内置≠MCP（固定 vs 无限）、记忆类工具=进化引擎 | 不被后面章节概念绕晕，地基打牢 |
 
