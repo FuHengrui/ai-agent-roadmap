@@ -428,7 +428,7 @@ x&#x27; = (q - z) * s</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>量化位宽选择是连续的，且可以<strong>混合搭配</strong>：</p>
 <ul><li><strong>FP16/BF16（半精度浮点）</strong>：最"温柔"的量化，几乎无损、显存直接减半（大模型推理标配）。</li><li><strong>INT8</strong>：精度/收益平衡之王，工业主流。</li><li><strong>INT4</strong>：省到极致，必须 QAT/先进算法（GPTQ/AWQ 等）配合。</li><li><strong>混合精度（Mixed Precision）</strong>：不同层用不同位宽——<strong>敏感层用高精度，冗余层用低位宽</strong>，吸收两者的优点。</li></ul>
-<p><strong>Floating16</strong> 值得一提：浮点低精度比定点简单——不需要范围校准（浮点天然带动态范围），所以 FP16 部署是无脑操作；而 INT 系列的校准知识本章前面的内容正是为此准备。</p>
+<p><strong>FP16（Float16）</strong> 值得一提：浮点低精度比定点简单——不需要范围校准（浮点天然带动态范围），所以 FP16 部署是无脑操作；而 INT 系列的校准知识本章前面的内容正是为此准备。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
