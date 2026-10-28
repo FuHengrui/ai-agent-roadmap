@@ -227,7 +227,7 @@ git checkout .          # 把当前目录下所有被删/被改的文件恢复�
 ```bash
 # 忽略规则示例
 target/          # 忽略名为 target 的整个目录（斜杠结尾 = 目录）
-*.class          # 忽略所有 .class 文件（* 通配任意多个字符）
+*.class（* 通配任意多个字符）
 index.class      # 忽略指定文件
 [ab].class       # 忽略 a.class 和 b.class（[] 匹配列表中的单个字符）
 ?.log            # 忽略 a.log、b.log 这类单个字符开头 + .log（? 通配单个字符）
