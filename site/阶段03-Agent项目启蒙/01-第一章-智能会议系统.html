@@ -361,7 +361,7 @@ def hash_password(plain_password: str) -&gt; str:
 <tr><th>词</th><th>意思</th><th>为什么需要</th></tr>
 <tr><td><strong>哈希</strong></td><td>单向变换，<strong>算不回去</strong></td><td>加密能解回来，哈希不能——<strong>系统自己也不知道你密码是什么</strong></td></tr>
 <tr><td><strong>加盐</strong></td><td>每个人用不同的随机值</td><td>否则两个人密码一样，存出来就一样，一张"彩虹表"能全破</td></tr>
-<tr><td><strong>cost=12</strong></td><td>故意算得慢</td><td>正常登录慢几毫秒无感，暴力破解要慢几万倍</td></tr>
+<tr><td><strong>cost=12</strong></td><td>故意算得慢</td><td>正常登录慢一两百毫秒、基本无感，暴力破解却要慢几万倍</td></tr>
 </table>
 <p><strong>决定二：登录后发一张"票"，服务端认票不认人</strong></p>
 <pre>payload = {
@@ -383,7 +383,7 @@ return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algor
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>用户改了密码，旧 token 还能用</td><td>JWT 是无状态的，签发之后就吊销不了。要支持"踢下线"就得加 <code>jti</code> + 黑名单</td></tr>
-<tr><td>输入不存在的用户名，登录<strong>明显更快</strong>返回</td><td>代码在用户不存在时短路了 bcrypt 校验。bcrypt 要算几十毫秒，这个时间差<strong>能被测出来</strong>，从而枚举账号</td></tr>
+<tr><td>输入不存在的用户名，登录<strong>明显更快</strong>返回</td><td>代码在用户不存在时短路了 bcrypt 校验。bcrypt 要算一两百毫秒，这个时间差<strong>能被测出来</strong>，从而枚举账号</td></tr>
 <tr><td>账号被管理员禁用，用户却卡在"所有操作都报错"</td><td>后端返回 403，但前端拦截器<strong>只处理了 401</strong>，没有 403 分支，用户既没被登出也看不到原因</td></tr>
 <tr><td>token 存在 localStorage，被人注入脚本偷走</td><td>localStorage 对页面里任何脚本都完全开放。更稳的是 httpOnly Cookie</td></tr>
 </table>
@@ -459,7 +459,7 @@ meeting = await Meeting.create(user=current_user, status=&quot;处理中&quot;, 
 <p>按理说要装两套 SDK。但这里只用了一个 <code>openai</code> 库——因为<strong>两家都提供了「OpenAI 兼容接口」</strong>。</p>
 <pre>client = AsyncOpenAI(api_key=..., base_url=settings.asr_base_url)
 
-client.chat.completions.create(
+await client.chat.completions.create(
     model=&quot;qwen3-asr-flash&quot;,
     messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: [
         {&quot;type&quot;: &quot;input_audio&quot;, &quot;input_audio&quot;: {&quot;data&quot;: data_url}}
@@ -541,7 +541,7 @@ def _normalize_priority(cls, v: object) -&gt; str:
 <tr><td><strong>给出完整骨架</strong>，而不是描述字段</td><td>直接把 JSON 结构写出来</td></tr>
 <tr><td><strong>给判定准则，不给关键词</strong></td><td>"涉及硬截止日期/客户承诺 = 高"，而不是"看到'紧急'就标红"</td></tr>
 <tr><td><strong>明确说"不要做什么"</strong></td><td>"不要把纯讨论/信息性发言列为待办"</td></tr>
-<tr><td><strong>说清缺省值</strong></td><td>"未指明时用 null"、"无任务时返回 []"</td></tr>
+<tr><td><strong>说清缺省值</strong></td><td>"未指明时用 null"、"无任务时返回 []"——注意本节那段示意 prompt 没把这两句写全，实操时补上</td></tr>
 </table>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

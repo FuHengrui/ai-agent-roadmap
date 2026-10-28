@@ -48,6 +48,12 @@ LegalMind 的四枚 Agent 与职责：
 | **Edge（边）** | 工位间的"传送带" | 普通边（顺序）与条件边（按 State 分叉） |
 State 定义（TypedDict）：
 ```python
+from typing import Annotated, TypedDict
+
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+from langgraph.graph.message import add_messages
+
+
 class AgentState(TypedDict):
     query: str                       # 用户问题
     intent: str                      # 意图（qa/document/search）
@@ -65,7 +71,7 @@ class AgentState(TypedDict):
 |---|---|
 | Node 直接在函数里改入参 State 对象，期望图内共享 | 图节点要返回"要更新的 state 片段"，不是原地改外部变量；否则并发/检查点恢复时状态全乱 |
 
-@@point ③ 建图：五节点 + 三条件边的完整结构
+@@point ③ 建图：五节点 + 两条条件边的完整结构
 @@need 要解决什么
 四个 Agent 怎么编排成图？从"入口在哪、节点叫什么、按什么条件分叉"三个问题入手，把图的结构一次搭对。
 @@idea 核心思路
@@ -137,7 +143,7 @@ async def _document_node(self, state: AgentState) -> dict:
     return {"response": response["content"], "sources": response.get("references", []),
             "messages": [AIMessage(content=response["content"])]}
 ```
-**铁律：节点只返回"增量"，绝不返回整包 State**——否则会把别人的字段覆盖成空。`_qa_node` 里的流式收集展示了异步节点与 LLM 流式输出的结合。
+**铁律：节点只返回"增量"，绝不返回整包 State**——整包返回会把并发分支刚写进去的值覆盖回旧值；`messages` 这种带 reducer 的字段还会被重复累加。`_qa_node` 里的流式收集展示了异步节点与 LLM 流式输出的结合。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -286,4 +292,4 @@ async for chunk, metadata in workflow.astream(query=query, thread_id=session_id)
 @@links
 参考|LegalMind 法律咨询系统：Agent 系统与 LangGraph 工作流|#
 官网|LangGraph 官方文档|https://docs.langchain.com/oss/python/langgraph/overview
-官网|LangGraph Checkpointer 文档|https://docs.langchain.com/oss/python/langgraph/overview
+官网|LangGraph 持久化（Checkpointer）|https://docs.langchain.com/oss/python/langgraph/persistence

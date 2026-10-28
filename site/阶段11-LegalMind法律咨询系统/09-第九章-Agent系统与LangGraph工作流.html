@@ -330,7 +330,13 @@
 <tr><td><strong>Edge（边）</strong></td><td>工位间的"传送带"</td><td>普通边（顺序）与条件边（按 State 分叉）</td></tr>
 </table>
 <p>State 定义（TypedDict）：</p>
-<pre>class AgentState(TypedDict):
+<pre>from typing import Annotated, TypedDict
+
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+from langgraph.graph.message import add_messages
+
+
+class AgentState(TypedDict):
     query: str                       # 用户问题
     intent: str                      # 意图（qa/document/search）
     retrieved_cases: list            # 检索结果
@@ -348,7 +354,7 @@
 </table>
 </div>
 </div></div>
-<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 建图：五节点 + 三条件边的完整结构</div><div class="body">
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ 建图：五节点 + 两条条件边的完整结构</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>四个 Agent 怎么编排成图？从"入口在哪、节点叫什么、按什么条件分叉"三个问题入手，把图的结构一次搭对。</p>
 </div>
@@ -418,7 +424,7 @@ async def _document_node(self, state: AgentState) -&gt; dict:
     )
     return {&quot;response&quot;: response[&quot;content&quot;], &quot;sources&quot;: response.get(&quot;references&quot;, []),
             &quot;messages&quot;: [AIMessage(content=response[&quot;content&quot;])]}</pre>
-<p><strong>铁律：节点只返回"增量"，绝不返回整包 State</strong>——否则会把别人的字段覆盖成空。<code>_qa_node</code> 里的流式收集展示了异步节点与 LLM 流式输出的结合。</p>
+<p><strong>铁律：节点只返回"增量"，绝不返回整包 State</strong>——整包返回会把并发分支刚写进去的值覆盖回旧值；<code>messages</code> 这种带 reducer 的字段还会被重复累加。<code>_qa_node</code> 里的流式收集展示了异步节点与 LLM 流式输出的结合。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -557,7 +563,7 @@ def get_checkpointer():
 <ol><li>四个 Agent 各自的职责是什么？为什么它们之间不该互相 import？</li><li>LangGraph 的 State/Node/Edge 分别对应什么？add_messages reducer 解决什么问题？</li><li>画出 LegalMind 的完整状态图（含两条条件边），说明 search 意图的双节点接力。</li><li>节点函数为什么只返回"增量字段"？返回整包 State 会有什么灾难？</li><li>_router_by_intent 的兜底分支是什么？为什么这么设计？</li><li>checkpointer 用 AsyncPostgresSaver 相比 MemorySaver 强在哪？thread_id 起什么作用？</li><li>为什么图要"懒编译"？在模块顶层直接编译会触发什么问题？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://docs.langchain.com/oss/python/langgraph/overview" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 官方文档</a>
-<a href="https://docs.langchain.com/oss/python/langgraph/overview" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph Checkpointer 文档</a>
+<a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 持久化（Checkpointer）</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>LegalMind 法律咨询系统：Agent 系统与 LangGraph 工作流</span></div>
 </div>
 <div class="pager">
@@ -570,7 +576,7 @@ def get_checkpointer():
   <div class="toc-head">本页目录</div>
   <a href="#p1" title="Agent 的拆解：四个单一职责模块"><span class="n">1</span>Agent 的拆解：四个单一职责模块</a>
   <a href="#p2" title="LangGraph 核心概念：State/Node/Edge"><span class="n">2</span>LangGraph 核心概念：State/Node/Edge</a>
-  <a href="#p3" title="建图：五节点 + 三条件边的完整结构"><span class="n">3</span>建图：五节点 + 三条件边的完整结构</a>
+  <a href="#p3" title="建图：五节点 + 两条条件边的完整结构"><span class="n">3</span>建图：五节点 + 两条条件边的完整结构</a>
   <a href="#p4" title="各节点实现：如何改 State"><span class="n">4</span>各节点实现：如何改 State</a>
   <a href="#p5" title="条件路由函数：_router_by_intent 的写法"><span class="n">5</span>条件路由函数：_router_by_intent 的写法</a>
   <a href="#p6" title="checkpointer：对话记忆持久化到 Postgres"><span class="n">6</span>checkpointer：对话记忆持久化到 Postgres</a>

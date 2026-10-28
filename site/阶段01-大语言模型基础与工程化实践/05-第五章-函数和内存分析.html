@@ -699,7 +699,7 @@ jobs.sort(key=lambda j: (j[&quot;city&quot;], -j[&quot;salary&quot;]))     # 多
 nums = [1, 2, 3]
 list(map(lambda x: x * 2, nums))       # 现在更推荐写成推导式</pre>
 <p><strong>lambda 的三个限制</strong>：</p>
-<ul><li><strong>只能有一个表达式</strong>，不能有语句（不能写 <code>if</code> 语句块、不能 <code>for</code>、不能 <code>print</code>）</li><li>不能有 docstring</li><li><strong>复杂逻辑别用 lambda</strong>——超过一行就该写 <code>def</code></li></ul>
+<ul><li><strong>只能有一个表达式</strong>，不能有语句（不能写 <code>if</code> 语句块、不能 <code>for</code>、不能赋值）；注意 <code>lambda: print(1)</code> 是合法的——Python 3 里 <code>print</code> 是函数不是语句</li><li>不能有 docstring</li><li><strong>复杂逻辑别用 lambda</strong>——超过一行就该写 <code>def</code></li></ul>
 <p><strong><code>eval()</code> 与 <code>exec()</code>——知道有这回事，但基本别用</strong>：</p>
 <pre>eval(&quot;1 + 2&quot;)                    # 3        把字符串当表达式求值
 exec(&quot;x = 1&quot;)                    # 执行字符串里的语句
@@ -763,7 +763,7 @@ f = lambda x: x * 2 if x &gt; 0 else (x + 1 if x &lt; -5 else 0)</pre>
         walk(child, depth + 1)          # 每个子节点再来一遍</pre>
 <p><strong>用循环写这个会非常痛苦</strong>（得自己维护一个栈），递归一行就解决了。</p>
 </div>
-<div class="step trap"><span class="label">递归的两个致命问题</span>
+<div class="step trap"><span class="label">递归的三个坑</span>
 <table>
 <tr><th>问题</th><th>说明</th></tr>
 <tr><td><strong>忘记终止条件</strong></td><td>无限递归 → <code>RecursionError: maximum recursion depth exceeded</code></td></tr>
@@ -822,12 +822,12 @@ print([f() for f in funcs])      # [0, 1, 2]</pre>
 <table>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
 <tr><td><strong>复用能力</strong></td><td>把重复逻辑打包成函数——这是代码从"能跑"到"能维护"的分界线</td></tr>
-<tr><td><strong>看得见内存</strong></td><td>知道参数传递是"传引用"、浅拷贝只保护一层、栈帧怎么创建——<strong>debug 的能力从此不一样</strong></td></tr>
+<tr><td><strong>看得见内存</strong></td><td>知道参数传递是"传对象引用"、浅拷贝只保护一层、栈帧怎么创建——<strong>debug 的能力从此不一样</strong></td></tr>
 <tr><td><strong>一整套参数工具</strong></td><td>默认值、命名参数、<code>*args</code>/<code>**kwargs</code>——读别人的库代码全靠它们</td></tr>
 <tr><td><strong>闭包这个基础件</strong></td><td>嵌套函数 + <code>nonlocal</code> 是后面理解装饰器、回调、LangChain 的前置知识</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li><code>def</code> 写了但没调用，函数体会执行吗？调用写在定义前面会怎样？</li><li>为什么说"函数里改可变参数会影响外面，重新赋值不会"？各画一个内存示意图。</li><li><code>a = [1, 2, [3, 4]]</code>，<code>b = a.copy()</code> 之后改 <code>b[2]</code>，<code>a</code> 会变吗？为什么？怎么避免？</li><li><code>def f(x, lst=[])</code> 这个写法有什么问题？正确写法是什么？</li><li>LEGB 是什么？为什么在函数里 <code>count = count + 1</code> 会报 <code>UnboundLocalError</code>？</li><li><code>return</code> 和 <code>print</code> 的区别是什么？为什么"就地修改"的函数都返回 <code>None</code>？</li><li>循环里 <code>funcs.append(lambda: i)</code> 为什么全部返回同一个值？怎么修？</li><li><code>eval()</code> 的危险在哪？字符串转字典应该用什么？</li></ol>
+<ol><li><code>def</code> 写了但没调用，函数体会执行吗？调用写在定义前面会怎样？</li><li>为什么说"函数里改可变参数会影响外面，重新赋值不会"？各画一个内存示意图。</li><li><code>a = [1, 2, [3, 4]]</code>，<code>b = a.copy()</code> 之后对 <code>b[2]</code> 调用 <code>.append(5)</code>，<code>a</code> 会变吗？为什么？怎么避免？</li><li><code>def f(x, lst=[])</code> 这个写法有什么问题？正确写法是什么？</li><li>LEGB 是什么？为什么在函数里 <code>count = count + 1</code> 会报 <code>UnboundLocalError</code>？</li><li><code>return</code> 和 <code>print</code> 的区别是什么？为什么"就地修改"的函数都返回 <code>None</code>？</li><li>循环里 <code>funcs.append(lambda: i)</code> 为什么全部返回同一个值？怎么修？</li><li><code>eval()</code> 的危险在哪？字符串转字典应该用什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://docs.python.org/zh-cn/3/tutorial/controlflow.html#defining-functions" target="_blank" rel="noopener"><span class="k">官网</span>Python 官方教程 · 函数定义</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>函数用法和底层分析</span></div>
