@@ -465,7 +465,7 @@ print(j2.title)        # 后端  ← 互不影响</pre>
 print(j1.__dict__)     # {&#x27;title&#x27;: &#x27;改过了&#x27;, &#x27;level&#x27;: &#x27;P5&#x27;}</pre>
 <p><strong>这很灵活，但也意味着：写错属性名不会报错。</strong></p>
 <pre>j1.tilte = &quot;前端&quot;      # 拼错了
-print(j1.title)        # 报 AttributeError —— 但错误发现在很远的地方</pre>
+print(j1.tilte)        # 拼错了才报 AttributeError —— 而且错误发现在很远的地方</pre>
 <p><strong><code>__slots__</code> 可以限制只能有哪些属性</strong>（进阶技巧，知道有这回事就行）：</p>
 <pre>class Job:
     __slots__ = (&quot;title&quot;, &quot;city&quot;, &quot;salary&quot;)   # 只能有这三个属性</pre>

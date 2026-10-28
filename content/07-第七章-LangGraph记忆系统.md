@@ -115,8 +115,13 @@ MemorySaver 到底存了什么？是只存最后一句，还是全部？搞清�
 
 ```python
 # State
+from typing import Annotated, TypedDict
+
+from langgraph.graph.message import add_messages
+
+
 class AgentState(TypedDict):
-    messages: Annotated[Sequence, add]   # 累积的完整对话
+    messages: Annotated[list, add_messages]   # 累积的完整对话，用官方 reducer 归并
 
 # Checkpointer 保存：完整的 messages（含每一轮的 Human/AI/Tool 消息）
 app.get_state(config)          # 查看某个 thread 的完整状态
@@ -228,16 +233,15 @@ from langgraph.store.postgres import PostgresStore
 
 DB_URI = "postgresql://user:pass@localhost:5432/mydb"
 
-# 1. 从连接字符串创建
-checkpointer = PostgresSaver.from_conn_string(DB_URI)   # 原来是 MemorySaver
-store        = PostgresStore.from_conn_string(DB_URI)   # 原来是 InMemoryStore
+# 1. ⚠️ from_conn_string() 返回的是**上下文管理器**，不能直接赋值
+with PostgresSaver.from_conn_string(DB_URI) as checkpointer:      # 原来是 MemorySaver
+    checkpointer.setup()                                          # 首次跑要建表
+    with PostgresStore.from_conn_string(DB_URI) as store:         # 原来是 InMemoryStore
+        store.setup()
 
-# 2. ⚠️ PostgresSaver 和 PostgresStore 都要先 setup() 建表
-checkpointer.setup()
-store.setup()
-
-# 3. 挂载方式与内存版完全一致
-agent = create_agent(llm, tools, checkpointer=checkpointer, store=store)
+        # 2. 挂载方式与内存版完全一致
+        agent = create_agent(llm, tools, checkpointer=checkpointer, store=store)
+        # 注意：with 块退出后连接就关了，实际项目里在应用启动时打开、常驻到进程结束
 ```
 
 关键点：

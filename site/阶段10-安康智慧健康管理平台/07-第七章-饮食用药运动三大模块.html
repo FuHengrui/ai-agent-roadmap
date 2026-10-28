@@ -306,7 +306,7 @@
 <tr><th>维度</th><th>饮食 /diet</th><th>用药 /medication</th><th>运动 /exercise</th></tr>
 <tr><td>创建</td><td>DietRecord.create</td><td>Medication.create</td><td>Exercise.create</td></tr>
 <tr><td>列表</td><td>最近50条按 eaten_at 倒序</td><td>active_only 可选</td><td>最近30条按 performed_at 倒序</td></tr>
-<tr><td>更新</td><td>exclude_unset + refresh</td><td>exclude_unset + refresh</td><td>update_from_dict</td></tr>
+<tr><td>更新</td><td>model_dump(exclude_unset=True) + refresh_from_db</td><td>同上</td><td>update_from_dict</td></tr>
 <tr><td>删除</td><td>delete + 404</td><td>delete + 404</td><td>delete + 404</td></tr>
 <tr><td><strong>独有</strong></td><td>gi_level 计算属性</td><td>is_active 筛选</td><td>bs_change 计算属性</td></tr>
 <tr><td><strong>引擎</strong></td><td>diet_advisor（营养+推荐）</td><td>无</td><td>无</td></tr>
@@ -361,7 +361,7 @@ async def get_records(patient_id: int, active_only: bool = True):
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>active_only 传 false 还是只看到 active</td><td>布尔类型默认真，传 false 会被忽略成"没传"？——用 Query 显式声明 <code>active_only: bool = True</code> 并配 <code>Query()</code> 传参才能正确覆盖</td></tr>
+<tr><td>传了 <code>active_only=false</code> 还是只看到 active</td><td>一般是前端根本没把这个参数带上（或写成了字符串 "false" 之外的拼写）。FastAPI 对 <code>active_only: bool = True</code> 的解析是可靠的：<code>?active_only=false</code> 就是 False，不需要额外包 <code>Query()</code></td></tr>
 <tr><td>停药了列表还显示</td><td>只停 end_date 不改 is_active 没用；两个字段要联动（业务层处理）</td></tr>
 </table>
 </div>

@@ -335,14 +335,12 @@ yarn dev          # 启动开发服务器，默认 5173 端口</pre>
       changeOrigin: true,
       rewrite: (path) =&gt; path.replace(/^\/api/, &#x27;&#x27;),   // 去掉 /api 前缀
     },
-    &#x27;/login&#x27;: {   // 登录接口直通
-      target: &#x27;http://127.0.0.1:8000&#x27;,
-      changeOrigin: true,
-    },
+    // 登录不需要单独配：后端路由是 /v1/auth/login，走上面 /api 的 rewrite 即可
+    // 如果前端确实写 /login（不带 /api），才需要在这里加一条并指向 /v1/auth/login
   },
 }</pre>
 <p>机制拆解（这是联调最容易懵的点）：</p>
-<ul><li>前端请求 <code>/api/v1/test/styles</code> → Vite dev server 收到 → <strong>去掉 /api 前缀</strong> → 转发给 <code>http://127.0.0.1:8000/v1/test/styles</code> → 后端路由正好匹配。</li><li>所以后端路由里<strong>根本没有 /api 前缀</strong>！- - rewrite 就是"前后端路径不一致的桥梁"。</li><li><code>/login</code> 单独配：登录页走 <code>/login</code>（未拼 /api），同样直通 8000。</li></ul>
+<ul><li>前端请求 <code>/api/v1/test/styles</code> → Vite dev server 收到 → <strong>去掉 /api 前缀</strong> → 转发给 <code>http://127.0.0.1:8000/v1/test/styles</code> → 后端路由正好匹配。</li><li>所以后端路由里<strong>根本没有 /api 前缀</strong>！rewrite 就是"前后端路径不一致的桥梁"。</li><li>登录页照上面规则写 <code>/api/v1/auth/login</code>，不需要额外代理规则。</li></ul>
 <p>⚠️ 联调必查：代理只在 <strong>Vite dev server（开发模式）</strong>生效；<code>yarn build</code> 后的静态文件没有代理，线上部署要用 Nginx 做同样的转发规则！</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -389,7 +387,7 @@ request.interceptors.response.use(
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>Authorization 头一直没带上</td><td>拦截器读的 cookie 名与登录写入的不一致（accessToken 拼写/大小写）</td></tr>
-<tr><td>timeout 120000 仍超时</td><td>AI 生成类接口耗时可能 &gt;2 分钟（Coze 轮询+文生图），130s 内没回是"上游慢"而非前端问题，需给慢接口单独更长超时</td></tr>
+<tr><td>timeout 120000 仍超时</td><td>AI 生成类接口耗时可能 &gt;2 分钟（Coze 轮询+文生图），120 秒（默认 timeout）还没回，就是"上游慢"而非前端问题，需给慢接口单独更长超时</td></tr>
 <tr><td>401 后无限跳 /login 循环</td><td>登录接口本身返回 401（密码错）也会触发拦截器跳转；对 /v1/auth/login 请求路径加白名单判断</td></tr>
 </table>
 </div>
@@ -465,23 +463,6 @@ request.interceptors.response.use(
 <p>设计铁律：<strong>cookie 只放 token 这一个凭证</strong>，其余状态尽量内存；刷新后 Pinia 丢失不影响业务——因为业务数据永远从后端拉。想"刷新保持登录"，靠的也只是 cookie 里 token 被拦截器继续带上。</p>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<ul><li>前端栈：Vue3 + Vite + Element Plus + Pinia + axios + puppeteer（发布用）</li><li>vite proxy 跨域：/api → 8000 并 rewrite 去前缀；/login 直通；build 后需 Nginx 等价配置</li><li>request.js 三件套：baseURL=/api、请求拦截带 Bearer、响应拦截按 code 解包 + 401/403 登出</li><li>登录链路：调接口 → setCookie(accessToken, 7) → pinia 存用户 → 跳 /home</li><li>路由守卫：前端 UX 门（未登录跳转），安全靠后端鉴权兜底</li><li>联调对照表：Login/History/Home/CreatePublish 对应接口路径必须与后端前缀严格一致</li><li>存储分工：cookie 只放 token（7 天），Pinia 存瞬时用户态，业务数据全走后端</li><li>VITE_API_BASE：路径前缀可配置，密钥永不进 VITE_ 变量；改环境变量需重启</li></ul>
-<h4>自测：能不能答上来</h4>
-<ol><li>vite proxy 中 rewrite 的作用是？</li></ol>
-<p>A. 加密请求　　B. 去掉 /api 前缀再转发　　C. 修改响应　　D. 缓存请求</p>
-<ol><li>前端请求为什么要走 proxy 而不是直连 8000？</li></ol>
-<p>A. 更快　　B. 避免跨域且隐藏后端地址　　C. 后端不支持直连　　D. 必须要代理</p>
-<ol><li>axios 请求拦截器的职责是？</li></ol>
-<p>A. 解包响应　　B. 自动给请求加 Authorization: Bearer 头　　C. 渲染页面　　D. 刷新 token</p>
-<ol><li>token 存在哪里、存多久？</li></ol>
-<p>A. Pinia，刷新即丢　　B. cookie，7 天（与后端 exp 对齐）　　C. localStorage 永久　　D. 后端 session</p>
-<ol><li>前端安全性的正确认知是？</li></ol>
-<p>A. 路由守卫足够安全　　B. 前端拦截只是体验，安全靠后端鉴权　　C. 隐藏 token 就安全　　D. 前端不能做任何判断</p>
-<ol><li>build 生产环境后接口为什么全挂？</li></ol>
-<p>A. 代码写错　　B. vite proxy 只在 dev 生效，需 Nginx 配等价转发　　C. 端口变化　　D. 后端没启动</p>
-<ol><li>登录失败（密码错）返回 401，前端应该？</li></ol>
-<p>A. 无视　　B. 清 token 跳登录（对 auth 请求豁免，提示密码错误）　　C. 报 500　　D. 刷新页面</p>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 前端环境变量：VITE_API_BASE 与请求根路径</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>baseURL 写死 '/api' 会带来一个部署难题：开发用 /api 走代理，生产可能用不同前缀/域名。环境变量把它变成可配置项。</p>
@@ -506,6 +487,23 @@ request.interceptors.response.use(
 </table>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<ul><li>前端栈：Vue3 + Vite + Element Plus + Pinia + axios + puppeteer（发布用）</li><li>vite proxy 跨域：/api → 8000 并 rewrite 去前缀；/login 直通；build 后需 Nginx 等价配置</li><li>request.js 三件套：baseURL=/api、请求拦截带 Bearer、响应拦截按 code 解包 + 401/403 登出</li><li>登录链路：调接口 → setCookie(accessToken, 7) → pinia 存用户 → 跳 /home</li><li>路由守卫：前端 UX 门（未登录跳转），安全靠后端鉴权兜底</li><li>联调对照表：Login/History/Home/CreatePublish 对应接口路径必须与后端前缀严格一致</li><li>存储分工：cookie 只放 token（7 天），Pinia 存瞬时用户态，业务数据全走后端</li><li>VITE_API_BASE：路径前缀可配置，密钥永不进 VITE_ 变量；改环境变量需重启</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>vite proxy 中 rewrite 的作用是？</li></ol>
+<p>A. 加密请求　　B. 去掉 /api 前缀再转发　　C. 修改响应　　D. 缓存请求</p>
+<ol><li>前端请求为什么要走 proxy 而不是直连 8000？</li></ol>
+<p>A. 更快　　B. 避免跨域且隐藏后端地址　　C. 后端不支持直连　　D. 必须要代理</p>
+<ol><li>axios 请求拦截器的职责是？</li></ol>
+<p>A. 解包响应　　B. 自动给请求加 Authorization: Bearer 头　　C. 渲染页面　　D. 刷新 token</p>
+<ol><li>token 存在哪里、存多久？</li></ol>
+<p>A. Pinia，刷新即丢　　B. cookie，7 天（与后端 exp 对齐）　　C. localStorage 永久　　D. 后端 session</p>
+<ol><li>前端安全性的正确认知是？</li></ol>
+<p>A. 路由守卫足够安全　　B. 前端拦截只是体验，安全靠后端鉴权　　C. 隐藏 token 就安全　　D. 前端不能做任何判断</p>
+<ol><li>build 生产环境后接口为什么全挂？</li></ol>
+<p>A. 代码写错　　B. vite proxy 只在 dev 生效，需 Nginx 配等价转发　　C. 端口变化　　D. 后端没启动</p>
+<ol><li>登录失败（密码错）返回 401，前端应该？</li></ol>
+<p>A. 无视　　B. 清 token 跳登录（对 auth 请求豁免，提示密码错误）　　C. 报 500　　D. 刷新页面</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://cn.vitejs.dev/config/server-options.html" target="_blank" rel="noopener"><span class="k">官方</span>Vite 开发服务器代理</a>
 <a href="https://axios-http.com/zh/docs/interceptors" target="_blank" rel="noopener"><span class="k">官方</span>axios 拦截器文档</a>

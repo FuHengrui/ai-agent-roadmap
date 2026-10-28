@@ -337,7 +337,7 @@ async def health():
 <div class="step idea"><span class="label">核心思路</span>
 <p><code>@asynccontextmanager</code> 是 FastAPI 的生命周期机制：<code>yield</code> 之前是启动逻辑，之后是关闭逻辑。</p>
 <ul><li><strong>启动</strong>：<code>init_db()</code> 建表 → <code>init_vector_store()</code> 连接 Chroma → <code>init_checkpointer()</code> 建 LangGraph 记忆表（Postgres 里自动建 <code>checkpoints</code> 表）。</li><li><strong>关闭</strong>：三个 close 对称释放，避免端口、连接池泄漏。</li></ul>
-<p>一个重要特性：<strong>startup 与 shutdown 的顺序必须对称</strong>（先建的先销毁或按依赖逆序），否则会出现"关库时还有连接在用"的报错。</p>
+<p>一个重要特性：<strong>startup 与 shutdown 的顺序必须对称</strong>——<strong>后建的先关</strong>（与 init 顺序逆序），否则会出现"关库时还有连接还在用"的报错。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -374,7 +374,7 @@ DB_MODELS = [
 async def close_db():
     await Tortoise.close_connections()</pre>
 <p>关键点：</p>
-<ul><li><code>modules={"models": [...]}</code> 是 Tortoise 2.x 的必填写法，<strong>漏了任一模块，该模型的表就不会建</strong>。</li><li><code>generate_schemas(safe=True)</code>：<code>safe=True</code> 表示"已存在的表跳过"，重启应用不会报 already exists。</li><li>生产环境的多表变更应切换为 <strong>aerich 迁移</strong>（<code>aerich init</code> / <code>migrate</code> / <code>upgrade</code>），开发期自动建表只适合"表还没上生产"的阶段。</li></ul>
+<ul><li><code>modules={"models": [...]}</code> 是 Tortoise 的必填写法（<code>db_url</code> + <code>modules</code>），<strong>漏了任一模块，该模型的表就不会建</strong>。</li><li><code>generate_schemas(safe=True)</code>：<code>safe=True</code> 表示"已存在的表跳过"，重启应用不会报 already exists。</li><li>生产环境的多表变更应切换为 <strong>aerich 迁移</strong>（<code>aerich init</code> / <code>migrate</code> / <code>upgrade</code>），开发期自动建表只适合"表还没上生产"的阶段。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -477,7 +477,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td><code>--reload</code> 下改代码不生效</td><td>reload 只监听 Python 文件，改了 <code>.env</code>、新建目录/文件不会自动重载；重启进程或按文档加 reload-dirs</td></tr>
+<tr><td><code>--reload</code> 下改代码不生效</td><td>reload 只监听 Python 文件，改了 <code>.env</code>、新建目录/文件不会自动重载；重启进程或按文档加 <code>--reload-dir</code> / <code>--reload-include</code></td></tr>
 </table>
 </div>
 </div></div>

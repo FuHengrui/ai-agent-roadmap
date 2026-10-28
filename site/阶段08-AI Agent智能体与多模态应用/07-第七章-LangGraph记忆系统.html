@@ -384,8 +384,13 @@ result2 = app.invoke({&quot;messages&quot;: [(&quot;user&quot;, &quot;我叫什�
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>Checkpointer 保存的是完整的 Graph State（messages 列表）</strong>——不只是最后一句，而是这一轮会话所有历史消息。每次执行结束，整个状态快照落盘（内存版落内存）。</p>
 <pre># State
+from typing import Annotated, TypedDict
+
+from langgraph.graph.message import add_messages
+
+
 class AgentState(TypedDict):
-    messages: Annotated[Sequence, add]   # 累积的完整对话
+    messages: Annotated[list, add_messages]   # 累积的完整对话，用官方 reducer 归并
 
 # Checkpointer 保存：完整的 messages（含每一轮的 Human/AI/Tool 消息）
 app.get_state(config)          # 查看某个 thread 的完整状态
@@ -484,16 +489,15 @@ from langgraph.store.postgres import PostgresStore
 
 DB_URI = &quot;postgresql://user:pass@localhost:5432/mydb&quot;
 
-# 1. 从连接字符串创建
-checkpointer = PostgresSaver.from_conn_string(DB_URI)   # 原来是 MemorySaver
-store        = PostgresStore.from_conn_string(DB_URI)   # 原来是 InMemoryStore
+# 1. ⚠️ from_conn_string() 返回的是**上下文管理器**，不能直接赋值
+with PostgresSaver.from_conn_string(DB_URI) as checkpointer:      # 原来是 MemorySaver
+    checkpointer.setup()                                          # 首次跑要建表
+    with PostgresStore.from_conn_string(DB_URI) as store:         # 原来是 InMemoryStore
+        store.setup()
 
-# 2. ⚠️ PostgresSaver 和 PostgresStore 都要先 setup() 建表
-checkpointer.setup()
-store.setup()
-
-# 3. 挂载方式与内存版完全一致
-agent = create_agent(llm, tools, checkpointer=checkpointer, store=store)</pre>
+        # 2. 挂载方式与内存版完全一致
+        agent = create_agent(llm, tools, checkpointer=checkpointer, store=store)
+        # 注意：with 块退出后连接就关了，实际项目里在应用启动时打开、常驻到进程结束</pre>
 <p>关键点：</p>
 <ul><li><code>from_conn_string</code> 一行连接；<code>setup()</code> 自动创建所需数据表（必调，否则报错）</li><li><strong>Agent 代码完全不变</strong>：MemorySaver → PostgresSaver、InMemoryStore → PostgresStore 无缝替换</li><li>namespace、thread_id 用法不变——生产持久化=换后端，不是改逻辑</li></ul>
 <p>类比：内存版 = 随手记在脑门上，重启就忘；Postgres 版 = 记进正式档案柜，关机也不丢。</p>

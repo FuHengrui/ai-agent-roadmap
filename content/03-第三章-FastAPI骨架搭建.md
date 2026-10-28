@@ -61,7 +61,7 @@ async def health():
 `@asynccontextmanager` 是 FastAPI 的生命周期机制：`yield` 之前是启动逻辑，之后是关闭逻辑。
 - **启动**：`init_db()` 建表 → `init_vector_store()` 连接 Chroma → `init_checkpointer()` 建 LangGraph 记忆表（Postgres 里自动建 `checkpoints` 表）。
 - **关闭**：三个 close 对称释放，避免端口、连接池泄漏。
-一个重要特性：**startup 与 shutdown 的顺序必须对称**（先建的先销毁或按依赖逆序），否则会出现"关库时还有连接在用"的报错。
+一个重要特性：**startup 与 shutdown 的顺序必须对称**——**后建的先关**（与 init 顺序逆序），否则会出现"关库时还有连接还在用"的报错。
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
@@ -96,7 +96,7 @@ async def close_db():
     await Tortoise.close_connections()
 ```
 关键点：
-- `modules={"models": [...]}` 是 Tortoise 2.x 的必填写法，**漏了任一模块，该模型的表就不会建**。
+- `modules={"models": [...]}` 是 Tortoise 的必填写法（`db_url` + `modules`），**漏了任一模块，该模型的表就不会建**。
 - `generate_schemas(safe=True)`：`safe=True` 表示"已存在的表跳过"，重启应用不会报 already exists。
 - 生产环境的多表变更应切换为 **aerich 迁移**（`aerich init` / `migrate` / `upgrade`），开发期自动建表只适合"表还没上生产"的阶段。
 
@@ -202,7 +202,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| `--reload` 下改代码不生效 | reload 只监听 Python 文件，改了 `.env`、新建目录/文件不会自动重载；重启进程或按文档加 reload-dirs |
+| `--reload` 下改代码不生效 | reload 只监听 Python 文件，改了 `.env`、新建目录/文件不会自动重载；重启进程或按文档加 `--reload-dir` / `--reload-include` |
 
 @@summary
 这一章你实际拿到的是**三样东西**：

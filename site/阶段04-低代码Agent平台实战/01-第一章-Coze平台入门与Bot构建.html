@@ -462,13 +462,13 @@ ngrok http 8000</div>
 </div></div>
 <div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 通过插件调用外部模型：用上平台没有的模型</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>Coze 主要用的是豆包，但有些任务<strong>其他模型更合适</strong>：比如生成 LOGO 图——豆包不做文生图大模型平台，而你恰好有阿里百炼（通义万象）的 API 额度。</p>
+<p>Coze 主要用的是豆包，但有些任务<strong>其他模型更合适</strong>：比如生成 LOGO 图——豆包不做文生图大模型平台，而你恰好有阿里百炼（通义万相）的 API 额度。</p>
 <p>难道要用别的平台？<strong>不用。</strong> 插件机制本身就是"把任意 API 包装给模型用"——那外部模型 API 为什么不呢？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>创建一个<strong>基于已有服务</strong>的插件，插件内部调用阿里百炼通义万象的文生图 API，然后把"生成一张 LOGO 图"这件能力暴露给 Bot。</p>
+<p>创建一个<strong>基于已有服务</strong>的插件，插件内部调用阿里百炼通义万相的文生图 API，然后把"生成一张 LOGO 图"这件能力暴露给 Bot。</p>
 <p>具体做法：</p>
-<ol><li>参照[阿里百炼通义万象文档](https://bailian.console.aliyun.com/cn-beijing/?tab=api#/api/?type=model&amp;url=2975126)，在插件里创建一个名为 <code>generation</code> 的工具：输入写"prompt"（生成要求），输出写"图片 URL"；</li><li>试运行工具，确认能出图；</li><li>发布插件；</li><li>创建"LOGO 生成助手"Bot，人设里写清调用规则：<strong>识别到"生成 LOGO/设计标志"意图时，立即调用该插件</strong>，并允许助手自动优化 prompt（追加"高清、简约、矢量、无背景"等词）。</li></ol>
+<ol><li>参照[阿里百炼通义万相文档](https://bailian.console.aliyun.com/cn-beijing/?tab=api#/api/?type=model&amp;url=2975126)，在插件里创建一个名为 <code>generation</code> 的工具：输入写"prompt"（生成要求），输出写"图片 URL"；</li><li>试运行工具，确认能出图；</li><li>发布插件；</li><li>创建"LOGO 生成助手"Bot，人设里写清调用规则：<strong>识别到"生成 LOGO/设计标志"意图时，立即调用该插件</strong>，并允许助手自动优化 prompt（追加"高清、简约、矢量、无背景"等词）。</li></ol>
 <p>到这里你应该发现了：<strong>"通过插件调用外部模型"和"基于已有服务创建插件"是同一件事</strong>。区别只是被包装的 API 是个模型而已。这个思路统一了 Coze 的扩展方式：<strong>凡是能调 API 的能力，都能变成 Bot 的能力。</strong></p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -522,7 +522,7 @@ ngrok http 8000</div>
 <p>定制记忆模块包含<strong>四个功能</strong>，先把它们的作用分清楚：</p>
 <table>
 <tr><th>功能</th><th>存什么</th><th>特点</th></tr>
-<tr><td><strong>变量</strong></td><td>用户基本信息（姓名、目标、作息、禁忌食物）</td><td>会话内读写，个性化回复</td></tr>
+<tr><td><strong>变量</strong></td><td>用户基本信息（姓名、目标、作息、禁忌食物）</td><td>跨会话读写，个性化回复</td></tr>
 <tr><td><strong>数据库</strong></td><td>结构化数据（体重记录、习惯打卡表）</td><td>表格存储，可查询、可统计</td></tr>
 <tr><td><strong>长期记忆</strong></td><td>自动总结对话历史中的<strong>用户长期偏好</strong></td><td>靠模型总结，提升连续对话体验</td></tr>
 <tr><td><strong>文件盒子</strong></td><td>用户上传的文件，Bot 可读取引用</td><td>目前平台已关闭该功能</td></tr>
@@ -550,7 +550,7 @@ ngrok http 8000</div>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>长期记忆积累垃圾，干扰当前对话</td><td>长期记忆会<strong>自动积累</strong>，过时信息没被清理（如用户早说"讨厌红色"，几周后买中式礼服时 Bot 还过滤掉红色款）</td></tr>
-<tr><td>变量改了但 Bot 记不住</td><td>变量是会话级的，跨会话持久要靠长期记忆</td></tr>
+<tr><td>变量改了但 Bot 记不住</td><td>变量是<strong>用户级、跨会话持久</strong>的（同一个用户下次来还在）；会话内的临时状态才靠对话上下文</td></tr>
 <tr><td>数据表写乱了</td><td>没有在提示词里规定"何时写、写哪张表、怎么拆 SQL"</td></tr>
 </table>
 </div>
@@ -604,7 +604,7 @@ ngrok http 8000</div>
 <a href="https://www.coze.cn/home" target="_blank" rel="noopener"><span class="k">官网</span>Coze 国内版</a>
 <a href="https://www.coze.cn/docs/guides/welcome" target="_blank" rel="noopener"><span class="k">官网</span>Coze 国内版官方文档</a>
 <a href="https://www.coze.com/home" target="_blank" rel="noopener"><span class="k">官网</span>Coze 国际版</a>
-<a href="https://bailian.console.aliyun.com" target="_blank" rel="noopener"><span class="k">官网</span>阿里百炼通义万象</a>
+<a href="https://bailian.console.aliyun.com" target="_blank" rel="noopener"><span class="k">官网</span>阿里百炼通义万相</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Coze 平台实战</span>
 <span class="lk"><span class="k">资料</span>游戏助手知识库素材（不落魔锋/焰峰凰姬介绍）</span>
 <span class="lk"><span class="k">源码</span>nowtime.ipynb（基于已有服务创建插件的 Flask 服务）</span></div>
