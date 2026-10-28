@@ -229,7 +229,7 @@ class SearchInput(BaseModel):
     limit: int = Field(default=10, ge=1, le=50, description="返回条数，1-50")
     category: Literal["手机", "电脑"] = Field(description="商品类目")
 
-@tool(args_schema=SearchInput)
+@tool(args_schema=SearchInput)   # 需要 from langchain_core.tools import tool
 def search_product(keyword: str, limit: int = 10, category: str = "") -> str:
     """搜索商品，返回符合条件的结果列表"""
     ...

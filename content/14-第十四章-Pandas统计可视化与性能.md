@@ -4,7 +4,7 @@
 @@why 这一章在解决什么问题
 **表处理能力齐了，但收尾三件事还没解决：①统计报告要的透视表/交叉表/频数表；②"表 → 图"一刻钟出图；③数据一大（几百万行）Pandas 卡死怎么办。** 这三点是 Pandas 从"会用"到"能交付"的分水岭。
 
-学完你能回答：value_counts 和萧群、pivot_table 和 crosstab 的区别、df.plot 和 matplotlib 的关系、Pandas 三大主流图怎么出、大表读取怎么提速、向量化为什么比循环快。
+学完你能回答：value_counts 和nunique、pivot_table 和 crosstab 的区别、df.plot 和 matplotlib 的关系、Pandas 三大主流图怎么出、大表读取怎么提速、向量化为什么比循环快。
 
 @@prep 开始之前
 上一章的合并和时间索引会了就能开始，这章不用装新东西，装好 matplotlib 即可。
@@ -240,7 +240,7 @@ data = pd.DataFrame({'成绩': np.random.normal(70, 10, 100),
                      '班级': np.random.choice(['A', 'B'], 100)})
 data.boxplot(by='班级')      # 按班级分组箱线
 
-data.plot(kind='scatter', x='成绩', y='班级')   # 散点（x,y 都传数值列）
+data.plot(kind='scatter', x='成绩', y='出勤率')   # x/y 都必须是数值列；分类列想区分就用 hue/着色   # 散点（x,y 都传数值列）
 ```
 
 提示：**scatter 要 x/y 两个数值列**；boxplot 是 DataFrame 方法（不是 plot(kind)）——一个月错一次没关系，记住"箱线是 df.boxplot"。
@@ -251,7 +251,7 @@ data.plot(kind='scatter', x='成绩', y='班级')   # 散点（x,y 都传数值�
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | scatter 报错 missing x/y | 传明确的两列：plot(kind='scatter', x='列1', y='列2') |
-| boxplot 当 plot(kind) 传入不认 | 箱线用 df.boxplot() 独立方法 |
+| 分组箱线用 df.boxplot(by=...);df.plot(kind='box') 其实也合法（你自己在 178 行也列了 box） | 箱线用 df.boxplot() 独立方法 |
 
 @@point ⑧ 性能认知：数据量级与计时
 @@need 要解决什么
@@ -362,7 +362,7 @@ df['等级'] = np.where(df['成绩'] >= 60, '及格', '不及格')
 2. **条件分支 → np.where / 掩码赋值**（loc[条件] = 值）；
 3. **apply 只留给"确无向量化写法"的自定义函数**（如复杂字符串处理）。
 
-附加技巧：`df.eval('新列 = a + b')` 与 `pd.eval` 可进一步提速表达式。
+附加技巧：`df.eval('新列 = a + b', inplace=True)   # 不加 inplace=True 原表不会变` 与 `pd.eval` 可进一步提速表达式。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

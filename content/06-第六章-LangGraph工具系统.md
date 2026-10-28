@@ -182,7 +182,7 @@ graph.add_conditional_edges(
 **create_agent** 一行创建标准 ReAct Agent——内置了 agent 节点、ToolNode、tools_condition、from_messages 状态管理等全部样板：
 
 ```python
-from langgraph.prebuilt import create_agent
+from langchain.agents import create_agent   # langgraph.prebuilt 里没有它（旧入口 create_react_agent 已废弃）
 
 # ⭐ 一行代码
 agent = create_agent(llm, tools)

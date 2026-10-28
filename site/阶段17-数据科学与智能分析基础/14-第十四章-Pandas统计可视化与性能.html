@@ -283,7 +283,7 @@
 <div class="subtitle">阶段 17 · 数据科学与智能分析基础　|　数据分析　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p><strong>表处理能力齐了，但收尾三件事还没解决：①统计报告要的透视表/交叉表/频数表；②"表 → 图"一刻钟出图；③数据一大（几百万行）Pandas 卡死怎么办。</strong> 这三点是 Pandas 从"会用"到"能交付"的分水岭。</p>
-<p>学完你能回答：value_counts 和萧群、pivot_table 和 crosstab 的区别、df.plot 和 matplotlib 的关系、Pandas 三大主流图怎么出、大表读取怎么提速、向量化为什么比循环快。</p>
+<p>学完你能回答：value_counts 和nunique、pivot_table 和 crosstab 的区别、df.plot 和 matplotlib 的关系、Pandas 三大主流图怎么出、大表读取怎么提速、向量化为什么比循环快。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的合并和时间索引会了就能开始，这章不用装新东西，装好 matplotlib 即可。</p></div></div>
@@ -487,7 +487,7 @@ data = pd.DataFrame({&#x27;成绩&#x27;: np.random.normal(70, 10, 100),
                      &#x27;班级&#x27;: np.random.choice([&#x27;A&#x27;, &#x27;B&#x27;], 100)})
 data.boxplot(by=&#x27;班级&#x27;)      # 按班级分组箱线
 
-data.plot(kind=&#x27;scatter&#x27;, x=&#x27;成绩&#x27;, y=&#x27;班级&#x27;)   # 散点（x,y 都传数值列）</pre>
+data.plot(kind=&#x27;scatter&#x27;, x=&#x27;成绩&#x27;, y=&#x27;出勤率&#x27;)   # x/y 都必须是数值列；分类列想区分就用 hue/着色   # 散点（x,y 都传数值列）</pre>
 <p>提示：<strong>scatter 要 x/y 两个数值列</strong>；boxplot 是 DataFrame 方法（不是 plot(kind)）——一个月错一次没关系，记住"箱线是 df.boxplot"。</p>
 <p>点 ⑦ 组合提示：<strong>占比 pie → 分布 box → 关系 scatter</strong>，一页分析报告的基本构成。</p>
 </div>
@@ -495,7 +495,7 @@ data.plot(kind=&#x27;scatter&#x27;, x=&#x27;成绩&#x27;, y=&#x27;班级&#x27;) 
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>scatter 报错 missing x/y</td><td>传明确的两列：plot(kind='scatter', x='列1', y='列2')</td></tr>
-<tr><td>boxplot 当 plot(kind) 传入不认</td><td>箱线用 df.boxplot() 独立方法</td></tr>
+<tr><td>分组箱线用 df.boxplot(by=...);df.plot(kind='box') 其实也合法（你自己在 178 行也列了 box）</td><td>箱线用 df.boxplot() 独立方法</td></tr>
 </table>
 </div>
 </div></div>
@@ -589,7 +589,7 @@ df[&#x27;等级&#x27;] = np.where(df[&#x27;成绩&#x27;] &gt;= 60, &#x27;及格&
 <p>速度对比经验：<strong>向量化 ≈ 100 倍于 apply ≈ 1000 倍于 for 循环</strong>。</p>
 <p>三条铁律：</p>
 <ol><li><strong>加减乘除/比较/逻辑 → 直接列运算</strong>（最淳朴最快）；</li><li><strong>条件分支 → np.where / 掩码赋值</strong>（loc[条件] = 值）；</li><li><strong>apply 只留给"确无向量化写法"的自定义函数</strong>（如复杂字符串处理）。</li></ol>
-<p>附加技巧：<code>df.eval('新列 = a + b')</code> 与 <code>pd.eval</code> 可进一步提速表达式。</p>
+<p>附加技巧：<code>df.eval('新列 = a + b', inplace=True)   # 不加 inplace=True 原表不会变</code> 与 <code>pd.eval</code> 可进一步提速表达式。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

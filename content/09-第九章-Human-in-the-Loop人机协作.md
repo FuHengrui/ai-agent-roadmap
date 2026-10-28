@@ -64,7 +64,7 @@ def process_refund(order_id: str, reason: str) -> str:
         return f"❌ 订单 {order_id} 退款已拒绝"
 ```
 
-执行流程：invoke 进入 process_refund → 遇到 interrupt → **图暂停并返回待处理状态** → 人类做出决定 → `Command(resume=...)` 恢复 → 从 interrupt 那行继续。
+执行流程：invoke 进入 process_refund → 遇到 interrupt → **图暂停并返回待处理状态** → 人类做出决定 → `Command(resume=...)` 恢复 → **节点从头重跑**，interrupt 返回你传入的 resume 值（所以 interrupt 前的副作用必须幂等）。
 
 类比：interrupt = 高速公路上的检查站，先停车接受检查，放行后再继续赶路。
 
