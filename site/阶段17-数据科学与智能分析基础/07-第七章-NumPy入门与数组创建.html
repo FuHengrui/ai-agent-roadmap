@@ -391,7 +391,7 @@ np.random.normal(0, 1, (2, 3))     # 指定均值/方差的正态，可指定形
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>random((2,3)) 报错</td><td>random 传形状元组；randint 第 3 个参数是数量不是形状</td></tr>
+<tr><td><code>np.random.random(2, 3)</code> 报 TypeError（它只收一个形状参数）</td><td>random 传形状元组；randint 第 3 个参数是数量不是形状</td></tr>
 <tr><td>随机结果每次不同</td><td>想要可复现：<code>np.random.seed(42)</code> 固定种子（同一种子跑出同一串数）</td></tr>
 </table>
 </div>

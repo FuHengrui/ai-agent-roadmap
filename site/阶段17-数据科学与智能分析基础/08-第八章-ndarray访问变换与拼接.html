@@ -480,7 +480,8 @@ a = np.arange(6).reshape(2, 3)
 
 a.T               # [[0 3] [1 4] [2 5]]：2x3 → 3x2
 a.transpose()     # 等价
-b = a.transpose(2, 0, 1)   # 三维以上可指定轴交换顺序（高阶用法）</pre>
+a3 = np.arange(24).reshape(2, 3, 4)   # 轴序交换要三维以上才用得上
+b = a3.transpose(2, 0, 1)   # 按 2/0/1 重排，形状变 (4,2,3)</pre>
 <p>注意：</p>
 <ul><li><strong>转置返回视图</strong>（共享内存）——和 reshape 一样要留意修改联动；</li><li>一维数组转置<strong>不变</strong>（没有列可换）；</li><li>数值计算中"矩阵乘法配型"常需要 trans 对齐维度。</li></ul>
 </div>

@@ -125,7 +125,7 @@ np.random.normal(0, 1, (2, 3))     # 指定均值/方差的正态，可指定形
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| random((2,3)) 报错 | random 传形状元组；randint 第 3 个参数是数量不是形状 |
+| `np.random.random(2, 3)` 报 TypeError（它只收一个形状参数） | random 传形状元组；randint 第 3 个参数是数量不是形状 |
 | 随机结果每次不同 | 想要可复现：`np.random.seed(42)` 固定种子（同一种子跑出同一串数） |
 
 @@point ⑤ 数组四属性：ndim / shape / dtype / size

@@ -234,7 +234,8 @@ a = np.arange(6).reshape(2, 3)
 
 a.T               # [[0 3] [1 4] [2 5]]：2x3 → 3x2
 a.transpose()     # 等价
-b = a.transpose(2, 0, 1)   # 三维以上可指定轴交换顺序（高阶用法）
+a3 = np.arange(24).reshape(2, 3, 4)   # 轴序交换要三维以上才用得上
+b = a3.transpose(2, 0, 1)   # 按 2/0/1 重排，形状变 (4,2,3)
 ```
 
 注意：
