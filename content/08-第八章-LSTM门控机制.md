@@ -97,7 +97,7 @@ h_t = o_t * tanh(C_t)                        # 把细胞状态压缩后按比例
 - `tanh(C_t)`：把传送带上的信息压缩到 (-1,1)，作为"候选输出内容"。
 - `o_t`：决定这坨内容**放多少到 h_t** 外面去。
 
-至此 h_t 既包含了"长期记忆提炼的结果"，又可以被下一个时刻当作"短期输入"继续使用——这正好满足 RNN 的 h-t 传递约定。
+至此 h_t 既包含了"长期记忆提炼的结果"，又可以被下一个时刻当作"短期输入"继续使用——这正好满足 RNN 的 `h_t` 传递约定。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -171,7 +171,9 @@ lstm = nn.LSTM(
     batch_first=True,
 )
 
-x = torch.randn(16, 20, 64)      # [batch, seq, embed]
+import torch
+
+x = torch.randn(16, 20, 64)   # [batch, seq_len, hidden]      # [batch, seq, embed]
 out, (h_n, c_n) = lstm(x)
 # out : [16, 20, 128]  每步输出
 # h_n : [2, 16, 128]   每层最后时刻隐藏状态
