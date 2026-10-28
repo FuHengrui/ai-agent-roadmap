@@ -343,7 +343,7 @@ ssh-keygen -t rsa</pre>
 <p>密钥生成出来了，但服务器还不知道你的公钥，得把"打卡信息"登记到 AutoDL 后台。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<ol><li>打开本地的 <strong><code>id_rsa.pub</code></strong> 文件，<strong>完整复制全部内容</strong>（以 <code>ssh-rsa</code> 开头的很长一串）。</li><li>进入 AutoDL 控制台，找到 <strong>SSH 公钥/密钥管理</strong>入口（通常在"账号设置"或"密钥管理"菜单）。</li><li><strong>粘贴公钥并保存</strong>。</li></ol>
+<ol><li>打开本地的 <strong><code>id_rsa.pub</code></strong> 文件，<strong>完整复制全部内容</strong>（以 <code>ssh-rsa</code> 开头的很长一串）。</li><li>进入 AutoDL 控制台，找到 <strong>SSH 公钥/密钥管理</strong>入口（在「控制台 → 容器实例 → 设置密钥登录」里）。</li><li><strong>粘贴公钥并保存</strong>。</li></ol>
 <p>配置完，公钥就与你的账号绑定；之后创建的实例（或已有实例）都能用它免密登录。注意：修改公钥后通常对<strong>已有实例需要重装/同步一次</strong>或对新实例直接生效，不同版本平台略有差异，以实际为准。</p>
 <p><strong>检查项</strong>：保存后回到列表，能看到一条以 ssh-rsa 开头、带邮箱或注释的密钥记录，即配置成功。</p>
 </div>
