@@ -333,7 +333,7 @@ async def copy_content(title_id: int, user_id: int = Depends(get_current_user_id
     if not text or not text.strip():
         raise HTTPException(500, &quot;文案生成失败，请重试&quot;)
     title.content = text
-    title.status = &quot;1&quot;                             # 1=已生成
+    title.status = 1   # 模型是 SmallIntField，字符串会让前端 === 1 判空                             # 1=已生成
     await title.save()
     return {&quot;code&quot;: 200, &quot;data&quot;: {&quot;id&quot;: title.id, &quot;content&quot;: title.content}}</pre>
 <p>三个要点：</p>
@@ -370,7 +370,7 @@ async def title_reset(title_id: int, user_id: int = Depends(...)):
     title = await Title.filter(id=title_id, user_id=user_id).first()
     if not title: raise HTTPException(404, &quot;标题不存在&quot;)
     title.content = None
-    title.status = &quot;0&quot;
+    title.status = 0
     await title.save()
     return {&quot;code&quot;: 200, &quot;message&quot;: &quot;已重置&quot;}</pre>
 <p>细节：重置是"软操作"——不删记录只清字段+回状态，保留标题本身（可选/重置类比第 2 章状态机 3=已废弃，重置 = 回到 0）。</p>
@@ -388,7 +388,7 @@ async def save_copy(title_id: int, content: str, user_id: int = Depends(...)):
     if not content or not content.strip():
         raise HTTPException(400, &quot;正文不能为空&quot;)
     title.content = content
-    title.status = &quot;1&quot;                # 手工保存也视为&quot;已生成&quot;
+    title.status = 1   # 模型是 SmallIntField，字符串会让前端 === 1 判空                # 手工保存也视为&quot;已生成&quot;
     await title.save()
     return {&quot;code&quot;: 200, &quot;message&quot;: &quot;保存成功&quot;}</pre>
 <p>与前一个拷贝接口共享同一落库逻辑——提取一个 <code>_update_content(title, text)</code> 工具函数，重置/生成/保存三处复用，避免"三份差不多的代码三个不同 bug"。</p>
@@ -441,7 +441,7 @@ async def styles():
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>验收剧本：</p>
-<ol><li>素材页点某标题 → GET /v1/create/title/{id} 返回细节；</li><li>点"生成文案" → POST /v1/copy（等待 10-30s，显示 loading）→ content 出现、status=1；</li><li>点"重新生成"→ 再次 /copy → content 被覆盖；</li><li>手动改正文 → POST /v1/save-copy → 刷新页面内容仍在；</li><li>点"重置" → content 清空、status=0；</li><li>下拉风格列表 → GET /v1/create/styles 有条目。</li></ol>
+<ol><li>素材页点某标题 → GET /v1/create/title/{id} 返回细节；</li><li>点"生成文案" → POST /v1/create/copy（等待 10-30s，显示 loading）→ content 出现、status=1；</li><li>点"重新生成"→ 再次 /copy → content 被覆盖；</li><li>手动改正文 → POST /v1/save-copy → 刷新页面内容仍在；</li><li>点"重置" → content 清空、status=0；</li><li>下拉风格列表 → GET /v1/create/styles 有条目。</li></ol>
 <p>判定通过 = 六步全部符合预期且刷新后数据一致。任一步异常，按接口顺序排查：路径 → 鉴权 → 归属校验 → agent 调用 → 落库。</p>
 </div>
 </div></div>
