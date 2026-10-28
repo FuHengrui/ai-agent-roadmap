@@ -275,7 +275,7 @@ df.filter(col("age") > 18).select("name", "city")
 val spark = SparkSession
   .builder()
   .appName("MyApp")
-  .master("local[*]")            // 本地跑；集群提交时由 spark-submit 覆盖
+  .master("local[*]")            // 本地跑。注意：代码里写死 master 会**覆盖** spark-submit 的 --master，集群代码应删掉这行
   .config("spark.sql.shuffle.partitions", "200")   // 常用配置
   .enableHiveSupport()           // 要用 Hive 元数据时开
   .getOrCreate()
