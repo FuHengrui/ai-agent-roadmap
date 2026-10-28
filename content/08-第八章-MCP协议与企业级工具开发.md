@@ -220,13 +220,13 @@ client = MultiServerMCPClient({
     },
 })
 
-with client as mcp_tools:
-    # 每个 Server 的工具按 server 名分组注入
-    agent = create_agent(llm, [
-        local_tool,                  # 本地 @tool 可以混用
-        *mcp_tools["math"],          # math Server 的工具
-        *mcp_tools["weather"],       # weather Server 的工具
-    ])
+# ★ MultiServerMCPClient 只支持 async，get_tools() 返回的是**扁平列表**（不是按 server 分的字典）
+async def build_agent():
+    tools = await client.get_tools()          # 所有 Server 的工具合成一个 list
+    # 只要某个 Server 的：await client.get_tools(server_name="math")
+    return create_agent(llm, [local_tool, *tools])   # 本地 @tool 可以混用
+
+agent = asyncio.run(build_agent())
 ```
 
 要点：

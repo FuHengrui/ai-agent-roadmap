@@ -37,7 +37,7 @@ coze = Coze(auth=TokenAuth(token=COZE_TOKEN), base_url=COZE_CN_BASE_URL)
 chat = coze.chat.create_and_poll(
     bot_id=BOT_ID_TOPIC,
     user_id=USER_ID,
-    messages=[Message.build_user_question_text("新能源汽车")],
+    additional_messages=[Message.build_user_question_text("新能源汽车")],   # 注意不是 messages
 )
 for message in chat.messages:
     if message.type == "answer":
@@ -85,8 +85,8 @@ chat.messages 里混着多类消息，直接取"第一条"或用错类型会拿�
 |---|---|---|
 | question | 用户问题回显 | 否 |
 | answer | 最终回复正文 | ✅ 是 |
-| function_call / function_response | 插件/工具调用及返回 | 否 |
-| tool_response / tool_output | 工作流工具输出 | 否 |
+| function_call | 插件/工具调用请求 | 否 |
+| tool_response / tool_output | 工具执行结果（在 function_call 之后） | 否 |
 | follow_up / verbose | 追问/过程描述 | 否 |
 
 正确做法：**遍历全部，过滤 type=="answer" 取 content**——不要取第一条、不要按索引。若同轮有多个 answer（罕见），拼或用最后一个。
