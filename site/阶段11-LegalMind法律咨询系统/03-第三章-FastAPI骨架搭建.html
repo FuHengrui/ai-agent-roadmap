@@ -402,7 +402,7 @@ async def close_db():
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>换了前端端口后请求还是被拦</td><td>allow_origins 写死了 5173；改成变量或注掉 allow_origins（开发期）</td></tr>
+<tr><td>换了前端端口后请求还是被拦</td><td><code>allow_origins</code> 写死了 5173；改成读环境变量，或开发期写 <code>allow_origins=["*"]</code>（此时必须 <code>allow_credentials=False</code>）</td></tr>
 <tr><td>用 <code>allow_origins=["*"]</code> 却带 cookie 失败</td><td><code>*</code> 与 <code>allow_credentials=True</code> 互斥；必须列具体 origin</td></tr>
 <tr><td>内网 IP 访问被拦</td><td>前端用 IP 时把该 IP 也加进 allow_origins</td></tr>
 <tr><td>加了 CORS 还是报错</td><td>确认是不是浏览器缓存了旧响应；强刷 + 关插件再试</td></tr>

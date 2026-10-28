@@ -432,14 +432,14 @@ avg_gi = statistics.mean(gi_vals) if gi_vals else 0.0</pre>
 </table>
 </div>
 </div></div>
-<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ consume 的存在性检查模式复用</div><div class="body">
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 创建前先验患者：存在性检查模式复用</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>三个模块的"创建前验患者"与血糖一模一样——这个模式有什么统一写法？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>三个模块创建接口的开头都是同一行：</p>
 <pre>await Patient.get_or_none(id=data.patient_id)</pre>
-<p>含义拆解：<strong>存在性副作用检查</strong>——查一次患者，只为确认"这个 patient_id 真实存在"。返回值不用于业务，纯粹防止外键悬空（创建出无主记录）。</p>
+<p>含义拆解：<strong>存在性检查</strong>——查一次患者，只为把"这个 patient_id 不存在"尽早暴露出来（下一段就返回 404），返回值不参与业务逻辑（创建出无主记录）。</p>
 <p>工程进阶（示例代码没做，值得知道）：正式项目应改成显式判空抛 404：</p>
 <pre>patient = await Patient.get_or_none(id=data.patient_id)
 if not patient:
@@ -505,7 +505,7 @@ if not patient:
   <a href="#p4" title="运动记录：bs_change 的价值"><span class="n">4</span>运动记录：bs_change 的价值</a>
   <a href="#p5" title="每日营养统计：diet_advisor 首秀"><span class="n">5</span>每日营养统计：diet_advisor 首秀</a>
   <a href="#p6" title="平均 GI：升糖负荷的当日画像"><span class="n">6</span>平均 GI：升糖负荷的当日画像</a>
-  <a href="#p7" title="consume 的存在性检查模式复用"><span class="n">7</span>consume 的存在性检查模式复用</a>
+  <a href="#p7" title="创建前先验患者：存在性检查模式复用"><span class="n">7</span>创建前先验患者：存在性检查模式复用</a>
   <a href="#p8" title="三大模块与 AI 引擎的衔接预告"><span class="n">8</span>三大模块与 AI 引擎的衔接预告</a>
 </div>
 </aside>

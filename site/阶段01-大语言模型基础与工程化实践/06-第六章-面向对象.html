@@ -909,7 +909,7 @@ sorted([Job(12000), Job(8000)])      # 自动按 salary 排</pre>
 <pre>class Job:
     def __eq__(self, other):
         return self.title == other.title</pre>
-<p><strong>一旦重写 <code>__eq__</code>，对象的哈希值就变了，默认就不能放进 <code>set</code> 或当字典键了</strong>（<code>TypeError: unhashable type</code>）。</p>
+<p><strong>一旦重写 <code>__eq__</code>，Python 会把 <code>__hash__</code> 置成 <code>None</code>（对象变成不可哈希），默认就不能放进 <code>set</code> 或当字典键了</strong>（<code>TypeError: unhashable type</code>）。</p>
 <p><strong>要放进去，得同时定义 <code>__hash__</code></strong>：</p>
 <pre>def __hash__(self):
     return hash(self.title)</pre>

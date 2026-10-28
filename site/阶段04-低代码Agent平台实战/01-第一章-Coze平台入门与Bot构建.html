@@ -455,14 +455,14 @@ ngrok http 8000</div>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>Coze 调用本地接口失败</td><td>没做内网穿透，或公网地址不是 https</td></tr>
-<tr><td>ngrok 地址经常变</td><td>免费版每次重启地址会变，插件里要同步更新</td></tr>
+<tr><td>ngrok 地址经常变</td><td>免费版只给<strong>一个绑定账号的固定 dev 域名</strong>，重启隧道地址不变；想换域名得升级付费版</td></tr>
 <tr><td>接口通了但参数报错</td><td>工具元数据里的参数名要和 API 实际接收的参数名一致</td></tr>
 </table>
 </div>
 </div></div>
 <div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 通过插件调用外部模型：用上平台没有的模型</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>Coze 主要用的是豆包，但有些任务<strong>其他模型更合适</strong>：比如生成 LOGO 图——豆包不做文生图大模型平台，而你恰好有阿里百炼（通义万相）的 API 额度。</p>
+<p>Coze 主要用的是豆包，但有些任务<strong>其他模型更合适</strong>：比如生成 LOGO 图——豆包出图走的是另一套模型（Seedream），Coze 里也有官方图像插件；这一节想演示的是「换成阿里百炼的通义万相」这种接法的 API 额度。</p>
 <p>难道要用别的平台？<strong>不用。</strong> 插件机制本身就是"把任意 API 包装给模型用"——那外部模型 API 为什么不呢？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>

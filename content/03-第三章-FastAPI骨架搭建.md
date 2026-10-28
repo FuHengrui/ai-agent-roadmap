@@ -124,7 +124,7 @@ app.add_middleware(
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 换了前端端口后请求还是被拦 | allow_origins 写死了 5173；改成变量或注掉 allow_origins（开发期） |
+| 换了前端端口后请求还是被拦 | `allow_origins` 写死了 5173；改成读环境变量，或开发期写 `allow_origins=["*"]`（此时必须 `allow_credentials=False`） |
 | 用 `allow_origins=["*"]` 却带 cookie 失败 | `*` 与 `allow_credentials=True` 互斥；必须列具体 origin |
 | 内网 IP 访问被拦 | 前端用 IP 时把该 IP 也加进 allow_origins |
 | 加了 CORS 还是报错 | 确认是不是浏览器缓存了旧响应；强刷 + 关插件再试 |
