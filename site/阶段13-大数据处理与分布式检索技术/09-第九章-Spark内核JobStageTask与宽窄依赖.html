@@ -369,7 +369,7 @@
 子分区:   [C1]  [C2]  [C3]     ← 各管各的，无交叉
 
 map / filter / flatMap / union
-（union 是特例：一个子分区依赖多个父分区，但仍算窄依赖——因为父分区只被一个子分区用）</pre>
+（union 只是**分区拼接**：N 个父 RDD 的分区拼成 N 个，子分区与父分区一一对应，仍是窄依赖，但仍算窄依赖——因为父分区只被一个子分区用）</pre>
 <p>三个特征（记住它们就是判断依据）：</p>
 <ol><li>每个父分区<strong>最多</strong>对应一个子分区（不跨分区传递数据）</li><li><strong>不需要 shuffle</strong>——数据在哪个分区就在哪个分区处理</li><li>可以<strong>管道式（pipeline）连续执行</strong>：map→filter→map 在同一分区上连着跑，不落盘、不等待</li></ol>
 <p><strong>为什么窄依赖快</strong>：不涉及网络传输数据，一个 Stage 内所有窄依赖算子可以"一条流水线"跑完。</p>
@@ -377,7 +377,7 @@ map / filter / flatMap / union
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为窄依赖=一个父分区对一个子分区</td><td>一对一是一种，union 是一对多（一个父分区 → 多个子分区）也算窄依赖。判断标准是"父分区是否被多个子分区用"，不是数量对称</td></tr>
+<tr><td>以为窄依赖=一个父分区对一个子分区</td><td>一对一是一种，「一个父分区被多个子分区用」恰恰是<strong>宽依赖</strong>（要 shuffle），union 不是这样也算窄依赖。判断标准是"父分区是否被多个子分区用"，不是数量对称</td></tr>
 <tr><td>在窄依赖算子链中途缓存</td><td>窄依赖本身快且可 pipeline，多数情况没必要在中间 cache，浪费内存。缓存通常放在"宽依赖之前"或"会被多 Job 复用"的位置</td></tr>
 <tr><td>反链：把窄依赖算子误以为要 shuffle</td><td>不用。filter/map 永远不触发 shuffle，别担心它们慢</td></tr>
 <tr><td>忘记窄依赖是 Stage 内部的基础</td><td>记住"窄依赖算子连续执行=一个 Stage"，这是 Stage 划分的钥匙（见第⑥点）</td></tr>

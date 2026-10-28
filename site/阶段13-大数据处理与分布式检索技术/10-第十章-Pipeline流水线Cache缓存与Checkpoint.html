@@ -394,7 +394,7 @@ println(labeled.count())        // 第二次：直接读缓存，不重算</pre>
 rdd.persist(StorageLevel.MEMORY_ONLY)        // 内存，不够就不缓存（=cache()）
 rdd.persist(StorageLevel.MEMORY_AND_DISK)    // 内存优先，放不下落盘（常用！）
 rdd.persist(StorageLevel.DISK_ONLY)          // 只磁盘，省内存但慢
-rdd.persist(StorageLevel.MEMORY_AND_DISK_2)  // 上面+2 份副本（容灾）</pre>
+rdd.persist(StorageLevel.MEMORY_AND_DISK_2)  // _2 = 每个分区存两份、落在两个节点上（容灾），不是「再加 2 份」</pre>
 <p><strong>四档决策表</strong>：</p>
 <table>
 <tr><th>级别</th><th>放哪</th><th>内存够时</th><th>内存不够时</th><th>适用</th></tr>
@@ -474,7 +474,7 @@ rdd.count()          // ③ 触发：算→写缓存→写 checkpoint→断链</
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>cache 和 checkpoint 都设了却仍慢</td><td>顺序必须<strong>先 cache 后 checkpoint</strong>，且用同一个行动算子触发。先算完写内存再落盘，省一次全量计算</td></tr>
 <tr><td>UI 上缓存占比 90% 还在重算</td><td>缓存被淘汰了（Storage Tab 看绿色是否还在）。数据是"热"但内存小，考虑 MEMORY_AND_DISK / 加内存</td></tr>
-<tr><td>Spark 2.x 起 <code>checkpoint</code> 在 DataFrame 不生效</td><td>RDD 的 checkpoint 有效；DataFrame 要 <code>df.createOrReplaceTempView</code> 后重新读。碰到"检查点好像没跑"先确认 API</td></tr>
+<tr><td><code>df.checkpoint()</code> 同样可用（2.0 起，需先 setCheckpointDir），它断的是<strong>逻辑计划</strong>的血缘；Dataset/RDD 断的是 RDD 血缘</td><td>RDD 的 checkpoint 有效；DataFrame 要 <code>df.createOrReplaceTempView</code> 后重新读。碰到"检查点好像没跑"先确认 API</td></tr>
 <tr><td>为了"保险"全链 checkpoint</td><td>每个廉价中间结果都 checkpoint = 无数落盘 IO，比不 checkpoint 还慢。<strong>只有在"贵 + 复用 + 长链"三个条件都占时才值得</strong></td></tr>
 </table>
 </div>
@@ -518,7 +518,7 @@ val trainData = raw.filter(...).cache()   // ① 每轮复用的数据缓存
 trainData.count()                          // ② 触发缓存真正落内存
 
 for (i &lt;- 1 to 100) {
-  val result = trainData.map(...).reduce(...)  // 每轮复用缓存数据
+  val result = trainData.map(...).reduceByKey(...)   # reduce 返回单个值、没有 .checkpoint()/.count()，要返回 RDD 用 reduceByKey  // 每轮复用缓存数据
   if (i % 10 == 0) {
     result.checkpoint()                      // ③ 每 10 轮断一次血缘
     result.count()                           // ④ 触发 checkpoint 真正落盘
