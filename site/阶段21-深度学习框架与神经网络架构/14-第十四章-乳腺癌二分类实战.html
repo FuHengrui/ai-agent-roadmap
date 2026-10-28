@@ -351,6 +351,11 @@ X_val, X_test, y_val, y_test = train_test_split(
 # 2 转张量（float32）
 Xtr = torch.tensor(X_train, dtype=torch.float32)
 ytr = torch.tensor(y_train, dtype=torch.float32).reshape(-1, 1)  # BCE 用 (N,1)
+# 验证/测试集也要转，否则后面 model(X_val)、y_test.int() 会直接报错
+X_val  = torch.tensor(X_val,  dtype=torch.float32)
+y_val  = torch.tensor(y_val,  dtype=torch.float32).reshape(-1, 1)
+X_test = torch.tensor(X_test, dtype=torch.float32)
+y_test = torch.tensor(y_test, dtype=torch.float32).reshape(-1, 1)
 
 # 3 分批
 train_loader = DataLoader(TensorDataset(Xtr, ytr), batch_size=32, shuffle=True)</pre>
@@ -371,7 +376,10 @@ train_loader = DataLoader(TensorDataset(Xtr, ytr), batch_size=32, shuffle=True)<
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>结构设计：<strong>输入 30 → 隐藏层（如 64）→ 隐藏层（如 32）→ 输出 1</strong>，中间配 ReLU + Dropout + BatchNorm，输出层单神经元配 BCEWithLogitsLoss：</p>
-<pre>class BreastNet(nn.Module):
+<pre>import torch.nn as nn      # 下面的 nn.Module / nn.Sequential / nn.BCEWithLogitsLoss 都靠它
+
+
+class BreastNet(nn.Module):
     def __init__(self):
         super().__init__()
         self.net = nn.Sequential(
@@ -426,7 +434,7 @@ for epoch in range(100):
         val_loss = loss_fn(model(X_val), y_val.reshape(-1,1)).item()
     if val_loss &lt; best_val:
         best_val = val_loss
-        torch.save(model.state_dict(), &quot;best_model.pt&quot;)   # 只存参数
+        torch.save(model.state_dict(), &quot;best_model.pt&quot;)   # 后面测试前记得 load 回来：model.load_state_dict(torch.load(&quot;best_model.pt&quot;))   # 只存参数
     if epoch % 10 == 0:
         print(epoch, loss.item(), val_loss)</pre>
 <ul><li><code>model.eval()</code> + <code>torch.no_grad()</code>：评估时关 Dropout、不建计算图。</li><li>用<strong>验证 loss 而非训练 loss</strong> 选模型（防止过拟合版本被保存）。</li><li><code>state_dict()</code> 只存参数，加载：<code>model.load_state_dict(torch.load(...))</code>。</li></ul>
@@ -456,7 +464,7 @@ with torch.no_grad():
 <p>再配<strong>混淆矩阵</strong>（2×2，看错误类型）：</p>
 <table>
 <tr><th>真实\预测</th><th>预测良性</th><th>预测恶性</th></tr>
-<tr><td>实际良性</td><td>TP（真阴性）</td><td>FP（假阳性）</td></tr>
+<tr><td>实际良性</td><td>TN（真阴性）</td><td>FP（假阳性）</td></tr>
 <tr><td>实际恶性</td><td>FN（假阴性）</td><td>TP（真阳性）</td></tr>
 </table>
 <p>关注点：</p>

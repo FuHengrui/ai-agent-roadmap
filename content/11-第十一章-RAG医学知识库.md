@@ -77,7 +77,7 @@ class VectorStore:
 逐句解读：
 - **PersistentClient**：ChromaDB 持久化到本地目录（`./data/chroma_db`），重启不丢数据；
 - **get_or_create_collection**：集合不存在就创建——幂等，重复启动不报错；
-- **huasio 空间=cosine**：检索相似度用余弦距离，语义相近距离小；
+- **hnsw:space=cosine**：检索相似度用余弦距离，语义相近距离小；
 - **MiniLM 多语言模型**：paraphrase-multilingual-MiniLM-L12-v2 支持中文语义向量化，是本项目的嵌入模型。
 
 嵌入模型选择的取舍：**多语言小模型**体积小、中文可用、本地推理快；相比 OpenAI embedding（API 计费）零成本。
@@ -131,7 +131,7 @@ def add_documents(self, documents, metadatas=None, ids=None):
 @@idea 核心思路
 ```python
 def query(self, query_text, top_k=None, where=None):
-    top_k = top_k or os.getenv("RAG_TOP_K")           # 默认 5
+    top_k = int(top_k or os.getenv("RAG_TOP_K", 5))   # .env 读出来是字符串，必须转 int
     query_embedding = self.embeddings.embed_query(query_text)
     results = self.collection.query(
         query_embeddings=[query_embedding],
@@ -164,7 +164,7 @@ def query(self, query_text, top_k=None, where=None):
 知识库内容从哪来？怎么组织才能支撑"按意图检索"？
 
 @@idea 核心思路
-DIABETES_KNOWLEDGE 结构 = **content + category + source** 三元组。21 条按 7 个分类：
+DIABETES_KNOWLEDGE 结构 = **content + category + source** 三元组。20 条按 8 个分类：
 
 | 分类 | 示例内容 | 来源 |
 |---|---|---|

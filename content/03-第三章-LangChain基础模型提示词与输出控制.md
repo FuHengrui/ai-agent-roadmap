@@ -103,7 +103,7 @@ for chunk in llm.stream("讲个笑话"):
 直接拼字符串造 prompt 又乱又容易出错：用户输入里嵌着引号怎么办？角色设定和问题混在一起？每次都要重写冗长提示词？
 
 @@idea 核心思路
-**PromptTemplate 类**：用 `{变量}` 占位符定义模板，运行时填充，自动处理转义与组装。
+**PromptTemplate 类**：用 `{变量}` 占位符定义模板，运行时填充。模板里真要出现花括号（比如 JSON 示例），得写成**双花括号** `{{` `}}`。
 
 ```python
 from langchain_core.prompts import PromptTemplate
@@ -118,7 +118,7 @@ filled = prompt.format(role='数学老师', style='通俗易懂', question='勾�
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 模板里有 `{}` 花括号但不是变量 | 例如写 JSON 示例 `{"a":1}` 会被误判为变量，需要在模板里转义 `\{` 或用 `.partial` |
+| 模板里有 `{}` 花括号但不是变量 | 例如写 JSON 示例 `{"a":1}` 会被当成变量名，报 KeyError。**转义用双花括号**：`{{"a":1}}`（`.partial` 解决不了这个） |
 | format 时漏传变量 | 模板声明的变量必须全部提供，否则直接抛 KeyError |
 | 凭空拼接长 prompt | 该用模板却手工 + 字符串，注入风险与维护成本双高 |
 
@@ -200,7 +200,7 @@ prompt = FewShotPromptTemplate(
 前后端联调、Agent 工具参数传递，最常要的就是"模型输出合法 JSON"。手写解析兜底逻辑太繁琐。
 
 @@idea 核心思路
-JsonOutputParser 把"请输出 JSON"的指令自动写进 prompt，并解析模型回复为 Python 对象。
+JsonOutputParser 负责**解析**模型回复（字符串 → Python 对象）；但"请输出 JSON"这类格式要求，得**你自己写进 prompt**，它不会自动注入。
 
 ```python
 from langchain_core.output_parsers import JsonOutputParser
@@ -214,8 +214,8 @@ resp = parser.parse('{"answer": "42"}')
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 模型输出带 ```json 代码块标记，json.loads 直接报错 | 默认解析器不会剥离代码块标记，需先清洗 |
-| 字段名/顺序漂移导致解析失败 | 纯靠提示词约束格式不稳，应配合 format_instructions 或结构化输出 |
+| 模型输出带 ```json 代码块标记，json.loads 直接报错 | 手写 `json.loads` 时才会踩；`JsonOutputParser` 内部已处理围栏 |
+| 字段名/顺序漂移导致解析失败 | 纯靠提示词约束不稳；更稳的是 `with_structured_output`（直接把 Pydantic 模型交给模型） |
 
 @@point ⑨ PydanticOutputParser：强类型 + 自动校验
 @@need 要解决什么

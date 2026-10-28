@@ -411,14 +411,15 @@ if intent not in [&#x27;qa&#x27;, &#x27;document&#x27;, &#x27;search&#x27;]:
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>让 LLM"自由分类"，结果冒出个没见过的类别</td><td>三分类就要在 prompt 里给死白名单并注明"只能从这三类中选"；代码侧再加一道：输出不在白名单就兜底走 default 分支</td></tr>
-<tr><td>把整个聊天历史全塞进意图识别 prompt，爆上下文</td><td>意图判断通常只需要最新一条用户消息+系统设定，别把文书、引用全带进来</td></tr>
+<tr><td>模型编造不存在的法条条号</td><td>prompt 里写死"引用法条必须给出全称+条号，不确定就说不确定"；必要时接法规检索，别让模型凭记忆背</td></tr>
+<tr><td>给了建议却没提风险</td><td>回答结构里固定留一段"风险提示"，prompt 明确"最后必须说明本回答不构成正式法律意见"</td></tr>
+<tr><td>用户情绪激动时模型跟着跑偏</td><td>人设里限定"先共情一句、再回到事实与步骤"，别整段安慰</td></tr>
 </table>
 </div>
 </div></div>
 <div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 法律问答 Prompt：人设 + 原则 + 结构</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>问答质量取决于 system prompt 的"人设"和"纪律"。没有约束的模型会编法条、乱给建议、不说风险。写一条<strong>专业法律顾问</strong>人设 + 四条回答原则 + 三段回答结构。</p>
+<p>问答质量取决于 system prompt 的"人设"和"纪律"。没有约束的模型会编法条、乱给建议、不说风险。写一条<strong>专业法律顾问</strong>人设 + 五条回答原则 + 四段回答结构。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><code>QA_SYSTEM_PROMPT</code> 的三层设计（浓缩版，完整代码见配套代码）：</p>
@@ -452,7 +453,7 @@ if intent not in [&#x27;qa&#x27;, &#x27;document&#x27;, &#x27;search&#x27;]:
 </div></div>
 <div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 文书模板：五个可复用的模板骨架</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>文书生成不能真让 LLM 完全自由发挥——起诉状有王法格式（原告/被告/诉讼请求/事实与理由/此致）。预置模板骨架，让 LLM <strong>按格式填空</strong>，输出稳定可立案。</p>
+<p>文书生成不能真让 LLM 完全自由发挥——起诉状有法定格式（原告/被告/诉讼请求/事实与理由/此致）。预置模板骨架，让 LLM <strong>按格式填空</strong>，输出稳定可立案。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><code>DOCUMENT_TEMPLATES</code> 是 dict：文书类型 → 模板字符串。例如民事起诉状：</p>

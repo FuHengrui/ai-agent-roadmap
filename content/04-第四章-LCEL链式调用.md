@@ -56,7 +56,7 @@ LangChain 早期用 Chain 对象解决这个问题，但写起来又重又僵。
 | 现象 | 原因 |
 |---|---|
 | 以为 SimpleSequentialChain 能处理多输入 | 它只有一个输入一个输出，多输入要用 SequentialChain 或 LCEL |
-| 中间结果丢了 | Simple 链对外透明，中间产物默认不可见；要保留得用 SequentialChain 的 return_intermediate |
+| 中间结果丢了 | Simple 链对外透明，中间产物默认不可见；要保留中间结果得用 SequentialChain 的 `return_all=True`（默认 False，只回最后一步） |
 | 新项目还用旧 Chain API | 官方已转向 LCEL，旧 API 在新项目中不推荐 |
 
 @@point ③ 旧 Chain API 的五个痛点：为什么被 LCEL 取代
@@ -98,7 +98,7 @@ RunnableParallel 自动优化并行调用：多条独立的分支管道路径，
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 把 `/` 当普通运算符乱用（两端不是 Runnable） | LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包 |
+| 把 `|` 当普通运算符乱用（两侧不是 Runnable 就会报错）（两端不是 Runnable） | LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包 |
 | invoke 拿到的是原始模型输出不是解析结果 | 链末端组件决定返回类型，忘了串 parser 就拿到裸文本 |
 
 @@point ⑤ RunnablePassthrough：原样透传的"数据搬运工"
@@ -189,7 +189,7 @@ chain = RunnableBranch(
     default_handler,                                   # else: 兜底
 )
 ```
-每个 condition 是可调用对象（callable），真则走对应分支，全不满足则走 default。合用场景：按用户意图分流（咨询/投诉/下单）、按数据类型分流、按上下文状态分流。
+每个 condition 是可调用对象（callable），真则走对应分支，全不满足则走 default。适用场景：按用户意图分流（咨询/投诉/下单）、按数据类型分流、按上下文状态分流。
 
 @@trap 坑在哪
 | 现象 | 原因 |

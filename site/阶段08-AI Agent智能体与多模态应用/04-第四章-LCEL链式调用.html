@@ -323,7 +323,7 @@
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>以为 SimpleSequentialChain 能处理多输入</td><td>它只有一个输入一个输出，多输入要用 SequentialChain 或 LCEL</td></tr>
-<tr><td>中间结果丢了</td><td>Simple 链对外透明，中间产物默认不可见；要保留得用 SequentialChain 的 return_intermediate</td></tr>
+<tr><td>中间结果丢了</td><td>Simple 链对外透明，中间产物默认不可见；要保留中间结果得用 SequentialChain 的 <code>return_all=True</code>（默认 False，只回最后一步）</td></tr>
 <tr><td>新项目还用旧 Chain API</td><td>官方已转向 LCEL，旧 API 在新项目中不推荐</td></tr>
 </table>
 </div>
@@ -360,7 +360,7 @@ result = chain.invoke({&quot;question&quot;: &quot;你好吗？&quot;})</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td>把 <code>/</code> 当普通运算符乱用（两端不是 Runnable）</td><td>LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包</td></tr>
+<tr><td>把 `</td><td>` 当普通运算符乱用（两侧不是 Runnable 就会报错）（两端不是 Runnable）</td><td>LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包</td></tr>
 <tr><td>invoke 拿到的是原始模型输出不是解析结果</td><td>链末端组件决定返回类型，忘了串 parser 就拿到裸文本</td></tr>
 </table>
 </div>
@@ -445,7 +445,7 @@ chain = RunnableBranch(
     (lambda x: len(x[&quot;msg&quot;]) &gt; 100, long_handler),    # elif: 条件2 -&gt; 分支2
     default_handler,                                   # else: 兜底
 )</pre>
-<p>每个 condition 是可调用对象（callable），真则走对应分支，全不满足则走 default。合用场景：按用户意图分流（咨询/投诉/下单）、按数据类型分流、按上下文状态分流。</p>
+<p>每个 condition 是可调用对象（callable），真则走对应分支，全不满足则走 default。适用场景：按用户意图分流（咨询/投诉/下单）、按数据类型分流、按上下文状态分流。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

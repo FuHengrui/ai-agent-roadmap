@@ -344,7 +344,7 @@ class VectorStore:
             metadata={&quot;hnsw:space&quot;: &quot;cosine&quot;},             # 余弦相似度
         )</pre>
 <p>逐句解读：</p>
-<ul><li><strong>PersistentClient</strong>：ChromaDB 持久化到本地目录（<code>./data/chroma_db</code>），重启不丢数据；</li><li><strong>get_or_create_collection</strong>：集合不存在就创建——幂等，重复启动不报错；</li><li><strong>huasio 空间=cosine</strong>：检索相似度用余弦距离，语义相近距离小；</li><li><strong>MiniLM 多语言模型</strong>：paraphrase-multilingual-MiniLM-L12-v2 支持中文语义向量化，是本项目的嵌入模型。</li></ul>
+<ul><li><strong>PersistentClient</strong>：ChromaDB 持久化到本地目录（<code>./data/chroma_db</code>），重启不丢数据；</li><li><strong>get_or_create_collection</strong>：集合不存在就创建——幂等，重复启动不报错；</li><li><strong>hnsw:space=cosine</strong>：检索相似度用余弦距离，语义相近距离小；</li><li><strong>MiniLM 多语言模型</strong>：paraphrase-multilingual-MiniLM-L12-v2 支持中文语义向量化，是本项目的嵌入模型。</li></ul>
 <p>嵌入模型选择的取舍：<strong>多语言小模型</strong>体积小、中文可用、本地推理快；相比 OpenAI embedding（API 计费）零成本。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -393,7 +393,7 @@ class VectorStore:
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>def query(self, query_text, top_k=None, where=None):
-    top_k = top_k or os.getenv(&quot;RAG_TOP_K&quot;)           # 默认 5
+    top_k = int(top_k or os.getenv(&quot;RAG_TOP_K&quot;, 5))   # .env 读出来是字符串，必须转 int
     query_embedding = self.embeddings.embed_query(query_text)
     results = self.collection.query(
         query_embeddings=[query_embedding],
@@ -424,7 +424,7 @@ class VectorStore:
 <p>知识库内容从哪来？怎么组织才能支撑"按意图检索"？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>DIABETES_KNOWLEDGE 结构 = <strong>content + category + source</strong> 三元组。21 条按 7 个分类：</p>
+<p>DIABETES_KNOWLEDGE 结构 = <strong>content + category + source</strong> 三元组。20 条按 8 个分类：</p>
 <table>
 <tr><th>分类</th><th>示例内容</th><th>来源</th></tr>
 <tr><td>血糖管理</td><td>空腹目标4.4-7.0，餐后&lt;10.0；&lt;3.9为低血糖</td><td>中国2型糖尿病防治指南</td></tr>

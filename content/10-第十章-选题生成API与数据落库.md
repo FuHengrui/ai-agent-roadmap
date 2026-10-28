@@ -45,7 +45,7 @@ async def start(theme: str, user_id: int = Depends(get_current_user_id)):
     if not theme or not theme.strip():
         raise HTTPException(status_code=400, detail="主题不能为空")
     # theme 为空 → 400：在调 AI 之前就拦住，而不是白烧 token
-    text = await hot_topic(theme)          # 调 Coze 选题 Bot（见第 8/9 章）
+    text = await hot_topic(theme)          # 第 9 章的 hot_topic 必须写成 async def，否则这里 await 会 TypeError
     data = _extract_json(text)             # 关键一步：从 AI 输出里抠 JSON
     if data is None:
         raise HTTPException(status_code=500, detail="AI 返回格式异常，请重试")
@@ -139,7 +139,7 @@ for i, item in enumerate(板块标题列表, start=1):
         section_id=section.id,
         title=item["title"],
         sort_order=i,            # 1..10
-        status="0",              # 0 未生成（文案还没做）
+        status=0,              # 0 未生成（文案还没做）
     )
 ```
 流程本质：**先主后从、先拿外键再写子表**——这正好呼应第 4 章"Section/Title 用普通 IntField 存 id，无级联"的设计，写入顺序由业务代码保证一致性。
@@ -149,7 +149,7 @@ for i, item in enumerate(板块标题列表, start=1):
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 落库后 themes 查不到这个主题 | user_id 没传或传错（用鉴权里的 user_id，别用前端传的旷值） |
+| 落库后 themes 查不到这个主题 | user_id 没传或传错（用鉴权里的 user_id，别用前端传的脏值） |
 | 标题顺序乱 | sort_order 写错或没写；枚举时用 enumerate start=1 |
 | 事务：板块建成功、标题失败一半 | 需要事务包裹整批写入（Tortoise in_transaction），失败整体回滚，不残留孤儿板块 |
 
@@ -187,10 +187,15 @@ async def themes(user_id: int = Depends(get_current_user_id)):
 @router.get("/load")
 async def load(theme: str, user_id: int = Depends(get_current_user_id)):
     sections = await Section.filter(user_id=user_id, source_name=theme)
-    sections = await Section.annotate(标题用 prefetch 或循环查询)
+    # 批量取：先拿到所有 section id，再一次查标题，避免循环里逐条查（N+1）
+    sec_ids = [s.id for s in sections]
+    all_titles = await Title.filter(section_id__in=sec_ids).order_by("sort_order")
+    by_section = {}
+    for t in all_titles:
+        by_section.setdefault(t.section_id, []).append(t)
     result = []
     for sec in sections:
-        titles = await Title.filter(section_id=sec.id).order_by("sort_order")
+        titles = by_section.get(sec.id, [])
         result.append({
             "name": sec.name,
             "titles": [{"id": t.id, "title": t.title, "status": t.status,
@@ -201,7 +206,7 @@ async def load(theme: str, user_id: int = Depends(get_current_user_id)):
 要点：
 - **load 是只读接口**，返回结构直接喂前端素材页渲染；
 - titles 里带 status——前端据此显示"未生成/已生成/已发布/已废弃"徽标；
-- 量大时用 `prefetch_related` 一次拿齐，别在循环里 N+1 查询。
+- 两表之间用的是普通 `IntField` 存 id（没有 `ForeignKeyField`），所以**不能用 `prefetch_related`**——按上面的办法先批量 `filter(section_id__in=[...])`，再在内存里分组。
 
 ⚠️ 边界：theme 参数在 URL 里（GET），**中文主题要 URL 编码**——axios 会自动处理，但 Postman/curl 手测时别漏 encodeURIComponent。
 
