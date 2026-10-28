@@ -371,7 +371,7 @@ class VectorStore:
         return self.db.similarity_search_with_score(
             query, k=top_k, filter=filters or None
         )</pre>
-<ul><li><strong>持久化</strong>：<code>persist_directory</code> 落盘，向量库不占内存常驻。</li><li><strong>page_content vs metadata</strong>：可检索文本（title+summary）和结构化字段（court/type/laws）分开存——检索命中后还能按 metadata 过滤。</li><li><strong>add_documents 要幂等</strong>：重复跑 build_index 会重复插入，本项目用"按 case_number 去重跳过"策略（第 8 点）。</li></ul>
+<ul><li><strong>持久化</strong>：<code>persist_directory</code> 落盘，向量库不占内存常驻。</li><li><strong>page_content vs metadata</strong>：可检索文本（title+summary）和结构化字段（court/type/laws）分开存——检索命中后还能按 metadata 过滤。</li><li><strong>add_documents 要幂等</strong>：重复跑 build_index 会重复插入，本项目用"按 case_number 去重跳过"策略（见第 4 点）。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

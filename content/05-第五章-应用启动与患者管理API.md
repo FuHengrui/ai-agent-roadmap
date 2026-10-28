@@ -132,14 +132,14 @@ class PatientResponse(PatientBase): # 响应：加只读字段 + 计算属性
     created_at: datetime
     updated_at: datetime
     bmi: Optional[float] = None
-    bmi_status: Optional[str] = None
+    bmi_category: Optional[str] = None
     model_config = ConfigDict(from_attributes=True)
 ```
 
 设计要点：
 - **Create** 复用基类，必填字段天然继承（name/age 必填，其余有默认值）；
 - **Update** 把字段全部改成 `Optional`，配合 `exclude_unset=True` 实现"只更新传了的字段"；
-- **Response** 增加数据库生成的 id/created_at 和计算属性 bmi/bmi_status。
+- **Response** 增加数据库生成的 id/created_at 和计算属性 bmi/bmi_category。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -149,7 +149,7 @@ class PatientResponse(PatientBase): # 响应：加只读字段 + 计算属性
 
 @@point ④ from_attributes：让响应携带计算属性
 @@need 要解决什么
-模型上的 `bmi`、`bmi_status` 是 @property 计算出来的，Pydantic 怎么把"属性"当"字段"用？
+模型上的 `bmi`、`bmi_category` 是 @property 计算出来的，Pydantic 怎么把"属性"当"字段"用？
 
 @@idea 核心思路
 妙处就在 `ConfigDict(from_attributes=True)`：
@@ -157,7 +157,7 @@ class PatientResponse(PatientBase): # 响应：加只读字段 + 计算属性
 ```python
 class PatientResponse(PatientBase):
     bmi: Optional[float] = None
-    bmi_status: Optional[str] = None
+    bmi_category: Optional[str] = None
     model_config = ConfigDict(from_attributes=True)  # Pydantic v2 新配置
 ```
 
@@ -165,7 +165,7 @@ class PatientResponse(PatientBase):
 1. 路由返回的是 Tortoise 模型对象（不是 dict）；
 2. `from_attributes=True` 告诉 Pydantic：**按属性名从对象上取值**；
 3. `bmi` 这个名字在模型上恰好是个 @property——于是**计算属性被自动序列化进响应体**；
-4. 前端收到 `{"id": 1, "bmi": 24.3, "bmi_status": "正常", ...}`，不用自己再算。
+4. 前端收到 `{"id": 1, "bmi": 24.3, "bmi_category": "正常", ...}`，不用自己再算。
 
 这是 v2 相对 v1 的变化：v1 用 `class Config: orm_mode = True`，v2 统一改成 `model_config = ConfigDict(from_attributes=True)`。
 

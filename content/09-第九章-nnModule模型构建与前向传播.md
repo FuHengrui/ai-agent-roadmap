@@ -41,7 +41,7 @@ print(fc.bias.shape)     # (3,)
 |---|---|
 | 输入特征数写错 | in_features 必须等于输入数据的最后一维；否则前向直接报维度错误 |
 | 以为 fc(x) 和 fc.forward(x) 不同 | 官方推荐直接 `fc(x)`，内部还会触发钩子机制；不要手动调 forward（除非特殊场景） |
-| 忘记 batch 维 | nn.Linear 自动处理 batch：输入 (N, in) 输出 (N, out)，插入特征维前即可 |
+| 忘记 batch 维 | nn.Linear 要求输入自带 batch 维：`(N, in)` → `(N, out)`。单个样本也要先 `x.unsqueeze(0)` |
 
 @@point ② nn.Module：所有模型的父类
 @@need 要解决什么

@@ -397,7 +397,9 @@ def bmi(self) -&gt; float:
 
 @property
 def bmi_category(self) -&gt; str:
-    &quot;&quot;&quot;计算BMI分类&quot;&quot;&quot;
+    &quot;&quot;&quot;计算BMI分类；身高、体重缺一个就返回&quot;未知&quot; &quot;&quot;&quot;
+    if not (self.weight and self.height):
+        return &quot;未知&quot;
     bmi_val = self.bmi
     if bmi_val &lt; 18.5:
         return &quot;偏瘦&quot;
@@ -405,7 +407,7 @@ def bmi_category(self) -&gt; str:
         return &quot;正常&quot;
     return &quot;肥胖&quot;</pre>
 <p>设计要点：</p>
-<ul><li><strong>不占数据库列</strong>：BMI 是"身高、体重的函数"，存两个原始值即可，BMI 随体重变化自动更新——存冗余值反而容易脏；</li><li><strong>防护空值</strong>：height/weight 可能为 null，先判空再计算，否则报 TypeError；</li><li><strong>返回值语义化</strong>：bmi 是数字，bmi_category 是"偏瘦/正常/肥胖"——AI 提示词可以直接拼"患者 BMI 23.4（正常）"。</li></ul>
+<ul><li><strong>不占数据库列</strong>：BMI 是"身高、体重的函数"，存两个原始值即可，BMI 随体重变化自动更新——存冗余值反而容易脏；</li><li><strong>防护空值</strong>：height/weight 可能为 null，先判空再计算，否则报 TypeError；</li><li><strong>返回值语义化</strong>：bmi 是数字，bmi_category 是"偏瘦/正常/肥胖"（教学用简化三档；国标还有"超重"一档，需要就自己补）——AI 提示词可以直接拼"患者 BMI 23.4（正常）"。</li></ul>
 <p>这是本阶段模型层的核心模式：<strong>原始数据落库，派生状态用 property 现算</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -440,12 +442,12 @@ def status(self) -&gt; str:
 <tr><td>7.0 &lt; value ≤ 10.0</td><td>偏高</td></tr>
 <tr><td>value &gt; 10.0</td><td>高血糖</td></tr>
 </table>
-<p>注意<strong>边界归属</strong>：3.9 属于正常（<code>&lt; 3.9</code> 才是低），7.0 属于正常（<code>&lt;= 7.0</code>），10.0 属于偏高（<code>&lt;= 10.0</code>）——区间是<strong>左闭右闭</strong>衔接的，写错一个等号就会把 7.0 误判成偏高。这与 .env 里的 BG_LOW_THRESHOLD / BG_HIGH_THRESHOLD（3.9 / 10.0）遥相呼应。</p>
+<p>注意<strong>边界归属</strong>：3.9 算正常（<code>&lt; 3.9</code> 才是低），7.0 算正常（<code>&lt;= 7.0</code>），10.0 算偏高（<code>&lt;= 10.0</code>）——一句话记：<strong>边界值归前一档</strong>（每档是 <code>(下界, 上界]</code>，只有最低档用 <code>&lt;</code>）。写错一个等号，7.0 就会被误判成偏高。这与 .env 里的 BG_LOW_THRESHOLD / BG_HIGH_THRESHOLD（3.9 / 10.0）遥相呼应。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>边界值误判（7.0 显示偏高）</td><td>检查区间是否"左闭右闭"：<code>&lt;= 7.0</code> 是正常，<code>&lt; 3.9</code> 才是低</td></tr>
+<tr><td>边界值误判（7.0 显示偏高）</td><td>记住「边界归前一档」：正常是 <code>&lt;= 7.0</code>、偏高是 <code>&lt;= 10.0</code>、低血糖才是 <code>&lt; 3.9</code></td></tr>
 <tr><td>阈值写死两处不一样</td><td>.env 与代码里必须同一口径；本项目模型用常量，HealthAnalyzer 用 .env，注意别漂移</td></tr>
 </table>
 </div>

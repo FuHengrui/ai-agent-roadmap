@@ -401,10 +401,10 @@ class PatientResponse(PatientBase): # 响应：加只读字段 + 计算属性
     created_at: datetime
     updated_at: datetime
     bmi: Optional[float] = None
-    bmi_status: Optional[str] = None
+    bmi_category: Optional[str] = None
     model_config = ConfigDict(from_attributes=True)</pre>
 <p>设计要点：</p>
-<ul><li><strong>Create</strong> 复用基类，必填字段天然继承（name/age 必填，其余有默认值）；</li><li><strong>Update</strong> 把字段全部改成 <code>Optional</code>，配合 <code>exclude_unset=True</code> 实现"只更新传了的字段"；</li><li><strong>Response</strong> 增加数据库生成的 id/created_at 和计算属性 bmi/bmi_status。</li></ul>
+<ul><li><strong>Create</strong> 复用基类，必填字段天然继承（name/age 必填，其余有默认值）；</li><li><strong>Update</strong> 把字段全部改成 <code>Optional</code>，配合 <code>exclude_unset=True</code> 实现"只更新传了的字段"；</li><li><strong>Response</strong> 增加数据库生成的 id/created_at 和计算属性 bmi/bmi_category。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -416,16 +416,16 @@ class PatientResponse(PatientBase): # 响应：加只读字段 + 计算属性
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ from_attributes：让响应携带计算属性</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>模型上的 <code>bmi</code>、<code>bmi_status</code> 是 @property 计算出来的，Pydantic 怎么把"属性"当"字段"用？</p>
+<p>模型上的 <code>bmi</code>、<code>bmi_category</code> 是 @property 计算出来的，Pydantic 怎么把"属性"当"字段"用？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>妙处就在 <code>ConfigDict(from_attributes=True)</code>：</p>
 <pre>class PatientResponse(PatientBase):
     bmi: Optional[float] = None
-    bmi_status: Optional[str] = None
+    bmi_category: Optional[str] = None
     model_config = ConfigDict(from_attributes=True)  # Pydantic v2 新配置</pre>
 <p>作用链拆开看：</p>
-<ol><li>路由返回的是 Tortoise 模型对象（不是 dict）；</li><li><code>from_attributes=True</code> 告诉 Pydantic：<strong>按属性名从对象上取值</strong>；</li><li><code>bmi</code> 这个名字在模型上恰好是个 @property——于是<strong>计算属性被自动序列化进响应体</strong>；</li><li>前端收到 <code>{"id": 1, "bmi": 24.3, "bmi_status": "正常", ...}</code>，不用自己再算。</li></ol>
+<ol><li>路由返回的是 Tortoise 模型对象（不是 dict）；</li><li><code>from_attributes=True</code> 告诉 Pydantic：<strong>按属性名从对象上取值</strong>；</li><li><code>bmi</code> 这个名字在模型上恰好是个 @property——于是<strong>计算属性被自动序列化进响应体</strong>；</li><li>前端收到 <code>{"id": 1, "bmi": 24.3, "bmi_category": "正常", ...}</code>，不用自己再算。</li></ol>
 <p>这是 v2 相对 v1 的变化：v1 用 <code>class Config: orm_mode = True</code>，v2 统一改成 <code>model_config = ConfigDict(from_attributes=True)</code>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

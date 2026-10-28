@@ -75,7 +75,7 @@ SKILL.md 文件 = frontmatter（元数据头） + 正文（怎么做的说明）
 技能文件的头部（frontmatter）到底该写哪些字段？每个字段什么意思？写错会怎样？
 
 @@idea 核心思路
-以 skill.md 示例为骨架：
+以 SKILL.md 示例为骨架（文件名必须大写，Linux 区分大小写）：
 
 ```yaml
 ---
@@ -123,17 +123,17 @@ frontmatter 是门牌，正文才是内容。正文写什么风格、什么结�
 | 步骤含糊（"解析返回数据"） | 要具体到"读取 JSON 的 result.temperature 字段"这个粒度 |
 | 边界不写清楚 | Agent 拿不准就用错场景；写"适用于X，不适用于Y"防误用 |
 
-@@point ⑤ 技能库的目录结构：三个目录各管什么
+@@point ⑤ 技能库的目录结构：两个目录 + 一个启用开关
 @@need 要解决什么
 技能不止一个，它们存放在哪？"已安装技能""启用技能""内置技能"这些说法对应什么物理位置？
 
 @@idea 核心思路
-三个技能目录的角色分工：
+两个目录 + 一个开关，各自角色：
 
 | 目录 | 角色 | 内容 |
 |---|---|---|
 | `~/.hermes/skills/` | **已安装技能的库** | 所有可用技能的存放地 |
-| `/usr/share/hermes/skills` | 系统级技能目录 | 随安装包自带/共享的技能 |
+| `/usr/share/hermes/skills` | 系统级技能目录（随安装方式而定，普通安装一般用不到） | 随安装包自带/共享的技能 |
 | `~/.hermes/config.yaml` 的 skills 配置 | **启用开关** | 已启用技能的列表 |
 
 理解链路：**技能先 install 进库，再 enable 启用，才可被 Agent 使用**。库是"仓库"，配置是"上架的货架"——上架的才卖（加载）。
@@ -162,7 +162,7 @@ hermes skills remove <名字>     # 移除已安装的技能
 |---|---|---|
 | `hermes skills list` | 查看技能库现状 | 确认装了啥、漏了啥 |
 | `hermes skills install <技能名>` | 从网络技能市场安装 | 装完注意安全扫描结果 |
-| `hermes skills remove <名字>` | 卸载技能 | 移除目录对应子目录 |
+| `hermes skills remove <名字>` | 卸载技能 | 删除 `~/.hermes/skills/` 下对应的子目录 |
 
 再配合 `hermes skills create <名字>` 创建空白技能模板（有的话），就凑齐"查-装-建-删"全流程。
 
@@ -214,7 +214,7 @@ hermes skills install <技能名>   # 自动下载到 ~/.hermes/skills/
 1. 在 ~/.hermes/skills/ 下新建目录，如 taiyuan-weather/
 2. 目录内创建 SKILL.md（frontmatter + 正文）
 3. 确保 name 与目录名一致
-4. 在 hermes skills list 中确认并启用
+4. 用 `hermes skills list` 确认已装，再到 `~/.hermes/config.yaml` 的 skills 列表里启用
 ```
 
 天气预报技能就是路径 B 的实例：`~/.hermes/skills/taiyuan-weather/SKILL.md`，目录名=taiyuan-weather。
@@ -348,7 +348,7 @@ description: 当用户需要查询太原实时天气时使用。它使用和风�
 3. 技能文件的三个存放/管理位置分别是什么？"装进库"和"启用"是一回事吗？
 4. 请写出技能管理的三条命令（查看、安装、移除）。技能装好后，"启用"环节在哪里完成？
 5. 渐进披露（progressive disclosure）的机制是什么？它对长对话优化的意义在哪里？
-6. 以天气预报技能为例，一条"好脚本"的正文应该包含哪些要素？为什么示例里特别强调 API Key 要从环境变量读取？
+6. 以天气预报技能为例，一份好技能（SKILL.md）的正文应该包含哪些要素？为什么示例里特别强调 API Key 要从环境变量读取？
 7. 你写好了技能文件但 Agent 始终不调用，请按顺序列出至少 3 个排查点（从最可能的原因开始）。
 
 @@links
