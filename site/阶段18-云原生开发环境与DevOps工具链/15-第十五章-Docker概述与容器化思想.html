@@ -365,7 +365,7 @@
 <tr><td>磁盘占用</td><td>一般 MB 级</td><td>一般 GB 级</td></tr>
 <tr><td>性能</td><td>接近原生</td><td>弱于原生（多一层虚拟化开销）</td></tr>
 <tr><td>单机支持量</td><td>上千个容器</td><td>一般几十个虚拟机</td></tr>
-<tr><td>隔离性</td><td>完全隔离</td><td>完全隔离</td></tr>
+<tr><td>隔离性</td><td>进程/文件/网络隔离（安全边界弱于 VM）</td><td>完全隔离（独立内核）</td></tr>
 </table>
 <p>原因一句话：<strong>虚拟机模拟了一整台电脑（含操作系统），容器只是把程序和依赖装进一个隔离的"进程房间"，操作系统仍然共用宿主机的。</strong></p>
 <pre>  虚拟机                              容器
@@ -392,7 +392,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>先看"虚拟化"是什么意思。一套房子市场价 2000/月，怎么租得更贵？两个方案： ① 租给一个不差钱的租户，收 6000（一台机器跑一个大应用，资源浪费）； ② 把房子隔成 4 间，各收 1500（一台机器分给 4 个用户，物尽其用）——<strong>这就是虚拟化：把一台电脑"分"给多个使用方。</strong></p>
-<p>虚拟化分很多种：完全虚拟化、硬件辅助虚拟化、部分虚拟化、超虚拟机化、<strong>操作系统虚拟化</strong>。 Docker 的容器技术属于<strong>操作系统虚拟化</strong>——它不虚拟整台电脑，只在同一个操作系统里把"进程 + 文件系统"按容器隔开。 这也是它比虚拟机轻的核心原因：不装来宾系统、不改硬件。</p>
+<p>虚拟化分很多种：完全虚拟化、硬件辅助虚拟化、半虚拟化（Paravirtualization，也译超虚拟化）、操作系统级虚拟化、<strong>操作系统虚拟化</strong>。 Docker 的容器技术属于<strong>操作系统虚拟化</strong>——它不虚拟整台电脑，只在同一个操作系统里把"进程 + 文件系统"按容器隔开。 这也是它比虚拟机轻的核心原因：不装来宾系统、不改硬件。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -449,7 +449,7 @@
 <p>镜像要能"搭建一次、到处运行"，前提是能方便地分发——你做的镜像，别人怎么拿到？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p><strong>仓库（Repository）就是集中存放镜像的地方</strong>，类似 Maven 的中央仓库（存 jar 包）、代码仓库（存代码）——Docker 只是把"存的东西"换成了镜像。 最大的公开仓库是 <strong>Docker Hub</strong>（Docker 官方），里面有海量现成镜像（centos、openjdk、tomcat、mysql……），下载即用。 国内也有镜像仓库提供更稳定的访问（如阿里云 ACR，第 20 章细讲）。</p>
+<p><strong>仓库（Repository）就是集中存放镜像的地方</strong>，类似 Maven 的中央仓库（存 jar 包）、代码仓库（存代码）——Docker 只是把"存的东西"换成了镜像。 最大的公开镜像注册中心是 <strong>Docker Hub</strong>（Registry 里按名字分了很多 Repository），里面有海量现成镜像（centos、openjdk、tomcat、mysql……），下载即用。 国内也有镜像仓库提供更稳定的访问（如阿里云 ACR，第 20 章细讲）。</p>
 <p>三个概念的关系一句话：<strong>仓库里存镜像，镜像开出容器。</strong></p>
 <pre>             仓库 Repository（存放镜像，如 Docker Hub）
                      │
@@ -467,7 +467,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>完整链路（先混个脸熟，命令下一章才敲）：</p>
-<ol><li>在 Docker Hub（仓库）里找到要用的镜像，比如 <code>openjdk:11</code>；</li><li><code>docker pull</code> 把它下载到本地——本地从此有了一份镜像（模板）；</li><li><code>docker run</code> 用镜像<strong>开一个容器</strong>——程序开始跑；</li><li>容器不够用？再 run 一个——同一镜像，多开几个都行；</li><li>自己的应用也可以<strong>做成新镜像推回仓库</strong>，分享给别人。</li></ol>
+<ol><li>在 Docker Hub（仓库）里找到要用的镜像，比如 <code>eclipse-temurin:11</code>；</li><li><code>docker pull</code> 把它下载到本地——本地从此有了一份镜像（模板）；</li><li><code>docker run</code> 用镜像<strong>开一个容器</strong>——程序开始跑；</li><li>容器不够用？再 run 一个——同一镜像，多开几个都行；</li><li>自己的应用也可以<strong>做成新镜像推回仓库</strong>，分享给别人。</li></ol>
 <p>同时也给你打个预防针：Docker 概念不复杂，但<strong>上手有学习曲线</strong>——命令多、参数多、报错信息不好看。 别指望一章全会，先跟着第 16 章把"拉镜像、跑容器"练熟，其他命令都是它的变体。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

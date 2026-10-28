@@ -49,12 +49,12 @@
 
 @@idea 核心思路
 Docker Hub（hub.docker.com）是 **Docker 官方 + 社区共享镜像的网站/存储库**：
-- 你前面 `docker pull openjdk:11` 默认就是从它拉的（不指定仓库地址时默认 Docker Hub）；
+- 你前面 `docker pull eclipse-temurin:11` 默认就是从它拉的（不指定仓库地址时默认 Docker Hub）；
 - 可浏览、可搜索、可上传自己的镜像；
 - 官方镜像（OFFICIAL）有质量背书，优先用它。
 
 ```
-docker pull openjdk:11
+docker pull eclipse-temurin:11
         └── 没写仓库地址 ──► 默认去 Docker Hub 找
 ```
 
