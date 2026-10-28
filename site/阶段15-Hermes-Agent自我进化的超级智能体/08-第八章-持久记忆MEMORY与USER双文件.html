@@ -375,14 +375,14 @@
 <p>记忆文件不是手写的，是通过 memory 工具操作。它有哪些动作？每个动作具体做什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>memory 工具支持增、查、改、删四类操作：</p>
+<p>memory 工具只有三个动作——<strong>增（add）、改（replace）、删（remove）</strong>，没有单独的"查"：</p>
 <table>
 <tr><th>操作</th><th>作用</th><th>类比</th></tr>
 <tr><td><strong>add</strong></td><td>向记忆文件添加一条新的事实</td><td>记事本新写一行</td></tr>
-<tr><td><strong>search</strong></td><td>在记忆文件中搜索已有条目</td><td>翻记事本找内容</td></tr>
-<tr><td><strong>replace</strong></td><td>用新内容替换已有的记忆条目</td><td>撕掉旧页写新页</td></tr>
-<tr><td><strong>delete</strong></td><td>从记忆文件中删除一条记忆</td><td>划掉过时条目</td></tr>
+<tr><td><strong>replace</strong></td><td>用新内容替换旧条目（靠 <code>old_text</code> 子串定位）</td><td>撕掉旧页写新页</td></tr>
+<tr><td><strong>remove</strong></td><td>删掉一条记忆（同样靠 <code>old_text</code> 定位）</td><td>划掉过时条目</td></tr>
 </table>
+<p>&gt; 没有 <code>search</code> / <code>delete</code> 这两个名字：要"查"就是读 <code>MEMORY.md</code> / <code>USER.md</code> 本身，要"删"用 <code>remove</code>。</p>
 <p>典型用法（对话中自然发生）：</p>
 <pre>&quot;记住：用户喜欢在回答前先给结论&quot;
 → memory add → MEMORY.md 或 USER.md</pre>
@@ -402,7 +402,7 @@
 <p>有两个数字：MEMORY.md 2200 字符、USER.md 1375 字符——这代表什么？是硬性上限吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>这两个数字是<strong>实例中记忆文件的实际大小</strong>（界面上写着"约占上限的 %"，表示还有多少空间），说明：</p>
+<p>这两个数字是<strong>两个文件的字符上限</strong>（可在 config.yaml 里调），写满后再 <code>add</code> 会直接报错，得先 <code>replace</code> / <code>remove</code> 腾地方。它们是硬上限，不是"实例里当前用了多少"。</p>
 <ul><li>记忆文件<strong>有大小管理逻辑</strong>：不能无限膨胀（否则每轮都占大量上下文 token）；</li><li>2200/1375 这类数值提示"<strong>到量后该清理了</strong>"。</li></ul>
 <p>两个含义：<strong>① 记忆是有配额的资源</strong>（类似 SOUL 截断机制）；<strong>② 配额提示你定期 review 记忆，合并冗余、删除过时</strong>。Hermes 文档常见指引"如果达到上限，重新组织和删除陈旧条目"。</p>
 <table>
@@ -531,9 +531,9 @@ cat ~/.hermes/memories/USER.md</pre>
 </table>
 <p>实操命令：</p>
 <pre># 查看全部记忆
-hermes memory list            # 或对话内 memory search 全量
-# 定位过时条目 → 删除
-hermes memory delete &lt;id&gt;     # 按返回的条目 ID 删除</pre>
+# 记忆条目就是 Markdown 文本，没有 ID，也没有 list/delete 子命令
+# 查看/清理：直接编辑 ~/.hermes/memories/*.md，或在对话里用 memory replace / remove（old_text 定位）
+# `hermes memory` 只用来配置外部 memory provider，与条目内容无关</pre>
 <p>整理周期建议：<strong>每次达到配额提醒时做一轮</strong>；平时多按 topic 合并，别堆积到爆。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -608,7 +608,7 @@ hermes memory delete &lt;id&gt;     # 按返回的条目 ID 删除</pre>
 </table>
 <p>一句话记住本章：<strong>MEMORY.md 管"你的目标与事实"、USER.md 管"你的偏好细节"，memory 工具增查改删、session_search 翻旧账；定期清理配额，新会话验生效——记得住，才谈得上进化。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>Hermes 记忆系统分哪两层？各自用什么载体？（请说明长期记忆和情景记忆各管什么）</li><li>MEMORY.md 和 USER.md 的职责差异是什么？请各给出两个"该写进去"的例子。</li><li>memory 工具的四个操作分别是什么？如果一条记忆写错了，应该用哪两个操作组合来修正？</li><li>MEMORY.md 2200 字符、USER.md 1375 字符这两个数字代表什么？记忆文件接近上限时应该怎么办？</li><li>session_search 的作用是什么？它和 memory search 的使用场景有什么区别？请各举一个"该用哪个"的问法例子。</li><li>为什么说"API Key 绝不能写进记忆文件"？正确的存放方式是？（结合技能章节的规则回答）</li><li>请完整默写"记忆完整生命周期"的流程图（获取→写盘→持久→读取→运用→更新六步），并说明记忆主要在哪一步之后对行为产生实际影响。</li></ol>
+<ol><li>Hermes 记忆系统分哪两层？各自用什么载体？（请说明长期记忆和情景记忆各管什么）</li><li>MEMORY.md 和 USER.md 的职责差异是什么？请各给出两个"该写进去"的例子。</li><li>memory 工具的三个操作分别是什么？一条记忆写错了，怎么改？</li><li>MEMORY.md 2200 字符、USER.md 1375 字符这两个数字代表什么？记忆文件接近上限时应该怎么办？</li><li>session_search 的作用是什么？它和 memory 工具（记忆文件里的条目）分别适合什么场景？请各举一个"该用哪个"的问法例子。</li><li>为什么说"API Key 绝不能写进记忆文件"？正确的存放方式是？（结合技能章节的规则回答）</li><li>请完整默写"记忆完整生命周期"的流程图（获取→写盘→持久→读取→运用→更新六步），并说明记忆主要在哪一步之后对行为产生实际影响。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://www.sqlite.org/fts5.html" target="_blank" rel="noopener"><span class="k">参考</span>SQLite FTS5 全文检索文档</a>

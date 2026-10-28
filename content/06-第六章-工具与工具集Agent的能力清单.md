@@ -60,7 +60,7 @@
 | 场景 | 推荐工具集组合 |
 |---|---|
 | 日常 CLI 对话 | web + terminal + file + memory |
-| 网页检索任务 | web + browser + extract |
+| 网页检索任务 | web + browser（`web_extract` 就在 web 里） |
 | 媒体创作 | image_gen + tts + vision |
 | 自动化值守 | cronjob + send_message + web |
 
@@ -129,7 +129,7 @@
 | 以为 ha_* 是"哈哈系"娱乐工具 | ha_*=Home Assistant（智能家居）集成；rl_*=强化学习训练，都是企业/极客向能力 |
 | 忘记记忆类工具存在 | memory/session_search 是"进化"的发动机（第 8 章），先在这里记住它们归类 |
 
-@@point ⑤ 常见工具集清单：17 个可开关的"组"
+@@point ⑤ 常见工具集清单：18 个可开关的"组"
 @@need 要解决什么
 知道了八类工具，还不能直接操作——实操层面开关的是"工具集名"。有哪些工具集可以直接启停？
 
