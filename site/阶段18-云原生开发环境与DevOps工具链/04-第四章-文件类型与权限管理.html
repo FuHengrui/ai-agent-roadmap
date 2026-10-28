@@ -447,7 +447,7 @@ chmod 777 file   # 所有人全部权限（能不用尽量别用）</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>把 754 当一个整体数猜含义</td><td>必须<strong>拆成三组独立计算</strong>：7(rwx) 4(r--) 4(r--) 是"554"的常见误认也要注意：三位分别对待主/属组/其他，不是求和</td></tr>
+<tr><td>把 754 当一个整体数猜含义</td><td>必须<strong>拆成三组独立计算</strong>：754 = 7(rwx) 5(r-x) 4(r--)，三位分别对应属主/属组/其他，不是三个数字相加也要注意：三位分别对待主/属组/其他，不是求和</td></tr>
 <tr><td>遇到"权限不对就好不了"永远是 chmod 777</td><td>777 等于给所有人开后门，是安全大忌；先想清楚"谁需要什么"，再给最小权限</td></tr>
 <tr><td>chmod 后文件还不能执行</td><td>看属主对不对、路径对不对，还要注意文件内容本身得是能执行的程序</td></tr>
 </table>
@@ -507,7 +507,7 @@ chown -R dev /opt/app        # -R 递归：连同目录下所有文件一起改<
 <ul><li>服务跑文件：属主读写+执行即可，别给其他用户写；</li><li>配置文件：属主只读（甚至 600），密码类文件绝不公开；</li><li>目录：按"谁需要进入/列出/管理"分三档给，不滥用 -R 大范围授权。</li></ul>
 <pre># 一个&quot;克制&quot;的示例：日志目录只让运维组读写，其他组只读
 chown -R root:devops /var/log/app
-chmod 750 /var/log/app        # root 全权，devops 组读写执行，其他无</pre>
+chmod 750 /var/log/app        # root 全权；devops 组**读+执行**（5=r-x，不能写）；其他无（0）；组要能写就把 5 换成 7（770）</pre>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

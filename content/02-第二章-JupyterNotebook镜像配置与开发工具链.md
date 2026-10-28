@@ -158,7 +158,7 @@ jupyter notebook --generate-config       # 生成配置文件（只执行一次�
 然后编辑配置文件，路径在 `用户目录\.jupyter\jupyter_notebook_config.py`，找到并修改：
 
 ```text
-c.NotebookApp.notebook_dir = 'D:\\mywork'   # 改成你想作为工作目录的路径
+c.ServerApp.root_dir = 'D:/mywork'   # Notebook 7+ 用 ServerApp；老版本写 c.NotebookApp.notebook_dir   # 改成你想作为工作目录的路径
 ```
 
 保存后**重启 Jupyter** 才生效。文件操作方面：网页右上角可新建（Python 文件后缀是 **.ipynb**）、上传、下载、复制、移动、删除；改文件名需先关闭该文件。
@@ -266,7 +266,7 @@ VSCode 用 Jupyter 需要两步配置：
 | 内存 | 高（首次索引慢，占用可达 3G） | 低（启动快，无长索引） |
 | 适合 | 重项目、不差内存 | 低配机器、轻量脚本、多语言 |
 
-**低配 Windows 机器的推荐：VSCode。** 配置三步：插件面板搜 Python 安装 → 打开一个 .py 文件触发左下角解释器选择 → 选中你的 conda 虚拟环境。装完就有语法高亮、补全、运行调试。
+**低配 Windows 机器的推荐：VSCode。** 配置三步：插件面板搜 Python 安装 → 打开一个 .py 文件触发右下角状态栏解释器选择 → 选中你的 conda 虚拟环境。装完就有语法高亮、补全、运行调试。
 
 PyCharm 侧记住两点：创建项目时或进入设置里都能配 Python 解释器；**Windows 上也别装 C 盘**。
 

@@ -400,7 +400,7 @@ pkgs_dirs:                                  # 包缓存目录
 <p>改主目录两步：</p>
 <pre>jupyter notebook --generate-config       # 生成配置文件（只执行一次）</pre>
 <p>然后编辑配置文件，路径在 <code>用户目录\.jupyter\jupyter_notebook_config.py</code>，找到并修改：</p>
-<pre>c.NotebookApp.notebook_dir = &#x27;D:\\mywork&#x27;   # 改成你想作为工作目录的路径</pre>
+<pre>c.ServerApp.root_dir = &#x27;D:/mywork&#x27;   # Notebook 7+ 用 ServerApp；老版本写 c.NotebookApp.notebook_dir   # 改成你想作为工作目录的路径</pre>
 <p>保存后<strong>重启 Jupyter</strong> 才生效。文件操作方面：网页右上角可新建（Python 文件后缀是 <strong>.ipynb</strong>）、上传、下载、复制、移动、删除；改文件名需先关闭该文件。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -494,7 +494,7 @@ Ctrl+S       保存</pre>
 <tr><td>内存</td><td>高（首次索引慢，占用可达 3G）</td><td>低（启动快，无长索引）</td></tr>
 <tr><td>适合</td><td>重项目、不差内存</td><td>低配机器、轻量脚本、多语言</td></tr>
 </table>
-<p><strong>低配 Windows 机器的推荐：VSCode。</strong> 配置三步：插件面板搜 Python 安装 → 打开一个 .py 文件触发左下角解释器选择 → 选中你的 conda 虚拟环境。装完就有语法高亮、补全、运行调试。</p>
+<p><strong>低配 Windows 机器的推荐：VSCode。</strong> 配置三步：插件面板搜 Python 安装 → 打开一个 .py 文件触发右下角状态栏解释器选择 → 选中你的 conda 虚拟环境。装完就有语法高亮、补全、运行调试。</p>
 <p>PyCharm 侧记住两点：创建项目时或进入设置里都能配 Python 解释器；<strong>Windows 上也别装 C 盘</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

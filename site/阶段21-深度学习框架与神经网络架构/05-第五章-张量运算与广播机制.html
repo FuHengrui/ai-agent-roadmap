@@ -305,7 +305,8 @@
 <tr><td>div()</td><td>/</td><td>除法</td></tr>
 <tr><td>neg()</td><td>-（一元）</td><td>取反</td></tr>
 </table>
-<pre>a = torch.tensor([[1., 2.], [3., 4.]])
+<pre>import torch
+a = torch.tensor([[1., 2.], [3., 4.]])
 b = torch.tensor([1., 2.])
 print(torch.add(a, b))        # tensor([[2., 4.], [4., 6.]])
 print(a + 1)                  # 张量与标量相加</pre>
