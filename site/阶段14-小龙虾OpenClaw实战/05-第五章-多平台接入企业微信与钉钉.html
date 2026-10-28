@@ -312,7 +312,7 @@
 <tr><td>消息驱动</td><td>用户发一条，机器人回一条，天然一问一答，和 AI 对话形式完全吻合</td></tr>
 <tr><td>平台即后台</td><td>企业微信、钉钉本身就是办公场景的"主界面"，AI 直接出现在工作流里</td></tr>
 </table>
-<p>记住这个心智模型：<strong>模型是大脑，channel 是嘴巴</strong>。Chapter 13 之前配的是"大脑"，本章开始配"嘴巴"。</p>
+<p>记住这个心智模型：<strong>模型是大脑，channel 是嘴巴</strong>。上一章（阶段 14 第四章 配置文件三件套）配的是"大脑"，本章开始配"嘴巴"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -384,7 +384,7 @@
 <p>API 模式创建时，页面让你选接入方式、还要填一个 URL。这个 URL 到底是什么？"长连接"又是什么？填错或理解错，机器人建好了也收不到消息。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>明确一点：<strong>（推荐）使用长连接方式接入企微机器人</strong>。创建时选择以"<strong>使用 URL 回调</strong>"方式创建，参数说明如下：</p>
+<p>明确一点：企微接收消息有<strong>两种互斥方式</strong>——<strong>长连接</strong>（推荐，不用公网地址、不用回调 URL）和 <strong>URL 回调</strong>（必须有公网可达地址）。走长连接就选前者，别填回调 URL：</p>
 <table>
 <tr><th>参数</th><th>含义</th></tr>
 <tr><td>URL</td><td>回调消息的地址，即企微把收到的用户消息转发到哪个地址。<strong>需要看 OpenClaw 的接口说明</strong>，不能随便填个网址</td></tr>
@@ -395,7 +395,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>不知道 URL 填什么，随便填了个官网地址</td><td>URL 是回调消息地址，必须填 OpenClaw 提供的对外接口；先查 OpenClaw 接口文档，别猜</td></tr>
-<tr><td>觉得"长连接"和"使用 URL 回调"是冲突的两种方案</td><td>它们不是二选一：长连接是接入方式（推荐），URL 回调是创建机器人时的表单选项，是同一流程的前后两步</td></tr>
+<tr><td>觉得"长连接"和"使用 URL 回调"可以一起用</td><td>它们是<strong>二选一</strong>：长连接由 OpenClaw 主动连企微网关，URL 回调则由企微反向调你的公网地址。选长连接就不需要公网 IP，也不用填回调 URL</td></tr>
 <tr><td>回调 URL 有反斜杠/端口，复制时漏字符</td><td>URL 要<strong>整段复制</strong>进表单，手打最容易漏；之后在应用管理页签还能核对（见第 ⑦ 点）</td></tr>
 </table>
 </div>
@@ -503,7 +503,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>按平台操作顺序，一共四步：</p>
-<ol><li>在"<strong>机器人配置</strong>"页面，填写<strong>所有必填项</strong>，其他<strong>可选项保留默认值</strong>即可</li><li>点击 <strong>发布</strong></li><li>点击页面上方的 <strong>查看版本详情</strong>，点击 <strong>编辑图标</strong> 继续编辑</li><li>完成所有必填项；在"<strong>应用可见范围（可选项）</strong>"中配置<strong>能添加这个钉钉机器人的员工范围</strong>（全校/全公司用就按需勾选，不配则默认）——点击 <strong>保存</strong>，在弹出的窗口点击 <strong>确认发布</strong></li></ol>
+<ol><li>在"<strong>机器人配置</strong>"页面，填写<strong>所有必填项</strong>，其他<strong>可选项保留默认值</strong>即可</li><li>点击 <strong>发布</strong></li><li>点击页面上方的 <strong>查看版本详情</strong>，点击 <strong>编辑图标</strong> 继续编辑</li><li>完成所有必填项；在"<strong>应用可见范围（可选项）</strong>"中配置<strong>能添加这个钉钉机器人的员工范围</strong>（全公司/指定部门按需勾选，不配则默认）——点击 <strong>保存</strong>，在弹出的窗口点击 <strong>确认发布</strong></li></ol>
 <p>发布后，版本详情页会显示 "<strong>已上线</strong>"，这才是真正的上线状态。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

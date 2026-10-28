@@ -294,7 +294,7 @@
 <p>学完这一章，你对"算法发展史"会有深刻体会：<strong>没有完美的算法，每个变体都是在时间、空间、稳定性、精度之间做一选择</strong>。这也是机器学习工程化的常态——不是"哪个最好"，而是"现在卡在哪，选哪个解"。</p>
 </div>
 <div class="chapter-meta">
-<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的 KMeans 流程和局限清楚就能开始，这章不用装新东西，变体都在 sklearn 里。</p></div></div>
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章的 KMeans 流程和局限清楚就能开始，除 KMedoids 要额外 <code>pip install scikit-learn-extra</code> 外，其余变体都在 sklearn 主库。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清 KMeans++、二分、KMedoids、Mini-Batch 各补哪个短板，能按数据选对变体，这章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
@@ -310,7 +310,7 @@
 <tr><th>变体</th><th>换掉的零件</th><th>治的病</th></tr>
 <tr><td>KMeans++</td><td>初始化步骤</td><td>初始中心差→收敛差</td></tr>
 <tr><td>二分 KMeans</td><td>整体流程（贪心分层）</td><td>局部最优、初始敏感</td></tr>
-<tr><td>KMedoids</td><td>质心定义（均值→中位数）</td><td>离群点、非数值特征</td></tr>
+<tr><td>KMedoids</td><td>质心换成<strong>簇内真实代表点</strong>（medoid：让簇内距离和最小的那个样本，不是“中位数”）</td><td>离群点、非数值特征</td></tr>
 <tr><td>elkan</td><td>距离计算（暴力→三角不等式）</td><td>计算太慢</td></tr>
 <tr><td>Mini-Batch</td><td>迭代方式（全量→分批）</td><td>数据大内存爆</td></tr>
 </table>
@@ -353,7 +353,7 @@ km = KMeans(n_clusters=3, init=&#x27;k-means++&#x27;, n_init=10, random_state=42
 <ol><li>先把全部数据当<strong>一个簇</strong>。</li><li>循环 K-1 次：选当前 SSE 最大的一个簇，对它做<strong>2-Means（K=2）</strong>分裂成两个。</li><li>重复直到簇数达到 K。</li></ol>
 <p>为什么有效：</p>
 <ul><li>"贪心 + 从最差簇下手"：每次分裂都精确处理当前最"不内聚"的部分，很少浪费分裂机会。</li><li>天然对初始值不敏感：每次只做二分，2-Means 的局部最优风险比直接 K-Means 小得多。</li><li>结果稳定性显著高于普通 KMeans。</li></ul>
-<p>实现：sklearn 里对应 <code>KMeans</code> 的 <code>init</code> 可配合，或直接用聚类包里暴露的相似器；教学重点在"思想"：<strong>复杂聚类的"分而治之"路线</strong>。注意它仍是"球形偏好"家族，不解决形状问题。</p>
+<p>实现：sklearn 里sklearn 1.1+ 直接有 <code>from sklearn.cluster import BisectingKMeans</code>（<code>bisecting_strategy='biggest_inertia'</code> 按 SSE 最大者优先二分），或直接用聚类包里暴露的相似器；教学重点在"思想"：<strong>复杂聚类的"分而治之"路线</strong>。注意它仍是"球形偏好"家族，不解决形状问题。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
