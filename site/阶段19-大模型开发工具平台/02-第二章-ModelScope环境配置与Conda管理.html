@@ -320,7 +320,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>在 <strong>Launcher 页（启动页）</strong> 用鼠标点选主工作区的不同文件选项来新建文件。通常你只需要两个：</p>
-<ul><li><strong>Python 3（ipykernel）</strong>：新建一个 Jupyter Notebook（.ipynb），边写边跑，适合练手、数据探索。</li><li><strong>Text File / Markdown File</strong>：新建脚本或说明文档，适合保存整理好的代码。</li></ul>
+<ul><li><strong>Python 3（ipykernel）</strong>：新建一个 Jupyter Notebook（.ipynb），边写边跑，适合练手、数据探索。</li><li><strong>Text File / Markdown File</strong>：Text File 建出来是 .txt（要 .py 得新建后改名）；Markdown File 用来写说明。</li></ul>
 <p>别手动敲文件名带 .py 还是 .ipynb——在 Launcher 里<strong>点对应的图标</strong>，系统自动帮你建好正确类型。每次进入界面，如果 Launcher 被关了，点左上角"+"号或"文件→新建 Launcher"重新打开。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -336,7 +336,7 @@
 <p>有些操作必须在命令行完成：装 pip 包、跑训练脚本、执行 shell 命令。但很多同学在 Notebook 里找不到"命令行窗口"在哪。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>在 Launcher 页点击下方带红框标识的 <strong>Terminal</strong> 图标，就打开了终端页面——它就是一个 Bash 命令行，可以执行 <code>pip install xxx</code>、<code>python train.py</code> 等任何命令。</p>
+<p>在 Launcher 的 Other 区点 <strong>Terminal</strong> 图标，就打开了终端页面——它就是一个 Bash 命令行，可以执行 <code>pip install xxx</code>、<code>python train.py</code> 等任何命令。</p>
 <p><strong>什么时候用 Terminal？</strong></p>
 <ul><li>安装 Python 包（pip install）</li><li>跑训练/推理脚本（python xxx.py）</li><li>环境配置（conda create、编译等）</li><li>查看磁盘占用（df -h）</li></ul>
 <p>和 Jupyter 单元区别：Jupyter 适合"边写边看每一步结果"，Terminal 适合"执行一整条命令链路"。长任务推荐在 Terminal 里跑，能一直看到标准输出日志。</p>
@@ -374,7 +374,7 @@
 <p><strong>Conda 是一个开源的软件包管理和环境管理系统</strong>，核心能力是<strong>创建和管理多个相互独立的开发环境</strong>。每个环境有自己的 Python 版本和包集合，A 项目在 env-a 里装什么，完全不影响 B 项目的 env-b。</p>
 <pre>系统 Python（公共，别动）
 ├── env-a：Python 3.10 + torch 2.x  ← 项目 A
-└── env-b：Python 3.8  + tf 1.15    ← 项目 B</pre>
+└── env-b：Python 3.7  + tf 1.15（tf 1.15 无 cp38 wheel）    ← 项目 B</pre>
 <p>在 Python 开发里，用 Conda 做环境隔离是<strong>标准操作</strong>（也是面试常问的考点）。它解决的痛点非常日常："我昨天还好好的，今天装了个包全崩了"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

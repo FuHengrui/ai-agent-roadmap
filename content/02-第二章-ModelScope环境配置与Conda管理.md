@@ -44,7 +44,7 @@
 在 **Launcher 页（启动页）** 用鼠标点选主工作区的不同文件选项来新建文件。通常你只需要两个：
 
 - **Python 3（ipykernel）**：新建一个 Jupyter Notebook（.ipynb），边写边跑，适合练手、数据探索。
-- **Text File / Markdown File**：新建脚本或说明文档，适合保存整理好的代码。
+- **Text File / Markdown File**：Text File 建出来是 .txt（要 .py 得新建后改名）；Markdown File 用来写说明。
 
 别手动敲文件名带 .py 还是 .ipynb——在 Launcher 里**点对应的图标**，系统自动帮你建好正确类型。每次进入界面，如果 Launcher 被关了，点左上角"+"号或"文件→新建 Launcher"重新打开。
 
@@ -59,7 +59,7 @@
 有些操作必须在命令行完成：装 pip 包、跑训练脚本、执行 shell 命令。但很多同学在 Notebook 里找不到"命令行窗口"在哪。
 
 @@idea 核心思路
-在 Launcher 页点击下方带红框标识的 **Terminal** 图标，就打开了终端页面——它就是一个 Bash 命令行，可以执行 `pip install xxx`、`python train.py` 等任何命令。
+在 Launcher 的 Other 区点 **Terminal** 图标，就打开了终端页面——它就是一个 Bash 命令行，可以执行 `pip install xxx`、`python train.py` 等任何命令。
 
 **什么时候用 Terminal？**
 - 安装 Python 包（pip install）
@@ -102,7 +102,7 @@ ModelScope Notebook 基于同样的算力和存储，提供了 **Web-IDE（VS Co
 ```
 系统 Python（公共，别动）
 ├── env-a：Python 3.10 + torch 2.x  ← 项目 A
-└── env-b：Python 3.8  + tf 1.15    ← 项目 B
+└── env-b：Python 3.7  + tf 1.15（tf 1.15 无 cp38 wheel）    ← 项目 B
 ```
 
 在 Python 开发里，用 Conda 做环境隔离是**标准操作**（也是面试常问的考点）。它解决的痛点非常日常："我昨天还好好的，今天装了个包全崩了"。

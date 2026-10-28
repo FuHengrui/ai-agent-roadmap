@@ -2,7 +2,7 @@
 @@sub 阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★☆
 
 @@why 这一章在解决什么问题
-RDD 很好，但用久了你会烦：**没有字段名**（`_._1`、`_._2` 全靠自己记）、**没有列类型约束**（脏数据混进来才知道错）、**没有自动优化**（同样的聚合你写 3 遍 SDK 各不同）。SparkSQL 就是 Spark 的"升级版数据模型"：**给数据加上表头（Schema）**，让你可以**像查数据库一样用 SQL 查分布式数据**，背后还有 Catalyst 优化器帮你自动写出最优执行计划。
+RDD 很好，但用久了你会烦：**没有字段名**（`_._1`、`_._2` 全靠自己记）、**没有列类型约束**（脏数据混进来才知道错）、**没有自动优化**（同样的聚合你写 3 遍、API 各不同）。SparkSQL 就是 Spark 的"升级版数据模型"：**给数据加上表头（Schema）**，让你可以**像查数据库一样用 SQL 查分布式数据**，背后还有 Catalyst 优化器帮你自动写出最优执行计划。
 
 本阶段后半程的主角是 **DataFrame / Dataset**：它们和 RDD 是什么关系、怎么互相转换、为什么 SparkSQL 更快。学完你能：**看懂"RDD → DataFrame"的升级逻辑，会创建和转换 DataFrame，明白"为什么 Spark 官方建议优先用 SparkSQL"**。
 
@@ -186,7 +186,7 @@ val df2 = spark.createDataFrame(rdd).toDF("name", "age")   // 方式二：先变
 |---|---|
 | csv 第一行被当数据 | 忘了 `option("header", "true")`。读 csv 必加，否则表头变数据行 |
 | `toDF` 找不到（Scala） | 需要 `import spark.implicits._`（或 `sparkSession.implicits` 的隐式转换），否则集合没有 toDF 方法 |
-| csv Schema 推断把数字读成 String | 自动推断按首行猜，不规范。手动 `.schema(...)` 指定列类型最稳，或读完后 `select(col("x").cast("int"))` 转 |
+| csv Schema 推断把数字读成 String | 推断要额外扫一遍文件，仍可能猜错类型。手动 `.schema(...)` 指定列类型最稳，或读完后 `select(col("x").cast("int"))` 转 |
 | 读 json 嵌套结构懵 | json 的嵌套对象会映射成 DataFrame 的 struct 列（`getStruct`）。复杂 json 优先用 SQL：`spark.sql("select x.y.z ...")` 外层探索 |
 | 反复 `spark.read` 同文件 | 每次读都重新扫文件。多用一次复用（`val df = spark.read...` 再各自派生） |
 
@@ -219,7 +219,7 @@ val dfAgain = spark.createDataFrame(backToRdd, schema)
    与非结构化数据混合处理、底层算子依赖 RDD 语义
 ```
 
-**性能理由**：转成 RDD 后 Catalyst 优化全部失效——谓词下推、列裁剪不再作用，等于降级回手动优。**"转出去就别想优化了"**。
+**性能理由**：转成 RDD 后 Catalyst 优化全部失效——谓词下推、列裁剪不再作用，等于降级回手动优化。**"转出去就别想优化了"**。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

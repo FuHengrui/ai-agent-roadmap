@@ -87,7 +87,7 @@ LLaMA-Factory 定位：
 
 | 组件 | 建议版本 |
 |---|---|
-| Python | 3.9+（示例环境） |
+| Python | 3.11+（当前框架要求） |
 | PyTorch | 2.0+（CUDA 版） |
 | transformers | 4.49.0（LLaMA-Factory 对此版本有绑定） |
 | peft | 0.14.0 |
@@ -170,7 +170,7 @@ ShareGPT 格式（多轮对话）：
 数据文件备好了，框架还"不认"。要让 LLaMA-Factory 认识它，得在 **dataset_info.json** 里登记：文件路径 + 字段映射（columns）+ 标签（tags）。这是框架数据侧的"户籍系统"。
 
 @@idea 核心思路
-先看框架默认的 `data/dataset_info.json`，注册一条自己的数据集（义形式）：
+先看框架默认的 `data/dataset_info.json`，注册一条自己的数据集（示例形式）：
 
 ```json
 {
@@ -295,7 +295,7 @@ print("原始:", len(data), "清洗后:", len(clean))
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 验收只看"能 import"不看版本 | import 成功 ≠ 版本匹配。**版本号逐项核对**，这是框架兼容性的第一道线 |
-| 注册成功但预览不出数据 | file_name 路径/each 编码问题。**确认文件 UTF-8、路径对**，再用 json.tool 自查 |
+| 注册成功但预览不出数据 | file_name 的路径/编码问题。**确认文件 UTF-8、路径对**，再用 json.tool 自查 |
 | 觉得"数据差不多就行" | 数据决定模型下限。**最后一道质量闸再严也不为过**，阶段 12 训练效果直接受它制约 |
 
 @@summary

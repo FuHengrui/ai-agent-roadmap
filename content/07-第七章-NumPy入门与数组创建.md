@@ -4,10 +4,10 @@
 @@why 这一章在解决什么问题
 **Pandas、matplotlib 都在背后依赖同一个底座——NumPy 的数组（ndarray）。** 不懂数组的创建和属性，后面你看到的 Series/DataFrame、图形数据，全是一团"会跑但不懂"的黑盒。而且处理大数据时 Python 原生列表慢得离谱，NumPy 数组快几十倍。
 
-这一章先把数组的"**创建 12 式**"练熟：array/arange/random/zeros 全家/empty/full/eye/linspace/logspace，顺带把 dtype 和属性（ndim/shape/dtype/size）钉死。学完你能回答：ndarray 比 list 快在哪、13 种创建方式怎么选、dtype 为什么重要、随机数四兄弟各什么用。
+这一章先把数组的"**创建 11 式**"练熟：array/arange/random/zeros 全家/empty/full/eye/linspace/logspace，顺带把 dtype 和属性（ndim/shape/dtype/size）钉死。学完你能回答：ndarray 比 list 快在哪、11 种创建方式怎么选、dtype 为什么重要、随机数四兄弟各什么用。
 
 @@prep 开始之前
-上一章的环境就能开始，NumPy 随 Anaconda 已装好，没有再 pip 装一下。
+上一章的环境就能开始，NumPy 随 Anaconda 已装好，不需要再 pip 安装。
 
 @@goal 学到这儿就够了
 能说清 ndarray 为什么快，能用 array、arange、zeros 造出指定形状的数组，这章就算过了。
@@ -202,7 +202,7 @@ np.full((2, 2), 3.14)      # 填充浮点也行
 关键认知：
 
 - **empty 不初始化**：里面是内存里的旧数据（垃圾值），只是"快"。**读取未写入的位置结果不可预测，练习别用**；
-- **full 才是"指定值填充"的正式入口**，别用 `np.ones*5` 变通。
+- **full 才是"指定值填充"的正式入口**，别用 `np.ones * 5` 这种写法（要先给形状：`np.ones(shape) * 5`）。
 
 使用模式：**预分配大数组再逐段写入**时 empty 省初始化时间；数值模拟/掩码常用 full。
 
@@ -316,7 +316,7 @@ c.astype(int)               # [1, 2]：直接截断小数，不是四舍五入�
 
 @@point ⑫ 创建方式速查：什么时候用哪个
 @@need 要解决什么
-13 种创建方式记不住，**面对具体需求选哪一个？** 一张决策表收尾。
+11 种创建方式记不住，**面对具体需求选哪一个？** 一张决策表收尾。
 
 @@idea 核心思路
 
@@ -348,7 +348,7 @@ mask = y > np.median(y)                        # 高于中位数的掩码
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 看教程每个函数都学但用不起来 | 记"需求 → 函数"对应（上表），用的时候查表 |
-| 一次想造"阶梯数据" | 先 arange/linspace 造线，再 tile/repeat（第 9 章变换） |
+| 一次想造"阶梯数据" | 先 arange/linspace 造线，再 tile/repeat（后续章节再补） |
 
 @@summary
 这一章你拿下了数组创建的"全招式"：
