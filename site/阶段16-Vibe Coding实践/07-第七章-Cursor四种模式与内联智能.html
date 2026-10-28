@@ -284,7 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p><strong>Cursor 的 AI 到底怎么"用起来"？很多人的困惑是：一边是"能动手"的 Agent，一边是"只问答"的 Ask，还有"最听话"的 Manual，到底啥时候用哪个？</strong> 这一章把 Cursor 的四种 AI 交互模式讲透，顺便把<strong>内联智能</strong>（代码提示、补全、重构建议）也一并收编——因为它是嵌在编辑器里的"第五种 AI"。</p>
 <p><strong>核心问题是"匹配"</strong>：任务重（建项目、重构）就该 Agent 出手；任务轻（问个意思、解释报错）就该 Ask；需要完全自主掌控（教学、精控）就用 Manual；日常顺手的补全就交给内联智能。用对模式，效率翻倍；用错模式，要么杀鸡用牛刀，要么 AI 乱改你的代码。</p>
-<p>学完这一章，你能回答：<strong>Agent 模式和普通 AI 的五个区别、Agent 的三大典型场景、Ask 能做什么不能做什么、Manual 适合谁、内联智能五种应用场景、四种模式怎么对比选型，以及第六种隐藏能力——内联智能的技术实现要点</strong>。</p>
+<p>学完这一章，你能回答：<strong>Agent 模式和普通 AI 的五个区别、Agent 的三大典型场景、Ask 能做什么不能做什么、Manual 适合谁、内联智能五种应用场景、四种模式怎么对比选型，以及第五种能力（内联智能）的技术实现要点</strong>。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>上一章装好的 Cursor 就够，不用装新东西；三组快捷键先摸一遍更好上手。</p></div></div>
@@ -359,7 +359,7 @@
 <p>Ask 模式能做什么：</p>
 <ul><li>理解代码含义；</li><li>定位错误和解释报错；</li><li>性能和结构优化建议；</li><li>学习参考和文档补全。</li></ul>
 <p>使用方式（激活）：</p>
-<ul><li>选中代码后按快捷键（如 <code>Cmd + K</code> / <code>Ctrl + K</code>）；</li><li>右键菜单中选择 <strong>"Ask about this code"</strong>；</li><li>直接输入自然语言问题并指定相关代码块。</li></ul>
+<ul><li>选中代码后按 <code>Cmd/Ctrl + I</code> 打开面板，再切到 Ask（或 <code>Shift+Tab</code> 循环模式）；注意 <code>Cmd/Ctrl+K</code> 是行内编辑 Inline Edit，会直接改代码；</li><li>右键菜单中选择 <strong>"Ask about this code"</strong>；</li><li>直接输入自然语言问题并指定相关代码块。</li></ul>
 <p>常用问法示例：</p>
 <pre>这段代码在做什么？
 为什么这里会报错？

@@ -6,7 +6,7 @@
 
 这一章解决两件事：**① 精准上下文**——用 @ 方式把"文档、网页、代码文件"钉进对话，让 AI 在正确的资料上回答；**② 规则体系（Cursor Rules）**——把"你希望 AI 怎么干活"写进规则文件，让它每次自动遵守，不用重复交代。
 
-学完这一章，你能回答：**@Docs 和 @Web 分别解决什么问题、Cursor Rules 的本质和优先级、四种规则类型（User/Project/Notebook/System）分别在哪生效、规则仓库有哪些可用的提示词资源**。这些是 Cursor 从"会用"到"用精"的分水岭。
+学完这一章，你能回答：**@Docs 和 @Web 分别解决什么问题、Cursor Rules 的本质和优先级、四种规则类型（Team/Project/User 及 .cursor/rules 下的项目规则文件）分别在哪生效、规则仓库有哪些可用的提示词资源**。这些是 Cursor 从"会用"到"用精"的分水岭。
 
 @@prep 开始之前
 不用装新东西，用之前的 Cursor；上一章的模式先分清，这章讲怎么问得准。
@@ -125,16 +125,16 @@ Cursor 里到处是 @ 符号，它到底是干什么的？
 | 效率 | 不用重复交代偏好，一次写入处处生效 |
 | 质量 | 强制约束代码风格、测试要求、命名规范 |
 
-**优先级**（重要）：**User > Project > Notebook > System**（用户规则最优先，系统规则兜底）。
+**优先级**（重要）：**Team > Project > User**（Team 规则优先级最高，User 规则兜底；没有 Notebook/System 这两级）。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 把 Rules 当插件装 | Rules 是提示词文本文件；装"插件"是另一回事（扩展/扩展市场） |
-| 规则写太啰嗦互相打架 | 优先级是 **User > Project > Notebook > System**；冲突时高优先级胜出，别靠"全写上"解决 |
+| 规则写太啰嗦互相打架 | 优先级是 **Team > Project > User**；冲突时高优先级胜出，别靠"全写上"解决 |
 | 写完规则 AI 没生效 | 检查文件位置/类型是否正确（User 在用户级目录、Project 在 .cursor 目录），并重启/重载 |
 
-@@point ⑤ 四种规则类型：User / Project / Notebook / System
+@@point ⑤ 四种规则类型：Team / Project / User / 目录内规则
 @@need 要解决什么
 Rules 有四种，各自管哪一层？放哪个文件？什么时候生效？
 
@@ -147,16 +147,16 @@ Rules 有四种，各自管哪一层？放哪个文件？什么时候生效？
 | **Notebook Rules（笔记本规则）** | 笔记本（Notebook） | 笔记本相关配置 | 针对 Jupyter 笔记等场景的规则 |
 | **System Rules（系统规则）** | 系统内置/兜底 | Cursor 内部 | 厂商预设，优先级最低，一般不感知 |
 
-**User > Project > Notebook > System**：记住越"贴近你"的规则优先级越高——你的习惯 > 项目的约定 > 笔记场景 > 系统兜底。
+**Team > Project > User**：记住越"贴近你"的规则优先级越高——你的习惯 > 项目的约定 > 笔记场景 > 系统兜底。
 
-**在 `.cursor/rules` 下用 `.mdc` 文件**：Cursor 的规则文件支持 **.mdc 格式（Markdown with Constraints）**，可带元数据（如适用范围 glob）和函数（如发 Post请求）——比纯 md 多一层"结构化约束"。规则文件通常会在对话中被自动加载，无需每次手动引用。
+**在 `.cursor/rules` 下用 `.mdc` 文件**：Cursor 的规则文件支持 **.mdc（带 YAML frontmatter 的 Markdown 规则文件）**，frontmatter 支持 `description` / `globs` / `alwaysApply` 三个字段——**只是 Markdown 加 YAML 头，没有"函数"能力**——比纯 md 多一层"结构化约束"。规则文件通常会在对话中被自动加载，无需每次手动引用。
 
 一个 Project Rules 示例（.cursor/rules/summary.mdc）：
 
 ```text
 ---
 description: 代码风格约束
-glob: "**/*.ts"
+globs: "**/*.ts"     # 注意是复数，配合 alwaysApply 用
 ---
 写 TypeScript 必须：
 1. 使用 interface 而非 type 定义对象
@@ -265,7 +265,7 @@ manifest 清单文件里声明插件需要的**权限列表**（如 storage、ac
 | **@Docs**：官方文档入参，Custom docs 添加 | 问 API/框架问题不再凭 AI 旧记忆瞎编 |
 | **@Web**：指定网页入参 | 问时效性内容让 AI"实时读网" |
 | **Rules 本质**：提示词文件，不是插件 | 破除"把规则当插件装"的误解 |
-| **四种规则**：User/Project/Notebook/System + .mdc | 优先级 User > Project > Notebook > System，全局/项目/场景分层管理 |
+| **四种规则**：User/Project/Notebook/System + .mdc | 优先级 Team > Project > User，全局/项目/场景分层管理 |
 | **规则仓库**：现成提示词资源 | 抄验证过的规则，省时省力但要审冲突 |
 | **实战铺垫**：开发者模式加载/最小权限/MIME 映射 | 下一章 Chrome 插件开发直接开干 |
 

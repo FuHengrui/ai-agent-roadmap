@@ -284,7 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p><strong>为什么 Cursor 有时候"答非所问"？</strong> 根本原因往往是：<strong>上下文给错了</strong>。Cursor 的 AI 不是"通灵"，它答得准不准，取决于你喂给它的上下文准不准、你立的规矩清不清楚。</p>
 <p>这一章解决两件事：<strong>① 精准上下文</strong>——用 @ 方式把"文档、网页、代码文件"钉进对话，让 AI 在正确的资料上回答；<strong>② 规则体系（Cursor Rules）</strong>——把"你希望 AI 怎么干活"写进规则文件，让它每次自动遵守，不用重复交代。</p>
-<p>学完这一章，你能回答：<strong>@Docs 和 @Web 分别解决什么问题、Cursor Rules 的本质和优先级、四种规则类型（User/Project/Notebook/System）分别在哪生效、规则仓库有哪些可用的提示词资源</strong>。这些是 Cursor 从"会用"到"用精"的分水岭。</p>
+<p>学完这一章，你能回答：<strong>@Docs 和 @Web 分别解决什么问题、Cursor Rules 的本质和优先级、四种规则类型（Team/Project/User 及 .cursor/rules 下的项目规则文件）分别在哪生效、规则仓库有哪些可用的提示词资源</strong>。这些是 Cursor 从"会用"到"用精"的分水岭。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装新东西，用之前的 Cursor；上一章的模式先分清，这章讲怎么问得准。</p></div></div>
@@ -379,18 +379,18 @@
 <tr><td>效率</td><td>不用重复交代偏好，一次写入处处生效</td></tr>
 <tr><td>质量</td><td>强制约束代码风格、测试要求、命名规范</td></tr>
 </table>
-<p><strong>优先级</strong>（重要）：<strong>User &gt; Project &gt; Notebook &gt; System</strong>（用户规则最优先，系统规则兜底）。</p>
+<p><strong>优先级</strong>（重要）：<strong>Team &gt; Project &gt; User</strong>（Team 规则优先级最高，User 规则兜底；没有 Notebook/System 这两级）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>把 Rules 当插件装</td><td>Rules 是提示词文本文件；装"插件"是另一回事（扩展/扩展市场）</td></tr>
-<tr><td>规则写太啰嗦互相打架</td><td>优先级是 <strong>User &gt; Project &gt; Notebook &gt; System</strong>；冲突时高优先级胜出，别靠"全写上"解决</td></tr>
+<tr><td>规则写太啰嗦互相打架</td><td>优先级是 <strong>Team &gt; Project &gt; User</strong>；冲突时高优先级胜出，别靠"全写上"解决</td></tr>
 <tr><td>写完规则 AI 没生效</td><td>检查文件位置/类型是否正确（User 在用户级目录、Project 在 .cursor 目录），并重启/重载</td></tr>
 </table>
 </div>
 </div></div>
-<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 四种规则类型：User / Project / Notebook / System</div><div class="body">
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 四种规则类型：Team / Project / User / 目录内规则</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>Rules 有四种，各自管哪一层？放哪个文件？什么时候生效？</p>
 </div>
@@ -402,12 +402,12 @@
 <tr><td><strong>Notebook Rules（笔记本规则）</strong></td><td>笔记本（Notebook）</td><td>笔记本相关配置</td><td>针对 Jupyter 笔记等场景的规则</td></tr>
 <tr><td><strong>System Rules（系统规则）</strong></td><td>系统内置/兜底</td><td>Cursor 内部</td><td>厂商预设，优先级最低，一般不感知</td></tr>
 </table>
-<p><strong>User &gt; Project &gt; Notebook &gt; System</strong>：记住越"贴近你"的规则优先级越高——你的习惯 &gt; 项目的约定 &gt; 笔记场景 &gt; 系统兜底。</p>
-<p><strong>在 <code>.cursor/rules</code> 下用 <code>.mdc</code> 文件</strong>：Cursor 的规则文件支持 <strong>.mdc 格式（Markdown with Constraints）</strong>，可带元数据（如适用范围 glob）和函数（如发 Post请求）——比纯 md 多一层"结构化约束"。规则文件通常会在对话中被自动加载，无需每次手动引用。</p>
+<p><strong>Team &gt; Project &gt; User</strong>：记住越"贴近你"的规则优先级越高——你的习惯 &gt; 项目的约定 &gt; 笔记场景 &gt; 系统兜底。</p>
+<p><strong>在 <code>.cursor/rules</code> 下用 <code>.mdc</code> 文件</strong>：Cursor 的规则文件支持 <strong>.mdc（带 YAML frontmatter 的 Markdown 规则文件）</strong>，frontmatter 支持 <code>description</code> / <code>globs</code> / <code>alwaysApply</code> 三个字段——<strong>只是 Markdown 加 YAML 头，没有"函数"能力</strong>——比纯 md 多一层"结构化约束"。规则文件通常会在对话中被自动加载，无需每次手动引用。</p>
 <p>一个 Project Rules 示例（.cursor/rules/summary.mdc）：</p>
 <pre>---
 description: 代码风格约束
-glob: &quot;**/*.ts&quot;
+globs: &quot;**/*.ts&quot;     # 注意是复数，配合 alwaysApply 用
 ---
 写 TypeScript 必须：
 1. 使用 interface 而非 type 定义对象
@@ -504,7 +504,7 @@ glob: &quot;**/*.ts&quot;
 <tr><td><strong>@Docs</strong>：官方文档入参，Custom docs 添加</td><td>问 API/框架问题不再凭 AI 旧记忆瞎编</td></tr>
 <tr><td><strong>@Web</strong>：指定网页入参</td><td>问时效性内容让 AI"实时读网"</td></tr>
 <tr><td><strong>Rules 本质</strong>：提示词文件，不是插件</td><td>破除"把规则当插件装"的误解</td></tr>
-<tr><td><strong>四种规则</strong>：User/Project/Notebook/System + .mdc</td><td>优先级 User &gt; Project &gt; Notebook &gt; System，全局/项目/场景分层管理</td></tr>
+<tr><td><strong>四种规则</strong>：User/Project/Notebook/System + .mdc</td><td>优先级 Team &gt; Project &gt; User，全局/项目/场景分层管理</td></tr>
 <tr><td><strong>规则仓库</strong>：现成提示词资源</td><td>抄验证过的规则，省时省力但要审冲突</td></tr>
 <tr><td><strong>实战铺垫</strong>：开发者模式加载/最小权限/MIME 映射</td><td>下一章 Chrome 插件开发直接开干</td></tr>
 </table>
@@ -529,7 +529,7 @@ glob: &quot;**/*.ts&quot;
   <a href="#p2" title="@Docs：把文档变成 AI 的&quot;参考资料&quot;"><span class="n">2</span>@Docs：把文档变成 AI 的"参考资料"</a>
   <a href="#p3" title="@Web：让 AI 上网找最新答案"><span class="n">3</span>@Web：让 AI 上网找最新答案</a>
   <a href="#p4" title="什么是 Cursor Rules：写进文件的行为准则"><span class="n">4</span>什么是 Cursor Rules：写进文件的行为准则</a>
-  <a href="#p5" title="四种规则类型：User / Project / Notebook / System"><span class="n">5</span>四种规则类型：User / Project / Notebook / System</a>
+  <a href="#p5" title="四种规则类型：Team / Project / User / 目录内规则"><span class="n">5</span>四种规则类型：Team / Project / User / 目录内规则</a>
   <a href="#p6" title="规则仓库：现成的提示词资源"><span class="n">6</span>规则仓库：现成的提示词资源</a>
   <a href="#p7" title="Chrome 插件开发的技术积累：进入实战前的剩余概念"><span class="n">7</span>Chrome 插件开发的技术积累：进入实战前的剩余概念</a>
   <a href="#p8" title="规则触发类型与 User Rule 配置入口"><span class="n">8</span>规则触发类型与 User Rule 配置入口</a>
