@@ -390,6 +390,7 @@ rnn = nn.LSTM(
     bidirectional=True,   # 关键开关
     batch_first=True,
 )
+import torch                        # 本节的 torch.randn 要用
 x = torch.randn(8, 20, 64)          # [batch, seq, embed]
 out, (h_n, c_n) = rnn(x)
 print(out.shape)  # [8, 20, 192] = 96*2，双向拼接</pre>
@@ -479,7 +480,7 @@ self.fc = nn.Linear(hidden_dim * 2, vocab_size)</pre>
 </table>
 <p>一句话记住本章：<strong>GRU 把三个门精简成两个、去掉细胞状态，快省而不失手；双向 RNN 让每个词同时吃到前后文，理解类任务明显受益（生成任务除外）；它们把 RNN 的能力打磨到极限后，也把"顺序计算、压缩失真、距离衰减"三大天花板摆到了台面上——下一章注意力机制就是来拆天花板的。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>GRU 的两个门分别叫什么？各自的作用是什么？和 LSTM 的门怎么对应？</li><li>GRU 相比 LSTM 节省了哪部分参数？什么场景下这种节省更有价值？</li><li>为什么"预测下一句歌词时"模型能看到句子的后半部分？双向 RNN 是怎么实现的？</li><li>双向 RNN 每一位置的输出维度如何变化？实现时要注意哪两个维度坑？</li><li>为什么自回归生成任务不能用双向 RNN？</li><li>如果把上一章歌词项目的 RNN 换成双向 LSTM，需要改哪几行代码？</li><li>从 RNN 到注意力机制，动机依次是什么？（各自解决了什么痛点）</li></ol>
+<ol><li>GRU 的两个门分别叫什么？各自的作用是什么？和 LSTM 的门怎么对应？</li><li>GRU 相比 LSTM 节省了哪部分参数？什么场景下这种节省更有价值？</li><li>训练时双向为什么会用上后半句？生成阶段为什么不能双向？双向 RNN 是怎么实现的？</li><li>双向 RNN 每一位置的输出维度如何变化？实现时要注意哪两个维度坑？</li><li>为什么自回归生成任务不能用双向 RNN？</li><li>如果把歌词生成里的 RNN 换成双向 LSTM，训练和采样阶段各有什么问题？，需要改哪几行代码？</li><li>从 RNN 到注意力机制，动机依次是什么？（各自解决了什么痛点）</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://pytorch.org/docs/stable/generated/torch.nn.GRU.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch GRU API</a>
 <a href="https://arxiv.org/abs/1412.3555" target="_blank" rel="noopener"><span class="k">文档</span>LSTM/GRU 对比与选型讨论</a>

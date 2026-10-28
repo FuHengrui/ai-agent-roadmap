@@ -286,7 +286,7 @@
 <p>这章的思维模型值得单独强调：<strong>把求最优解想象成"蒙眼下山"</strong>——你看不到全局，只能靠脚下的坡度判断往哪迈，一步步走，总能走到最低处。把"山谷→梯度→步长（学习率）→收敛"这条线理解透，机器学习就再没有秘密了。</p>
 </div>
 <div class="chapter-meta">
-<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装环境，纸笔跟着推更新公式；上一章解析解的三条硬伤先看过，才知道它补什么。</p></div></div>
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装环境，纸笔跟着推更新公式；第二章 ⑧ 节讲的三条硬伤先看过，才知道它补什么。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清梯度指向哪、更新公式每步在做什么，能判断学习率太大太小各会怎样，这章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
@@ -298,7 +298,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>回顾解析解的三条硬伤：</p>
-<ol><li><strong>求逆太慢</strong>：算 (XᵀX)⁻¹ 复杂度 O(n³)，特征 4 个时 1 秒、8 个时 8 秒、16 个时 64 秒——特征上千就不可接受了。</li><li><strong>只吃凸损失</strong>：损失函数一旦不是凸的（神经网络、逻辑回归的很多形态），"导数为 0"不保证是全局最优。</li><li><strong>不能边学边更新</strong>：数据流式到达时，解析解要求一次性全量重算。</li></ol>
+<ol><li><strong>求逆太慢</strong>：算 (XᵀX)⁻¹ 复杂度 O(n³)，特征 4 个时 1 秒、8 个时 8 秒、16 个时 64 秒——特征上千就不可接受了。</li><li><strong>只吃凸损失</strong>：损失函数一旦不是凸的（神经网络这类非凸模型），"导数为 0"不保证是全局最优。</li><li><strong>不能边学边更新</strong>：数据流式到达时，解析解要求一次性全量重算。</li></ol>
 <p>迭代法的哲学完全不同：<strong>不求一蹴而就，只求"这一步比上一步好"</strong>。从任意起点出发，循环"看坡度→迈一步→再看坡度"，损失一点点下降，最终逼近最低点。不追求精确解，够用即可——这正是工程世界的常态。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -433,7 +433,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为"大-小-小"只是性能取舍</td><td>还影响收敛行为：BGD 直走、SGD 乱走跳坑、Mini-Batch 居中；选型要看数据和任务</td></tr>
-<tr><td>样本量和迭代轮次分不清</td><td>batch 是"一次用多少条"，epoch 是"全部数据过几遍"；两者相乘才是总更新次数</td></tr>
+<tr><td>样本量和迭代轮次分不清</td><td>batch 是"一次用多少条"，epoch 是"全部数据过几遍"；epoch 数 ×（样本数 ÷ batch_size）才是总更新次数</td></tr>
 </table>
 </div>
 </div></div>

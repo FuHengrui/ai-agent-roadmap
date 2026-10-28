@@ -257,7 +257,8 @@ humidity = [65, 70, 72, 68]
 ax2.plot(times, humidity, color='blue')
 ax2.set_ylabel('湿度(%)')
 
-fig.legend(['温度', '湿度'])    # 图例挂在 fig 上（两轴合一）
+# 两条 plot 各自先设 label='温度' / label='湿度'，图例才有名字
+fig.legend()    # 图例挂在 fig 上（两轴合一）
 fig.tight_layout()             # 防止标签重叠
 ```
 

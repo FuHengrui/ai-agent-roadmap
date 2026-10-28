@@ -75,7 +75,7 @@ conda uninstall numpy              # 卸包（注意是 uninstall，不是 remov
 
 | 发行版 | 含什么 | 默认数据源 | 适合谁 |
 |---|---|---|---|
-| Anaconda | conda + Python + 180 多个科学包 | defaults 官方源 | 新手、图省事、内存磁盘不紧张 |
+| Anaconda | conda + Python + 数百个常用科学包 | defaults 官方源 | 新手、图省事、内存磁盘不紧张 |
 | Miniconda | 仅 conda + Python（约 100MB） | defaults 官方源 | 想按需装包、追求轻量 |
 | Miniforge | 同 Miniconda，但默认源是 conda-forge | conda-forge 社区源 | 被官方源商业条款/速度困扰的人 |
 | Mamba | conda 的加速替代（内置于 Miniforge） | 跟随所在发行版 | 装包慢、依赖解析卡顿的人 |

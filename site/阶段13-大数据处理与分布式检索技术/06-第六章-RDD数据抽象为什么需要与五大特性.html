@@ -328,7 +328,7 @@ rdd.collect()           各分区算完 → 汇总回来</pre>
 <p>RDD（Resilient Distributed Dataset）拆开看：</p>
 <table>
 <tr><th>词</th><th>含义</th></tr>
-<tr><td><strong>Resilient（弹性）</strong></td><td>数据既能放内存也能放磁盘，内存不够自动溢出到磁盘（StorageLevel 可配），不会因为内存小就崩</td></tr>
+<tr><td><strong>Resilient（弹性）</strong></td><td>数据既能放内存也能放磁盘，存储级别可配：<code>MEMORY_ONLY</code> 内存不够是<strong>丢分区、下次用血缘重算</strong>；<code>MEMORY_AND_DISK</code> 才会落盘。RDD 的「弹性」主要靠血缘重算，不会因为内存小就崩</td></tr>
 <tr><td><strong>Distributed（分布式）</strong></td><td>数据切成多个分区，分布在集群不同节点上</td></tr>
 <tr><td><strong>Dataset（数据集）</strong></td><td>它是一个"数据集合"的抽象，里面装元素，像集合一样可遍历、可变换</td></tr>
 </table>

@@ -345,7 +345,7 @@ encoder = nn.LSTM(embed_dim, hidden_dim, batch_first=True)
 # encoder 读完整句
 _, (h_T, c_T) = encoder(src_embeddings)
 # h_T: [1, batch, hidden]  —— 这就是状态向量 z</pre>
-<p>解码器初始化时把 z 传进去：<code>decoder_rnn(h0=z)</code>。就这样，"我爱你"的语义被压缩进 256 个数字，交给解码器"解码"成英文。</p>
+<p>解码器初始化时把 z 传进去：<code>decoder_rnn(x_t, (h0, c0))   # nn.LSTM 没有 h0 关键字参数，初值要走第二个位置参数</code>。就这样，"我爱你"的语义被压缩进 256 个数字，交给解码器"解码"成英文。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

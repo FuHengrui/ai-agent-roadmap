@@ -499,7 +499,8 @@ humidity = [65, 70, 72, 68]
 ax2.plot(times, humidity, color=&#x27;blue&#x27;)
 ax2.set_ylabel(&#x27;湿度(%)&#x27;)
 
-fig.legend([&#x27;温度&#x27;, &#x27;湿度&#x27;])    # 图例挂在 fig 上（两轴合一）
+# 两条 plot 各自先设 label=&#x27;温度&#x27; / label=&#x27;湿度&#x27;，图例才有名字
+fig.legend()    # 图例挂在 fig 上（两轴合一）
 fig.tight_layout()             # 防止标签重叠</pre>
 <p>关键：<strong>图例要挂在 fig 而不是单一 ax 上</strong>，否则只显示一根轴的曲线。</p>
 </div>

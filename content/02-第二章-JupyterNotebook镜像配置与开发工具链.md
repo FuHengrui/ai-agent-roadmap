@@ -234,7 +234,7 @@ Ctrl+S       保存
 开浏览器烦、多窗口乱。**能不能在 VSCode 里直接跑 Notebook？** 能，但有三个前置条件。
 
 @@idea 核心思路
-VSCode 用 Jupyter 需要两步配置：
+VSCode 用 Jupyter 要三步：装 Jupyter 插件 → 装 ipykernel → 选对内核：
 
 ```text
 第 1 步  装插件：Jupyter（必须装，VSCode 不是默认支持的）

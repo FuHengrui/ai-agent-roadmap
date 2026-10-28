@@ -467,7 +467,7 @@ sgd_reg = SGDRegressor(max_iter=1000, tol=1e-3,
                        eta0=0.1, learning_rate=&#x27;constant&#x27;, random_state=1)
 sgd_reg.fit(X, y.ravel())     # 注意 y 要一维
 print(sgd_reg.intercept_, sgd_reg.coef_)</pre>
-<ul><li><code>learning_rate='constant'</code> + <code>eta0=0.1</code>：等价于固定学习率版本。</li><li>改 <code>learning_rate='invscaling'</code>（默认是 <code>adaptive</code>）即开启衰减策略。</li><li><code>max_iter</code>、<code>tol</code>：最大轮数与收敛阈值（损失变化小于 tol 即停）。</li><li>收敛后 <code>intercept_</code> 与 <code>coef_</code> 应逼近 (4, 3)。</li></ul>
+<ul><li><code>learning_rate='constant'</code> + <code>eta0=0.1</code>：等价于固定学习率版本。</li><li><code>learning_rate='invscaling'</code> 就是<strong>默认值</strong>（η=η0/t^power_t）；<code>adaptive</code> 要显式指定，才会按损失是否改善动态调整。</li><li><code>max_iter</code>、<code>tol</code>：最大轮数与收敛阈值（损失变化小于 tol 即停）。</li><li>收敛后 <code>intercept_</code> 与 <code>coef_</code> 应逼近 (4, 3)。</li></ul>
 <p>这样"手写 → 调包"双线对照完成：<strong>先懂原理再上工具，出问题时能自己算</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -489,9 +489,20 @@ print(sgd_reg.intercept_, sgd_reg.coef_)</pre>
            10000 + 10000 * np.random.rand(100, 1)]   # 大量纲特征
 y2 = 4 + 3*X2[:, 0:1] + 2*X2[:, 1:2] + np.random.randn(100, 1)
 
+X2_b = np.c_[np.ones((100, 1)), X2]   # 补截距列，形状对齐 w(3×1)
 w = np.random.randn(3, 1)
+eta = 0.1                              # 固定学习率，方便对比
 for i in range(500):
     gradients = 2/100 * X2_b.T.dot(X2_b.dot(w) - y2)
+    w = w - eta * gradients
+X2 = np.c_[np.random.rand(100, 1),          # 小量纲特征
+           10000 + 10000 * np.random.rand(100, 1)]   # 大量纲特征
+y2 = 4 + 3*X2[:, 0:1] + 2*X2[:, 1:2] + np.random.randn(100, 1)
+
+w = np.random.randn(3, 1)
+for i in range(500):
+    gradients = X2_b = np.c_[np.ones((100, 1)), X2]   # 补上截距列，形状要和 w(3×1) 对齐
+2/100 * X2_b.T.dot(X2_b.dot(w) - y2)
     w = w - eta * gradients</pre>
 <p>典型现象：<strong>损失曲线迟迟不收敛，或收敛极慢、参数抖动</strong>。原因：特征量纲差异让损失"山谷"变成又长又窄的"峡谷"，垂直方向陡、水平方向缓，同一学习率在两个方向上一快一慢，步长怎么调都顾此失彼。</p>
 <p><strong>解法（下一章主线）</strong>：归一化/标准化把各特征压到同一量纲，把"峡谷"整形回"碗"，梯度下降立刻恢复丝滑。</p>

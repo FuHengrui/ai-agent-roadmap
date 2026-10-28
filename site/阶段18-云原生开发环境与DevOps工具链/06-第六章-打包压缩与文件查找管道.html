@@ -327,7 +327,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>背下这个模板，一个字母都不要放错位置：</p>
-<pre>tar -zcvf app.tar.gz /opt/app</pre>
+<pre>cd /opt &amp;&amp; tar -zcvf ~/app.tar.gz app   # 用绝对路径打包，GNU tar 会警告并剥掉开头的 /，包内变成 opt/app</pre>
 <table>
 <tr><th>选项</th><th>含义</th></tr>
 <tr><td>-c</td><td>create，创建包</td></tr>
@@ -335,7 +335,7 @@
 <tr><td>-z</td><td>用 gzip 压缩（加不加决定是否 .gz）</td></tr>
 <tr><td>-f</td><td>file，后跟打包出来的文件名</td></tr>
 </table>
-<p>⚠️ <strong>-f 必须放在最后、后面直接跟文件名</strong>，这是 tar 最经典的语法约束，顺序反了必报错。</p>
+<p>⚠️ <strong>-f 后面必须</strong>紧跟文件名<strong>，不能和其他选项堆成 <code>-zcfv</code>；位置本身不必在最后</strong>，这是 tar 最经典的语法约束，顺序反了必报错。</p>
 <p>变体：不压缩只打包 <code>tar -cvf app.tar /opt/app</code>（.-z 就去掉压缩）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -413,7 +413,7 @@ grep -E &quot;error|fail&quot; app.log # -E 支持正则 | 或关系</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>想搜目录却报错"是目录"</td><td>grep 默认不递归目录；加 -r 或在文件上搜</td></tr>
-<tr><td>grep 搜不到明明"肉眼可见"的词</td><td>看大小写（加 -i 试试）或特殊字符（</td><td>、. 是正则元字符，-E 场景要转义）</td></tr>
+<tr><td>grep 搜不到明明"肉眼可见"的词</td><td>看大小写（加 -i 试试）或特殊字符（</td><td>、. 在任何模式下都是正则元字符、都要转义（<code>\.</code>）；竖线只在 -E 下才是元字符）</td></tr>
 <tr><td>grep 出来的"进程"里总有 grep 自己</td><td>经典现象：`ps aux</td><td>grep xxx<code> 会匹配到自己；排除技巧 </code>grep -v grep`</td></tr>
 </table>
 </div>
@@ -456,7 +456,7 @@ find /tmp -type f -exec rm -f {} \;   # -exec：把找到的每个文件拿去�
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>-size 单位写错（53M、1G 大小写）</td><td>-size 单位是 k/M/G（大写）；-size +1g 小写 g 可能不被识别</td></tr>
+<tr><td>-size 单位写错（53M、1G 大小写）</td><td>-size 的单位：<code>k</code> 小写，<code>M</code>/<code>G</code> 大写（写成 <code>+1g</code> 会被 find 拒绝）；-size +1g 小写 g 可能不被识别</td></tr>
 <tr><td>-exec rm 直接把文件全删了</td><td>-exec 执行是真删，<strong>先跑一遍不加 -exec 的 find 预览</strong>再补 -exec</td></tr>
 <tr><td>-mtime -7 和 -mtime 7 分不清</td><td>-7=7天以内；7=恰好第7天；+7=超过7天。带不带符号语义差很远</td></tr>
 </table>

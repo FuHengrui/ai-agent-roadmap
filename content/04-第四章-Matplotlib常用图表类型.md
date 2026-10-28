@@ -91,7 +91,7 @@ for i, v in enumerate(sales):
 import matplotlib.pyplot as plt
 import numpy as np
 
-data = np.random.normal(170, 8, 500)     # 500 人身高，均值 170 方差 8
+data = np.random.normal(170, 8, 500)     # 500 人身高，均值 170、标准差 8（第二个参数是标准差，不是方差）
 
 plt.hist(data, bins=20,                  # 桶数：太密锯齿、太疏丢细节
          color='steelblue', alpha=0.7)
@@ -115,7 +115,7 @@ plt.ylabel('人数')
 想一眼看出一组数据的**中位数、四分位、离群点**——箱线图把分布浓缩成一"箱一须"。
 
 @@idea 核心思路
-箱线图用 **5 个数字**概括一组数据：最小值、下四分位(Q1)、中位数、上四分位(Q3)、最大值；"须"外的点是**异常值**：
+箱线图用 **5 个数字**概括一组数据：须延伸到 1.5×IQR 内的最远数据点（不是最大/最小值），超出者画成离群点；箱体是 Q1–Q3，中间那道线是中位数；"须"外的点是**异常值**：
 
 ```python
 import matplotlib.pyplot as plt
