@@ -405,7 +405,7 @@ for message in chat.messages:
 <div class="step idea"><span class="label">核心思路</span>
 <p><code>app/agent/coze_agent.py</code> 的职责结构：</p>
 <pre>def _get_coze(token: str) -&gt; Coze:          # 统一构造客户端（含 base_url）
-def hot_topic(theme: str) -&gt; str:           # 调选题 Bot 拿 50 标题 JSON 文本
+async def hot_topic(theme: str) -&gt; str:      # 调选题 Bot 拿 50 标题 JSON 文本（下游要 await，必须 async）
 def content_creation(...) -&gt; str:           # 调文案 Bot 生成本文（第 11 章）</pre>
 <ul><li>函数只做"调 AI 取原始文本"，<strong>不做解析</strong>——解析在 create.py 路由层（<code>_extract_json</code> 等）。</li><li>层与层解耦：AI 协议（Coze）变化只改 agent 层，表结构变化只改路由层。</li></ul>
 <p>这是第 1 章"agent 层收口 AI"设计的落地：<strong>routers 不 import cozepy，agent 层不 import models</strong>。</p>
@@ -455,7 +455,7 @@ def content_creation(...) -&gt; str:           # 调文案 Bot 生成本文（�
 <pre>import logging
 logger = logging.getLogger(&quot;coze_agent&quot;)
 
-def hot_topic(theme: str) -&gt; str:
+async def hot_topic(theme: str) -&gt; str:
     logger.info(&quot;hot_topic start | theme=%s&quot;, theme[:50])
     try:
         chat = coze.chat.create_and_poll(...)

@@ -142,7 +142,7 @@ HotTopic_Workflow 的节点链（实际链路）：
 `app/agent/coze_agent.py` 的职责结构：
 ```python
 def _get_coze(token: str) -> Coze:          # 统一构造客户端（含 base_url）
-def hot_topic(theme: str) -> str:           # 调选题 Bot 拿 50 标题 JSON 文本
+async def hot_topic(theme: str) -> str:      # 调选题 Bot 拿 50 标题 JSON 文本（下游要 await，必须 async）
 def content_creation(...) -> str:           # 调文案 Bot 生成本文（第 11 章）
 ```
 - 函数只做"调 AI 取原始文本"，**不做解析**——解析在 create.py 路由层（`_extract_json` 等）。
@@ -203,7 +203,7 @@ coze_agent 层统一异常与日志规范：
 import logging
 logger = logging.getLogger("coze_agent")
 
-def hot_topic(theme: str) -> str:
+async def hot_topic(theme: str) -> str:
     logger.info("hot_topic start | theme=%s", theme[:50])
     try:
         chat = coze.chat.create_and_poll(...)

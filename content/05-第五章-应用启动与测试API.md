@@ -76,7 +76,7 @@ if __name__ == "__main__":
 | allow_methods | 允许的 HTTP 方法 | ["*"] 即 GET/POST/PUT/DELETE/OPTIONS |
 | allow_headers | 允许的请求头 | ["*"] 含自定义头如 Authorization |
 
-⚠️ 金牌规则：**allow_origins=["*"] 与 allow_credentials=True 并存时浏览器会拒绝**（通配源不允许带凭据）。前端走后端代理时后端其实收不到跨域问题（同源），但若直连 8000，CORS 配置必须精确。生产环境务必把 "*" 换成真实域名。
+⚠️ 金牌规则：**allow_origins=["*"] 与 allow_credentials=True 别一起用**。Starlette 遇到这种组合会把请求的真实 Origin 回显，所以技术上能跑通；但生产环境务必把 "*" 换成真实域名，别依赖这个回显。前端走后端代理时后端其实收不到跨域问题（同源），但若直连 8000，CORS 配置必须精确。生产环境务必把 "*" 换成真实域名。
 
 @@trap 坑在哪
 | 现象 | 原因 |
@@ -96,7 +96,7 @@ from tortoise.contrib.fastapi import RegisterTortoise
 from app.config import TORTOISE_ORM
 
 def register_db(app: FastAPI):
-    RegisterTortoise(
+    register_tortoise(   # 用函数式调用；RegisterTortoise 是异步上下文管理器，不能这样裸调
         app,
         config=TORTOISE_ORM,
         add_exception_handlers=True,
