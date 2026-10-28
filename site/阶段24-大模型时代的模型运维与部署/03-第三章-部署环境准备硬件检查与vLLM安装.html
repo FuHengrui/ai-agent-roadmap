@@ -285,7 +285,7 @@
 <p>选型定了 vLLM，接下来就是<strong>环境</strong>：跑大模型服务器不是随便一台机器都行——GPU 型号、显存大小、CUDA 版本都有硬门槛；装库也有讲究（venv 隔离、pip 安装）。本章给出<strong>可照抄的部署环境清单与安装步骤</strong>，让环境这一步不踩坑。</p>
 </div>
 <div class="chapter-meta">
-<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>要有 NVIDIA 显卡、24GB 显存、CUDA 11.8 以上，Windows 建议走 WSL2 或云 GPU。</p></div></div>
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>要有 NVIDIA 显卡、24GB 显存、CUDA 12.1 以上，Windows 建议走 WSL2 或云 GPU。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能用 nvidia-smi 判断机器够不够、能建好虚拟环境并装通 vLLM，这一章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
@@ -301,7 +301,7 @@
 <tr><th>硬件项</th><th>要求</th></tr>
 <tr><td>GPU</td><td>NVIDIA（CUDA 生态）</td></tr>
 <tr><td>显存</td><td>≥ 24GB（7B 跑 FP16；13B 要 INT4 量化才塞得下）</td></tr>
-<tr><td>CUDA</td><td>≥ 12.1（官方预编译 wheel 默认 12.4）</td></tr>
+<tr><td>CUDA</td><td>≥ 12.1（官方预编译 wheel 默认 cu128（较老的版本是 cu124 / cu121））</td></tr>
 </table>
 <p>为什么 24GB：7B 模型 FP16 权重≈14GB，再算上 KV 缓存与激活，"刚好塞进 24GB"是能流畅服务的最低线。<strong>显存是部署的第一约束</strong>，模型/位宽/并发全围绕它设计。</p>
 <p>补充常识：</p>
@@ -337,14 +337,14 @@
 </table>
 </div>
 </div></div>
-<div class="point" id="p3"><div class="head"><span class="no">3</span>③ CUDA ≥ 11.8 意味着什么</div><div class="body">
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ CUDA ≥ 12.1 意味着什么</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>为什么 vLLM 对 CUDA 版本有硬要求？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>CUDA 是 NVIDIA GPU 的编程接口</strong>，vLLM 的高性能内核（PagedAttention 等）依赖它编译/运行：</p>
 <ul><li><strong>版本太低</strong>：无法调用新算子/新指令，甚至编译失败。</li><li><strong>版本匹配</strong>：驱动 ≥ 运行库版本即可（驱动向下兼容，运行库要求写在 vLLM 文档里）。</li></ul>
-<p>官方预编译 wheel 现在默认配 CUDA 12.4（旧版本另有 12.1 的构建，11.8 只存在于更老的版本）。所以核对时按 <strong>≥12.1</strong> 看，驱动比运行库新一点没关系——越新对新一代 GPU 与算子的支持越好。注意分清三层：<strong>驱动（driver）≥ 运行库（runtime）≥ PyTorch/vLLM 编译版本</strong>。</p>
+<p>官方预编译 wheel 现在默认配 cu128（较老的版本是 cu124 / cu121，11.8 只存在于更老的版本）。所以核对时按 <strong>≥12.1</strong> 看，驱动比运行库新一点没关系——越新对新一代 GPU 与算子的支持越好。注意分清三层：<strong>驱动（driver）≥ 运行库（runtime）≥ PyTorch/vLLM 编译版本</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -456,7 +456,7 @@ source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）<
 <tr><td>安装</td><td>pip install vllm</td><td>import vllm 成功</td></tr>
 </table>
 <p>平台提醒：Linux/云 GPU 首选；Windows 建议 WSL2 或容器。</p>
-<p>一句话记住本章：<strong>部署环境三步走：①nvidia-smi 核对硬件——NVIDIA GPU、显存≥24GB（7B FP16 权重就占 14GB 再加 KV 缓存）、CUDA≥11.8（记住驱动&gt;运行库&gt;框架的版本金字塔）；②建 Python 虚拟环境隔离依赖（python -m venv + activate）；③pip install vllm 后 import 验证；Windows 用户建议走 WSL2/容器，Linux/云 GPU 直装最顺——环境对了，后面部署才谈得上。</strong></p>
+<p>一句话记住本章：<strong>部署环境三步走：①nvidia-smi 核对硬件——NVIDIA GPU、显存≥24GB（7B FP16 权重就占 14GB 再加 KV 缓存）、CUDA≥12.1（记住驱动&gt;运行库&gt;框架的版本金字塔）；②建 Python 虚拟环境隔离依赖（python -m venv + activate）；③pip install vllm 后 import 验证；Windows 用户建议走 WSL2/容器，Linux/云 GPU 直装最顺——环境对了，后面部署才谈得上。</strong></p>
 <h4>自测：能不能答上来</h4>
 <ol><li>vLLM 部署的硬件底线是什么？24GB 显存能跑多大的模型、再大要怎么办？</li><li>预估模型部署显存占用的大致公式是什么？7B 模型 FP16 权重约占多少？</li><li>nvidia-smi 输出中要核对哪三个信息？</li><li>CUDA 版本为什么要 ≥12.1？"驱动、运行库、框架"三者的版本关系是什么？</li><li>为什么要建 Python 虚拟环境？创建与激活的命令分别是什么？</li><li>安装 vLLM 的核心命令是什么？遇到网络慢怎么处理？</li><li>Windows 上装 vLLM 的正确姿势是什么？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
@@ -473,7 +473,7 @@ source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）<
   <div class="toc-head">本页目录</div>
   <a href="#p1" title="NVIDIA GPU 与显存门槛：先查硬件再谈部署"><span class="n">1</span>NVIDIA GPU 与显存门槛：先查硬件再谈部署</a>
   <a href="#p2" title="用 nvidia-smi 检查 GPU 与驱动"><span class="n">2</span>用 nvidia-smi 检查 GPU 与驱动</a>
-  <a href="#p3" title="CUDA ≥ 11.8 意味着什么"><span class="n">3</span>CUDA ≥ 11.8 意味着什么</a>
+  <a href="#p3" title="CUDA ≥ 12.1 意味着什么"><span class="n">3</span>CUDA ≥ 12.1 意味着什么</a>
   <a href="#p4" title="Python 虚拟环境（venv）：隔离是惯例"><span class="n">4</span>Python 虚拟环境（venv）：隔离是惯例</a>
   <a href="#p5" title="安装 vLLM：一条命令"><span class="n">5</span>安装 vLLM：一条命令</a>
   <a href="#p6" title="常见安装报错与对策"><span class="n">6</span>常见安装报错与对策</a>

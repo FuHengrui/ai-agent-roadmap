@@ -147,7 +147,7 @@ BERT 输入 = **词嵌入 + 位置编码 + 段嵌入**，三者相加：
 预训练好的 BERT 怎么适配不同任务？答案：只换"头"。
 
 @@idea 核心思路
-微调（Fine-tuning）= 冻结预训练权重 + 按任务**换一个输出头**再训练。四大类任务：
+微调（Fine-tuning）= **加载预训练权重后继续训练**（BERT 默认全参更新，也可以只调一部分）+ 按任务**换一个输出头**。四大类任务：
 
 ```
 ① 句子对分类（如: 文本蕴含 NLI）
@@ -194,7 +194,7 @@ dataset = ...   # (text, label) 准备一个标准 Dataset
 model.train()
 trainer = Trainer(
     model=model,
-    args=TrainingArguments("ckpt", num_train_epochs=3),
+    args=TrainingArguments(output_dir="ckpt", num_train_epochs=3)   # 位置参数已弃用，用关键字,
     train_dataset=dataset,
 )
 trainer.train()

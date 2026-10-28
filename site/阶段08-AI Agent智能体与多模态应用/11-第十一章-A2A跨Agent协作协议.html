@@ -341,7 +341,7 @@
 </table>
 </div>
 </div></div>
-<div class="point" id="p3"><div class="head"><span class="no">3</span>③ Task 生命周期：六种状态走完全程</div><div class="body">
+<div class="point" id="p3"><div class="head"><span class="no">3</span>③ Task 生命周期：八种状态走完全程</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>Task 不是"发出去就完了"——它要经历创建、进行、成功/失败/取消/拒绝。状态机不搞清楚，客户端无法判断任务结果。</p>
 </div>
@@ -442,7 +442,11 @@ def call_refund_agent(amount: float, reason: str) -&gt; str:
     # ② 创建 A2A Client
     client = await ClientFactory().create_client(card)
     # ③ 发送消息 → 收集 Artifact → 解析返回
-    return parse_artifacts(await client.send_message(...))</pre>
+    # send_message 返回**异步迭代器**（流式事件），不能 await，要包 SendMessageRequest
+    artifacts = []
+    async for chunk in client.send_message(SendMessageRequest(message=msg)):
+        artifacts.extend(parse_artifacts(chunk))
+    return artifacts</pre>
 <p>集成要点：</p>
 <ul><li><strong>工具化封装</strong>：A2A 调用 = 一个 @tool，Agent 在需要时自动"派单"给外部 Agent</li><li>配合 LangGraph 的 Supervisor / ToolNode 机制，形成"进程内编排 + 跨进程协议"的混合架构</li><li>A2A 的"找 Agent"能力放 Agent Card 发现层：A2ACardResolver → 按 URL 发现 → 拿到能力清单</li></ul>
 <p>类比：LangGraph Agent = 城市调度中心；外部 A2A Agent = 合作的外包公司。调度中心不直接管理外包员工，而是通过"标准合同"（A2A）发包、收件。</p>
@@ -467,11 +471,13 @@ from a2a.types import AgentCard, AgentSkill, AgentCapabilities, AgentInterface
 
 # 1. 定义执行器：内部调用 LangGraph Agent
 class MyExecutor(AgentExecutor):
-    async def execute(self, request, request_context, event_queue):
+    async def execute(self, context: RequestContext, event_queue: EventQueue) -&gt; None:   # 注意签名
+        # 事件通过 event_queue 投递，不是 return/yield
         # 调用 LangGraph app.invoke(...) 获得结果
         # 包装成 A2A Task/Artifact 事件发回
-        yield TaskStatusUpdateEvent(...)   # 状态更新
-        yield TaskArtifactUpdateEvent(...) # 产出 Artifact
+        await event_queue.enqueue_event(TaskStatusUpdateEvent(...))   # 状态更新
+        await event_queue.enqueue_event(TaskArtifactUpdateEvent(...)) # 产出 Artifact
+        # 取消逻辑放在 async def cancel(self, context, event_queue) ... 里
 
 # 2. 声明 Agent Card（把 Agent 的&quot;名片&quot;亮出来）
 agent_card = AgentCard(
@@ -480,7 +486,10 @@ agent_card = AgentCard(
     capabilities=AgentCapabilities(streaming=True),
 )
 # 3. DefaultRequestHandler 接住 JSONRPC 请求
-handler = DefaultRequestHandler(executor=MyExecutor(...))
+handler = DefaultRequestHandler(
+    agent_executor=MyExecutor(...),
+    task_store=InMemoryTaskStore(),   # 必填
+)
 # 4. create_agent_card_routes + create_jsonrpc_routes 挂到 Starlette
 #    对外暴露 Agent Card 与 JSONRPC 端点 → 完成&quot;Agent 服务化&quot;</pre>
 <p>适配器三件套：<strong>AgentExecutor（执行器）+ AgentCard（名片）+ DefaultRequestHandler（协议处理器）</strong>。写完这四项，你的 LangGraph Agent 就是一个标准 A2A Server，任何框架的 Agent 客户端都能调用。</p>
@@ -540,7 +549,7 @@ handler = DefaultRequestHandler(executor=MyExecutor(...))
   <div class="toc-head">本页目录</div>
   <a href="#p1" title="为什么需要 A2A：跨进程协作的鸿沟"><span class="n">1</span>为什么需要 A2A：跨进程协作的鸿沟</a>
   <a href="#p2" title="三大核心对象：Agent Card / Task / Artifact"><span class="n">2</span>三大核心对象：Agent Card / Task / Artifact</a>
-  <a href="#p3" title="Task 生命周期：六种状态走完全程"><span class="n">3</span>Task 生命周期：六种状态走完全程</a>
+  <a href="#p3" title="Task 生命周期：八种状态走完全程"><span class="n">3</span>Task 生命周期：八种状态走完全程</a>
   <a href="#p4" title="快速上手：Echo Agent（Server + Client 两端）"><span class="n">4</span>快速上手：Echo Agent（Server + Client 两端）</a>
   <a href="#p5" title="多技能 Agent：退款 + 查询（真实业务版）"><span class="n">5</span>多技能 Agent：退款 + 查询（真实业务版）</a>
   <a href="#p6" title="集成：LangGraph Agent 调用 A2A Client"><span class="n">6</span>集成：LangGraph Agent 调用 A2A Client</a>

@@ -71,7 +71,7 @@ A2A 三大核心对象：
 | 把 Artifact 和 Task 混为一谈 | Task 是执行单元（状态机），Artifact 是执行完的产出对象 |
 | Agent Card 描述太简单，对方不会调用 | Card 要写清能力、输入/输出模式，是别的 Agent 认识你的名片 |
 
-@@point ③ Task 生命周期：六种状态走完全程
+@@point ③ Task 生命周期：八种状态走完全程
 @@need 要解决什么
 Task 不是"发出去就完了"——它要经历创建、进行、成功/失败/取消/拒绝。状态机不搞清楚，客户端无法判断任务结果。
 
@@ -187,7 +187,11 @@ def call_refund_agent(amount: float, reason: str) -> str:
     # ② 创建 A2A Client
     client = await ClientFactory().create_client(card)
     # ③ 发送消息 → 收集 Artifact → 解析返回
-    return parse_artifacts(await client.send_message(...))
+    # send_message 返回**异步迭代器**（流式事件），不能 await，要包 SendMessageRequest
+    artifacts = []
+    async for chunk in client.send_message(SendMessageRequest(message=msg)):
+        artifacts.extend(parse_artifacts(chunk))
+    return artifacts
 ```
 
 集成要点：
@@ -217,11 +221,13 @@ from a2a.types import AgentCard, AgentSkill, AgentCapabilities, AgentInterface
 
 # 1. 定义执行器：内部调用 LangGraph Agent
 class MyExecutor(AgentExecutor):
-    async def execute(self, request, request_context, event_queue):
+    async def execute(self, context: RequestContext, event_queue: EventQueue) -> None:   # 注意签名
+        # 事件通过 event_queue 投递，不是 return/yield
         # 调用 LangGraph app.invoke(...) 获得结果
         # 包装成 A2A Task/Artifact 事件发回
-        yield TaskStatusUpdateEvent(...)   # 状态更新
-        yield TaskArtifactUpdateEvent(...) # 产出 Artifact
+        await event_queue.enqueue_event(TaskStatusUpdateEvent(...))   # 状态更新
+        await event_queue.enqueue_event(TaskArtifactUpdateEvent(...)) # 产出 Artifact
+        # 取消逻辑放在 async def cancel(self, context, event_queue) ... 里
 
 # 2. 声明 Agent Card（把 Agent 的"名片"亮出来）
 agent_card = AgentCard(
@@ -230,7 +236,10 @@ agent_card = AgentCard(
     capabilities=AgentCapabilities(streaming=True),
 )
 # 3. DefaultRequestHandler 接住 JSONRPC 请求
-handler = DefaultRequestHandler(executor=MyExecutor(...))
+handler = DefaultRequestHandler(
+    agent_executor=MyExecutor(...),
+    task_store=InMemoryTaskStore(),   # 必填
+)
 # 4. create_agent_card_routes + create_jsonrpc_routes 挂到 Starlette
 #    对外暴露 Agent Card 与 JSONRPC 端点 → 完成"Agent 服务化"
 ```

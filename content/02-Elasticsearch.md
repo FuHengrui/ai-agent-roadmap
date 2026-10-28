@@ -102,7 +102,7 @@ Elasticsearch 是开源搜索引擎 Lucene 之上的"分布式 + REST API 封装
 | MySQL | Elasticsearch | 说明 |
 |---|---|---|
 | Database 数据库 | **Index 索引** | 一个业务一个 Index，如 `news`、`users` |
-| Table 表 | **Type（7.x 前）/ 默认 _doc（7.x 后）** | 7.x 起一个 Index 默认一种类型，少操一份心 |
+| Table 表 | **8.x 没有 type** | 一个 Index 直接放文档；URL 里的 `_doc` 只是端点占位符，不是类型 |
 | Row 行 | **Document 文档** | 一条 JSON 记录 |
 | Column 列 | **Field 字段** | JSON 里的每个键就是字段 |
 | 主键 id | **_id** | 文档唯一标识 |
@@ -142,7 +142,7 @@ su elif
 vim config/elasticsearch.yml
 #   network.host: 0.0.0.0     # 允许远程访问
 #   cluster.name: mycluster
-vim config/jvm.options
+在 config/jvm.options.d/ 下新建 heap.options，写 -Xms4g / -Xmx4g（别改根 jvm.options，升级会覆盖）
 #   -Xms4g -Xmx4g            # 内存不够会频繁 GC，见"优化"一节
 
 # 3. 启动
@@ -158,7 +158,7 @@ curl -k -u elastic https://localhost:9200   # 输初始密码；返回 JSON 且�
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | can not run elasticsearch as root | 创建普通用户 `su` 切换后再启动 |
-| 内存不足 fatal error | 默认 `-Xms1g`，机器小就把 jvm.options 改成 `-Xms512m -Xmx512m` |
+| 内存不足 fatal error | ES 8 的堆大小是**按节点角色 + 物理内存自动推算**的（不是固定 1g）；要固定就在 `config/jvm.options.d/*.options` 里写 `-Xms4g` / `-Xmx4g`，机器小就把 jvm.options 改成 `-Xms512m -Xmx512m` |
 | 启动太慢 / 卡住 | 磁盘 IO 慢；先 `./bin/elasticsearch -d` 看 `/logs/elasticsearch.log` |
 | 忘记初始密码 | 用 `./bin/elasticsearch-reset-password -u elastic` 重设（`setup-passwords` 在 8.x 已废弃） |
 
@@ -452,7 +452,7 @@ GET /news/_search
 - **`filter` 不参与相关度打分**：过滤条件多的时候一定要放 filter，能省大量计算
 - `highlight` 返回 `_source` 的 `highlight.title`，客户端拿到 `<em>…</em>` 包住的命中词，按标签渲染成标红
 
-**工厂级小技巧**：分页别用大 `from`（1000 之后非常慢），用 `search_after` 游标；深度分页用 scroll。生产系统搜"第 5000 页"的场景，用 from/size 会拖垮集群。
+**工厂级小技巧**：分页别用大 `from`（1000 之后非常慢），用 `search_after` 游标；深度分页用 search_after 配 PIT；scroll 只做全量导出/重建。注意 `from+size` 硬上限是 10000。生产系统搜"第 5000 页"的场景，用 from/size 会拖垮集群。
 
 @@trap 坑在哪
 | 现象 | 原因 |

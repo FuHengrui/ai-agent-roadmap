@@ -297,7 +297,8 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Word2Vec 训练好后，每个词有一个<strong>固定向量</strong>，使用时直接查表：</p>
-<ul><li>"去<strong>银行</strong>取钱" → bank = 商业机构义。</li><li>"在<strong>河岸</strong>散步" → 同一个向量！语境没参与。</li></ul>
+<ul><li>"去银行取钱" 里的 <strong>bank</strong> → 商业机构义。</li><li>"坐在 bank 上看夕阳" 里的 <strong>bank</strong> → 河岸义。</li></ul>
+<p>两句话里的 <code>bank</code> <strong>是同一个 token、同一个向量</strong>——静态词向量根本不看语境。</p>
 <p>问题总结（静态词向量的三大硬伤）：</p>
 <ol><li><strong>一词多义无法区分</strong>："苹果"是水果还是公司，看语境才知道。</li><li><strong>语境敏感缺失</strong>："好的"在不同句子里情感强度不同，向量却一样。</li><li><strong>下游任务要自己重训</strong>：静态向量无法获取词在具体句子中的临时语义。</li></ol>
 <p>解法方向：<strong>让词向量在"读到句子"之后才生成</strong>——表示 = 词本身 + 它所在的上下文。</p>
@@ -357,7 +358,7 @@
 <p>ELMo 走的是<strong>特征拼接（Feature-based）</strong>路线：</p>
 <pre>下游任务输入 = [词嵌入 ; ELMo表示]
 例如: 情感分类
-  &quot;这部电影真好看&quot; → 每个词: [Glove向量 ; ELMo向量]
+  &quot;这部电影真好看&quot; → 每个词: [GloVe向量 ; ELMo向量]
   → 双向LSTM/自注意力 → 分类器</pre>
 <p>要点：</p>
 <ul><li>ELMo 参数在训练下游任务时<strong>可以冻结</strong>（或微调）。</li><li>下游模型只需把 ELMo 输出当<strong>额外特征</strong>接入，无需修改 ELMo 内部。</li><li>对比：BERT 后走<strong>微调（Fine-tuning）</strong>路线——整个预训练模型都参与更新。</li></ul>
@@ -421,7 +422,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>ELMo 三大局限（为 BERT 铺垫）：</p>
 <ol><li><strong>双向是"拼接"不是"融合"</strong>：前向/后向各跑各的，最终拼接——词没同时看到完整双向上下文。BERT 的 Masked LM 才是"真双向"。</li><li><strong>LSTM 顺序计算</strong>：处理慢、长距离仍有衰减（RNN 的老问题）。</li><li><strong>特征式迁移</strong>：下游任务要用额外结构承接 ELMo 特征，改造成本高于"直接微调"。</li></ol>
-<p>正是这些缺口，促使 BERT（双向深度 Transformer + 微调）在一年后全面超越 ELMo。</p>
+<p>正是这些缺口，促使 BERT（双向深度 Transformer + 微调）在同年（2018 年 10 月）就以更简单的路子超越了 ELMo。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

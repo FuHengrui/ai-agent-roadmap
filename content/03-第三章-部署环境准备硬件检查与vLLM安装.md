@@ -5,7 +5,7 @@
 选型定了 vLLM，接下来就是**环境**：跑大模型服务器不是随便一台机器都行——GPU 型号、显存大小、CUDA 版本都有硬门槛；装库也有讲究（venv 隔离、pip 安装）。本章给出**可照抄的部署环境清单与安装步骤**，让环境这一步不踩坑。
 
 @@prep 开始之前
-要有 NVIDIA 显卡、24GB 显存、CUDA 11.8 以上，Windows 建议走 WSL2 或云 GPU。
+要有 NVIDIA 显卡、24GB 显存、CUDA 12.1 以上，Windows 建议走 WSL2 或云 GPU。
 
 @@goal 学到这儿就够了
 能用 nvidia-smi 判断机器够不够、能建好虚拟环境并装通 vLLM，这一章就算过了。
@@ -24,7 +24,7 @@
 |---|---|
 | GPU | NVIDIA（CUDA 生态） |
 | 显存 | ≥ 24GB（7B 跑 FP16；13B 要 INT4 量化才塞得下） |
-| CUDA | ≥ 12.1（官方预编译 wheel 默认 12.4） |
+| CUDA | ≥ 12.1（官方预编译 wheel 默认 cu128（较老的版本是 cu124 / cu121）） |
 
 为什么 24GB：7B 模型 FP16 权重≈14GB，再算上 KV 缓存与激活，"刚好塞进 24GB"是能流畅服务的最低线。**显存是部署的第一约束**，模型/位宽/并发全围绕它设计。
 
@@ -68,7 +68,7 @@ nvidia-smi
 | 把驱动 CUDA 当运行库 CUDA | nvidia-smi 显示的是驱动支持上限，容器内还要装对应 CUDA 运行库 |
 | 显存被其他进程占满 | 部署前 `nvidia-smi` 看已用显存，避免"显存够但被占"的假象 |
 
-@@point ③ CUDA ≥ 11.8 意味着什么
+@@point ③ CUDA ≥ 12.1 意味着什么
 @@need 要解决什么
 为什么 vLLM 对 CUDA 版本有硬要求？
 
@@ -78,7 +78,7 @@ nvidia-smi
 - **版本太低**：无法调用新算子/新指令，甚至编译失败。
 - **版本匹配**：驱动 ≥ 运行库版本即可（驱动向下兼容，运行库要求写在 vLLM 文档里）。
 
-官方预编译 wheel 现在默认配 CUDA 12.4（旧版本另有 12.1 的构建，11.8 只存在于更老的版本）。所以核对时按 **≥12.1** 看，驱动比运行库新一点没关系——越新对新一代 GPU 与算子的支持越好。注意分清三层：**驱动（driver）≥ 运行库（runtime）≥ PyTorch/vLLM 编译版本**。
+官方预编译 wheel 现在默认配 cu128（较老的版本是 cu124 / cu121，11.8 只存在于更老的版本）。所以核对时按 **≥12.1** 看，驱动比运行库新一点没关系——越新对新一代 GPU 与算子的支持越好。注意分清三层：**驱动（driver）≥ 运行库（runtime）≥ PyTorch/vLLM 编译版本**。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -205,7 +205,7 @@ vLLM 生态主要在 Linux：官方预编译与容器镜像都以 Linux 为准�
 
 平台提醒：Linux/云 GPU 首选；Windows 建议 WSL2 或容器。
 
-一句话记住本章：**部署环境三步走：①nvidia-smi 核对硬件——NVIDIA GPU、显存≥24GB（7B FP16 权重就占 14GB 再加 KV 缓存）、CUDA≥11.8（记住驱动>运行库>框架的版本金字塔）；②建 Python 虚拟环境隔离依赖（python -m venv + activate）；③pip install vllm 后 import 验证；Windows 用户建议走 WSL2/容器，Linux/云 GPU 直装最顺——环境对了，后面部署才谈得上。**
+一句话记住本章：**部署环境三步走：①nvidia-smi 核对硬件——NVIDIA GPU、显存≥24GB（7B FP16 权重就占 14GB 再加 KV 缓存）、CUDA≥12.1（记住驱动>运行库>框架的版本金字塔）；②建 Python 虚拟环境隔离依赖（python -m venv + activate）；③pip install vllm 后 import 验证；Windows 用户建议走 WSL2/容器，Linux/云 GPU 直装最顺——环境对了，后面部署才谈得上。**
 
 @@quiz
 1. vLLM 部署的硬件底线是什么？24GB 显存能跑多大的模型、再大要怎么办？

@@ -284,7 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面十章，Agent 都是"被召唤才干活"：你发消息它才动。<strong>但一个"自我进化的超级智能体"，凭什么不能主动干活？</strong> 每天早上自动给你推今日待办、每周五自动汇总本周项目进展、监控某个网页变化就提醒你——这些"没人盯着也会发生"的能力，来自定时任务（Cron）。</p>
 <p>同时，Agent 的"后台状态"你一直靠命令猜：它在忙什么？服务器在线吗？日志有没有异常？<strong>Web 仪表板给你一块可视化控制屏</strong>，浏览器打开就能看。最后把散落的命令收个总——这一章是 Hermes 的"自动化 + 可视化 + 命令大全"收官章。</p>
-<p>学完这一章，你能回答：<strong>三种 Cron 调度模式怎么选、/cron 命令怎么用、网关的 60 秒轮询机制怎么回事、Web 仪表板怎么打开、以及 20+ 常用命令的分类使用</strong>。学完这一章，Hermes 从"你指挥的助手"晋级为"会自己上班的伙伴"。</p>
+<p>学完这一章，你能回答：<strong>三种 Cron 调度模式怎么选、/cron 命令怎么用、网关的 60 秒轮询机制怎么回事、Web 仪表板怎么打开、以及十余条常用命令的分类使用</strong>。学完这一章，Hermes 从"你指挥的助手"晋级为"会自己上班的伙伴"。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装新东西，Hermes 跑着就行；上一章的 MCP 看过，这章回到自动化和看板。</p></div></div>
@@ -293,7 +293,7 @@
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章（第十章）</strong>：MCP——能力外接，底座无限。</span>
 <span class="node"><span class="here">本章 ← 你在这里：定时任务（自动化）+ Web 仪表板（可视化）+ 常用命令（操作大全），闭环收官</span></span>
-<span class="node"><strong>阶段终点</strong>：人格（SOUL）→ 行动（工具）→ 流程（技能）→ 记忆 → 外观 → 扩展 → 自动化。第 12 章进入强化学习与对齐或毕业实操</span>
+<span class="node"><span class="here">阶段终点：人格（SOUL）→ 行动（工具）→ 流程（技能）→ 记忆 → 外观 → 扩展 → 自动化。本章是阶段 15 的收官，接下来进入强化学习与对齐</span></span>
 </div>
 <div class="note info"><span class="t">学习提示</span>
 <p>本章是三合一，容易散。抓住主线："<strong>主动</strong>"两字——Cron 让 Agent 主动开工，仪表板让你主动掌握状态，命令让你主动操控一切。三个都是"从被动到主动"的进阶。</p></div>
@@ -349,16 +349,16 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>对话内斜杠命令 <code>/cron</code> 是定时任务的创建与管理入口（示例环境是一条用内网工具创建的 cronjob）：</p>
-<pre>/cron                      # 进入任务创建/管理向导
+<pre>/cron                      # /cron add &quot;0 8 * * *&quot; &quot;每天早上 8 点总结昨日消息&quot;
 # 创建时通常要提供：
 #   触发方式：cron 表达式（如 0 8 * * * = 每天 08:00）
 #   任务内容：要 Agent 执行的消息/指令
 #   可选投递：是否把结果推送到某个会话</pre>
 <table>
 <tr><th>操作</th><th>途径</th></tr>
-<tr><td>创建</td><td><code>/cron</code> 向导，或 hermes 配置/命令（以实际支持为准）</td></tr>
+<tr><td>创建</td><td><code>/cron</code> 向导，或命令行：<code>hermes cron create "0 8 * * *" "任务内容"</code>、`hermes cron list</td><td>run</td><td>status`</td></tr>
 <tr><td>查看已有任务</td><td><code>/cron list</code> 类子命令</td></tr>
-<tr><td>管理（暂停/删除/手动触发）</td><td><code>/cron</code> 向导对应操作</td></tr>
+<tr><td>管理（暂停/删除/手动触发）</td><td><code>/cron pause / resume / run / remove &lt;id&gt;</code></td></tr>
 </table>
 <p><strong>cron 表达式速记</strong>（5 段：分 时 日 月 周）：</p>
 <ul><li><code>0 8 * * *</code> = 每天 8:00</li><li><code>*/30 * * * *</code> = 每 30 分钟</li><li><code>0 9 * * 1</code> = 每周一 9:00</li></ul>
@@ -454,8 +454,8 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>打开 localhost:9119 空白/拒绝连接</td><td>服务没启动（仪表板随网关运行）；先确认网关活着再开页面</td></tr>
-<tr><td>端口被占用</td><td>看一下 config.yaml/日志确认实际端口；被占用可在配置里改端口</td></tr>
+<tr><td>打开 localhost:9119 空白/拒绝连接</td><td>仪表板是<strong>独立进程</strong>：先 <code>hermes dashboard</code> 把它起起来，再开页面</td></tr>
+<tr><td>端口被占用</td><td>看一下 config.yaml/日志确认实际端口；被占用可换端口：<code>hermes dashboard --port 8080</code></td></tr>
 <tr><td>只依赖仪表板不看命令输出</td><td>仪表板适合总览，深挖细节（具体报错）要回终端日志；两手都要</td></tr>
 </table>
 </div>
@@ -472,7 +472,7 @@ hermes --version          # 版本
 hermes tools              # 工具/工具集查看与配置</pre>
 <p><strong>② 技能与记忆类</strong></p>
 <pre>hermes skills list / install &lt;名&gt; / remove &lt;名&gt;   # 技能管理
-hermes memory list        # 记忆查看（或对话内 memory search）</pre>
+hermes journey            # 记忆/技能的时间线（没有 memory list；要看内容直接读 ~/.hermes/MEMORY.md）</pre>
 <p><strong>③ 网关与集成类</strong></p>
 <pre>hermes gateway setup      # 接入消息平台（第 3 章）
 hermes pairing approve &lt;平台&gt; &lt;配对码&gt;   # 微信/飞书配对
@@ -508,7 +508,7 @@ hermes dashboard          # 打开 Web 仪表板（如提供）</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>想从手机访问 localhost:9119</td><td>localhost 只在本机；要跨设备访问需配置端口转发/机地址（进阶操作，默认不做）</td></tr>
+<tr><td>想从手机访问 localhost:9119</td><td>localhost 只在本机；要跨设备访问需配置端口转发/公网地址（要公网访问还得 <code>--host 0.0.0.0</code>，并务必配好鉴权）（进阶操作，默认不做）</td></tr>
 <tr><td>端口冲突打不开</td><td>换端口 + 重启对应服务，别死磕同一端口</td></tr>
 <tr><td>打不开先怀疑"防火墙"</td><td>本地 localhost 一般与防火墙无关；先查服务是否真的在跑（ps / 端口占用）</td></tr>
 </table>
@@ -546,7 +546,7 @@ hermes dashboard          # 打开 Web 仪表板（如提供）</pre>
 <table>
 <tr><th>周期</th><th>动作</th><th>命令/入口</th></tr>
 <tr><td>每会话</td><td>确认网关在跑、平台消息正常</td><td>发条消息自测</td></tr>
-<tr><td>每周</td><td>技能/记忆体检：删过时、补缺失</td><td>hermes skills list / memory list</td></tr>
+<tr><td>每周</td><td>技能/记忆体检：删过时、补缺失</td><td>hermes skills list / hermes journey</td></tr>
 <tr><td>每月</td><td>MCP 与 Token 审计：不用的下线、过期的更新</td><td>hermes mcp list + 平台后台</td></tr>
 <tr><td>每季度</td><td>版本升级：跟进 hermes 更新，顺带回归</td><td>官方更新渠道</td></tr>
 </table>

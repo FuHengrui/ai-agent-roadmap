@@ -533,7 +533,7 @@ npm config set registry https://registry.npmjs.org/</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>建议按"四连查"验证安装完整性：</p>
-<pre>hermes version          # ① 版本正常
+<pre>hermes --version        # ① 版本正常（没有 version 子命令）
 hermes model            # ② 模型配置可查看/可修改
 hermes config show      # ③ 配置可读
 hermes skills list      # ④ 技能目录初始化完成</pre>

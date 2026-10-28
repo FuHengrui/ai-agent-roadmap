@@ -402,7 +402,7 @@
 <p>预训练好的 BERT 怎么适配不同任务？答案：只换"头"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>微调（Fine-tuning）= 冻结预训练权重 + 按任务<strong>换一个输出头</strong>再训练。四大类任务：</p>
+<p>微调（Fine-tuning）= <strong>加载预训练权重后继续训练</strong>（BERT 默认全参更新，也可以只调一部分）+ 按任务<strong>换一个输出头</strong>。四大类任务：</p>
 <pre>① 句子对分类（如: 文本蕴含 NLI）
    输入: [CLS] A [SEP] B      → CLS → 分类头 → 蕴含/矛盾/无关
 
@@ -445,7 +445,7 @@ dataset = ...   # (text, label) 准备一个标准 Dataset
 model.train()
 trainer = Trainer(
     model=model,
-    args=TrainingArguments(&quot;ckpt&quot;, num_train_epochs=3),
+    args=TrainingArguments(output_dir=&quot;ckpt&quot;, num_train_epochs=3)   # 位置参数已弃用，用关键字,
     train_dataset=dataset,
 )
 trainer.train()</pre>

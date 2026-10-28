@@ -375,7 +375,7 @@
 <table>
 <tr><th>MySQL</th><th>Elasticsearch</th><th>说明</th></tr>
 <tr><td>Database 数据库</td><td><strong>Index 索引</strong></td><td>一个业务一个 Index，如 <code>news</code>、<code>users</code></td></tr>
-<tr><td>Table 表</td><td><strong>Type（7.x 前）/ 默认 _doc（7.x 后）</strong></td><td>7.x 起一个 Index 默认一种类型，少操一份心</td></tr>
+<tr><td>Table 表</td><td><strong>8.x 没有 type</strong></td><td>一个 Index 直接放文档；URL 里的 <code>_doc</code> 只是端点占位符，不是类型</td></tr>
 <tr><td>Row 行</td><td><strong>Document 文档</strong></td><td>一条 JSON 记录</td></tr>
 <tr><td>Column 列</td><td><strong>Field 字段</strong></td><td>JSON 里的每个键就是字段</td></tr>
 <tr><td>主键 id</td><td><strong>_id</strong></td><td>文档唯一标识</td></tr>
@@ -413,7 +413,7 @@ su elif
 vim config/elasticsearch.yml
 #   network.host: 0.0.0.0     # 允许远程访问
 #   cluster.name: mycluster
-vim config/jvm.options
+在 config/jvm.options.d/ 下新建 heap.options，写 -Xms4g / -Xmx4g（别改根 jvm.options，升级会覆盖）
 #   -Xms4g -Xmx4g            # 内存不够会频繁 GC，见&quot;优化&quot;一节
 
 # 3. 启动
@@ -427,7 +427,7 @@ curl -k -u elastic https://localhost:9200   # 输初始密码；返回 JSON 且�
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>can not run elasticsearch as root</td><td>创建普通用户 <code>su</code> 切换后再启动</td></tr>
-<tr><td>内存不足 fatal error</td><td>默认 <code>-Xms1g</code>，机器小就把 jvm.options 改成 <code>-Xms512m -Xmx512m</code></td></tr>
+<tr><td>内存不足 fatal error</td><td>ES 8 的堆大小是<strong>按节点角色 + 物理内存自动推算</strong>的（不是固定 1g）；要固定就在 <code>config/jvm.options.d/*.options</code> 里写 <code>-Xms4g</code> / <code>-Xmx4g</code>，机器小就把 jvm.options 改成 <code>-Xms512m -Xmx512m</code></td></tr>
 <tr><td>启动太慢 / 卡住</td><td>磁盘 IO 慢；先 <code>./bin/elasticsearch -d</code> 看 <code>/logs/elasticsearch.log</code></td></tr>
 <tr><td>忘记初始密码</td><td>用 <code>./bin/elasticsearch-reset-password -u elastic</code> 重设（<code>setup-passwords</code> 在 8.x 已废弃）</td></tr>
 </table>
@@ -705,7 +705,7 @@ GET /news/_search
 }</pre>
 <p>要点：</p>
 <ul><li><code>must</code> = AND；<code>should</code> = OR（至少有 1 个命中即可，可配 <code>minimum_should_match</code>）</li><li><strong><code>filter</code> 不参与相关度打分</strong>：过滤条件多的时候一定要放 filter，能省大量计算</li><li><code>highlight</code> 返回 <code>_source</code> 的 <code>highlight.title</code>，客户端拿到 <code>&lt;em&gt;…&lt;/em&gt;</code> 包住的命中词，按标签渲染成标红</li></ul>
-<p><strong>工厂级小技巧</strong>：分页别用大 <code>from</code>（1000 之后非常慢），用 <code>search_after</code> 游标；深度分页用 scroll。生产系统搜"第 5000 页"的场景，用 from/size 会拖垮集群。</p>
+<p><strong>工厂级小技巧</strong>：分页别用大 <code>from</code>（1000 之后非常慢），用 <code>search_after</code> 游标；深度分页用 search_after 配 PIT；scroll 只做全量导出/重建。注意 <code>from+size</code> 硬上限是 10000。生产系统搜"第 5000 页"的场景，用 from/size 会拖垮集群。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

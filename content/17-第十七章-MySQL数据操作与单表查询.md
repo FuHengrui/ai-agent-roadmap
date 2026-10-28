@@ -327,7 +327,7 @@ SELECT name, age FROM student ORDER BY 2 DESC;   -- 第 2 列（不推荐，依�
 
 - **默认 ASC**；DESC 手动写；
 - 多列排序**从左到右**逐级生效（先 gender 后 score）；
-- **NULL 排序**：默认 NULL 最小（ASC 在最前）；MySQL 8.0 用 `ORDER BY col IS NULL, col ASC   -- NULL 排最后（MySQL 不支持 （MySQL 不支持 NULLS LAST，用 IS NULL 排序））` 调整。
+- **NULL 排序**：默认 NULL 最小（ASC 时排最前）；想让 NULL 排最后，用 `ORDER BY col IS NULL, col ASC`——**MySQL 8.0 不支持 `NULLS LAST`/`NULLS FIRST`**（那是 PostgreSQL/Oracle 的写法）。
 
 **中文排序**默认按字符集排序规则（utf8mb4 按 Unicode 码点），要拼音排序需指定 collation（如 `ORDER BY name COLLATE utf8mb4_zh_0900_as_cs`，了解即可）。
 
@@ -335,7 +335,7 @@ SELECT name, age FROM student ORDER BY 2 DESC;   -- 第 2 列（不推荐，依�
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 多列排序只看到一个键生效 | 第二键只在第一键相等时生效；检查第一键是否基本全不同 |
-| 排序的 NULL 位置不对 | 默认 NULL 在前（ASC）；需要时用 （MySQL 不支持 NULLS LAST，用 IS NULL 排序） |
+| 排序的 NULL 位置不对 | 默认 NULL 在前（ASC）；要排最后就写 `ORDER BY col IS NULL, col ASC`，别抄 `NULLS LAST`（MySQL 不认） |
 | 想按日期排序但字段是字符串 | 先确保列类型是 DATE/DATETIME（第 16 章），否则按文本排 |
 
 @@point ⑩ LIMIT 分页与 TOP
