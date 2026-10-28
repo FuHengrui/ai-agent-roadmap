@@ -172,7 +172,7 @@ val df = Seq(
 **③ 从 RDD 转换（老代码升级）**：
 
 ```scala
-val sc  = spark.sparkContext                      # 拿到底层 SparkContext 才能 makeRDD
+val sc  = spark.sparkContext                      // 拿到底层 SparkContext 才能 makeRDD
 val rdd = sc.makeRDD(List(("张三", 25), ("李四", 30)))
 val df1 = rdd.toDF("name", "age")                        // 方式一：命名列
 val df2 = spark.createDataFrame(rdd).toDF("name", "age")   // 方式二：先变 DataFrame 再命名；不给名就是 _1/_2

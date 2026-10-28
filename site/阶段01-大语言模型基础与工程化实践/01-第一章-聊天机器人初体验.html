@@ -295,7 +295,7 @@
 <span class="node"><span class="here">本章 ← 你在这里：搭环境 + 跑通第一个程序</span></span>
 <span class="node">下一章：第二章 编程基本概念 —— 想改脚本？得先知道变量、类型、字符串是怎么回事</span>
 <span class="node">再往后：第三~八章 Python 基础（序列 / 控制语句 / 函数 / 面向对象 / 异常 / 模块）</span>
-<span class="node">阶段终点：第十章 用前面学的，做一个真正能用的自动化系统</span>
+<span class="node">阶段终点 用前面学的，做一个真正能用的自动化系统</span>
 </div>
 <div class="note info"><span class="t">为什么第一章就讲这个，而不是先讲 Python？</span>
 <p>因为先啃九章语法，你会在"<strong>不知道这有什么用</strong>"的状态下学两个月，然后放弃。先跑通一个真东西，后面学语法时你心里有目标——"我是在补上改那个脚本的能力"。</p></div>
@@ -490,11 +490,11 @@ if __name__ == &quot;__main__&quot;:
 <div class="step idea"><span class="label">核心思路</span>
 <p>报错信息分三部分，<strong>从下往上读</strong>：</p>
 <div class="cmd">Traceback (most recent call last):
-  File &amp;quot;chat.py&amp;quot;, line 12, in &amp;lt;module&amp;gt;     ← ② 出错的位置
+  File &amp;quot;demo.py&amp;quot;, line 12, in &amp;lt;module&amp;gt;     ← ② 出错的位置
     print(1 / 0)
 ZeroDivisionError: division by zero         ← ① 错误类型和原因</div>
 <ul><li><strong>① 最后一行</strong>：错误类型（<code>ZeroDivisionError</code>）+ 原因（除以零）。<strong>先看这个</strong></li><li><strong>② 往回找</strong>：哪一个文件、哪一行。行号是最有用的线索</li><li><strong>③ 中间的调用链</strong>：多层函数调用时能看出"是谁调用了谁"</li></ul>
-<p>三个最常见的错误类型：</p>
+<p>四个最常见的错误类型：</p>
 <table>
 <tr><th>报错类型</th><th>什么意思</th><th>常见原因</th></tr>
 <tr><td><code>SyntaxError</code></td><td>语法错误</td><td>少括号、少冒号、拼错关键字</td></tr>

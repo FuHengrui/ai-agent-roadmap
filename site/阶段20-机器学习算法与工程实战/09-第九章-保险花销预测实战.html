@@ -305,7 +305,7 @@ data = pd.read_csv(&quot;./data/insurance.csv&quot;, sep=&#x27;,&#x27;)
 data.head(n=6)          # 默认显示前 5 行，传参可看更多</pre>
 <p>典型字段（本数据集）：age（年龄）、sex（性别）、bmi（体重指数）、children（子女数）、smoker（是否吸烟）、region（地区）、<strong>charges（医疗花销，目标 y）</strong>。</p>
 <p>要点：</p>
-<ul><li><code>read_csv</code> 的 <code>sep</code> 参数：数据用逗号还是制表符分隔都要显式指定（'<code>，</code>' 或 <code>' '</code>），别默认。</li><li>pandas 读进来是 <strong>DataFrame（数据框）</strong>：二维表格，有行有列，是数据分析/挖掘的容器主角。</li><li>目标变量确认：charges 是连续数值 → <strong>回归问题</strong>，评估用 RMSE。</li></ul>
+<ul><li><code>read_csv</code> 的 <code>sep</code> 参数：分隔符要显式指定——<code>sep=','</code>（逗号）或 <code>sep='\t'</code>（制表符，反斜杠 t，不是空格），别靠默认。</li><li>pandas 读进来是 <strong>DataFrame（数据框）</strong>：二维表格，有行有列，是数据分析/挖掘的容器主角。</li><li>目标变量确认：charges 是连续数值 → <strong>回归问题</strong>，评估用 RMSE。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -325,7 +325,7 @@ data.head(n=6)          # 默认显示前 5 行，传参可看更多</pre>
 plt.hist(data[&#x27;charges&#x27;])</pre>
 <p>观察：绝大多数人花销集中在低区（几千块），少数重症花销极高（几万块），尾巴拖向右边——<strong>右偏（长尾）分布</strong>。</p>
 <p>为什么必须关注：<strong>线性回归的假设是误差服从正态分布</strong>（回溯第二章！）。y 本身右偏，直接建模会让大值样本主导损失、残差严重偏离正态，模型被少数重症样本带偏。</p>
-<p>修复手段：<strong>取对数</strong> <code>np.log(data['charges'])</code>。log 会把大值"压缩"、小值拉开，右偏被矫正成近似正态——之后预测出来要 <code>np.exp</code> 还原。log 变换是长尾目标的标准预处理（保险案例用 np.log / np.log1p 语义一致，log1p=log(x+1)，对含 0 的数据更稳）。</p>
+<p>修复手段：<strong>取对数</strong> <code>np.log(data['charges'])</code>。log 会把大值"压缩"、小值拉开，右偏被矫正成近似正态——之后预测出来要用 <code>np.expm1</code> 还原（log1p 的逆运算，不是 exp）。log 变换是长尾目标的标准预处理（本章代码用 log1p=log(x+1)，对含 0 的数据更稳；全章口径统一按 log1p + expm1）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -342,7 +342,7 @@ plt.hist(data[&#x27;charges&#x27;])</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>独热编码（One-Hot / 哑变量）</strong>：把每个类别值变成一列 0/1。</p>
 <pre>data = pd.get_dummies(data)   # 文本列自动拆成 0/1 列</pre>
-<ul><li>sex→[sex_male, sex_female]（或含原列，注意 drop_first 惯例），region→4 列，smoker→1 列。</li><li>原理与第三章"全 1 列"同族：把离散信息变成数值特征。</li><li>备选工具：sklearn 的 LabelEncoder / OneHotEncoder，或 DataFrame 的 map 自定义映射（任选其一——理解语义即可）。</li></ul>
+<ul><li>sex→[sex_male, sex_female]（或含原列，注意 drop_first 惯例），region→4 列，smoker→<strong>2 列</strong>（smoker_no / smoker_yes；默认 <code>drop_first=False</code>，不掉第一列）。</li><li>原理与第三章"全 1 列"同族：把离散信息变成数值特征。</li><li>备选工具：sklearn 的 LabelEncoder / OneHotEncoder，或 DataFrame 的 map 自定义映射（任选其一——理解语义即可）。</li></ul>
 <p>做完 get_dummies 后，data 变成了全数值表，可以直接进模型了。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

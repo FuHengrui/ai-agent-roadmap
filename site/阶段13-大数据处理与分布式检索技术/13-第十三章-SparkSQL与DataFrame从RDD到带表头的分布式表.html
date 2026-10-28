@@ -419,7 +419,7 @@ val df = Seq(
   (&quot;李四&quot;, 30, &quot;上海&quot;)
 ).toDF(&quot;name&quot;, &quot;age&quot;, &quot;city&quot;)     // toDF 指定列名</pre>
 <p><strong>③ 从 RDD 转换（老代码升级）</strong>：</p>
-<pre>val sc  = spark.sparkContext                      # 拿到底层 SparkContext 才能 makeRDD
+<pre>val sc  = spark.sparkContext                      // 拿到底层 SparkContext 才能 makeRDD
 val rdd = sc.makeRDD(List((&quot;张三&quot;, 25), (&quot;李四&quot;, 30)))
 val df1 = rdd.toDF(&quot;name&quot;, &quot;age&quot;)                        // 方式一：命名列
 val df2 = spark.createDataFrame(rdd).toDF(&quot;name&quot;, &quot;age&quot;)   // 方式二：先变 DataFrame 再命名；不给名就是 _1/_2

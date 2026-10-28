@@ -321,7 +321,7 @@
 <table>
 <tr><th>现象</th><th>说明</th></tr>
 <tr><td>一个文件能不能当成程序跑？</td><td>能。但一个模块被别的文件 <code>import</code> 时，<strong>里面的顶层代码也会被执行一遍</strong>。所以常写 <code>if __name__ == "__main__":</code> 把"只有在直接运行时才执行"的代码圈起来</td></tr>
-<tr><td>语句和表达式怎么分？</td><td>表达式<strong>有值</strong>（<code>1+2</code> 的值是 3），语句<strong>做事</strong>（<code>print(...)</code> 是做事）。<code>print</code> 是语句式的，虽然它也有返回值 <code>None</code></td></tr>
+<tr><td>语句和表达式怎么分？</td><td>表达式<strong>有值</strong>（<code>1+2</code> 的值是 3），语句<strong>做事</strong>（<code>print(...)</code> 是做事）。<code>print(...)</code> 是函数调用表达式，值恒为 <code>None</code>，特点是<strong>有副作用</strong>（会打印）</td></tr>
 </table>
 </div>
 </div></div>
@@ -483,7 +483,7 @@ str(123)       # &quot;123&quot;</pre>
 <p>程序经常要处理"多久以前""三天后""这条记录是什么时候的"。<strong>时间在计算机里其实就是一个数字。</strong></p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>计算机里的时间原点叫 <strong>Unix 时间点</strong>：<strong>1970 年 1 月 1 日 00:00:00 UTC</strong>，从那时刻起过了多少秒，就是"时间戳"。</p>
+<p>计算机里的时间原点叫 <strong>Unix 纪元（Epoch）</strong>：<strong>1970 年 1 月 1 日 00:00:00 UTC</strong>，从那时刻起过了多少秒，就是"时间戳"。</p>
 <pre>import time
 
 time.time()            # 1758888888.123   ← 当前时间戳（秒，带小数）</pre>
@@ -517,7 +517,7 @@ time.sleep(1.5)                     # 睡 1.5 秒（做限速、等页面加载�
 <p><strong>别把 <code>and</code> 和 <code>&amp;</code> 搞混</strong>——这是新手最常见的错误之一：</p>
 <pre>x = 5
 print(x &gt; 0 and x &lt; 10)   # True   ← 逻辑与，正确写法
-print(x &gt; 0 &amp; x &lt; 10)     # 结果可能出乎意料（位运算符优先级更高）</pre>
+print(x &gt; 0 &amp; x &lt; 10)     # x=15 时也打 True；正确写法 x &gt; 0 and x &lt; 10 才是 False</pre>
 <p><strong>短路运算</strong>（很重要，也是常考的）：</p>
 <pre># and：左边为假，右边【根本不会执行】
 result = (0 and 1/0)      # 返回 0，不会报除零错误
@@ -690,7 +690,7 @@ isinstance(123, int)   # True     ← 还能判断子类，更通用</pre>
 int(&quot;3.14&quot;)      # ValueError ← 注意！带小数点的字符串不能直接 int
 int(float(&quot;3.14&quot;))  # 3  要两步
 int(&quot;&quot;)          # ValueError</pre>
-<p><strong>所以从用户输入转换时一定要套 <code>try/except</code></strong>——这是下一章（异常机制）要解决的事，先留个印象。</p>
+<p><strong>所以从用户输入转换时一定要套 <code>try/except</code></strong>——这是第七章（异常机制）要解决的事，先留个印象。</p>
 </div>
 </div></div>
 <h2>本章小结</h2>
