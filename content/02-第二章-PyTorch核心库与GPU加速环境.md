@@ -47,7 +47,7 @@ PyTorch 装的时候经常看到 torch、torchvision、torchaudio 几个包，�
 
 **torchvision —— 图像扩展（做视觉任务时必装）**
 - 预训练模型：ResNet、VGG 等，可直接用于图像分类、目标检测。
-- 图像预处理和增强工具：DataLoader 数据加载器、transforms 转换工具。
+- 图像预处理和增强工具：torchvision 提供 datasets/transforms/models；DataLoader 在 torch.utils.data。
 
 **torchaudio —— 音频扩展（做语音任务时安装）**
 - 音频加载、保存、转换、处理，支持多种音频格式。

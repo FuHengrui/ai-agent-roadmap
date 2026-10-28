@@ -401,7 +401,7 @@ df.write.format(&quot;parquet&quot;).save(&quot;hdfs://.../out&quot;)</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为 Spark 只能读 HDFS</td><td>本机文件、MySQL、Kafka、各种云存储都能读。学的时候用本地文件最省事</td></tr>
-<tr><td>format 写错大小写/单词</td><td>比如把 <code>parquet</code> 写成 <code>Parquet</code> 一般没事，但 <code>csv</code> 别写成 <code>CSV</code> 之外的拼写，报 <code>IllegalArgumentException: Unsupported class file major version</code> 类错误时先检查 format 字符串</td></tr>
+<tr><td>format 写错大小写/单词</td><td>比如把 <code>parquet</code> 写成 <code>Parquet</code> 一般没事，但 <code>csv</code> 别写成 <code>CSV</code> 之外的拼写，报 <code>IllegalArgumentException: 遇到 </code>Unsupported class file major version<code> 是<strong>JDK 版本太新</strong>（Spark 3.2.1 不认 17+），不是 format 写错；format 拼错报的是 </code>Unable to find data source`` 类错误时先检查 format 字符串</td></tr>
 <tr><td>读完一个 10GB JSON 想直接 show</td><td><code>df.show()</code> 默认只打印 20 行但<strong>整个文件还是要全读完</strong>，数据大时先 <code>limit(100).show()</code> 或直接 SQL 过滤后再看</td></tr>
 </table>
 </div>

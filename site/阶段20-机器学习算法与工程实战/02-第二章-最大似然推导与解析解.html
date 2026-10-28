@@ -326,7 +326,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>把似然 L(w) 当成概率 P(w)</td><td>是 P(数据</td><td>w)，不是 P(w</td><td>数据)；两者差一个先验——朴素 MLE 不考虑先验，贝叶斯才考虑</td></tr>
+<tr><td>把似然 L(w) 当成概率 P(w)</td><td>是 P(数据\</td><td>w)，不是 P(w\</td><td>数据)；两者差一个先验——朴素 MLE 不考虑先验，贝叶斯才考虑</td></tr>
 <tr><td>觉得自己在"循环论证"</td><td>不是：样本是<strong>观测事实</strong>，w 是<strong>候选解释</strong>；从所有解释里选最优，这正是学习的本质</td></tr>
 </table>
 </div>
@@ -444,7 +444,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>三个致命局限，直接引出后续章节：</p>
 <ol><li><strong>计算爆炸</strong>：求 (XᵀX)⁻¹ 是 O(n³)。特征翻倍，耗时变 8 倍（2³）：4 个特征 1 秒，8 个特征 8 秒，16 个特征 64 秒。深度学习里特征上亿，直接算到天荒地老。</li><li><strong>只适用于凸损失</strong>：一旦损失函数非凸（神经网络、逻辑回归的某些形态），"导数为 0"可能对应极大值或鞍点，解析解失效。</li><li><strong>无法在线更新</strong>：数据是实时流式进来的（新样本不断到达），解析解要求一次性拿到全部数据重算；我们希望模型能"边来数据边更新"。</li></ol>
-<p>结论：<strong>解析解适合"小数据 + 线性回归"的教科书场景；工程和深度学习的主流是"迭代逼近"——梯度下降法</strong>，下一章见。</p>
+<p>结论：<strong>解析解适合"小数据 + 线性回归"的教科书场景；工程和深度学习的主流是"迭代逼近"——梯度下降法</strong>，第四~六章见。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

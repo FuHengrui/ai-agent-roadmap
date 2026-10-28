@@ -408,7 +408,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>大模型的三重压力把压缩从"优化项"推成了"必经项"：</p>
-<ol><li><strong>显存墙</strong>：几十亿参数的权重动辄十几 GB，单卡放不下（8bit 量化能省 4 倍）。</li><li><strong>成本墙</strong>：推理按 token 计费，模型的每一点冗余都会放大到运营成本上。</li><li><strong>延迟墙</strong>：长上下文下逐个生成 token，KV 缓存暴涨，吞吐与延迟互相挤压。</li></ol>
+<ol><li><strong>显存墙</strong>：几十亿参数的权重动辄十几 GB，单卡放不下（FP16→INT8 显存减半；相对 FP32 才是 4 倍）。</li><li><strong>成本墙</strong>：推理按 token 计费，模型的每一点冗余都会放大到运营成本上。</li><li><strong>延迟墙</strong>：长上下文下逐个生成 token，KV 缓存暴涨，吞吐与延迟互相挤压。</li></ol>
 <p>这正是工业界几乎每个上线的大模型都在做量化和剪枝的原因——模型强不强是一回事，<strong>能不能经济地跑起来</strong>是另一回事。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

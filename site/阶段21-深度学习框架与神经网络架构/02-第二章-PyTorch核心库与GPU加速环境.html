@@ -318,7 +318,7 @@
 <p><strong>torch —— 核心库（必装）</strong></p>
 <ul><li>张量（Tensor）操作：多维数组，深度学习的数据载体。</li><li>自动微分（autograd）系统：自动计算梯度，支撑反向传播。</li><li>优化器（optimizers）：SGD、Adam 等训练算法。</li><li>大量数学运算，是构建深度学习模型的基础。</li></ul>
 <p><strong>torchvision —— 图像扩展（做视觉任务时必装）</strong></p>
-<ul><li>预训练模型：ResNet、VGG 等，可直接用于图像分类、目标检测。</li><li>图像预处理和增强工具：DataLoader 数据加载器、transforms 转换工具。</li></ul>
+<ul><li>预训练模型：ResNet、VGG 等，可直接用于图像分类、目标检测。</li><li>图像预处理和增强工具：torchvision 提供 datasets/transforms/models；DataLoader 在 torch.utils.data。</li></ul>
 <p><strong>torchaudio —— 音频扩展（做语音任务时安装）</strong></p>
 <ul><li>音频加载、保存、转换、处理，支持多种音频格式。</li><li>音频预处理、增强工具和相关深度学习模型。</li></ul>
 <p>一句话：<strong>torch 打底，图像任务加 torchvision，音频任务加 torchaudio。</strong></p>

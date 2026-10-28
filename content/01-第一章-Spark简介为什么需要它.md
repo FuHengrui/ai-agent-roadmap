@@ -129,7 +129,7 @@ df.write.format("parquet").save("hdfs://.../out")
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 以为 Spark 只能读 HDFS | 本机文件、MySQL、Kafka、各种云存储都能读。学的时候用本地文件最省事 |
-| format 写错大小写/单词 | 比如把 `parquet` 写成 `Parquet` 一般没事，但 `csv` 别写成 `CSV` 之外的拼写，报 `IllegalArgumentException: Unsupported class file major version` 类错误时先检查 format 字符串 |
+| format 写错大小写/单词 | 比如把 `parquet` 写成 `Parquet` 一般没事，但 `csv` 别写成 `CSV` 之外的拼写，报 `IllegalArgumentException: 遇到 `Unsupported class file major version` 是**JDK 版本太新**（Spark 3.2.1 不认 17+），不是 format 写错；format 拼错报的是 `Unable to find data source`` 类错误时先检查 format 字符串 |
 | 读完一个 10GB JSON 想直接 show | `df.show()` 默认只打印 20 行但**整个文件还是要全读完**，数据大时先 `limit(100).show()` 或直接 SQL 过滤后再看 |
 
 @@point ⑥ Spark 核心组件一览：五兄弟
