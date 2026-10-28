@@ -443,10 +443,13 @@ sub_builder = StateGraph(SubState)
 sub_builder.add_node(&quot;classify&quot;, classify_node)
 sub_builder.add_node(&quot;translate&quot;, translate_node)
 sub_builder.set_entry_point(&quot;classify&quot;)
+sub_builder.add_edge(&quot;classify&quot;, &quot;translate&quot;)   # 忘了这条，图跑完 classify 就结束了
 sub_builder.add_edge(&quot;translate&quot;, END)
 sub_graph = sub_builder.compile()
 
-# 2. 作为节点嵌入主图
+# 2. 作为节点嵌入主图（主图要自己先建）
+main = StateGraph(MainState)
+main.add_node(&quot;check&quot;, check_node)
 main.add_node(&quot;sub_task&quot;, sub_graph)   # 子图即节点
 main.add_edge(&quot;check&quot;, &quot;sub_task&quot;)</pre>
 <p><strong>子图关键点</strong>：</p>
@@ -467,7 +470,7 @@ main.add_edge(&quot;check&quot;, &quot;sub_task&quot;)</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>LangGraph 原生支持并行执行：多个节点可以<strong>同时</strong>从同一上游节点出发（扇出），跑完后汇聚到下游节点（汇聚）。</p>
-<p>天然实现方式：一个节点后面接多个节点（多个 add_edge），LangGraph 自动并行调度；以及常用"扇出-汇聚"模式——<code>parallel_fan_out → (task_a ∥ task_b ∥ task_c) → aggregate</code>。</p>
+<p>天然实现方式：一个节点后面接多个节点（多个 add_edge），LangGraph 自动并行调度；以及常用"扇出-汇聚"模式——<code>dispatch → (task_a ∥ task_b ∥ task_c) → merge</code>。</p>
 <pre>graph.add_edge(&quot;dispatch&quot;, &quot;task_a&quot;)
 graph.add_edge(&quot;dispatch&quot;, &quot;task_b&quot;)
 graph.add_edge(&quot;dispatch&quot;, &quot;task_c&quot;)
@@ -519,7 +522,7 @@ result = app.invoke(initial_state, config={&quot;configurable&quot;: {&quot;thre
 <ol><li>下列哪个不是 LangGraph 的三大核心概念？</li></ol>
 <p>A. State　　B. Node　　C. Edge　　D. Prompt</p>
 <ol><li>多个节点各自追加一条消息到 messages，要得到完整列表而非最后一条，应该？</li></ol>
-<p>A. 什么都不做　　B. 字段配 Annotated[list, operator.add]　　C. 用全局变量　　D. 手动拼接</p>
+<p>A. 什么都不做　　B. 字段配 Annotated[list, operator.add]　　C. 用全局变量　　D. 把字段声明成 str</p>
 <ol><li>add_conditional_edges 的"路由函数"作用是？</li></ol>
 <p>A. 定义 State　　B. 读取 State 返回目标节点名，实现动态选路与循环　　C. 调用工具　　D. 编译图</p>
 <ol><li>条件边实现循环时，最致命的坑是什么？</li></ol>
@@ -528,7 +531,7 @@ result = app.invoke(initial_state, config={&quot;configurable&quot;: {&quot;thre
 <p>A. 模型不支持　　B. 没配 Checkpointer　　C. 网络慢　　D. 图太小</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://docs.langchain.com/oss/python/langgraph/overview" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 官方文档</a>
-<a href="https://docs.langchain.com/oss/python/langgraph/overview" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 概念详解</a>
+<a href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 源码仓库</a>
 <a href="https://docs.langchain.com/oss/python/langgraph/quickstart" target="_blank" rel="noopener"><span class="k">官网</span>LangGraph 快速上手</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>05_LLM框架实战_LangGraph.pdf</span></div>
 </div>

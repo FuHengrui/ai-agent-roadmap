@@ -594,7 +594,7 @@ class GetOrdersHandler:
     """订单查询处理器（演示版用模拟数据，工程版应注入订单仓储）"""
     async def handle(self, query: GetOrdersQuery) -> GetOrdersResult:
         if query.user_id <= 0:
-            raise ValueError("用户ID必须大于0")
+            raise ValidationError("用户ID必须大于0")   # 走统一业务异常出口，别抛裸 ValueError
         # ... 校验 limit/offset → 模拟数据 → 分页切片 → 返回
 ```
 
@@ -713,7 +713,8 @@ if __name__ == "__main__":
 **④ 配置 `config/settngs.py`**——用 pydantic-settings 从 `.env` 读配置（名字虽拼成 settngs，用法就是 Settings）：
 
 ```python
-from pydantic_settings import BaseSettings, ConfigDict
+from pydantic import ConfigDict
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     app_name: str = "FastAPI DDD"
@@ -766,7 +767,7 @@ settings = Settings()
 6. 为什么 domain 层要定义 `UserRepository` 接口而不是直接写实现？换数据库时要改动哪些层？
 7. 值对象 `UserID` 和实体 `User` 有什么区别？Mapper 的职责是什么？
 8. 命令/查询模式（Command/Query）与路由直写业务逻辑相比，友好在哪里？
-9. 浏览一次"DependencyException → Handler → Repository → Mapper → ORM"的请求全链路，说说哪一层负责做 HTTP 翻译、哪一层负责校验"用户名不能为空"。
+9. 浏览一次"接口层 → Handler → 仓储 → Mapper → ORM"的请求全链路：哪一层把 HTTP 请求翻译成命令/查询？"用户名不能为空"这种校验在哪两层各查一次？
 10. 从"能跑的脚本"到"能长大的工程"，这一章的两个关键武器是什么？什么情况下 DDD 反而是过度设计？
 
 @@links

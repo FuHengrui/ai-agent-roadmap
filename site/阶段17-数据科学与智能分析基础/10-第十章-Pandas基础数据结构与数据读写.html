@@ -341,7 +341,7 @@ print(s)
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为 Series 就是一维数组</td><td>它比数组多一套"索引标签"；这才是它"带标签"的意义</td></tr>
-<tr><td>s[0] 在索引非默认时失效</td><td>索引自定义后 s[0] 是"标签0"而不再一定是最前面位置；用位置取见 loc/iloc（第 12 章）</td></tr>
+<tr><td>s[0] 在索引非默认时失效</td><td>索引自定义后 s[0] 是"标签 0"，不再是最前面那个位置；<strong>按位置取用 <code>iloc</code>、按标签取用 <code>loc</code></strong>（第 12 章）</td></tr>
 </table>
 </div>
 </div></div>
@@ -388,12 +388,12 @@ print(s2)
 # 数学    95.0     ← 数值变浮点（为容纳 NaN）
 # 物理    NaN     ← 缺失值 NaN</pre>
 <p>NaN 的由来：<strong>指定 index 中没有对应键时，填充 NaN</strong>（Not a Number）。NaN≠0，它表示"没有数据"，后续章节有专门处理。</p>
-<p>ddd=int 值一遇到 NaN 会自动升级为 float——记这个规律，后面类型转换会见到同样现象。</p>
+<p>int 值一遇到 NaN 会自动升级为 float——记这个规律，后面类型转换会见到同样现象。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>用字典创建后索引顺序"乱"</td><td>从字典创建按字典序排；想要指定顺序就传 index 参数</td></tr>
+<tr><td>用字典创建后索引顺序"乱"</td><td>从字典创建按<strong>插入顺序</strong>排（Python 3.7+ 字典本身有序），不是按字符排序；想换顺序就传 <code>index</code> 参数</td></tr>
 <tr><td>出现 NaN 后数值全变 float</td><td>正常，NaN 是浮点；要整型需先填充再转 astype</td></tr>
 </table>
 </div>
@@ -438,13 +438,13 @@ print(df)
 # 1  王   95   True
 # 2  李   76   True</pre>
 <p>认知同步：</p>
-<ul><li><strong>字典的键 → 列名</strong>，<strong>值列表 → 各列数据</strong>；</li><li>行索引默认 0,1,2…，可传 index 自定义；</li><li><strong>各列长度必须一致</strong>，否则报错（除了可以补 NaN 的场景）。</li></ul>
+<ul><li><strong>字典的键 → 列名</strong>，<strong>值列表 → 各列数据</strong>；</li><li>行索引默认 0,1,2…，可传 index 自定义；</li><li><strong>各列列表长度必须一致</strong>，否则直接 <code>ValueError: All arrays must be of the same length</code>；真要按索引对齐补齐，用 <code>reindex</code>（第 12 章）。</li></ul>
 <p>访问入门：<code>df['姓名']</code> 取一列（得 Series）；<code>df[['姓名','成绩']]</code> 取多列（得 DataFrame）——<strong>单列表选择是 DataFrame 的第一高频操作</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>建 DataFrame 报 lengths 不一致</td><td>各列列表长度必须相同；缺的用 NaN 填充对齐（见第 12 章）</td></tr>
+<tr><td>建 DataFrame 报 lengths 不一致</td><td>各列列表长度必须相同；想按索引对齐补齐，先建好再 <code>reindex</code>（第 12 章），别指望构造时自动补 NaN</td></tr>
 <tr><td>df['姓名'] 和 df.姓名 都行吗</td><td>两者大多等价，但列名含空格/中文时不推荐点语法；统一用方括号最稳</td></tr>
 </table>
 </div>
@@ -503,7 +503,7 @@ df.to_csv(&#x27;out.csv&#x27;, index=False, encoding=&#x27;utf-8-sig&#x27;)</pre
 </div></div>
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ MySQL 数据库读写</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p><strong>数据在数据库里</strong>（第 16-21 章的主角）——Pandas 用 SQL 把表拉成 DataFrame 处理，算完再写回。</p>
+<p><strong>数据在数据库里</strong>（第 15-20 章的主角）——Pandas 用 SQL 把表拉成 DataFrame 处理，算完再写回。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>先装驱动，再建立连接：</p>
@@ -522,9 +522,10 @@ conn = pymysql.connect(
 
 df = pd.read_sql(&#x27;SELECT * FROM student&#x27;, conn)   # SQL 查询进 DataFrame
 df.to_sql(&#x27;student_copy&#x27;, conn, index=False, if_exists=&#x27;replace&#x27;)  # 写回新表</pre>
+<p>&gt; 新版 pandas（2.x）更推荐走 SQLAlchemy 引擎：<code>engine = create_engine("mysql+pymysql://user:pwd@host:3306/db")</code>，再 <code>read_sql(sql, engine)</code> / <code>to_sql(..., engine)</code>。 &gt; 直接把 DBAPI 连接（pymysql 的 conn）传进去，在非 SQLite 上会告警，未来版本可能不再支持。</p>
 <p>三个注意点：</p>
 <ul><li><strong>连接参数里的密码是教学占位</strong>，必须换成你自己的真实密码，且<strong>不要把真实密码写进任何文件</strong>（存环境变量最安全）；</li><li><strong>charset='utf8' 必带</strong>，否则中文乱码；</li><li><strong>用完关连接</strong>：<code>conn.close()</code>（或 with 语句自动关）。</li></ul>
-<p>详细概念（MySQL 安装、用户、权限）在第 16-21 章展开，这里先会用 Pandas 接库即可。</p>
+<p>详细概念（MySQL 安装、用户、权限）在第 15-20 章展开，这里先会用 Pandas 接库即可。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

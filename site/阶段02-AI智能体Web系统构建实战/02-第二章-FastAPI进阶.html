@@ -806,7 +806,7 @@ class GetOrdersHandler:
     &quot;&quot;&quot;订单查询处理器（演示版用模拟数据，工程版应注入订单仓储）&quot;&quot;&quot;
     async def handle(self, query: GetOrdersQuery) -&gt; GetOrdersResult:
         if query.user_id &lt;= 0:
-            raise ValueError(&quot;用户ID必须大于0&quot;)
+            raise ValidationError(&quot;用户ID必须大于0&quot;)   # 走统一业务异常出口，别抛裸 ValueError
         # ... 校验 limit/offset → 模拟数据 → 分页切片 → 返回</pre>
 <p><strong>命令/查询模式（CQRS 雏形）的价值</strong>：写操作（Command）与读操作（Query）分开建模，每个业务动作对应一个清晰的数据包 + 处理器，<strong>测试时直接构造 Command 调 Handler，完全不用起 HTTP</strong>。</p>
 </div>
@@ -912,7 +912,8 @@ if __name__ == &quot;__main__&quot;:
     import uvicorn
     uvicorn.run(&quot;main:app&quot;, host=&quot;127.0.0.1&quot;, port=8000, reload=settings.debug)</pre>
 <p><strong>④ 配置 <code>config/settngs.py</code></strong>——用 pydantic-settings 从 <code>.env</code> 读配置（名字虽拼成 settngs，用法就是 Settings）：</p>
-<pre>from pydantic_settings import BaseSettings, ConfigDict
+<pre>from pydantic import ConfigDict
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     app_name: str = &quot;FastAPI DDD&quot;
@@ -954,7 +955,7 @@ settings = Settings()</pre>
 </table>
 <p><strong>项目形态的质变</strong>：第一章的代码是"能跑的程序"；加上 DI + DDD 之后，是"能长大的工程"——可测试、可替换、可并行开发。<strong>这就是企业级智能体系统后端的标准形态。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>依赖注入解决的核心问题是什么？<code>Depends()</code> 在路由参数里扮演什么角色？</li><li>路径级、路由级、全局级三种依赖作用域分别挂在哪里？记日志一般用哪级？</li><li>嵌套依赖的执行顺序是什么？"取当前用户"为什么需要依赖"验 token"？</li><li>类依赖为什么用工厂函数注入而不是直接用类？换数据库连接串要改哪里？</li><li>DDD 四层分别管什么？依赖方向的铁律是什么（用箭头画出来）？</li><li>为什么 domain 层要定义 <code>UserRepository</code> 接口而不是直接写实现？换数据库时要改动哪些层？</li><li>值对象 <code>UserID</code> 和实体 <code>User</code> 有什么区别？Mapper 的职责是什么？</li><li>命令/查询模式（Command/Query）与路由直写业务逻辑相比，友好在哪里？</li><li>浏览一次"DependencyException → Handler → Repository → Mapper → ORM"的请求全链路，说说哪一层负责做 HTTP 翻译、哪一层负责校验"用户名不能为空"。</li><li>从"能跑的脚本"到"能长大的工程"，这一章的两个关键武器是什么？什么情况下 DDD 反而是过度设计？</li></ol>
+<ol><li>依赖注入解决的核心问题是什么？<code>Depends()</code> 在路由参数里扮演什么角色？</li><li>路径级、路由级、全局级三种依赖作用域分别挂在哪里？记日志一般用哪级？</li><li>嵌套依赖的执行顺序是什么？"取当前用户"为什么需要依赖"验 token"？</li><li>类依赖为什么用工厂函数注入而不是直接用类？换数据库连接串要改哪里？</li><li>DDD 四层分别管什么？依赖方向的铁律是什么（用箭头画出来）？</li><li>为什么 domain 层要定义 <code>UserRepository</code> 接口而不是直接写实现？换数据库时要改动哪些层？</li><li>值对象 <code>UserID</code> 和实体 <code>User</code> 有什么区别？Mapper 的职责是什么？</li><li>命令/查询模式（Command/Query）与路由直写业务逻辑相比，友好在哪里？</li><li>浏览一次"接口层 → Handler → 仓储 → Mapper → ORM"的请求全链路：哪一层把 HTTP 请求翻译成命令/查询？"用户名不能为空"这种校验在哪两层各查一次？</li><li>从"能跑的脚本"到"能长大的工程"，这一章的两个关键武器是什么？什么情况下 DDD 反而是过度设计？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://fastapi.tiangolo.com/zh/tutorial/dependencies/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 依赖注入官方文档</a>
 <a href="https://fastapi.tiangolo.com/zh/tutorial/dependencies/global-dependencies/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 进阶-全局依赖</a>

@@ -284,10 +284,10 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一阶段你已经会写提示词、会调大模型了。但你可能已经撞上一堵墙：<strong>大模型只会它"背过"的东西</strong>——你公司内部的制度、你自己整理的笔记、最新上线的产品文档，它一概不知道。</p>
 <p>解决方案叫 RAG（检索增强生成）：先让系统"查资料"再让模型"回答"。查资料就得有个<strong>专门的仓库</strong>，这个仓库就是<strong>向量数据库</strong>：它能让"意思相近"的内容（比如"养老金要交几年"和"养老保险缴费年限"）在千万条文档里被秒速捞出来。</p>
-<p>这一章把向量数据库讲透：它凭什么能搜"意思"、市面上 FAISS / Milvus / Chroma 这些该怎么选，并且每个主流产品都带你跑一遍真实代码。</p>
+<p>这一章把向量数据库讲透：它凭什么能搜"意思"、市面上 FAISS / Milvus / Chroma 这些该怎么选，并且四个主力产品（FAISS / Milvus / Chroma / Pinecone）给出可运行代码，其余给部署命令与选型要点。</p>
 </div>
 <div class="chapter-meta">
-<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>有 Python 就能开始，先装 faiss-cpu；要跑 Milvus 再装 Docker，其余产品不用急着部署。</p></div></div>
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>有 Python 就能开始：<code>pip install faiss-cpu</code>；跑 Milvus 还要装 Docker + <code>pip install pymilvus</code>；Pinecone 要 <code>pip install pinecone</code> 并注册账号拿 Key。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清向量库凭什么搜意思、ANN 在算什么，拿到需求能说出该选 FAISS 还是 Milvus，这一章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
@@ -343,7 +343,7 @@ embs = model.encode([&quot;养老保险要交几年&quot;, &quot;今天天气不
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td><strong>以为可以混用不同模型生成的向量</strong></td><td>不同模型把文字映到<strong>完全不同的向量空间</strong>，混在一起算距离等于随机。而且<strong>换模型 = 整个库作废重灌</strong>——这是 RAG 最贵的一次返工</td></tr>
-<tr><td>忘了 <code>normalize_embeddings=True</code></td><td>很多库（Chroma / FAISS）<strong>默认用点积</strong>。向量不归一化时，"长文本"的向量天然更长、点积更大，会<strong>压过真正语义更近的短文本</strong>。用余弦就该显式归一化</td></tr>
+<tr><td>忘了 <code>normalize_embeddings=True</code></td><td><strong>Chroma 默认用 L2 距离</strong>；FAISS 用什么取决于你选的索引（<code>IndexFlatL2</code> 是 L2，<code>IndexFlatIP</code> 才是内积）。向量不归一化时，"长文本"的向量天然更长、点积更大，会<strong>压过真正语义更近的短文本</strong>。用余弦就该显式归一化</td></tr>
 <tr><td>以为维度越高效果越好</td><td>维度高确实更精细，但<strong>内存和计算量随之上涨、检索更慢</strong>。384~1024 维对中文场景通常够用，别盲目追高维大模型</td></tr>
 <tr><td>拿"模型排行榜第一名"直接上</td><td>榜单多测英文通用任务。中文、垂直领域（法律/医疗）要<strong>在自己的数据上试</strong>，小模型常常不输大模型</td></tr>
 </table>
@@ -481,7 +481,7 @@ print(distances, indices)          # 距离小 = 数字接近</pre>
 <tr><th>数据量</th><th>用什么索引</th></tr>
 <tr><td>&lt;10 万</td><td>IndexFlatL2（精确搜索）</td></tr>
 <tr><td>10 万~100 万</td><td>IndexIVFFlat（倒排分桶）</td></tr>
-<tr><td>&gt;100 万</td><td>IndexHNSW（图索引）或 IndexIVFPQ（压缩省内存）</td></tr>
+<tr><td>&gt;100 万</td><td>IndexHNSWFlat（图索引）或 IndexIVFPQ（压缩省内存）</td></tr>
 </table>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -523,13 +523,22 @@ fields = [
 schema = CollectionSchema(fields, &quot;数字向量集合&quot;)
 collection = Collection(&quot;numbers_collection&quot;, schema)
 
-# ② 建索引 → 加载到内存 → 检索
+# ② 先入库——空集合搜不到任何东西（auto_id 主键不用自己给）
+collection.insert([
+    {&quot;type&quot;: &quot;book&quot;, &quot;number&quot;: 101, &quot;embedding&quot;: [1.0, 2.0]},
+    {&quot;type&quot;: &quot;book&quot;, &quot;number&quot;: 102, &quot;embedding&quot;: [2.0, 3.0]},
+])
+collection.flush()
+
+# ③ 建索引 → 加载到内存 → 检索
 collection.create_index(&quot;embedding&quot;, {&quot;metric_type&quot;: &quot;L2&quot;, &quot;index_type&quot;: &quot;FLAT&quot;})
 collection.load()
+
+query_vec = np.array([1.1, 2.1], dtype=&quot;float32&quot;)   # 待检索的向量
 results = collection.search(
     data=[query_vec.tolist()], anns_field=&quot;embedding&quot;,
     param={&quot;metric_type&quot;: &quot;L2&quot;}, limit=5,
-    output_fields=[&quot;type&quot;, &quot;item_id&quot;, &quot;number&quot;],
+    output_fields=[&quot;type&quot;, &quot;number&quot;, &quot;id&quot;],   # id 是主键，可返回
 )</pre>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -543,7 +552,7 @@ results = collection.search(
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ Elasticsearch 也做向量检索：混合检索王者</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>向量检索擅长"语义"，但对<strong>精确词、数字、代码</strong>不敏感：搜"iPhone16 512GB"，它可能把"iPhone15 128GB"当最像的。而全文检索擅长精确匹配，却听不懂"同义改写"。</p>
-<p>很多企业两个都要：既按关键词搜，又按语义搜，最后合并结果。这时候"一个平台全搞定"就是刚需——<strong>Elasticsearch（ES）就是那个同时能打的选手</strong>：它本来就是分布式搜索引擎，7.3 版本起原生支持向量检索（kNN）。</p>
+<p>很多企业两个都要：既按关键词搜，又按语义搜，最后合并结果。这时候"一个平台全搞定"就是刚需——<strong>Elasticsearch（ES）就是那个同时能打的选手</strong>：它本来就是分布式搜索引擎：7.x 用 <code>dense_vector</code> 字段配 <code>script_score</code> 算相似度，<strong>8.0 起才有原生的 <code>knn</code> 检索</strong>。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>ES 的向量检索三板斧：</p>
@@ -556,7 +565,7 @@ Elasticsearch  → 全文 + 向量一把抓，企业统一平台</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td><strong>以为 ES 装上就能做向量检索</strong></td><td>要 <strong>7.3 以上</strong>版本，而且必须<strong>显式定义 <code>dense_vector</code> 字段并声明维度</strong>——不是自动就有的能力</td></tr>
+<tr><td><strong>以为 ES 装上就能做向量检索</strong></td><td>7.x 要自己用 <code>dense_vector</code> + <code>script_score</code> 拼相似度，8.0 起才有 <code>knn</code> 检索；而且必须<strong>显式定义 <code>dense_vector</code> 字段并声明维度</strong>——不是自动就有的能力</td></tr>
 <tr><td>以为 ES 的向量性能等同专用向量库</td><td>ES 的 kNN 是"够用"级别，<strong>亿级以上还是 Milvus 更合适</strong>。ES 的价值在"一个平台全搞定"，不在极致性能</td></tr>
 <tr><td>混合检索时把两路分数直接相加</td><td>BM25 分数无界、余弦是 0~1，直接相加会让 <strong>BM25 完全压过向量路</strong>。必须先归一化再加权（下一章细讲）</td></tr>
 </table>
@@ -608,7 +617,7 @@ pip install qdrant-client
 # Weaviate
 docker compose up -d weaviate
 pip install weaviate-client</pre>
-<p>以 Chroma 为例（下一章端到端 Demo 的主角，这里先混个脸熟）：</p>
+<p>以 Chroma 为例（后面「RAG 端到端快速演示」那一章的主角，这里先混个脸熟）：</p>
 <pre>import chromadb
 client = chromadb.PersistentClient(path=&quot;chroma_db&quot;)     # 持久化到本地目录
 collection = client.get_or_create_collection(&quot;demo&quot;)

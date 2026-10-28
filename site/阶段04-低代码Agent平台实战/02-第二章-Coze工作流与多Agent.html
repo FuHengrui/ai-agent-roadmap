@@ -299,7 +299,7 @@
 <span class="node">下一章：板块结束——你已能独立搭出"企业级"的低代码 AI 应用并发布</span>
 </div>
 <div class="note info"><span class="t">这一章你要达到什么程度</span>
-<p>10+ 个知识点，核心是<strong>三个案例</strong>：一个历史人物视频工作流（工作流全流程）、一个智能助教（对话流与分支）、一个多专家协作小助手（多 Agent）。最后看怎么用 Coze 做带界面的"应用"并发布上线。</p>
+<p>10+ 个知识点，核心是<strong>四个案例</strong>：一个历史人物视频工作流（工作流全流程）、一个智能助教（对话流与分支）、一个多专家协作小助手（多 Agent）、一个带界面的「智能投资顾问」应用。最后看怎么把应用发布上线。</p>
 <p>要求：<strong>能说清三个问题</strong>——①工作流解决了 Bot 的什么薄弱点？②对话流和普通 Bot 差在哪？③为什么有些任务要在 Bot 里挂 Agent 团队？</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 工作流：把"临场发挥"变成"固定流程"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -317,7 +317,7 @@
 <tr><td><strong>LLM 节点</strong></td><td>调用大模型做文本生成/意图识别（可写系统提示词）</td><td>"写、读、判断的都找它"</td></tr>
 <tr><td><strong>批处理节点</strong></td><td>对传入的数组逐条处理</td><td>"循环干活"</td></tr>
 <tr><td><strong>代码节点</strong></td><td>写 Python 做数据类型转换、逻辑计算</td><td>"搬数据、做算术"</td></tr>
-<tr><td><strong>插件节点</strong></td><td>调用平台插件（生图、搜素、AI 生视频……）</td><td>"调外部能力"</td></tr>
+<tr><td><strong>插件节点</strong></td><td>调用平台插件（生图、搜索、AI 生视频……）</td><td>"调外部能力"</td></tr>
 <tr><td><strong>问题节点</strong></td><td>工作流中途向用户提问，收集输入</td><td>"等用户回答"</td></tr>
 <tr><td><strong>分支节点（条件判断）</strong></td><td>根据条件走不同分支</td><td>"分岔路口"</td></tr>
 <tr><td><strong>多 Agent 节点</strong></td><td>启动 Agent 处理子任务</td><td>"分活给专家"</td></tr>
@@ -429,7 +429,7 @@
     # 将每项提取为 str 类型的 URL
     urls = [str(r[&quot;url&quot;]) for r in results if r.get(&quot;url&quot;)]
     # 规范传输，避免可空类型问题
-    return {&quot;results&quot;: [urls] if urls else [&quot;&quot;]}</pre>
+    return {&quot;results&quot;: urls if urls else [&quot;&quot;]}   # 注意别写成 [urls]，那会变成嵌套数组</pre>
 <p>&gt; 小结一下：<strong>LLM 管"内容生成"，插件管"能力调用"，代码节点管"数据类型与格式"。</strong> 三者分工，别混着用。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -462,10 +462,10 @@
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 拼接与背景音乐：流水线最后一公里</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>所有素材都齐了：N 段带字幕的视频 + 1 条旁白 + 1 段背景音乐。最后要把它们合成<strong>一条完整成片</strong>——手工剪辑是不可能的。</p>
+<p>所有素材都齐了：N 段带字幕的视频（旁白已经在每段里合好）+ 1 段背景音乐。最后要把它们合成<strong>一条完整成片</strong>——手工剪辑是不可能的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>收尾三个节点：</p>
+<p>收尾四个节点：</p>
 <ol><li><strong>代码节点</strong>：把"多段视频 URL"转成标准数组（和讲解 ⑥ 同一套路，<code>objs_to_str_list</code> 复用）；</li><li><strong>VideoConcat 插件</strong>：按顺序把多段视频<strong>拼接</strong>成一条（顺序 = 数组顺序，所以文案顺序在源头就不能乱）；</li><li><strong>合并背景音乐</strong>：</li></ol>
 <ul><li>背景音乐文件先上传到临时文件站（用 tmpfiles 这类服务拿到公网 URL）；</li><li><strong>video_audio_merge</strong> 把视频与音乐合成；</li><li>也可以直接插入"音乐/音效"媒体资源作为节点；</li></ul>
 <ol><li><strong>结束节点</strong>：把最终视频 URL 作为工作流输出，交给 Bot 回复给用户。</li></ol>
@@ -526,7 +526,7 @@
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>对话流画成固定工作流</td><td>忘了加"意图识别 + 分支"，流程就死板了</td></tr>
 <tr><td>每个分支都用 LLM 节点重写答案</td><td>复用同一个 LLM 节点，用不同条件输入区分</td></tr>
-<tr><td>分不清对话流 vs 工作流</td><td>记口诀：要人回答的用对话流，不需要人回答的用工作流</td></tr>
+<tr><td>分不清对话流 vs 工作流</td><td>看<strong>是否要按用户回答走多轮分支</strong>：对话流适合可追问、分支多的场景；工作流是固定流程，虽然也能用「问题节点」中途收一次输入，但走不了多轮追问</td></tr>
 </table>
 </div>
 </div></div>

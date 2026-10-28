@@ -298,7 +298,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>当特征量纲差异巨大（x1 在 0~1，x2 在 1万~2万）：</p>
-<ul><li>损失函数等高线被拉成<strong>又长又窄的椭圆峡谷</strong>：短轴方向（小特征）陡峭、长轴方向（大特征）平缓。</li><li>梯度下降在一个方向步长太大（震荡）、另一个方向步长太小（龟速），同一学习率顾此失彼。</li><li>归一化把各特征按同一尺度缩放后，等高线变回<strong>圆形碗</strong>，梯度下降在任何方向步进均匀，收敛丝滑。</li></ul>
+<ul><li>损失函数等高线被拉成<strong>又长又窄的椭圆峡谷</strong>：<strong>短轴方向（大特征）陡峭、长轴方向（小特征）平缓</strong>——大特征那边损失涨得快，小特征那边几乎平坦。</li><li>梯度下降在一个方向步长太大（震荡）、另一个方向步长太小（龟速），同一学习率顾此失彼。</li><li>归一化把各特征按同一尺度缩放后，等高线变回<strong>圆形碗</strong>，梯度下降在任何方向步进均匀，收敛丝滑。</li></ul>
 <p>一句话：<strong>归一化是为迭代优化器（梯度下降）服务的"地形整形术"</strong>。解析解一步到位、无迭代，所以不归一下也能算——但工程上几乎总是加上，因为还有下一节的收益。</p>
 <p>此外归一化还有两个附带收益：①让各个特征的权重系数 w 可比（否则"收入"的系数天然比"年龄"小，不代表不重要）；②与正则化配合时，惩罚更公平。</p>
 </div>
@@ -335,7 +335,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>标准归一化（标准分数/标准化）</strong>：对每个特征，减均值、除标准差（方差开方）：</p>
 <pre>x_std = (x - μ) / σ</pre>
-<ul><li>变换后数据<strong>均值为 0、方差为 1</strong>，近似标准正态分布 N(0,1)。</li><li>sklearn 的 <code>StandardScaler(with_mean=True, with_std=True)</code> 正是同时完成"均值归一化 + 方差归一化"——这也是它名字的由来（同时做均值和方差归一化已成了特征工程的标准动作）。</li><li>相比 MinMax：<strong>对离群值容忍度高</strong>（σ 由全体数据统计，单个离群点影响有限），且不锁定区间、保留了数据的相对分布结构。</li></ul>
+<ul><li>变换后数据<strong>均值为 0、标准差为 1</strong>。注意它只是平移和缩放，<strong>分布形状不变</strong>，不会因此变成正态——真要正态得另做 log / Box-Cox 之类的变换。</li><li>sklearn 的 <code>StandardScaler(with_mean=True, with_std=True)</code>：<code>with_mean</code> 减均值、<code>with_std</code> <strong>除以标准差 σ</strong>（不是方差）——这两个动作合起来就是「标准化」。</li><li>相比 MinMax：<strong>对离群值更耐受</strong>（σ 用全体数据算，不会像 min/max 那样被一个极值直接拉爆），但<strong>不是免疫</strong>——离群点对方差是平方级影响，离群多时仍要先处理。</li></ul>
 <p><strong>结论：默认首选 StandardScaler。</strong> 保险实战、逻辑回归、以及几乎所有 sklearn 示例都用它。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -466,7 +466,7 @@ x_test_scaled = scaler.transform(x_test)    # ③ 测试集用同一套 μ、σ 
 <ol><li>为什么量纲悬殊会让梯度下降收敛变差？用"峡谷"解释。</li><li>Min-Max 归一化和标准归一化各适合什么场景？分别写出公式。</li><li>StandardScaler 的 with_mean、with_std 参数分别实现什么？</li><li>为什么对测试集只能 transform 不能 fit？操作顺序"先切分再归一化"防的是什么？</li><li>欠拟合和过拟合各有什么特征？判断依据是什么？</li><li>正则化的目标函数长什么样？λ 增大时模型往哪个方向走？</li><li>L1 与 L2 惩罚的效果差异是什么？各适合什么场景？</li><li>λ 为什么是超参数而不是模型参数？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://scikit-learn.org/stable/modules/preprocessing.html" target="_blank" rel="noopener"><span class="k">文档</span>sklearn preprocessing 中文说明</a>
-<a href="https://scikit-learn.org/stable/auto_examples/linear_model/plot_ridge_path.html" target="_blank" rel="noopener"><span class="k">文档</span>Lasso 与 Ridge 对比（sklearn）</a>
+<a href="https://scikit-learn.org/stable/auto_examples/linear_model/plot_ridge_path.html" target="_blank" rel="noopener"><span class="k">文档</span>Ridge 系数随正则强度变化（sklearn 官方示例）</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>梯度下降（归一化与正则化 9 页）</span></div>
 </div>
 <div class="pager">

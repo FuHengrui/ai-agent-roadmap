@@ -195,10 +195,13 @@ sub_builder = StateGraph(SubState)
 sub_builder.add_node("classify", classify_node)
 sub_builder.add_node("translate", translate_node)
 sub_builder.set_entry_point("classify")
+sub_builder.add_edge("classify", "translate")   # 忘了这条，图跑完 classify 就结束了
 sub_builder.add_edge("translate", END)
 sub_graph = sub_builder.compile()
 
-# 2. 作为节点嵌入主图
+# 2. 作为节点嵌入主图（主图要自己先建）
+main = StateGraph(MainState)
+main.add_node("check", check_node)
 main.add_node("sub_task", sub_graph)   # 子图即节点
 main.add_edge("check", "sub_task")
 ```
@@ -223,7 +226,7 @@ main.add_edge("check", "sub_task")
 @@idea 核心思路
 LangGraph 原生支持并行执行：多个节点可以**同时**从同一上游节点出发（扇出），跑完后汇聚到下游节点（汇聚）。
 
-天然实现方式：一个节点后面接多个节点（多个 add_edge），LangGraph 自动并行调度；以及常用"扇出-汇聚"模式——`parallel_fan_out → (task_a ∥ task_b ∥ task_c) → aggregate`。
+天然实现方式：一个节点后面接多个节点（多个 add_edge），LangGraph 自动并行调度；以及常用"扇出-汇聚"模式——`dispatch → (task_a ∥ task_b ∥ task_c) → merge`。
 
 ```python
 graph.add_edge("dispatch", "task_a")
@@ -293,7 +296,7 @@ result = app.invoke(initial_state, config={"configurable": {"thread_id": "user-0
 2. 下列哪个不是 LangGraph 的三大核心概念？
    A. State　　B. Node　　C. Edge　　D. Prompt
 3. 多个节点各自追加一条消息到 messages，要得到完整列表而非最后一条，应该？
-   A. 什么都不做　　B. 字段配 Annotated[list, operator.add]　　C. 用全局变量　　D. 手动拼接
+   A. 什么都不做　　B. 字段配 Annotated[list, operator.add]　　C. 用全局变量　　D. 把字段声明成 str
 4. add_conditional_edges 的"路由函数"作用是？
    A. 定义 State　　B. 读取 State 返回目标节点名，实现动态选路与循环　　C. 调用工具　　D. 编译图
 5. 条件边实现循环时，最致命的坑是什么？
@@ -304,5 +307,5 @@ result = app.invoke(initial_state, config={"configurable": {"thread_id": "user-0
 @@links
 参考|05_LLM框架实战_LangGraph.pdf|#
 官网|LangGraph 官方文档|https://docs.langchain.com/oss/python/langgraph/overview
-官网|LangGraph 概念详解|https://docs.langchain.com/oss/python/langgraph/overview
+官网|LangGraph 源码仓库|https://github.com/langchain-ai/langgraph
 官网|LangGraph 快速上手|https://docs.langchain.com/oss/python/langgraph/quickstart

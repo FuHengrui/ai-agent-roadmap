@@ -79,7 +79,7 @@ Series 与 numpy 的关系：**values 就是 ndarray**，运算规则（广播�
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 以为 Series 就是一维数组 | 它比数组多一套"索引标签"；这才是它"带标签"的意义 |
-| s[0] 在索引非默认时失效 | 索引自定义后 s[0] 是"标签0"而不再一定是最前面位置；用位置取见 loc/iloc（第 12 章） |
+| s[0] 在索引非默认时失效 | 索引自定义后 s[0] 是"标签 0"，不再是最前面那个位置；**按位置取用 `iloc`、按标签取用 `loc`**（第 12 章） |
 
 @@point ③ Series 的 values / index 与自定义索引
 @@need 要解决什么
@@ -135,12 +135,12 @@ print(s2)
 
 NaN 的由来：**指定 index 中没有对应键时，填充 NaN**（Not a Number）。NaN≠0，它表示"没有数据"，后续章节有专门处理。
 
-ddd=int 值一遇到 NaN 会自动升级为 float——记这个规律，后面类型转换会见到同样现象。
+int 值一遇到 NaN 会自动升级为 float——记这个规律，后面类型转换会见到同样现象。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 用字典创建后索引顺序"乱" | 从字典创建按字典序排；想要指定顺序就传 index 参数 |
+| 用字典创建后索引顺序"乱" | 从字典创建按**插入顺序**排（Python 3.7+ 字典本身有序），不是按字符排序；想换顺序就传 `index` 参数 |
 | 出现 NaN 后数值全变 float | 正常，NaN 是浮点；要整型需先填充再转 astype |
 
 @@point ⑤ Series 从标量创建：一个值广播全体
@@ -194,14 +194,14 @@ print(df)
 
 - **字典的键 → 列名**，**值列表 → 各列数据**；
 - 行索引默认 0,1,2…，可传 index 自定义；
-- **各列长度必须一致**，否则报错（除了可以补 NaN 的场景）。
+- **各列列表长度必须一致**，否则直接 `ValueError: All arrays must be of the same length`；真要按索引对齐补齐，用 `reindex`（第 12 章）。
 
 访问入门：`df['姓名']` 取一列（得 Series）；`df[['姓名','成绩']]` 取多列（得 DataFrame）——**单列表选择是 DataFrame 的第一高频操作**。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 建 DataFrame 报 lengths 不一致 | 各列列表长度必须相同；缺的用 NaN 填充对齐（见第 12 章） |
+| 建 DataFrame 报 lengths 不一致 | 各列列表长度必须相同；想按索引对齐补齐，先建好再 `reindex`（第 12 章），别指望构造时自动补 NaN |
 | df['姓名'] 和 df.姓名 都行吗 | 两者大多等价，但列名含空格/中文时不推荐点语法；统一用方括号最稳 |
 
 @@point ⑦ Excel 文件读写：read_excel / to_excel
@@ -266,7 +266,7 @@ df.to_csv('out.csv', index=False, encoding='utf-8-sig')
 
 @@point ⑨ MySQL 数据库读写
 @@need 要解决什么
-**数据在数据库里**（第 16-21 章的主角）——Pandas 用 SQL 把表拉成 DataFrame 处理，算完再写回。
+**数据在数据库里**（第 15-20 章的主角）——Pandas 用 SQL 把表拉成 DataFrame 处理，算完再写回。
 
 @@idea 核心思路
 先装驱动，再建立连接：
@@ -292,13 +292,16 @@ df = pd.read_sql('SELECT * FROM student', conn)   # SQL 查询进 DataFrame
 df.to_sql('student_copy', conn, index=False, if_exists='replace')  # 写回新表
 ```
 
+> 新版 pandas（2.x）更推荐走 SQLAlchemy 引擎：`engine = create_engine("mysql+pymysql://user:pwd@host:3306/db")`，再 `read_sql(sql, engine)` / `to_sql(..., engine)`。
+> 直接把 DBAPI 连接（pymysql 的 conn）传进去，在非 SQLite 上会告警，未来版本可能不再支持。
+
 三个注意点：
 
 - **连接参数里的密码是教学占位**，必须换成你自己的真实密码，且**不要把真实密码写进任何文件**（存环境变量最安全）；
 - **charset='utf8' 必带**，否则中文乱码；
 - **用完关连接**：`conn.close()`（或 with 语句自动关）。
 
-详细概念（MySQL 安装、用户、权限）在第 16-21 章展开，这里先会用 Pandas 接库即可。
+详细概念（MySQL 安装、用户、权限）在第 15-20 章展开，这里先会用 Pandas 接库即可。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
