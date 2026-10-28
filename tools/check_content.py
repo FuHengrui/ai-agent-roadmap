@@ -94,6 +94,23 @@ def main() -> int:
         if np_ and not (8 <= np_ <= 16):
             flags.append("★知识点%d个(应8-16)" % np_)
 
+        # ★ 结构完整性：@@why / @@map 的正文不能被「整行替换」压成残句
+        # （真出过事：修错脚本把整段换成了一个短语，构建和链接检查全绿，只有人读才发现）
+        # 判据：又短、又完全没有中文标点——正常段落不会长这样
+        PUNCT = "。？！，、：；—…"
+        t_lines = t.split("\n")
+        for tag in ("@@why", "@@map"):
+            for i, ln in enumerate(t_lines):
+                if ln.startswith(tag):
+                    body = ""
+                    for nxt in t_lines[i + 1:]:
+                        if nxt.strip():
+                            body = nxt.strip()
+                            break
+                    if len(body) < 30 and not any(c in body for c in PUNCT):
+                        flags.append("★%s正文像残句:%s" % (tag, body[:20]))
+                    break
+
         for name, pat in KEYPATS:
             for m in pat.finditer(t):
                 s = m.group(0)
