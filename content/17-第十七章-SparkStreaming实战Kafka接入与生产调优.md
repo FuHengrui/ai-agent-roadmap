@@ -209,7 +209,7 @@ ssc.stop(stopSparkContext = false, stopGracefully = true)
 // stopGracefully=true 才是优雅：等当前批处理完再停
 
 // 方案 B：自定义监听（Spark 2.3 起，StreamingListener 或主线程轮询标志）
-// 被保护：StreamingQueryListener / check 全局 flag → ssc.stop(true, true)
+// 被保护：StreamingQueryListener / check 全局 flag → ssc.stop(false, true)   # 只停流，别把 SparkContext 一起停
 ```
 
 **生产常见的"优雅停止"套路**：
@@ -246,9 +246,9 @@ ssc.stop(stopSparkContext = false, stopGracefully = true)
 **第一招：背压（自动限速）**：
 
 ```scala
-// Spark 2.x：默认开启（spark.streaming.backpressure.enabled=true）
+// 背压默认是关的：要显式 spark.streaming.backpressure.enabled=true 才生效
 // 系统根据处理能力自动限制每秒拉取量，防止积压
-// 可配最低速率：spark.streaming.backpressure.initialRate=... 控制起步
+// 可配**初始最大接收速率**：spark.streaming.backpressure.initialRate=... 控制起步
 ```
 
 **第二招：并行度与资源**：
@@ -263,7 +263,7 @@ ssc.stop(stopSparkContext = false, stopGracefully = true)
 
 ```text
 窗口长 → 缓存批多 → 内存要够（spark.executor.memory）
-Task 序列化溢出 → 调 spark.memory.offHeap 或减少同时缓存
+Task 序列化溢出 → 开 `spark.memory.offHeap.enabled` + 设 `size`（或减少同时缓存）
 ```
 
 **体检流程**（照做）：UI 看"每批处理时长"→ 超间隔先开背压 → 还不够就加并行度/分区/资源 → 再不行加大批间隔。**先处理后限速，最后才加间隔**。
@@ -321,7 +321,7 @@ query.awaitTermination()
 | 把 DStream 的 API 套到 Structured Streaming | 两个 API 不同源：DStream 算子（flatMap/reduceByKey）和 DF API（select/groupBy）不通用。新项目直接学 Structured Streaming |
 | 以为 DStream 被彻底淘汰 | 老项目大量在用，且思想通用。两条都会更稳 |
 | 输出模式 complete/append/update 搞混 | complete=全量结果；append=只新结果；update=更新行。选错报警——去读官方文档对应语义即可 |
-| Python 里没有 DStream | PySpark 只支持 Structured Streaming。学 DStream 用 Scala 示例，理解为主 |
+| Python 里没有 DStream | PySpark 也有 DStream（`pyspark.streaming` + `KafkaUtils`），但新项目与官方主推 Structured Streaming。学 DStream 用 Scala 示例，理解为主 |
 
 @@point ⑧ 全链路串讲：一份"生产就绪"的 Streaming 作业配置
 @@need 要解决什么

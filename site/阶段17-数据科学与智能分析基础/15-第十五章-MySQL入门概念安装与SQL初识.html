@@ -337,7 +337,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为 NoSQL 会取代 SQL</td><td>两者定位不同：OLTP 业务仍以关系型为主，Redis 等是互补</td></tr>
-<tr><td>版本方说"关系型不支持海量"</td><td>关系型能支持很大，只是要分库分表；NoSQL 更易水平扩展</td></tr>
+<tr><td>有人常说"关系型不支持海量"</td><td>关系型能支持很大，只是要分库分表；NoSQL 更易水平扩展</td></tr>
 </table>
 </div>
 </div></div>
@@ -364,7 +364,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>推荐用 <strong>MySQL Installer（MSI 向导）</strong> 最低阻力安装：</p>
-<ol><li>官网下载 MySQL Installer → 选 <strong>Developer Default</strong>（含 MySQL Server、MySQL Shell、Workbench）；</li><li>到 <strong>Type and Networking</strong> 页：端口保持 <strong>3306</strong>，默认即可；</li><li><strong>Authentication Method</strong>：选 "Use Strong Password Encryption"（8.0 默认，兼容性最好）；</li><li><strong>Accounts and Roles</strong>：设置 <strong>root 密码</strong>（教程先用 root 连接；生产环境应另建最小权限账号并用强密码）；</li><li><strong>Windows Service</strong>：勾选 "Configure MySQL Server as a Windows Service"，开机自启方便学习；</li><li>Apply 完成后，MySQL 会自动作为服务启动。</li></ol>
+<ol><li>官网下载 MySQL Installer → 选 <strong>Developer Default</strong>（含 MySQL Server、MySQL Shell、Workbench）；</li><li>到 <strong>Type and Networking</strong> 页：端口保持 <strong>3306</strong>，默认即可；</li><li><strong>Authentication Method</strong>：选 "Use Strong Password Encryption"（8.0 默认，<strong>安全性最好</strong>；老客户端连不上再退到 Legacy 认证）；</li><li><strong>Accounts and Roles</strong>：设置 <strong>root 密码</strong>（教程先用 root 连接；生产环境应另建最小权限账号并用强密码）；</li><li><strong>Windows Service</strong>：勾选 "Configure MySQL Server as a Windows Service"，开机自启方便学习；</li><li>Apply 完成后，MySQL 会自动作为服务启动。</li></ol>
 <p>检查安装是否成功：任务管理器找 <code>mysqld</code> 进程，或（后一点）命令行连一下。</p>
 <p><strong>安全提示（教学 vs 生产）</strong>：本地练习用 <code>root</code> + 简单密码是为了跟教程走，<strong>真实环境严禁</strong>——root 只留本机运维，业务用独立账号最小权限。</p>
 </div>
@@ -394,7 +394,7 @@ mysql&gt; SHOW DATABASES;</pre>
 <p>图形工具三选一：</p>
 <ul><li><strong>MySQL Workbench</strong>（官方，安装自带）；</li><li><strong>Navicat</strong>（商业，图形化强）；</li><li><strong>DBeaver</strong>（开源免费，通用）。</li></ul>
 <p>退出连接：命令行 <code>exit;</code> 或 <code>\q</code>。</p>
-<p><strong>SQL 习惯</strong>：命令用大写关键字 demo 里是惯例（不区分大小写，但要保持风格一致）；每条语句以<strong>分号 <code>;</code> 结束</strong>——忘了分号是新手第一坑。</p>
+<p><strong>SQL 习惯</strong>：关键字用大写是通行惯例（不区分大小写，但要保持风格一致）；每条语句以<strong>分号 <code>;</code> 结束</strong>——忘了分号是新手第一坑。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -40,7 +40,7 @@ GET  /api/health    健康检查 → 服务是否活着
 | `/api/document` | POST | 文档入库入口 | 前端上传区 |
 | `/api/health` | GET | 探活/运维 | 部署、负载均衡 |
 
-API 层的设计原则：**内部能力 + HTTP 协议 = 对外服务**。路由很薄——它不做业务，只负责"收请求、调内部服务、回响应"（呼应第2点依赖注入，把内部服务"注入"进来）。
+API 层的设计原则：**内部能力 + HTTP 协议 = 对外服务**。路由很薄——它不做业务，只负责"收请求、调内部服务、回响应"（呼应第④点依赖注入，把内部服务"注入"进来）。
 
 @@trap 坑在哪
 | 现象 | 原因 |
@@ -184,9 +184,9 @@ ChatResponse {
 ```python
 @app.post("/api/document")
 async def upload_document(file: UploadFile,
-                          collection_name: str = "default",   # 可选：入库到哪个库
+                          collection_name: str | None = None,   # 可选：入库到哪个库；不传 = 只解析
                           store: DocumentStore = Depends(get_document_store)):
-    if collection_name:                     # 有 collection → 解析 + 入库
+    if collection_name is not None:          # 传了库名 → 解析 + 入库
         doc_id = await store.add_document(file)   # 全链路：解析清洗分块嵌入存储
         return {"doc_id": doc_id, "status": "indexed"}
     # 无 collection → 仅解析预览（不落库）
@@ -243,12 +243,17 @@ async def health():
 **② 流式输出**（要点）：用 `fetch` 读流而非一次拿响应：
 
 ```javascript
-// 用 fetch 的 ReadableStream 逐段读取后端 /api/chat/stream
-const reader = response.body.getReader()
+// 用 fetch 的 ReadableStream 逐段读取后端的流式响应
+const resp = await fetch('/api/chat', {
+  method: 'POST', headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ question }),
+})
+const reader = resp.body.getReader()
+const decoder = new TextDecoder()
 while (true) {
   const { done, value } = await reader.read()
   if (done) break
-  answerBox.innerText += decoder.decode(value)   // 逐段上屏
+  answerBox.innerText += decoder.decode(value, { stream: true })   // 逐段上屏
 }
 ```
 

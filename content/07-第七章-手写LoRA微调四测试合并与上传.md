@@ -43,7 +43,7 @@ config = PeftConfig.from_pretrained(peft_model_path)
 # 2. 先加载底座模型（名字存于 config.base_model_name_or_path）
 model = AutoModelForCausalLM.from_pretrained(
     config.base_model_name_or_path,
-    device_map="auto", torch_dtype=torch.float16)
+    device_map="auto", torch_dtype=torch.float16   # 文件首行记得 import torch)
 
 # 3. 再把补丁叠上去
 model = PeftModel.from_pretrained(model, peft_model_path)
@@ -85,7 +85,7 @@ $$W_{merged} = W + \frac{\alpha}{r} \cdot AB$$
 |---|---|
 | W 冻结 + A、B 两个补丁 | 一个包含补丁效果的 W' |
 | 依赖 adapter_config + 底座 | 独立完整模型，谁都能直接用 |
-| 体积小（几百 MB） | 体积=底座大小（GB 级） |
+| 体积小（本项目这种配置只有几 MB；7B 全挂线性层才会到几十~几百 MB） | 体积=底座大小（GB 级） |
 
 要点：
 - `merge_and_unload()` 的 **unload** 是卸载 PEFT 结构，把模型恢复正常形态；
@@ -170,7 +170,7 @@ print(generate_text("你好"))
 # 1. 安装 SDK（如未装）
 pip install huggingface_hub
 # 2. 登录（需要 HF 账号里的访问令牌）
-huggingface-cli login
+hf auth login
 # 输入 token 时粘贴：hf_xxxxxxxx（设置里生成）
 ```
 
@@ -193,7 +193,7 @@ model.push_to_hub(repo_name)
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 把 token 写进代码/笔记/发给别人 | 令牌等于账号钥匙。**token 只在 huggingface-cli login 交互时粘贴**；代码里不要 hardcode。泄露了立刻去 HF 设置吊销重建 |
+| 把 token 写进代码/笔记/发给别人 | 令牌等于账号钥匙。**token 只在 hf auth login 交互时粘贴**；代码里不要 hardcode。泄露了立刻去 HF 设置吊销重建 |
 | push 报 401/403 | 令牌无效或权限不足：重新 login；检查令牌是否勾选了 write 权限 |
 | 上传后模型列表是空的 | 确认 push_to_hub 是否成功跑完（大文件要等）；tokenizer 先传、模型后传，网页刷新看 repo 页 |
 
@@ -237,7 +237,7 @@ model.push_to_hub(repo_name)
 第6章 保存         tokenizer.save + trainer.save → ./lora_model
 第7章 测试         PeftModel 加载补丁 → generate_text 对比
 第7章 合并         merge_and_unload → ./merged_model（完整模型）
-第7章 上传         huggingface-cli login → push_to_hub
+第7章 上传         hf auth login → push_to_hub
 ```
 
 这套基线的三处可替换升级点（后文主线）：
@@ -285,7 +285,7 @@ model.push_to_hub(repo_name)
 |---|---|
 | **测试能力** | two-step 加载（底座+补丁）、generate_text 封装、微调前后对比方法 |
 | **合并能力** | merge_and_unload 焊回补丁，产出可部署的完整模型（第 10 章前置） |
-| **分发能力** | huggingface-cli login + push_to_hub 上传模型，密钥纪律四铁律 |
+| **分发能力** | hf auth login + push_to_hub 上传模型，密钥纪律四铁律 |
 | **完整闭环** | 环境→数据→训练→测试→合并→上传总图，手写 LoRA 毕业 |
 
 下一章进入工具加速线：Unsloth 凭什么快 2~5 倍、省 70% 内存？怎么用它微调 DeepSeek？
@@ -296,8 +296,8 @@ model.push_to_hub(repo_name)
 3. generate_text 里 `skip_special_tokens=True` 和 `torch.no_grad()` 各起什么作用？
 4. 验证微调效果时，"只拿训练集问题测"错在哪里？正确做法是什么？
 5. 上传 Hugging Face 的仓库名格式是什么？push 前要确认什么？
-6. 写出关键词生成的密钥纪律（至少三条）。
-7. 从环境到上传的完整流水线按顺序写出来（八步）。
+6. 写出模型上传的密钥纪律（至少三条）。
+7. 从环境到上传的完整流水线按顺序写出来（十步）。
 
 @@links
 参考|大模型 DeepSeek 微调与应用：测试微调后的模型、模型上传 Hugging Face|#

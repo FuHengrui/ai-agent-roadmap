@@ -71,7 +71,7 @@ MySQL 和 Excel 的对比（帮老朋友快速理解）：
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 以为 NoSQL 会取代 SQL | 两者定位不同：OLTP 业务仍以关系型为主，Redis 等是互补 |
-| 版本方说"关系型不支持海量" | 关系型能支持很大，只是要分库分表；NoSQL 更易水平扩展 |
+| 有人常说"关系型不支持海量" | 关系型能支持很大，只是要分库分表；NoSQL 更易水平扩展 |
 
 @@point ③ MySQL 简介与版本选择
 @@need 要解决什么
@@ -105,7 +105,7 @@ MySQL 和 Excel 的对比（帮老朋友快速理解）：
 
 1. 官网下载 MySQL Installer → 选 **Developer Default**（含 MySQL Server、MySQL Shell、Workbench）；
 2. 到 **Type and Networking** 页：端口保持 **3306**，默认即可；
-3. **Authentication Method**：选 "Use Strong Password Encryption"（8.0 默认，兼容性最好）；
+3. **Authentication Method**：选 "Use Strong Password Encryption"（8.0 默认，**安全性最好**；老客户端连不上再退到 Legacy 认证）；
 4. **Accounts and Roles**：设置 **root 密码**（教程先用 root 连接；生产环境应另建最小权限账号并用强密码）；
 5. **Windows Service**：勾选 "Configure MySQL Server as a Windows Service"，开机自启方便学习；
 6. Apply 完成后，MySQL 会自动作为服务启动。
@@ -148,7 +148,7 @@ mysql> SHOW DATABASES;
 
 退出连接：命令行 `exit;` 或 `\q`。
 
-**SQL 习惯**：命令用大写关键字 demo 里是惯例（不区分大小写，但要保持风格一致）；每条语句以**分号 `;` 结束**——忘了分号是新手第一坑。
+**SQL 习惯**：关键字用大写是通行惯例（不区分大小写，但要保持风格一致）；每条语句以**分号 `;` 结束**——忘了分号是新手第一坑。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

@@ -360,7 +360,7 @@ class RetrievalConfig:
 <pre>candidates = self.store.search(query_vec, top_k=config.top_k*2,
                                metadata_filter=...)
 results = [r for r in candidates if r.score &gt;= config.min_score][:config.top_k]</pre>
-<p>注意实现细节：<strong>先取 2 倍候选，再按分数过滤，最后截 top_k</strong>——只取 top_k 个再过滤，剩下的可能不够数。这道"底线"的价值在第5章兜底逻辑处体现：检索为空时模型会回答"根据现有资料无法确定"，<strong>比硬答强一万倍</strong>。</p>
+<p>注意实现细节：<strong>先取 2 倍候选，再按分数过滤，最后截 top_k</strong>——只取 top_k 个再过滤，剩下的可能不够数。这道"底线"的价值在第5章兜底逻辑处体现：检索为空时直接兜底返回"根据现有资料无法确定"，<strong>比硬答强一万倍</strong>。</p>
 </div>
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ LLM 的统一封装：为什么加一层"壳"</div><div class="body">
@@ -374,6 +374,7 @@ results = [r for r in candidates if r.score &gt;= config.min_score][:config.top_
         # config 里带 provider/base_url/api_key/model，第一类选择在配置层做
         self.client = OpenAI(api_key=config.api_key,
                              base_url=config.base_url)
+        self.model = config.model      # 供 generate 与 LLMResponse 用
 
     def generate(self, messages, temperature=0.1) -&gt; LLMResponse:
         resp = self.client.chat.completions.create(
@@ -477,7 +478,7 @@ results = [r for r in candidates if r.score &gt;= config.min_score][:config.top_
         return &quot;根据现有资料无法确定&quot;         # 直接兜底，不走模型
     context = format_context(results)
     prompt  = build_prompt(context, question)
-    return llm.generate(prompt)              # 有资料才走模型</pre>
+    return llm.generate([{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}])   # generate 收的是 messages 列表</pre>
 <p>两个设计点：</p>
 <ul><li><strong>"无法确定"是产品文案不是 bug</strong>——它保护了信誉：宁可说不知道，不说错的；</li><li>空结果<strong>不走模型</strong>：省一次 API 调用（省钱），也避免模型拿到空上下文开始编。</li></ul>
 </div>

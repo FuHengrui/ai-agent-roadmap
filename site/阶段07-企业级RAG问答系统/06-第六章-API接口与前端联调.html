@@ -312,7 +312,7 @@ GET  /api/health    健康检查 → 服务是否活着</pre>
 <tr><td><code>/api/document</code></td><td>POST</td><td>文档入库入口</td><td>前端上传区</td></tr>
 <tr><td><code>/api/health</code></td><td>GET</td><td>探活/运维</td><td>部署、负载均衡</td></tr>
 </table>
-<p>API 层的设计原则：<strong>内部能力 + HTTP 协议 = 对外服务</strong>。路由很薄——它不做业务，只负责"收请求、调内部服务、回响应"（呼应第2点依赖注入，把内部服务"注入"进来）。</p>
+<p>API 层的设计原则：<strong>内部能力 + HTTP 协议 = 对外服务</strong>。路由很薄——它不做业务，只负责"收请求、调内部服务、回响应"（呼应第④点依赖注入，把内部服务"注入"进来）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -441,9 +441,9 @@ ChatResponse {
 <p><code>/api/document</code> 接受文件 + 可选参数：</p>
 <pre>@app.post(&quot;/api/document&quot;)
 async def upload_document(file: UploadFile,
-                          collection_name: str = &quot;default&quot;,   # 可选：入库到哪个库
+                          collection_name: str | None = None,   # 可选：入库到哪个库；不传 = 只解析
                           store: DocumentStore = Depends(get_document_store)):
-    if collection_name:                     # 有 collection → 解析 + 入库
+    if collection_name is not None:          # 传了库名 → 解析 + 入库
         doc_id = await store.add_document(file)   # 全链路：解析清洗分块嵌入存储
         return {&quot;doc_id&quot;: doc_id, &quot;status&quot;: &quot;indexed&quot;}
     # 无 collection → 仅解析预览（不落库）
@@ -494,12 +494,17 @@ async def health():
 <p>前端（frontend/，Vue3 + Element Plus）两个核心页面：</p>
 <p><strong>① 问答页</strong>：输入框 → 调 <code>POST /api/chat</code> → 展示 <code>answer</code> + 展开 <code>sources</code> 卡片（每张显示原文出处，可点击核对）。</p>
 <p><strong>② 流式输出</strong>（要点）：用 <code>fetch</code> 读流而非一次拿响应：</p>
-<pre>// 用 fetch 的 ReadableStream 逐段读取后端 /api/chat/stream
-const reader = response.body.getReader()
+<pre>// 用 fetch 的 ReadableStream 逐段读取后端的流式响应
+const resp = await fetch(&#x27;/api/chat&#x27;, {
+  method: &#x27;POST&#x27;, headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+  body: JSON.stringify({ question }),
+})
+const reader = resp.body.getReader()
+const decoder = new TextDecoder()
 while (true) {
   const { done, value } = await reader.read()
   if (done) break
-  answerBox.innerText += decoder.decode(value)   // 逐段上屏
+  answerBox.innerText += decoder.decode(value, { stream: true })   // 逐段上屏
 }</pre>
 <p><strong>③ 上传区</strong>：<code>el-upload</code> 选择文件 → 调 <code>POST /api/document</code> → 显示入库状态（indexed/parsed）。</p>
 <p>前端联调三板斧：<strong>先 curl 后端确认活着</strong> → <strong>再配 CORS</strong> → <strong>最后接流式渲染</strong>。任何一步卡住，回第⑦点排查。</p>

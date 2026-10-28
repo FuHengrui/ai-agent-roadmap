@@ -92,7 +92,7 @@ candidates = self.store.search(query_vec, top_k=config.top_k*2,
 results = [r for r in candidates if r.score >= config.min_score][:config.top_k]
 ```
 
-注意实现细节：**先取 2 倍候选，再按分数过滤，最后截 top_k**——只取 top_k 个再过滤，剩下的可能不够数。这道"底线"的价值在第5章兜底逻辑处体现：检索为空时模型会回答"根据现有资料无法确定"，**比硬答强一万倍**。
+注意实现细节：**先取 2 倍候选，再按分数过滤，最后截 top_k**——只取 top_k 个再过滤，剩下的可能不够数。这道"底线"的价值在第5章兜底逻辑处体现：检索为空时直接兜底返回"根据现有资料无法确定"，**比硬答强一万倍**。
 
 @@point ④ LLM 的统一封装：为什么加一层"壳"
 @@need 要解决什么
@@ -107,6 +107,7 @@ class LLM:
         # config 里带 provider/base_url/api_key/model，第一类选择在配置层做
         self.client = OpenAI(api_key=config.api_key,
                              base_url=config.base_url)
+        self.model = config.model      # 供 generate 与 LLMResponse 用
 
     def generate(self, messages, temperature=0.1) -> LLMResponse:
         resp = self.client.chat.completions.create(
@@ -221,7 +222,7 @@ def generate_answer(question):
         return "根据现有资料无法确定"         # 直接兜底，不走模型
     context = format_context(results)
     prompt  = build_prompt(context, question)
-    return llm.generate(prompt)              # 有资料才走模型
+    return llm.generate([{"role": "user", "content": prompt}])   # generate 收的是 messages 列表
 ```
 
 两个设计点：

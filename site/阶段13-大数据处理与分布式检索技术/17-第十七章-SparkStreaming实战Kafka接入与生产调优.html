@@ -454,7 +454,7 @@ ssc.stop(stopSparkContext = false, stopGracefully = true)
 // stopGracefully=true 才是优雅：等当前批处理完再停
 
 // 方案 B：自定义监听（Spark 2.3 起，StreamingListener 或主线程轮询标志）
-// 被保护：StreamingQueryListener / check 全局 flag → ssc.stop(true, true)</pre>
+// 被保护：StreamingQueryListener / check 全局 flag → ssc.stop(false, true)   # 只停流，别把 SparkContext 一起停</pre>
 <p><strong>生产常见的"优雅停止"套路</strong>：</p>
 <pre>用调度系统（如 YARN 的 preempt / K8s 的 SIGTERM）→ 程序捕获信号
 → 设置&quot;停止标志&quot;（或直接调 stopGracefully）
@@ -481,16 +481,16 @@ ssc.stop(stopSparkContext = false, stopGracefully = true)
 每批处理耗时 ≈ 批间隔 → 临界
 每批处理耗时 &gt; 批间隔 → 积压！批队列越排越长（延迟飙升）</pre>
 <p><strong>第一招：背压（自动限速）</strong>：</p>
-<pre>// Spark 2.x：默认开启（spark.streaming.backpressure.enabled=true）
+<pre>// 背压默认是关的：要显式 spark.streaming.backpressure.enabled=true 才生效
 // 系统根据处理能力自动限制每秒拉取量，防止积压
-// 可配最低速率：spark.streaming.backpressure.initialRate=... 控制起步</pre>
+// 可配**初始最大接收速率**：spark.streaming.backpressure.initialRate=... 控制起步</pre>
 <p><strong>第二招：并行度与资源</strong>：</p>
 <pre>① 分区数对齐 Kafka 分区：并行读 = Kafka 分区数
 ② 宽依赖（reduceByKey/窗口）增加分区：重分区或调 shuffle 分区数
 ③ 批间隔：处理不过来 → 适当加大批间隔（延迟容忍内），或加 Executor</pre>
 <p><strong>第三招：内存</strong>：</p>
 <pre>窗口长 → 缓存批多 → 内存要够（spark.executor.memory）
-Task 序列化溢出 → 调 spark.memory.offHeap 或减少同时缓存</pre>
+Task 序列化溢出 → 开 `spark.memory.offHeap.enabled` + 设 `size`（或减少同时缓存）</pre>
 <p><strong>体检流程</strong>（照做）：UI 看"每批处理时长"→ 超间隔先开背压 → 还不够就加并行度/分区/资源 → 再不行加大批间隔。<strong>先处理后限速，最后才加间隔</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -544,7 +544,7 @@ query.awaitTermination()</pre>
 <tr><td>把 DStream 的 API 套到 Structured Streaming</td><td>两个 API 不同源：DStream 算子（flatMap/reduceByKey）和 DF API（select/groupBy）不通用。新项目直接学 Structured Streaming</td></tr>
 <tr><td>以为 DStream 被彻底淘汰</td><td>老项目大量在用，且思想通用。两条都会更稳</td></tr>
 <tr><td>输出模式 complete/append/update 搞混</td><td>complete=全量结果；append=只新结果；update=更新行。选错报警——去读官方文档对应语义即可</td></tr>
-<tr><td>Python 里没有 DStream</td><td>PySpark 只支持 Structured Streaming。学 DStream 用 Scala 示例，理解为主</td></tr>
+<tr><td>Python 里没有 DStream</td><td>PySpark 也有 DStream（<code>pyspark.streaming</code> + <code>KafkaUtils</code>），但新项目与官方主推 Structured Streaming。学 DStream 用 Scala 示例，理解为主</td></tr>
 </table>
 </div>
 </div></div>

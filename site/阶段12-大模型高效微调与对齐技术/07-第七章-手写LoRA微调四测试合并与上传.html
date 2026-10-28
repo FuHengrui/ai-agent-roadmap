@@ -315,7 +315,7 @@ config = PeftConfig.from_pretrained(peft_model_path)
 # 2. 先加载底座模型（名字存于 config.base_model_name_or_path）
 model = AutoModelForCausalLM.from_pretrained(
     config.base_model_name_or_path,
-    device_map=&quot;auto&quot;, torch_dtype=torch.float16)
+    device_map=&quot;auto&quot;, torch_dtype=torch.float16   # 文件首行记得 import torch)
 
 # 3. 再把补丁叠上去
 model = PeftModel.from_pretrained(model, peft_model_path)
@@ -351,7 +351,7 @@ tokenizer.save_pretrained(&#x27;./merged_model&#x27;)</pre>
 <tr><th>合并前</th><th>合并后</th></tr>
 <tr><td>W 冻结 + A、B 两个补丁</td><td>一个包含补丁效果的 W'</td></tr>
 <tr><td>依赖 adapter_config + 底座</td><td>独立完整模型，谁都能直接用</td></tr>
-<tr><td>体积小（几百 MB）</td><td>体积=底座大小（GB 级）</td></tr>
+<tr><td>体积小（本项目这种配置只有几 MB；7B 全挂线性层才会到几十~几百 MB）</td><td>体积=底座大小（GB 级）</td></tr>
 </table>
 <p>要点：</p>
 <ul><li><code>merge_and_unload()</code> 的 <strong>unload</strong> 是卸载 PEFT 结构，把模型恢复正常形态；</li><li>合并后的 <code>./merged_model</code> 是<strong>独立模型</strong>：可导出 GGUF（第 10 章）、推 Hugging Face、直接 from_pretrained 加载。</li></ul>
@@ -431,7 +431,7 @@ print(generate_text(&quot;你好&quot;))</pre>
 <pre># 1. 安装 SDK（如未装）
 pip install huggingface_hub
 # 2. 登录（需要 HF 账号里的访问令牌）
-huggingface-cli login
+hf auth login
 # 输入 token 时粘贴：hf_xxxxxxxx（设置里生成）</pre>
 <pre># 3. 上传模型和分词器
 repo_name = &quot;&lt;你的用户名&gt;/lora-test&quot;   # 仓库名：用户名/模型名
@@ -447,7 +447,7 @@ model.push_to_hub(repo_name)</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>把 token 写进代码/笔记/发给别人</td><td>令牌等于账号钥匙。<strong>token 只在 huggingface-cli login 交互时粘贴</strong>；代码里不要 hardcode。泄露了立刻去 HF 设置吊销重建</td></tr>
+<tr><td>把 token 写进代码/笔记/发给别人</td><td>令牌等于账号钥匙。<strong>token 只在 hf auth login 交互时粘贴</strong>；代码里不要 hardcode。泄露了立刻去 HF 设置吊销重建</td></tr>
 <tr><td>push 报 401/403</td><td>令牌无效或权限不足：重新 login；检查令牌是否勾选了 write 权限</td></tr>
 <tr><td>上传后模型列表是空的</td><td>确认 push_to_hub 是否成功跑完（大文件要等）；tokenizer 先传、模型后传，网页刷新看 repo 页</td></tr>
 </table>
@@ -492,7 +492,7 @@ model.push_to_hub(repo_name)</pre>
 第6章 保存         tokenizer.save + trainer.save → ./lora_model
 第7章 测试         PeftModel 加载补丁 → generate_text 对比
 第7章 合并         merge_and_unload → ./merged_model（完整模型）
-第7章 上传         huggingface-cli login → push_to_hub</pre>
+第7章 上传         hf auth login → push_to_hub</pre>
 <p>这套基线的三处可替换升级点（后文主线）：</p>
 <ul><li>训练太慢/太费显存 → <strong>Unsloth</strong>（第 8/9 章）；</li><li>部署要轻量 → <strong>GGUF + Ollama</strong>（第 10 章）；</li><li>想用现成框架点按钮 → <strong>LLaMA-Factory WebUI</strong>（第 11/12 章）。</li></ul>
 </div>
@@ -537,12 +537,12 @@ model.push_to_hub(repo_name)</pre>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
 <tr><td><strong>测试能力</strong></td><td>two-step 加载（底座+补丁）、generate_text 封装、微调前后对比方法</td></tr>
 <tr><td><strong>合并能力</strong></td><td>merge_and_unload 焊回补丁，产出可部署的完整模型（第 10 章前置）</td></tr>
-<tr><td><strong>分发能力</strong></td><td>huggingface-cli login + push_to_hub 上传模型，密钥纪律四铁律</td></tr>
+<tr><td><strong>分发能力</strong></td><td>hf auth login + push_to_hub 上传模型，密钥纪律四铁律</td></tr>
 <tr><td><strong>完整闭环</strong></td><td>环境→数据→训练→测试→合并→上传总图，手写 LoRA 毕业</td></tr>
 </table>
 <p>下一章进入工具加速线：Unsloth 凭什么快 2~5 倍、省 70% 内存？怎么用它微调 DeepSeek？</p>
 <h4>自测：能不能答上来</h4>
-<ol><li>为什么加载 LoRA 权重要"先底座、后补丁"两步？直接载 lora_model 会发生什么？</li><li>merge_and_unload() 在数学上做了什么操作？合并前后的模型有什么区别？</li><li>generate_text 里 <code>skip_special_tokens=True</code> 和 <code>torch.no_grad()</code> 各起什么作用？</li><li>验证微调效果时，"只拿训练集问题测"错在哪里？正确做法是什么？</li><li>上传 Hugging Face 的仓库名格式是什么？push 前要确认什么？</li><li>写出关键词生成的密钥纪律（至少三条）。</li><li>从环境到上传的完整流水线按顺序写出来（八步）。</li></ol>
+<ol><li>为什么加载 LoRA 权重要"先底座、后补丁"两步？直接载 lora_model 会发生什么？</li><li>merge_and_unload() 在数学上做了什么操作？合并前后的模型有什么区别？</li><li>generate_text 里 <code>skip_special_tokens=True</code> 和 <code>torch.no_grad()</code> 各起什么作用？</li><li>验证微调效果时，"只拿训练集问题测"错在哪里？正确做法是什么？</li><li>上传 Hugging Face 的仓库名格式是什么？push 前要确认什么？</li><li>写出模型上传的密钥纪律（至少三条）。</li><li>从环境到上传的完整流水线按顺序写出来（十步）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://huggingface.co/docs/hub/models-uploading" target="_blank" rel="noopener"><span class="k">官网</span>Hugging Face Hub 文档（上传/令牌）</a>
 <a href="https://huggingface.co/docs/peft/conceptual_guides/memory" target="_blank" rel="noopener"><span class="k">官网</span>PEFT 显存优化指南（合并/卸载）</a>

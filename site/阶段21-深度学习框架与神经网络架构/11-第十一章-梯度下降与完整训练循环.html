@@ -301,7 +301,7 @@
 <pre># 单参数下山示意
 param = param - lr * gradient_of_loss(param)</pre>
 <p>两个关键量：</p>
-<ul><li><strong>学习率 lr</strong>：步长。太大越过谷底乱跳，太小走得慢死。</li><li><strong>梯度</strong>：方向。来自损失对参数的偏导（上一章自动微分算好）。</li></ul>
+<ul><li><strong>学习率 lr</strong>：步长。太大越过谷底乱跳，太小走得慢死。</li><li><strong>梯度</strong>：方向。来自损失对参数的偏导（第七章的自动微分已经备好）。</li></ul>
 <p><strong>所有深度学习的训练，本质上都是这条"下坡路"。</strong></p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -326,7 +326,7 @@ param = param - lr * gradient_of_loss(param)</pre>
 pred = model(x)              # 前向：预测
 loss = loss_fn(pred, y)     # 前向：损失
 loss.backward()             # 反向：填满所有 .grad</pre>
-<p>完整循环（标准四连）：</p>
+<p>完整循环（标准五连）：</p>
 <pre>optimizer.zero_grad()   # 1 清梯度
 pred = model(x)         # 2 前向
 loss = loss_fn(pred, y) # 3 算损失
@@ -350,7 +350,9 @@ optimizer.step()        # 5 用梯度更新参数</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>optimizer（优化器）</strong> 负责把 .grad 变成"新参数"。最朴素的 SGD（随机梯度下降）就是：</p>
-<pre>optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
+<pre>import torch
+
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
 # step() 内部等价于（对每个参数 p）：
 # p.data -= lr * p.grad</pre>
