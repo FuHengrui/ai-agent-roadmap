@@ -520,7 +520,7 @@ rdd.sortByKey(false, 1)                    // 降序，且结果全局有序 1 �
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>sortBy 全局有序但分区 &gt;1</td><td>多分区下每个分区局部有序，<strong>跨分区不确定</strong>。要全局序 <code>numPartitions=1</code></td></tr>
+<tr><td>以为 sortBy 多分区拿不到全局序</td><td><code>sortBy</code> 用 RangePartitioner，分区按区间有序，<strong>多分区结果本身就是全局有序的</strong>；只是它要全量排序，代价高。写单文件才需要收成 1 个分区</td></tr>
 <tr><td>sample 的三个参数顺序记不住</td><td><code>sample(withReplacement, fraction, seed)</code>：是否放回、比例（0~1）、随机种子。想复现结果固定 seed；fraction&gt;1 且不放回会报错</td></tr>
 <tr><td>partitionBy 只在 KV 型可用</td><td>它要求 <code>RDD[(K,V)]</code>。普通 RDD 想自己定分区用 <code>mapPartitions</code> + 重算，或先 map 成 KV</td></tr>
 <tr><td>glom 后处理逻辑用到原 RDD</td><td>glom 返回 <code>RDD[Array[T]]</code> 是新类型，别拿它当原来的处理链（它是"看结构"用的，不是正常处理算子）</td></tr>

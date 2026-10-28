@@ -51,6 +51,7 @@ jobs:
         run: |
           python tools/check_content.py
           python tools/check_consistency.py
+          python tools/check_facts.py --check
           python tools/build_ledger.py --check
           python tools/stats.py --check
 

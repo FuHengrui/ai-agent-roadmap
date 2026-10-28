@@ -69,6 +69,9 @@ PERSONAL: list[str] = [
 ]
 
 
+STRICT = '--strict' in sys.argv
+
+
 def main() -> int:
     want = set(sys.argv[1:])
     files = sorted(CONTENT.glob("*.md"))
@@ -125,6 +128,27 @@ def main() -> int:
         vid = len(re.findall(r"course/id/\d+", t))
         if vid:
             flags.append("★视频链接%d条" % vid)
+
+        # ★ 结构：@@summary 必须排在最后一个 @@point 之后（小结不能落在章中间）
+        i_sum = t.rfind("@@summary")
+        i_pt = t.rfind("@@point")
+        if STRICT and i_sum != -1 and i_pt != -1 and i_sum < i_pt:
+            flags.append("★小结在知识点前")
+
+        # ★ 表格：同一张表里，每行的单元格数应与表头一致（转义的 \| 不算分隔）
+        tl = t.split("\n")
+        n_head = None
+        for i, ln in enumerate(tl):
+            s = ln.strip()
+            if s.startswith("|"):
+                plain = s.replace("\\|", "")
+                cells = plain.strip("|").split("|")
+                if n_head is None:
+                    n_head = len(cells)
+                elif STRICT and len(cells) != n_head:
+                    flags.append("★表格列数不符(L%d)" % (i + 1))
+            else:
+                n_head = None
 
         if flags:
             problems.append((f.name, flags))

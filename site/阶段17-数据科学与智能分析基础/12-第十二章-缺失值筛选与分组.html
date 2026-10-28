@@ -340,8 +340,8 @@ df = pd.DataFrame({&#x27;成绩&#x27;: [88, None, 76], &#x27;身高&#x27;: [170,
 
 df[&#x27;成绩&#x27;].fillna(0)                    # 填常量 0
 df[&#x27;成绩&#x27;].fillna(df[&#x27;成绩&#x27;].mean())    # 填均值（最常见策略）
-df[&#x27;身高&#x27;].ffill()   # pandas 3.0 已移除 fillna(method=)，用 ffill()/bfill()       # 前向填充：用上一个值补（时间序列）
-df[&#x27;身高&#x27;].fillna(method=&#x27;bfill&#x27;)       # 后向填充
+df[&#x27;身高&#x27;].ffill()   # pandas 3.0 已移除该参数，直接用 ffill()/bfill()       # 前向填充：用上一个值补（时间序列）
+df[&#x27;身高&#x27;].bfill()                    # 后向填充（pandas 3.0 已移除 method 参数）
 df.fillna({&#x27;成绩&#x27;: 0, &#x27;身高&#x27;: 170})      # 按列分别填</pre>
 <p>选择策略的三条经验：</p>
 <ul><li><strong>数值类缺失</strong>：业务上"没有就是 0"填 0；"缺损合理"填均值/中位数；</li><li><strong>时间序列</strong>：ffill（用上一时刻的值继承）通常合理；</li><li><strong>分类/文本缺</strong>：填"未知"/众数。</li></ul>

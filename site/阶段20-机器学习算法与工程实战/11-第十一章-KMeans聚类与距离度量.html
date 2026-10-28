@@ -328,7 +328,7 @@
 <pre>中心_k = (1/|簇k|) · Σ_{x∈簇k} x</pre>
 <ul><li>每个样本属于"离它最近的质心"所在的簇。</li></ul>
 <p>直觉画面：先随便摆 K 个中心 → 样本认领最近的中心分为 K 组 → 每组重新算平均得到新中心 → 再认领……反复几轮，中心和分组互相"校准"，最终稳定。<strong>目标函数（SSE）被一步步压小</strong>。</p>
-<p>"均值"二字道破本质：簇的形状趋向"球形"（各向同性），也是后续变体（KMedoids 用中位数）改进的出发点。</p>
+<p>"均值"二字道破本质：簇的形状趋向"球形"（各向同性），也是后续变体（KMedoids 用簇内真实代表点 medoid）改进的出发点。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -432,7 +432,7 @@ plt.xlabel(&quot;K&quot;); plt.ylabel(&quot;SSE&quot;); plt.show()</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>KMeans 的三大脾气（理解它们避免被结果骗）：</p>
-<ol><li><strong>吃归一化</strong>：距离算法，量纲敏感 → 先 StandardScaler。</li><li><strong>偏好球形簇</strong>：用欧氏均值定义中心，天然假设各簇是"均匀圆球"；遇到<strong>elongated（长条形）、凹形、嵌套环状</strong>的簇，KMeans 会硬切成几段或把环形中间的人为切开——它是错的也"收敛得很自然"。这类数据要让位给密度聚类（第十三章 DBSCAN）。</li><li><strong>对离群点敏感</strong>：均值被离群点拉动，质心偏移；可先用 KMedoids（中位数，下章）或预处理剔除。</li></ol>
+<ol><li><strong>吃归一化</strong>：距离算法，量纲敏感 → 先 StandardScaler。</li><li><strong>偏好球形簇</strong>：用欧氏均值定义中心，天然假设各簇是"均匀圆球"；遇到<strong>elongated（长条形）、凹形、嵌套环状</strong>的簇，KMeans 会硬切成几段或把环形中间的人为切开——它是错的也"收敛得很自然"。这类数据要让位给密度聚类（第十三章 DBSCAN）。</li><li><strong>对离群点敏感</strong>：均值被离群点拉动，质心偏移；可先用 KMedoids（medoid：簇内真实样本点，下章）或预处理剔除。</li></ol>
 <p>识别手段：聚类后画散点图<strong>目检</strong>（不同簇用不同颜色），看簇边界是否符合直觉——可视化是聚类验收的必备动作。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -488,7 +488,7 @@ plt.show()</pre>
 <tr><th>软肋</th><th>表现</th><th>解决（下章/后文）</th></tr>
 <tr><td>初始中心敏感</td><td>好初始收敛快，差初始卡局部最优</td><td>KMeans++ 概率化初始化</td></tr>
 <tr><td>聚类结果非全局最优</td><td>SSE 只能保证收敛到局部</td><td>二分 KMeans、多次 n_init</td></tr>
-<tr><td>对离群点敏感</td><td>均值被拉偏</td><td>KMedoids 用中位数</td></tr>
+<tr><td>对离群点敏感</td><td>均值被拉偏</td><td>KMedoids 用簇内真实代表点（medoid），不是中位数</td></tr>
 <tr><td>距离计算太慢</td><td>大数据每次算两两距离</td><td>elkan 三角不等式剪枝</td></tr>
 <tr><td>全量数据内存压力</td><td>大样本全量迭代</td><td>Mini-Batch KMeans 分片</td></tr>
 </table>

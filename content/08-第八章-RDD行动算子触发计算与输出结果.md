@@ -283,7 +283,7 @@ rdd.sample(withReplacement = true, fraction = 0.2, seed = 1)
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| sortBy 全局有序但分区 >1 | 多分区下每个分区局部有序，**跨分区不确定**。要全局序 `numPartitions=1` |
+| 以为 sortBy 多分区拿不到全局序 | `sortBy` 用 RangePartitioner，分区按区间有序，**多分区结果本身就是全局有序的**；只是它要全量排序，代价高。写单文件才需要收成 1 个分区 |
 | sample 的三个参数顺序记不住 | `sample(withReplacement, fraction, seed)`：是否放回、比例（0~1）、随机种子。想复现结果固定 seed；fraction>1 且不放回会报错 |
 | partitionBy 只在 KV 型可用 | 它要求 `RDD[(K,V)]`。普通 RDD 想自己定分区用 `mapPartitions` + 重算，或先 map 成 KV |
 | glom 后处理逻辑用到原 RDD | glom 返回 `RDD[Array[T]]` 是新类型，别拿它当原来的处理链（它是"看结构"用的，不是正常处理算子） |

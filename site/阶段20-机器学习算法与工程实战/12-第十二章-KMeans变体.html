@@ -363,7 +363,7 @@ km = KMeans(n_clusters=3, init=&#x27;k-means++&#x27;, n_init=10, random_state=42
 </table>
 </div>
 </div></div>
-<div class="point" id="p4"><div class="head"><span class="no">4</span>④ KMedoids：用中位数治"离群点与均值"</div><div class="body">
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ KMedoids：用簇内真实代表点（medoid）治"离群点与均值"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>均值对离群点极度敏感（一个超大值就把中心拉飞）。而且字符串/类别数据没法算均值。怎么办？——换"代表点"。</p>
 </div>
@@ -432,7 +432,7 @@ mbk.fit(X)</pre>
 <tr><th>场景</th><th>推荐</th><th>理由</th></tr>
 <tr><td>默认通用</td><td>KMeans + KMeans++</td><td>免费改进，sklearn 默认</td></tr>
 <tr><td>结果不稳定/卡局部最优</td><td>二分 KMeans</td><td>贪心分裂更稳</td></tr>
-<tr><td>有离群点/非数值特征</td><td>KMedoids</td><td>中位数式真实代表点</td></tr>
+<tr><td>有离群点/非数值特征</td><td>KMedoids</td><td>medoid：簇内真实样本点（不是中位数）</td></tr>
 <tr><td>百万级稠密数据</td><td>KMeans(algorithm='elkan')</td><td>三角不等式剪枝提速</td></tr>
 <tr><td>千万级/流式</td><td>Mini-Batch KMeans</td><td>分批在线、内存友好</td></tr>
 <tr><td>球形偏好、怕离群点、初始敏感全治</td><td>上述自由组合</td><td>本质还是"球形家族"的取舍</td></tr>
@@ -511,7 +511,7 @@ print(&quot;SSE++:&quot;, km_pp.inertia_, &quot; SSE random:&quot;, km_rd.inerti
   <a href="#p1" title="KMeans 家族的技术谱系：先看全局"><span class="n">1</span>KMeans 家族的技术谱系：先看全局</a>
   <a href="#p2" title="KMeans++：把&quot;随机初始&quot;改成&quot;概率远点&quot;"><span class="n">2</span>KMeans++：把"随机初始"改成"概率远点"</a>
   <a href="#p3" title="二分 KMeans：贪心拆分的局部最优&quot;解药&quot;"><span class="n">3</span>二分 KMeans：贪心拆分的局部最优"解药"</a>
-  <a href="#p4" title="KMedoids：用中位数治&quot;离群点与均值&quot;"><span class="n">4</span>KMedoids：用中位数治"离群点与均值"</a>
+  <a href="#p4" title="KMedoids：用簇内真实代表点（medoid）治&quot;离群点与均值&quot;"><span class="n">4</span>KMedoids：用簇内真实代表点（medoid）治"离群点与均值"</a>
   <a href="#p5" title="elkan：用三角不等式给距离计算&quot;减负&quot;"><span class="n">5</span>elkan：用三角不等式给距离计算"减负"</a>
   <a href="#p6" title="Mini-Batch KMeans：把&quot;全量迭代&quot;改成&quot;分批走&quot;"><span class="n">6</span>Mini-Batch KMeans：把"全量迭代"改成"分批走"</a>
   <a href="#p7" title="变体对照总表：什么时候用谁"><span class="n">7</span>变体对照总表：什么时候用谁</a>
