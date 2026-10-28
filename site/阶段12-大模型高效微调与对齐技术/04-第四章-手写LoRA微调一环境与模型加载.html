@@ -287,7 +287,7 @@
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>要有一块 NVIDIA 显卡和 conda：装 CUDA 版 torch 和 peft，加载 1.5B 模型要几 GB 空间。</p></div></div>
-<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能建好环境、把 DeepSeek-R1-1.5B 加载进显存并确认 GPU 可用，就算过了。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能建好环境、把 deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B 加载进显存并确认 GPU 可用，就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（LoRA 原理）：懂了低秩补丁（W+AB）为什么省、参数怎么设置</span>
@@ -406,7 +406,7 @@ pip install bitsandbytes accelerate</pre>
 <tr><td>模型名</td><td><code>deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B</code></td></tr>
 <tr><td>底子</td><td>Qwen2（Qwen 2 架构，1.5B 参数）</td></tr>
 <tr><td>角色</td><td>DeepSeek-R1 的<strong>蒸馏（Distill）</strong>版本——用 R1 大模型的输出去训练小 Qwen</td></tr>
-<tr><td>为什么选它</td><td>推理能力不俗 + 7 亿~15 亿参数，普通消费级 GPU 友好</td></tr>
+<tr><td>为什么选它</td><td>推理能力不俗 + 约 15 亿（1.5B）参数，普通消费级 GPU 友好</td></tr>
 </table>
 <p>"R1-Distill" 的含义正是第 2 章的知识蒸馏实战形态：<strong>教师（R1 大模型）→ 学生（Qwen-1.5B）</strong>。它自带"会推理"的属性，任务微调时更容易看出 LoRA 前后的差异。</p>
 <p>加载它需要 Hugging Face 网络可达（国内可用镜像 <code>HF_ENDPOINT=https://hf-mirror.com</code>），首次会自动下载约 3GB 权重。</p>
@@ -426,7 +426,8 @@ pip install bitsandbytes accelerate</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>示例代码（整理为可运行版）：</p>
-<pre>from transformers import AutoTokenizer, AutoModelForCausalLM
+<pre>import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 model_name = &quot;deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B&quot;
 # 分词器：把文字切成 token

@@ -357,7 +357,12 @@ class VectorStore:
         self.db = Chroma(
             collection_name=&quot;legal_cases&quot;,
             embedding_function=self.embeddings,
-…（以下省略 16 行，完整代码见仓库对应位置）
+            persist_directory=str(settings.CHROMA_DIR),   # 落盘目录
+        )
+
+    def build_index(self, cases: list[dict]) -&gt; None:
+        docs = [
+            Document(page_content=c[&quot;content&quot;], metadata={&quot;court&quot;: c[&quot;court&quot;], &quot;type&quot;: c[&quot;type&quot;]})
             for c in cases
         ]
         self.db.add_documents(docs)
@@ -440,8 +445,8 @@ asyncio.run(main())</pre>
 RAG_TOP_K=5</pre>
 <p>用法（RetrievalAgent 里）：</p>
 <pre>docs = await store.similarity_search(query, top_k=top_k * 3)
-filtered = [d for d in docs if d[1] &gt;= settings.RAG_SCORE_THRESHOLD]</pre>
-<ul><li>阈值 0.7：宁可少召回，不把"不相关"硬塞给 LLM——法律场景错误引用的代价高。</li><li><code>RAG_TOP_K=5</code>：最终送入 prompt 的案例数。<strong>多了 token 爆炸且模型抓不住重点</strong>。</li><li>调参顺序：先看相似度分数分布，再定阈值——盲设阈值容易"全过"或"全滤"。</li></ul>
+filtered = [d for d in docs if d[1] &lt;= settings.RAG_SCORE_THRESHOLD]   # Chroma 返回的是距离，越小越像</pre>
+<ul><li>阈值 0.7（<strong>距离</strong>，越小越像）：宁可少召回，不把"不相关"硬塞给 LLM——法律场景错误引用的代价高。</li><li><code>RAG_TOP_K=5</code>：最终送入 prompt 的案例数。<strong>多了 token 爆炸且模型抓不住重点</strong>。</li><li>调参顺序：先看相似度分数分布，再定阈值——盲设阈值容易"全过"或"全滤"。</li></ul>
 </div>
 </div></div>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 初始化与关闭：向量库的生命周期</div><div class="body">
@@ -481,7 +486,7 @@ import asyncio
 from app.rag.vector_store import get_vector_store
 
 async def main():
-    store = get_vector_store()
+    store = await init_vector_store()
     # 用&quot;语义近但字面不同&quot;的查询测试
     results = await store.similarity_search(&quot;夫妻闹离婚，房子归谁&quot;, top_k=3)
     for doc, score in results:

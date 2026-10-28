@@ -2,7 +2,7 @@
 @@sub 阶段 13 · 大数据处理与分布式检索技术　|　难度 ★★★☆
 
 @@why 这一章在解决什么问题
-前 11 章的算子、内核、并行度、共享变量——**是骡子是马拉出来遛遛**。本章用三个经典实战需求把它们串成完整程序：**PV（页面浏览量）/ UV（独立访客数）统计**（网站运营最基础的两个指标）和 **二次排序**（先按第一字段排、再按第二字段排——面试题里的常客、业务里找"同一天内最新记录"的刚需）。
+前 11 章的算子、内核、并行度、共享变量——**是骡子是马拉出来遛遛**。本章用四个统计需求加一道二次排序，把它们串成完整程序：**PV（页面浏览量）/ UV（独立访客数）统计**（网站运营最基础的两个指标）和 **二次排序**（先按第一字段排、再按第二字段排——面试题里的常客、业务里找"同一天内最新记录"的刚需）。
 
 同时实战逼出两个真问题：两遍统计怎么避免重复计算（cache 用武之地）、RDD 排序怎么自定义排序规则（Ordering 的用武之地）。跑通这三个案例，你就真正"会用 Spark 做数据分析"了。
 
@@ -30,14 +30,14 @@
 
 ```text
 2026-10-01 08:12:33  192.168.1.10  /home      Mozilla/5.0
-2026-10-01 08:15:41  192.168.1.10  /product   1   ← 用户 1 再次访问
+2026-10-01 08:15:41  192.168.1.10  /product   Mozilla/5.0   ← 用户 1 再次访问
 2026-10-01 09:01:02  192.168.1.20  /home
 2026-10-01 09:03:55  192.168.1.30  /cart
 2026-10-01 09:44:11  192.168.1.10  /home      ← 用户 1 三次访问
 ...
 ```
 
-**字段**：时间 | IP（代表用户）| 访问页面 | 浏览器 UA（可省）
+**字段**：日期 时刻 | IP（代表用户）| 访问页面 | 浏览器 UA（可省，没有也能解析）
 
 **四个统计需求**：
 
@@ -72,8 +72,9 @@ case class Log(time: String, ip: String, page: String, ua: String)
 
 val logs = raw.flatMap { line =>
   val arr = line.split("\\s+")
-  if (arr.length >= 4 && arr(2).startsWith("/"))   // 校验长度+页面格式
-    Some(Log(arr(0)+" "+arr(1), arr(2), arr(3), arr(4)))
+  // 字段：日期 时刻 IP 页面 [UA] —— 页面在第 4 段（下标 3），UA 可以没有
+  if (arr.length >= 4 && arr(3).startsWith("/"))
+    Some(Log(arr(0) + " " + arr(1), arr(2), arr(3), if (arr.length >= 5) arr(4) else ""))
   else None                                       // 脏行 → None 被压平丢弃
 }
 ```
@@ -154,13 +155,12 @@ val uv2 = logs.map(_.ip).map((_, 1)).reduceByKey(_ + _).count()
 
 ```scala
 val uv3 = logs.map(_.ip)
-              .distinct()          // first：本地去重（窄依赖）
-              .map((_, 1))
-              .reduceByKey(_ + _)  // 全局合并
+              .map((_, 1))          // 每个 IP 先记一次
+              .reduceByKey(_ + _)   // map 端预聚合：同一 Executor 内只传 1 条
               .count()
 ```
 
-**UV 的内在**：distinct 和 reduceByKey 都是宽依赖（要全局知道"这个 IP 出现过没有"），所以 UV **天然要 shuffle 一次**——这是去重需求的物理底线，别指望快过它。
+**UV 的内在**：reduceByKey（以及 distinct）都是宽依赖——要全局知道"这个 IP 出现过没有"，所以 UV **天然要 shuffle 一次**——这是去重需求的物理底线，别指望快过它。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -186,7 +186,7 @@ val hotPages = logs.map(log => (log.page, 1))
 **三步各自的道**：
 
 1. **reduceByKey 聚合**：同页面的访问次数放一起（宽依赖，必 shuffle，但已 map 端预聚合过，量小）
-2. **sortBy 全局排序**：注意**多分区需要全局有序**，此时分区数变 1 才对——大数据量下全排序开到 1 个分区会慢，**改进版用 takeOrdered（堆顶 N，不排全序）**：
+2. **sortBy 全局排序**：`sortBy` 用 RangePartitioner，**多分区也是全局有序**，不用设成 1；代价是它要全量排序，数据量大时慢。**TopN 用 takeOrdered（堆顶 N，不排全序）更划算**：
 
 ```scala
 // 更优：只要 Top5，不必全量排序
@@ -202,8 +202,8 @@ val hot5 = logs.map(log => (log.page, 1))
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| sortBy 后 take 依然全局有序？（分区>1） | sortBy 是多分区**局部有序**，take 抓的是"最先碰到的分区"——可能不是全局最大。**要么 sortBy 设 numPartitions=1，要么用 takeOrdered** |
-| takeOrdered 默认是取最小的 5 个 | 想要最大 5 个必须把顺序倒过来（见上面 `Ordering.Int.reverse` 或 `排序键取负`：`takeOrdered(5)((a,b) => b._1 - a._1)`） |
+| 以为 sortBy 后 take 不是全局 TopN | 恰恰相反：`sortBy` 按区间分区、分区内有序，全局就是有序的，`take(n)` 拿到的就是全局前 n。**它没错，只是要把全量排一遍，贵**——TopN 用 `takeOrdered` |
+| takeOrdered 默认是取最小的 5 个 | 想要最大 5 个得把顺序倒过来，用 Ordering 表达（`Ordering.Int.reverse`，或 `Ordering.by((t: (Int, String)) => -t._1)`）；直接传比较函数 `(a,b) => b._1 - a._1` 编译不过 | |
 | 忘了 `.swap` 让次数做排序主键 | `(页面, 次数)` 直接 takeOrdered 是按**页面**排序（String 顺序），不对。swap 成 (次数, 页面) 才能按次数 |
 | 全排序 1 个分区太慢 | 大数据别用全局 sortBy；TopN 一律用 takeOrdered 只保头部 |
 
@@ -243,7 +243,7 @@ val sorted = rdd.sortBy(x => (x._1, x._2))
 |---|---|
 | 两次 sortBy 顺序混乱 | **排序只排一次**，两个字段合成元组/自定义类一次排。多轮 sortBy 只保留最后一次的序（中间序被破坏），别信"先排再排" |
 | 元组排序是字典序不是数值序 | `("10", "9")` 字符串序会 10<9。数字必须存成 Int/Long 再排（解析日志时转类型） |
-| 需求"date 升序 + time 降序"混合方向 | 元组内嵌不动全局方向，混合方向用 `sortBy(x => (x._1, -x._2))`（数值取负）或自定义 Ordering |
+| 需求"date 升序 + time 降序"混合方向 | 元组本身没有"字段内方向"。数值字段可以取负 `(x._1, -x._2)`；字符串字段（如 "09:00"）取负不成立，要自定义 Ordering（如 `Ordering.Tuple2(Ordering.String, Ordering.String.reverse)`） |
 | 排序键相等还要第三/第四字段 | 元组加长即可 `(k1,k2,k3)`——"N 次排序"= 合成 N 维键一次排 |
 
 @@point ⑦ 二次排序进阶：自定义对象 + Ordering
@@ -256,10 +256,14 @@ val sorted = rdd.sortBy(x => (x._1, x._2))
 ```scala
 case class Item(name: String, count: Int)
 
+// 准备点数据（片段自包含，能直接跑）
+val rdd = sc.parallelize(List(Item("a", 3), Item("b", 9), Item("c", 5)))
+
 // 方式一：元组取负（最简，数值字段可负）
-rdd.map(x => (-x.count, x.name, x))
+// 注意 sortByKey 只认 (K, V) 二元组，三元组要先包成 key
+rdd.map(x => ((-x.count, x.name), x))
    .sortByKey()
-   .map(_._3)
+   .map(_._2)
 // 先排 -count（升序=count 降序），再排 name（升序）
 
 // 方式二：自定义 Ordering（最通用，任意对象/任意规则）
@@ -318,9 +322,10 @@ val topGate = perGate.sortBy(_._2, false).take(3)
 val carUv = pass.map(_.plate).distinct().count()
 
 // 需求 4：每个卡口最先通过 / 最晚通过（组内时间排序=二次排序）
-val firstPass = pass.map(r => (r.gateId, r.time, r.plate))
-                    .groupByKey()
-                    .mapValues(_.toList.sorted.head)   // 组内按时间排序取最早
+val byGate = pass.map(r => (r.gateId, (r.time, r.plate)))
+                 .groupByKey()
+val firstPass = byGate.mapValues(_.toList.sorted.head)          // 组内按时间取最早
+val lastPass  = byGate.mapValues(_.toList.sorted.last)          // 取最晚
 ```
 
 **要点回顾**：

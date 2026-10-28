@@ -297,7 +297,7 @@
 <span class="node">阶段终点：原理打底 + 提示词加持，你已经能和任何大模型高效对话</span>
 </div>
 <div class="note info"><span class="t">这一章你要达到什么程度</span>
-<p>16 个知识点：前 5 个建立"提示词世界观"（是什么、几类、为什么值得学、两条编写原则），中间 6 个是<strong>工具箱</strong>（读写公式、优化技巧、迭代流程、元提示），最后 3 个讲安全（攻击与防御），再上 2 个综合实战。<strong>核心是两套公式和六步迭代法，必须记下来当肌肉记忆。</strong></p></div>
+<p>16 个知识点：前 5 个建立"提示词世界观"（是什么、几类、为什么值得学、两条编写原则），中间 6 个是<strong>工具箱</strong>（读写公式、优化技巧、迭代流程、元提示），最后 2 个讲安全（攻击与防御），再上 2 个综合实战。<strong>核心是两套公式和六步迭代法，必须记下来当肌肉记忆。</strong></p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 提示词：给 AI 的"任务说明书"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>你问 AI"四大名著有哪些？"它答得好；你问"帮我写一份活动策划"它给得稀烂。<strong>同样一个模型，为什么差别这么大？</strong> 根源在于：AI 不是"心想事成"，它是"你说什么，它按字面理解"——你给的一句话，信息量太少了。</p>
@@ -731,8 +731,23 @@ C 约束：语气亲切口语化；不夸大功效（不说&quot;立刻变白&qu
   不用违禁词（美白、治疗、百分百等）
   语气口语化，像闺蜜分享</pre>
 <p>配套的交互界面（Gradio）：</p>
-<pre>import gradio as gr
+<pre>import os
+
+import gradio as gr
 from openai import OpenAI
+
+# 上面那段 text 模板，原样搬进三引号（花括号就是 .format 的占位符）
+TEMPLATE = &quot;&quot;&quot;你是深耕小红书 5 年的美妆/生活博主，文案风格真实种草、有梗不油腻。
+任务：为「{产品名}」写一篇种草笔记。
+信息：核心卖点 = {卖点描述}；目标人群 = {人群}。
+输出结构：
+  标题：1 个，20 字内，带 1 个 emoji
+  正文：200-300 字，分 3 段（痛点共鸣 → 产品体验 → 使用场景）
+  标签：8 个，以 # 开头
+约束：
+  不写&quot;全网第一&quot;&quot;立刻见效&quot;等夸大成份
+  不用违禁词（美白、治疗、百分百等）
+  语气口语化，像闺蜜分享&quot;&quot;&quot;
 
 client = OpenAI(
     api_key=os.environ[&quot;DASHSCOPE_API_KEY&quot;],

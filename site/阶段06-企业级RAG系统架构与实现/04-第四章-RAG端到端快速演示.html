@@ -338,7 +338,7 @@ uv sync
 uv run python 01_数据解析.py</pre>
 <p>为什么是 uv 而不是裸 pip：</p>
 <ul><li><code>pyproject.toml</code> 声明依赖（相当于含版本锁的 requirements）</li><li><code>uv sync</code> 全自动建虚拟环境 + 装依赖，不需要手搓 venv</li><li>团队里换台机器，<code>uv sync</code> 一条命令恢复同样环境</li></ul>
-<p>依赖清单就三样核心：<code>sentence-transformers</code>（向量）、<code>chromadb</code>（向量库）、<code>openai</code>（大模型 SDK）、<code>streamlit</code>（网页）、<code>pdfplumber</code>（PDF 解析）。</p>
+<p>依赖清单就五样：<code>sentence-transformers</code>（向量）、<code>chromadb</code>（向量库）、<code>openai</code>（大模型 SDK）、<code>streamlit</code>（网页）、<code>pdfplumber</code>（PDF 解析）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -416,7 +416,7 @@ def extract_text(pdf_path: str) -&gt; str:
 </div></div>
 <div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 向量化：BGE 小模型把文本变成向量</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>块切好了，现在要把每块文字变成向量存进向量库。选哪个 Embedding 模型？开源、中文好、轻量、免费跑——<strong>BGE（BAAI/bge-small-zh）</strong> 就是这个 Demo 的选择：国产开源、384 维、几百 MB，中文语义效果好，个人电脑 CPU 就能跑。</p>
+<p>块切好了，现在要把每块文字变成向量存进向量库。选哪个 Embedding 模型？开源、中文好、轻量、免费跑——<strong>BGE（BAAI/bge-small-zh）</strong> 就是这个 Demo 的选择：国产开源、512 维、约 100MB，中文语义效果好，个人电脑 CPU 就能跑。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>from sentence_transformers import SentenceTransformer
@@ -583,11 +583,19 @@ def call_llm(prompt: str, temperature: float = 0.3) -&gt; str:
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre># api_client.py（05 文件的骨架）
+import os
+
+from openai import OpenAI
+
+BASE_URL = &quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;
+
+
 class LLMClient:
     &quot;&quot;&quot;统一封装大模型调用，对内对外只暴露 generate()&quot;&quot;&quot;
     def __init__(self, api_key: str = None):
         self.api_key = api_key or os.environ.get(&quot;DASHSCOPE_API_KEY&quot;)
         self.client = OpenAI(api_key=self.api_key, base_url=BASE_URL)
+        self.model = &quot;qwen-plus&quot;      # 换模型只改这一处
 
     def generate(self, system: str, user: str, **kwargs) -&gt; str:
         resp = self.client.chat.completions.create(
@@ -615,6 +623,10 @@ class LLMClient:
         self.model = model          # Embedding 模型
         self.collection = collection  # 向量库
         self.llm = llm              # 大模型客户端
+
+    def _retrieve(self, query: str, k: int = 3):
+        &quot;&quot;&quot;检索这一步单独抽出来：换向量库只改这里&quot;&quot;&quot;
+        return retrieve(query, k=k)      # retrieve 是上一节写的检索函数
 
     def answer(self, query: str) -&gt; dict:
         # ① 检索
@@ -646,7 +658,7 @@ st.set_page_config(page_title=&quot;社保政策问答助手&quot;, layout=&quot
 st.title(&quot;社保政策问答助手（RAG Demo）&quot;)
 st.caption(&quot;资料：社会保险政策 FAQ（本地向量库）&quot;)
 
-query = st.text_input(&quot;请输入你的问题（例如：养老金领取条件是什么？)&quot;)
+query = st.text_input(&quot;请输入你的问题（例如：养老金领取条件是什么？）&quot;)
 
 if query and st.button(&quot;提问&quot;, type=&quot;primary&quot;):
     with st.spinner(&quot;检索资料中...&quot;):
@@ -684,7 +696,7 @@ if query and st.button(&quot;提问&quot;, type=&quot;primary&quot;):
 </div></div>
 <h2>本章小结</h2>
 <p>这一章你亲手搭完了一个端到端 RAG 系统，七个文件七个环节全部跑通：</p>
-<ul><li>01 数据解析：PDF/TXT 变干净文本</li><li>02 文本分块：chunk_size + overlap 保住语义</li><li>03 向量化：BGE 小模型把文本变 384 维向量</li><li>04/05 大模型接入：OpenAI 兼容接口 + 分层封装，密钥只走环境变量</li><li>06 Pipeline 编排：检索→增强→生成→溯源四步总装</li><li>07 Streamlit：三行代码出问答网页</li></ul>
+<ul><li>01 数据解析：PDF/TXT 变干净文本</li><li>02 文本分块：chunk_size + overlap 保住语义</li><li>03 向量化：BGE 小模型把文本变 512 维向量</li><li>04/05 大模型接入：OpenAI 兼容接口 + 分层封装，密钥只走环境变量</li><li>06 Pipeline 编排：检索→增强→生成→溯源四步总装</li><li>07 Streamlit：三行代码出问答网页</li></ul>
 <p>而且你掌握了"换零件"的能力：换文档换语料、换 Embedding、换向量库、换大模型、加混合检索、加重排序——依赖的是你对链路每一环的理解，而不是某个库的 API。这个骨架，就是你做企业知识问答系统的第一版原型。</p>
 <h4>自测：能不能答上来</h4>
 <ol><li>向量化入库和查询时，Embedding 模型应该？</li></ol>

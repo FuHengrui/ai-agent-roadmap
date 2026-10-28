@@ -70,7 +70,7 @@ uv run python 01_数据解析.py
 - `uv sync` 全自动建虚拟环境 + 装依赖，不需要手搓 venv
 - 团队里换台机器，`uv sync` 一条命令恢复同样环境
 
-依赖清单就三样核心：`sentence-transformers`（向量）、`chromadb`（向量库）、`openai`（大模型 SDK）、`streamlit`（网页）、`pdfplumber`（PDF 解析）。
+依赖清单就五样：`sentence-transformers`（向量）、`chromadb`（向量库）、`openai`（大模型 SDK）、`streamlit`（网页）、`pdfplumber`（PDF 解析）。
 
 @@trap 坑在哪
 | 现象 | 原因 |
@@ -149,7 +149,7 @@ def split_text(text: str, chunk_size: int = 200, overlap: int = 50) -> list[str]
 
 @@point ⑤ 向量化：BGE 小模型把文本变成向量
 @@need 要解决什么
-块切好了，现在要把每块文字变成向量存进向量库。选哪个 Embedding 模型？开源、中文好、轻量、免费跑——**BGE（BAAI/bge-small-zh）** 就是这个 Demo 的选择：国产开源、384 维、几百 MB，中文语义效果好，个人电脑 CPU 就能跑。
+块切好了，现在要把每块文字变成向量存进向量库。选哪个 Embedding 模型？开源、中文好、轻量、免费跑——**BGE（BAAI/bge-small-zh）** 就是这个 Demo 的选择：国产开源、512 维、约 100MB，中文语义效果好，个人电脑 CPU 就能跑。
 
 @@idea 核心思路
 ```python
@@ -327,11 +327,19 @@ Demo 里直接"检索+生成"写在一起也能跑，但一改需求就动全身
 @@idea 核心思路
 ```python
 # api_client.py（05 文件的骨架）
+import os
+
+from openai import OpenAI
+
+BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+
 class LLMClient:
     """统一封装大模型调用，对内对外只暴露 generate()"""
     def __init__(self, api_key: str = None):
         self.api_key = api_key or os.environ.get("DASHSCOPE_API_KEY")
         self.client = OpenAI(api_key=self.api_key, base_url=BASE_URL)
+        self.model = "qwen-plus"      # 换模型只改这一处
 
     def generate(self, system: str, user: str, **kwargs) -> str:
         resp = self.client.chat.completions.create(
@@ -363,6 +371,10 @@ class RAGPipeline:
         self.model = model          # Embedding 模型
         self.collection = collection  # 向量库
         self.llm = llm              # 大模型客户端
+
+    def _retrieve(self, query: str, k: int = 3):
+        """检索这一步单独抽出来：换向量库只改这里"""
+        return retrieve(query, k=k)      # retrieve 是上一节写的检索函数
 
     def answer(self, query: str) -> dict:
         # ① 检索
@@ -399,7 +411,7 @@ st.set_page_config(page_title="社保政策问答助手", layout="wide")
 st.title("社保政策问答助手（RAG Demo）")
 st.caption("资料：社会保险政策 FAQ（本地向量库）")
 
-query = st.text_input("请输入你的问题（例如：养老金领取条件是什么？)")
+query = st.text_input("请输入你的问题（例如：养老金领取条件是什么？）")
 
 if query and st.button("提问", type="primary"):
     with st.spinner("检索资料中..."):
@@ -445,7 +457,7 @@ uv run streamlit run 07_Web界面.py
 这一章你亲手搭完了一个端到端 RAG 系统，七个文件七个环节全部跑通：
 - 01 数据解析：PDF/TXT 变干净文本
 - 02 文本分块：chunk_size + overlap 保住语义
-- 03 向量化：BGE 小模型把文本变 384 维向量
+- 03 向量化：BGE 小模型把文本变 512 维向量
 - 04/05 大模型接入：OpenAI 兼容接口 + 分层封装，密钥只走环境变量
 - 06 Pipeline 编排：检索→增强→生成→溯源四步总装
 - 07 Streamlit：三行代码出问答网页

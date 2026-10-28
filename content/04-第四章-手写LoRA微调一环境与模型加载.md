@@ -10,7 +10,7 @@
 要有一块 NVIDIA 显卡和 conda：装 CUDA 版 torch 和 peft，加载 1.5B 模型要几 GB 空间。
 
 @@goal 学到这儿就够了
-能建好环境、把 DeepSeek-R1-1.5B 加载进显存并确认 GPU 可用，就算过了。
+能建好环境、把 deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B 加载进显存并确认 GPU 可用，就算过了。
 
 @@map 这一章在整个知识库里的位置
 上一章（LoRA 原理）：懂了低秩补丁（W+AB）为什么省、参数怎么设置
@@ -144,7 +144,7 @@ python -c "import torch; print(torch.__version__); print(torch.cuda.is_available
 | 模型名 | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B` |
 | 底子 | Qwen2（Qwen 2 架构，1.5B 参数） |
 | 角色 | DeepSeek-R1 的**蒸馏（Distill）**版本——用 R1 大模型的输出去训练小 Qwen |
-| 为什么选它 | 推理能力不俗 + 7 亿~15 亿参数，普通消费级 GPU 友好 |
+| 为什么选它 | 推理能力不俗 + 约 15 亿（1.5B）参数，普通消费级 GPU 友好 |
 
 "R1-Distill" 的含义正是第 2 章的知识蒸馏实战形态：**教师（R1 大模型）→ 学生（Qwen-1.5B）**。它自带"会推理"的属性，任务微调时更容易看出 LoRA 前后的差异。
 
@@ -165,6 +165,7 @@ LoRA 微调的第一个真实代码块来了。两行加载为什么写法是 `d
 示例代码（整理为可运行版）：
 
 ```python
+import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 model_name = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"

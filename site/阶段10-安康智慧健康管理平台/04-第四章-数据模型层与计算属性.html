@@ -405,7 +405,7 @@ def bmi_category(self) -&gt; str:
         return &quot;正常&quot;
     return &quot;肥胖&quot;</pre>
 <p>设计要点：</p>
-<ul><li><strong>不占数据库列</strong>：BMI 是"身高、体重的函数"，存两个原始值即可，BMI 随体重变化自动更新——存冗余值反而容易脏；</li><li><strong>防护空值</strong>：height/weight 可能为 null，先判空再计算，否则报 TypeError；</li><li><strong>返回值语义化</strong>：bmi 是数字，bmi_category 是"偏瘦/正常/肥胖"——AI 提示词可以直接拼"患者 BMI 24.3（正常）"。</li></ul>
+<ul><li><strong>不占数据库列</strong>：BMI 是"身高、体重的函数"，存两个原始值即可，BMI 随体重变化自动更新——存冗余值反而容易脏；</li><li><strong>防护空值</strong>：height/weight 可能为 null，先判空再计算，否则报 TypeError；</li><li><strong>返回值语义化</strong>：bmi 是数字，bmi_category 是"偏瘦/正常/肥胖"——AI 提示词可以直接拼"患者 BMI 23.4（正常）"。</li></ul>
 <p>这是本阶段模型层的核心模式：<strong>原始数据落库，派生状态用 property 现算</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -469,7 +469,7 @@ def gi_level(self) -&gt; str:
 <table>
 <tr><th>区间</th><th>等级</th><th>含义</th></tr>
 <tr><td>gi ≤ 55</td><td>低GI</td><td>升糖慢，推荐（燕麦 55、苹果 36、豆腐 15）</td></tr>
-<tr><td>55 &lt; gi ≤ 70</td><td>中GI</td><td>适量（糙米 56、全麦面包 51）</td></tr>
+<tr><td>55 &lt; gi ≤ 70</td><td>中GI</td><td>适量（糙米 56、荞麦面 59）</td></tr>
 <tr><td>gi &gt; 70</td><td>高GI</td><td>升糖快，避免（白米饭 83、西瓜 72）</td></tr>
 </table>
 <p>特例处理：<code>gi_value is None</code> 返回"未知"而不是直接走进判断——很多食物没录 GI 值，直接参与比较会报错。掌握这个"先判 None 再判阈值"的防御模式，后面多处复用。</p>

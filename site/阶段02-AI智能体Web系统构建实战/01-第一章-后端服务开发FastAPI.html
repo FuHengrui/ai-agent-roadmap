@@ -298,7 +298,7 @@
 <span class="node">阶段终点：一个能对外的、结构清晰的智能体 Web 系统</span>
 </div>
 <div class="note info"><span class="t">为什么先学数据库再学 FastAPI 也成立</span>
-<p>为什么先讲数据库再讲 FastAPI？因为<strong>后端接口十有八九是操作数据</strong>：注册就是往用户表插一行，登录就是查一行。先懂"数据长什么样"，写接口时才知道自己在干什么。本章先沉淀数据库概念和 SQL 基础，再进入 FastAPI 主线，后半部分 ORM 会直接用上它。</p></div>
+<p>本章先走 FastAPI 主线（①-⑫），最后 ⑬ 再回头补数据库与 SQL 底子——顺序反过来也成立，因为<strong>后端接口十有八九是操作数据</strong>：注册是往用户表插一行，登录是查一行。先跑通接口，再懂"数据长什么样"，回头接 ORM 时更有落点。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① FastAPI 是什么：为什么 AI 后端都选它</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>你写了个函数，怎么让外面的程序调用它？最原始的办法是开一个 TCP 端口自己解析请求——但每个请求长什么样、怎么解析、怎么回，全要自己写，一个接口都要几百行。FastAPI 就是来解决这个的：<strong>把"函数"变成"网上可调用的接口"，你只管写逻辑。</strong></p>
@@ -401,8 +401,11 @@ async def create_item(item: Item):
     return {&quot;created&quot;: item}</pre>
 <p><strong>Pydantic 模型在这一步干了三件事</strong>：声明数据结构、自动校验字段类型、自动生成文档。这是 FastAPI 数据这一侧的灵魂。</p>
 </div>
-<div class="step trap"><span class="label">函数参数顺序就是路由顺序</span>
-<p>同路径下多个路由，<strong>先定义的先匹配</strong>。想用 <code>/users/me</code> 表示"当前用户"，又用 <code>/users/{id}</code> 查具体用户，<strong>必须把 <code>me</code> 写前面</strong>，否则 <code>users/me</code> 会被当成 <code>id=me</code> 去解析（然后类型校验失败）。 # 正确顺序： @app.get("/users/me")      # 先：特殊性优先 @app.get("/users/{id}")    # 后：通配兜底</p>
+<div class="step trap"><span class="label">路由定义的先后就是匹配顺序</span>
+<p>同路径下多个路由，<strong>先定义的先匹配</strong>。想用 <code>/users/me</code> 表示"当前用户"，又用 <code>/users/{id}</code> 查具体用户，<strong>必须把 <code>me</code> 写前面</strong>，否则 <code>users/me</code> 会被当成 <code>id=me</code> 去解析（然后类型校验失败）。</p>
+<pre># 正确顺序：
+@app.get(&quot;/users/me&quot;)      # 先：特殊性优先
+@app.get(&quot;/users/{id}&quot;)    # 后：通配兜底</pre>
 </div>
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ 参数验证：Query / Path / Field</div><div class="body">
@@ -458,6 +461,7 @@ class Item(BaseModel):
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>① 表单数据</strong>——网页 &lt;form&gt; 提交时用，<code>Form</code> 声明：</p>
+<p>（<code>Form</code> 依赖 <code>python-multipart</code>：先 <code>pip install python-multipart</code>，否则一启动就报错）</p>
 <pre>from fastapi import Form
 
 @app.post(&quot;/login&quot;)
@@ -512,7 +516,7 @@ async def info(request: Request):
 <tr><td><strong>FileResponse</strong></td><td>下载文件</td><td><code>return FileResponse(path="a.pdf", filename="file.pdf", media_type="application/pdf")</code></td></tr>
 <tr><td><strong>StreamingResponse</strong></td><td>大文件/视频流</td><td>用生成器分块 yield</td></tr>
 <tr><td><strong>RedirectResponse</strong></td><td>跳转</td><td><code>return RedirectResponse("/hello")</code></td></tr>
-<tr><td><strong>HTMLResponse</strong></td><td>返回页面片段</td><td><code>return "&lt;h1&gt;操作成功&lt;/h1&gt;"</code></td></tr>
+<tr><td><strong>HTMLResponse</strong></td><td>返回页面片段</td><td><code>return HTMLResponse("&lt;h1&gt;操作成功&lt;/h1&gt;")</code>（直接 return 字符串会被当 JSON）</td></tr>
 <tr><td><strong>Response + headers</strong></td><td>自定义</td><td>手动拼 Content-Disposition 等</td></tr>
 </table>
 <p><strong>企业级推荐写法：响应用模型胶住</strong>——<code>response_model</code> 让接口的"回话格式"可校验、进文档：</p>
@@ -593,7 +597,7 @@ async def list_items(
         }
     },
     &quot;use_tz&quot;: False, &quot;timezone&quot;: &quot;UTC&quot;,
-    &quot;db_pool&quot;: {&quot;max_size&quot;: 10, &quot;min_size&quot;: 1, &quot;idle_timeout&quot;: 30},  # 高并发建议开
+    # 连接池不在这里配：Tortoise 没有顶层 db_pool，池参数写在连接串里（?minsize=1&amp;maxsize=10）
 }</pre>
 <p><strong>3. 注册进 FastAPI</strong>（启动时连库，开发环境自动建表）：</p>
 <pre>from tortoise.contrib.fastapi import register_tortoise
@@ -729,12 +733,11 @@ class Student(models.Model):
     class Meta:
         table = &quot;students&quot;
 
-class StudentProfile(models.Model):                     # 1对1 的&quot;一&quot;
+class StudentProfile(models.Model):                     # 1对1 的&quot;一&quot;（只在一侧声明关系）
     id = fields.IntField(pk=True)
     address = fields.CharField(max_length=100, null=True)
     phone = fields.CharField(max_length=20, null=True)
-    student = fields.OneToOneField(
-        &quot;models.Student&quot;, on_delete=fields.CASCADE, related_name=&quot;profile&quot;)
+    # 反向访问用 stu.profile；这里不要再声明 student 字段，否则两边形各建一列还会撞 related_name
 
 class Course(models.Model):
     id = fields.IntField(pk=True)
@@ -762,9 +765,10 @@ class Grade(models.Model):                               # 中间表：成绩
 </table>
 <p><strong><code>on_delete=CASCADE</code></strong>：删学生时级联删掉关联的档案、成绩，避免孤儿数据。<strong><code>related_name</code></strong>：提供反向访问的名字（<code>stu.grades</code>、<code>stu.profile</code>）。</p>
 <p><strong>增删查改关联数据</strong>：</p>
-<pre># 增：先建主体，再关联
+<pre># 增：先建主体，再关联（Grade 的 course 是必填外键，别漏）
 stu1 = await Student.create(name=&quot;张飞&quot;)
-grade1 = await Grade.create(score=100, student=stu1)   # 创建时直接关联
+course1 = await Course.create(name=&quot;语文&quot;)
+grade1 = await Grade.create(score=100, student=stu1, course=course1)
 
 # 查：prefetch_related 一次性带上关联（避免 N+1 查询）
 stu = await Student.get(id=1).prefetch_related(&quot;grades&quot;)
@@ -819,8 +823,8 @@ async def log_requests(request: Request, call_next):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[&quot;*&quot;],                 # 或 [&quot;http://localhost:8080&quot;]：明确白名单
-    allow_credentials=True,              # 允许带 Cookie
+    allow_origins=[&quot;http://localhost:5173&quot;],   # 明确白名单；想用 &quot;*&quot; 就别开 credentials
+    allow_credentials=True,                  # 允许带 Cookie
     allow_methods=[&quot;*&quot;],                 # GET/POST/PUT/DELETE/OPTIONS
     allow_headers=[&quot;*&quot;],
 )</pre>
@@ -829,7 +833,7 @@ app.add_middleware(
 <div class="step trap"><span class="label">CORS 设置后还报跨域</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>加了这个中间件还报 CORS</td><td>① 检查 <code>allow_origins</code> 是否含前端真实源（带端口）② 请求带自定义 header 时确认 <code>allow_headers</code> 含它 ③ <strong>中间件顺序</strong>：CORS 要放在最外层（先注册）</td></tr>
+<tr><td>加了这个中间件还报 CORS</td><td>① 检查 <code>allow_origins</code> 是否含前端真实源（带端口）② 请求带自定义 header 时确认 <code>allow_headers</code> 含它 ③ <strong>中间件顺序</strong>：Starlette 是 <code>insert(0)</code>，<strong>后注册的反而在最外层</strong>；CORS 要最后 <code>add_middleware</code>，否则被别的中间件短路</td></tr>
 <tr><td><code>allow_origins=["*"]</code> + <code>allow_credentials=True</code></td><td>浏览器会拒绝这种组合。要么去掉 <code>*</code> 用白名单，要么去掉 credentials</td></tr>
 </table>
 </div>
@@ -849,10 +853,10 @@ router = APIRouter(prefix=&quot;/users&quot;, tags=[&quot;用户&quot;])
 async def get_user(user_id: int):
     return {&quot;user_id&quot;: user_id}</pre>
 <pre># main.py —— 挂载
-from routers import user as user_router
+from routers.user import router         # 注意：导入的是 router 实例，不是模块
 
 app = FastAPI()
-app.include_router(user_router)          # 所有 /users/* 都进来了</pre>
+app.include_router(router)               # 所有 /users/* 都进来了</pre>
 <p><strong><code>prefix</code> 一键加前缀</strong>：<code>APIRouter(prefix="/users")</code> 后，路由里的路径自动带上 <code>/users</code>，前端拿到的完整路径是 <code>/users/{user_id}</code>。</p>
 <p><strong>路由也能嵌套</strong>——主路由挂子路由：</p>
 <pre>main_router = APIRouter()

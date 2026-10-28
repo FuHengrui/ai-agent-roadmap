@@ -360,7 +360,10 @@ ZHIPU_API_KEY=xxxx.xxxx              # 智谱 GLM（也必须是你自己的）
 LLM_PROVIDER=zhipu                   # 默认用哪家</pre>
 <p>代码里一律用 <code>os.getenv()</code> 读，绝不硬编码：</p>
 <pre>import os
-api_key = os.getenv(&quot;ZHIPU_API_KEY&quot;)   # 读不到就报错，而不是默默用空 Key</pre>
+from dotenv import load_dotenv
+
+load_dotenv()                            # 先把 .env 读进环境变量，否则下面永远是 None
+api_key = os.environ[&quot;ZHIPU_API_KEY&quot;]    # 没配直接抛 KeyError，而不是默默用空 Key</pre>
 <p>配套动作：<code>.gitignore</code> 里把 <code>.env</code> 排除，同时提供 <code>.env.example</code> 作为"模板"（只留键名、值用占位符），新同事复制一份改名就能用。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -428,7 +431,7 @@ def parse(path: str) -&gt; str:
         # 段落 → 取文本；表格 → 转成 Markdown 表格文本
         ...
     return &quot;\n&quot;.join(chunks)</pre>
-<p>关键点：<strong>表格不能丢</strong>。Word 里大量信息是以表格存在的（产品参数、对比清单），如果只读段落，表格里的知识就全丢了。所以 WordParser 对表格单独处理，转成 Markdown 形式的表格文本（和上一章 <code>merge_tables</code> 的表格处理呼应）。</p>
+<p>关键点：<strong>表格不能丢</strong>。Word 里大量信息是以表格存在的（产品参数、对比清单），如果只读段落，表格里的知识就全丢了。所以 WordParser 对表格单独处理，转成 Markdown 形式的表格文本（和本章第⑧点 TableProcessor 的表格处理呼应）。</p>
 </div>
 </div></div>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ Markdown 与 HTML 解析：一个去标记、一个去标签</div><div class="body">
@@ -503,7 +506,7 @@ def parse_document(file_path: str) -&gt; str:
 </div></div>
 <h2>本章小结</h2>
 <p>这一章你搭好了工程的骨架，也攻下了入库的第一关：</p>
-<ul><li>目录按"能力"分包，一个改动只动一个包</li><li>uv 一条命令还原全部依赖，告别"手动装环境"</li><li>密钥只进 <code>.env</code>，代码一律 <code>os.getenv()</code>，示例 Key 全部替换为占位符</li><li>理解了 <code>BaseParser</code> 抽象——一种格式一个实现、一个接口统一对外</li><li>能说清四种格式各自的解析方案：PDF 用 Docling（版面/表格/扫描都能处理）、Word 用 python-docx、MD/HTML 剥标记</li><li>知道了跨页表格必须合并、解析器用注册表工厂一行接入新格式</li></ul>
+<ul><li>目录按"能力"分包，一个改动只动一个包</li><li>uv 一条命令还原全部依赖，告别"手动装环境"</li><li>密钥只进 <code>.env</code>，代码一律 <code>os.getenv()</code>，示例 Key 全部替换为占位符</li><li>理解了 <code>BaseParser</code> 抽象——一种格式一个实现、一个接口统一对外</li><li>能说清四种格式各自的解析方案：PDF 用 Docling（版面、表格都能还原；扫描件要开 OCR）、Word 用 python-docx、MD/HTML 剥标记</li><li>知道了跨页表格必须合并、解析器用注册表工厂一行接入新格式</li></ul>
 <p>但是——<strong>解析出来的文本还很"脏"</strong>：页眉页脚、页码、空行、乱空白都混在里面。下一章把这些文本清洗成规整的小块。</p>
 <h4>自测：能不能答上来</h4>
 <ol><li>项目为什么按"能力"而不是按"文件类型"组织目录？</li></ol>

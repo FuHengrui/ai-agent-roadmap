@@ -24,7 +24,7 @@
 阶段终点：一个能对外的、结构清晰的智能体 Web 系统
 
 @@note info 为什么先学数据库再学 FastAPI 也成立
-为什么先讲数据库再讲 FastAPI？因为**后端接口十有八九是操作数据**：注册就是往用户表插一行，登录就是查一行。先懂"数据长什么样"，写接口时才知道自己在干什么。本章先沉淀数据库概念和 SQL 基础，再进入 FastAPI 主线，后半部分 ORM 会直接用上它。
+本章先走 FastAPI 主线（①-⑫），最后 ⑬ 再回头补数据库与 SQL 底子——顺序反过来也成立，因为**后端接口十有八九是操作数据**：注册是往用户表插一行，登录是查一行。先跑通接口，再懂"数据长什么样"，回头接 ORM 时更有落点。
 
 @@point ① FastAPI 是什么：为什么 AI 后端都选它
 @@need 要解决什么
@@ -161,11 +161,13 @@ async def create_item(item: Item):
 
 **Pydantic 模型在这一步干了三件事**：声明数据结构、自动校验字段类型、自动生成文档。这是 FastAPI 数据这一侧的灵魂。
 
-@@trap 函数参数顺序就是路由顺序
+@@trap 路由定义的先后就是匹配顺序
 同路径下多个路由，**先定义的先匹配**。想用 `/users/me` 表示"当前用户"，又用 `/users/{id}` 查具体用户，**必须把 `me` 写前面**，否则 `users/me` 会被当成 `id=me` 去解析（然后类型校验失败）。
+```python
 # 正确顺序：
 @app.get("/users/me")      # 先：特殊性优先
 @app.get("/users/{id}")    # 后：通配兜底
+```
 
 @@point ④ 参数验证：Query / Path / Field
 @@need 要解决什么
@@ -227,6 +229,8 @@ class Item(BaseModel):
 不是所有请求都是 JSON。**登录表单**是 `application/x-www-form-urlencoded`，**上传图片/文件**是 `multipart/form-data`，还有**耗时操作**（调模型、查数据库）不能卡死整个服务。这节把这三类"非典型请求"一次讲清。
 @@idea 核心思路
 **① 表单数据**——网页 <form> 提交时用，`Form` 声明：
+
+（`Form` 依赖 `python-multipart`：先 `pip install python-multipart`，否则一启动就报错）
 
 ```python
 from fastapi import Form
@@ -293,7 +297,7 @@ async def info(request: Request):
 | **FileResponse** | 下载文件 | `return FileResponse(path="a.pdf", filename="file.pdf", media_type="application/pdf")` |
 | **StreamingResponse** | 大文件/视频流 | 用生成器分块 yield |
 | **RedirectResponse** | 跳转 | `return RedirectResponse("/hello")` |
-| **HTMLResponse** | 返回页面片段 | `return "<h1>操作成功</h1>"` |
+| **HTMLResponse** | 返回页面片段 | `return HTMLResponse("<h1>操作成功</h1>")`（直接 return 字符串会被当 JSON） |
 | **Response + headers** | 自定义 | 手动拼 Content-Disposition 等 |
 
 **企业级推荐写法：响应用模型胶住**——`response_model` 让接口的"回话格式"可校验、进文档：
@@ -388,7 +392,7 @@ TORTOISE_ORM = {
         }
     },
     "use_tz": False, "timezone": "UTC",
-    "db_pool": {"max_size": 10, "min_size": 1, "idle_timeout": 30},  # 高并发建议开
+    # 连接池不在这里配：Tortoise 没有顶层 db_pool，池参数写在连接串里（?minsize=1&maxsize=10）
 }
 ```
 
@@ -547,12 +551,11 @@ class Student(models.Model):
     class Meta:
         table = "students"
 
-class StudentProfile(models.Model):                     # 1对1 的"一"
+class StudentProfile(models.Model):                     # 1对1 的"一"（只在一侧声明关系）
     id = fields.IntField(pk=True)
     address = fields.CharField(max_length=100, null=True)
     phone = fields.CharField(max_length=20, null=True)
-    student = fields.OneToOneField(
-        "models.Student", on_delete=fields.CASCADE, related_name="profile")
+    # 反向访问用 stu.profile；这里不要再声明 student 字段，否则两边形各建一列还会撞 related_name
 
 class Course(models.Model):
     id = fields.IntField(pk=True)
@@ -585,9 +588,10 @@ class Grade(models.Model):                               # 中间表：成绩
 **增删查改关联数据**：
 
 ```python
-# 增：先建主体，再关联
+# 增：先建主体，再关联（Grade 的 course 是必填外键，别漏）
 stu1 = await Student.create(name="张飞")
-grade1 = await Grade.create(score=100, student=stu1)   # 创建时直接关联
+course1 = await Course.create(name="语文")
+grade1 = await Grade.create(score=100, student=stu1, course=course1)
 
 # 查：prefetch_related 一次性带上关联（避免 N+1 查询）
 stu = await Student.get(id=1).prefetch_related("grades")
@@ -648,8 +652,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],                 # 或 ["http://localhost:8080"]：明确白名单
-    allow_credentials=True,              # 允许带 Cookie
+    allow_origins=["http://localhost:5173"],   # 明确白名单；想用 "*" 就别开 credentials
+    allow_credentials=True,                  # 允许带 Cookie
     allow_methods=["*"],                 # GET/POST/PUT/DELETE/OPTIONS
     allow_headers=["*"],
 )
@@ -658,7 +662,7 @@ app.add_middleware(
 **开发 vs 生产的区别**：开发随便 `*` 图方便；**生产必须列白名单**，否则任何人都能跨域调你的接口，等于把门敞开了。
 @@trap CORS 设置后还报跨域
 | 现象 | 原因 / 怎么办 |
-| 加了这个中间件还报 CORS | ① 检查 `allow_origins` 是否含前端真实源（带端口）② 请求带自定义 header 时确认 `allow_headers` 含它 ③ **中间件顺序**：CORS 要放在最外层（先注册） |
+| 加了这个中间件还报 CORS | ① 检查 `allow_origins` 是否含前端真实源（带端口）② 请求带自定义 header 时确认 `allow_headers` 含它 ③ **中间件顺序**：Starlette 是 `insert(0)`，**后注册的反而在最外层**；CORS 要最后 `add_middleware`，否则被别的中间件短路 |
 | `allow_origins=["*"]` + `allow_credentials=True` | 浏览器会拒绝这种组合。要么去掉 `*` 用白名单，要么去掉 credentials |
 
 @@point ⑫ APIRouter 与项目结构：服务变大前的必修课
@@ -680,10 +684,10 @@ async def get_user(user_id: int):
 
 ```python
 # main.py —— 挂载
-from routers import user as user_router
+from routers.user import router         # 注意：导入的是 router 实例，不是模块
 
 app = FastAPI()
-app.include_router(user_router)          # 所有 /users/* 都进来了
+app.include_router(router)               # 所有 /users/* 都进来了
 ```
 
 **`prefix` 一键加前缀**：`APIRouter(prefix="/users")` 后，路由里的路径自动带上 `/users`，前端拿到的完整路径是 `/users/{user_id}`。

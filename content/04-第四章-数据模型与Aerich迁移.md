@@ -10,7 +10,7 @@
 第 3 章的 uv 工程和 config.py 能跑就能开始；aerich 已随依赖装好，不用另装。
 
 @@goal 学到这儿就够了
-能写出八张表的模型类、跑通 aerich init-db，说清模型和建库 SQL 必须对齐，这一章就算过了。
+能写出八张表的模型类、说清 `aerich init` / `migrate` / `upgrade` 各干什么、已有库为什么不能直接跑 `init-db`，这一章就算过了。
 
 @@map 这一章在整个知识库里的位置
 上一章：后端工程搭建——uv 工程 + config.py 数据源配置就绪
@@ -105,7 +105,7 @@ class User(models.Model):
         table = "t_users"
 ```
 
-要点：unique=True 让数据库层拒绝重复用户名；password 255 长度与上章设计呼应。null=True 的字段查询过滤要用 `user__isnull=...` 语义处理。
+要点：unique=True 让数据库层拒绝重复用户名；password 255 长度与上章设计呼应。`null=True` 的字段（比如 `department`）在查询里可以用 `department__isnull=True` 过滤空值。
 
 @@point ④ 选题类模型：Section 与 Title 外键关系
 @@need 要解决什么
@@ -129,9 +129,9 @@ class Title(models.Model):
     title = fields.CharField(255)
     sort_order = fields.IntField(default=1)
     content = fields.TextField(null=True)
-    status = fields.CharField(max_length=50, default="0")
-    view_count = fields.CharField(max_length=50, default="0")
-    like_count = fields.CharField(max_length=50, default="0")
+    status = fields.SmallIntField(default=0)      # 0 未生成 / 1 已生成 / 2 已发布 / 3 已废弃
+    view_count = fields.IntField(default=0)
+    like_count = fields.IntField(default=0)
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
     class Meta:
@@ -145,7 +145,7 @@ class Title(models.Model):
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 想像 Django 那样 title.section.name 直接访问 | 没有 FK 字段就没有反向访问器；必须用 section_id="xx"。预取用 select_related 才可用对象链 |
+| 想像 Django 那样 title.section.name 直接访问 | 没有 FK 字段就没有反向访问器，也没有 `select_related`（它依赖 FK 关系）；只能查两次、自己在内存里按 id 拼 |
 | 手工删了 section 忘删 titles | 无数据库级联，set null 或同步删除要靠业务代码，漏删即出孤儿数据（代码里用"批量插入事务"规避） |
 
 @@point ⑤ 素材类模型：Style 与 Image
@@ -237,8 +237,9 @@ aerich upgrade                              # 应用迁移到数据库
 
 逐条理解：
 - `init -t app.config.TORTOISE_ORM`：**-t 指向 config.py 里的 TORTOISE_ORM 字典**，Aerich 靠它知道连哪个库、扫哪些模型。
-- `init-db`：**只在首次空库时用**——如果库已经被 SQL 建好（我们的场景），init-db 会冲突；此时用 `aerich migrate`？不行。**正确姿势**：先确认库是 SQL 导入的，跳过 init-db，直接手写/仅启用迁移追踪，或干脆用 init-db 建一套开发库。
-- `migrate`：diff 模型与库，产出 `migrations/xxx_描述.json + sql`。
+- `init-db`：**只在首次空库时用**——它会去建表。库已经被 SQL 建好时（我们的场景）不要跑它，否则撞已有表报错。要让迁移接着现有结构走，通常得**手动补一条与当前结构一致的初始迁移**；或者干脆把这个库当基线，以后只用 `migrate` / `upgrade`。
+- 和第 2 章的分工：**建表交给 SQL 脚本，Aerich 只负责后面的结构变更**——别指望它替你把历史建库重放一遍。
+- `migrate`：diff 模型与库，产出 `migrations/models/xxx_描述.py`（里面是 `upgrade()` / `downgrade()` 两个函数，不是 json + sql）。
 - `upgrade`：执行未应用的迁移。
 
 本项目实际链路：**SQL 已建库 → Aerich 用于追踪后续模型演进**——所以重点是 `init → migrate → upgrade` 的组合，首次 init-db 对应"代码自建库"场景。
@@ -280,7 +281,7 @@ migrations/models/
 
 @@quiz
 1. 模型放在 app/models/ 下还必须满足什么才能被 Tortoise 发现？
-   A. 文件名大写　　B. __init__.py 中导出类　　C. 必须继承 models.Model　　D. 必须写 Meta.table
+   A. 文件名必须大写　　B. __init__.py 中导出类　　C. 文件名要与类名一致　　D. 必须写 Meta.table
 2. Tortoise 的 CharField 必须提供哪个参数？
    A. default　　B. null　　C. max_length　　D. unique
 3. 模型的表名如何与建库 SQL 的 t_users 对齐？

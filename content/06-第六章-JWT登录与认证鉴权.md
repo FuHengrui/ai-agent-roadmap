@@ -51,9 +51,12 @@ header.payload.signature
 @@idea 核心思路
 ```python
 import jwt, time
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Body, HTTPException
 
-router = APIRouter()
+from app.config import JWT_ALGORITHM, JWT_ACCESS_EXPIRE_SECONDS, JWT_SECRET
+from app.models import User
+
+router = APIRouter(prefix="/v1/auth")   # 第 7 章前端就是按 /v1/auth/login 调的
 
 def _make_token(user_id: int) -> str:
     payload = {
@@ -64,7 +67,7 @@ def _make_token(user_id: int) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)  # HS256
 
 @router.post("/login")
-async def login(username: str, password: str):
+async def login(username: str = Body(...), password: str = Body(...)):   # 不加 Body 会被当成查询参数，前端传 JSON 就 422
     user = await User.filter(username=username).first()
     # 示例实现：密码明文比对
     if not user or user.password != password:
@@ -92,8 +95,11 @@ async def login(username: str, password: str):
 
 @@idea 核心思路
 ```python
+import jwt
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends, HTTPException
+
+from app.config import JWT_ALGORITHM, JWT_SECRET
 
 security = HTTPBearer(auto_error=False)
 
@@ -114,12 +120,12 @@ async def get_current_user_id(
 
 用法：任何需要登录的接口，把 `user_id: int = Depends(get_current_user_id)` 加进参数列表，FastAPI 自动完成"取 Bearer 头 → 验签 → 取 sub"三步，业务代码直接享受 user_id。
 
-**auto_error=False** 是关键：不自动报错，把"无 token"的判定交给我们的统一 401/403 语义——未登录 401，令牌无效/过期 403（或按团队约定反着用也行，前后端必须一致）。
+**auto_error=False** 是关键：不自动报错，把"无 token"的判定交给我们的统一语义——**未登录 401、过期 401（提示重新登录）、签名无效 403**（要反着用也行，但前后端必须一致）。
 
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 不带 token 请求报 500 而不是 401 | auto_error=True 时框架直接抛错没走自定义分支；设 False 交给自己处理 |
+| 不带 token 请求直接返回 403 Not authenticated | `auto_error=True` 时框架自己抛错、不走你的分支；设 False 交给自己处理成 401 + 自定义文案 |
 | Authorization 头格式少写了 "Bearer " | 标准格式 `Authorization: Bearer <token>`；少前缀 HTTPBearer 解析不到 |
 | 过期与无效混为一谈 | 先捕 ExpiredSignatureError（401 提示重新登录），再捕 InvalidTokenError（403）——前端体验完全不同 |
 
@@ -196,7 +202,7 @@ async def get_current_user_id(
 2. JWT payload 中 exp 字段的作用是？
    A. 标识用户　　B. 令牌过期时间（Unix 秒）　　C. 签名算法　　D. 用户头像
 3. HTTPBearer 参数 auto_error=False 的意义是？
-   A. 关闭校验　　B. 不自动抛错，交给自定义 401/403 逻辑　　C. 允许无 token　　D. 自动生成 token
+   A. 关闭校验　　B. 不自动抛错，交给自定义 401/403 逻辑　　C. 跳过签名校验　　D. 自动生成 token
 4. login 接口为什么不能挂鉴权依赖？
    A. 效率低　　B. 它本身就是白名单，挂了无法登录　　C. 语法不支持　　D. 数据库限制
 5. 令牌过期时应该返回？

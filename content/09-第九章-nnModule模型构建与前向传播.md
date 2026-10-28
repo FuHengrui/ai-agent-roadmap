@@ -18,9 +18,10 @@
 不想手写 `x @ W + b` 和手动维护 W、b，怎么办？
 
 @@idea 核心思路
-**`nn.Linear(in_features, out_features)`** 封装了"线性层"的全部：自动创建权重 W（形状 [in, out]）和偏置 b（形状 [out]），并**自动登记为模型参数**：
+**`nn.Linear(in_features, out_features)`** 封装了"线性层"的全部：自动创建权重 `fc.weight`（形状 **[out, in]**，前向是 `x @ W.T`）和偏置 `fc.bias`（形状 [out]），并**自动登记为模型参数**：
 
 ```python
+import torch
 import torch.nn as nn
 
 fc = nn.Linear(4, 3)     # 输入 4 维，输出 3 维
