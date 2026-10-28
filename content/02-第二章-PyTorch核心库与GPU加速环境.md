@@ -76,7 +76,8 @@ pip install torch torchvision torchaudio
 
 **方式二：conda**
 ```
-conda install pytorch torchvision torchaudio -c pytorch
+# 官方 conda 频道 2.5（2024-10）后停更，现在推荐用 pip 装 GPU 版
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
 ```
 conda 会自动处理依赖和 CUDA 配套库，环境隔离更省心，是教程里的常用推荐方式。
 

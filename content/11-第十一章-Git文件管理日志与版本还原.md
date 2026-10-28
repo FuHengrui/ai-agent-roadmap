@@ -252,7 +252,7 @@ index.class      # 忽略指定文件
 Git 的规矩：**已被跟踪（tracked）的文件，.gitignore 管不了它**。要"解除跟踪但保留文件"，需要先把它从 Git 管理里移除：
 
 ```bash
-git rm --cached target/   # 把 target/ 从 Git 跟踪里移除（文件还在磁盘上）
+git rm -r --cached   # 目录要 -r target/   # 把 target/ 从 Git 跟踪里移除（文件还在磁盘上）
 git commit -m "移除 target 目录的跟踪"   # 提交这次移除
 ```
 
@@ -261,8 +261,8 @@ git commit -m "移除 target 目录的跟踪"   # 提交这次移除
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 写了 .gitignore，但已提交的文件还是出现在提交里 | 已跟踪文件不受忽略规则影响；先 `git rm --cached` 解除跟踪再提交 |
-| 执行 `git rm --cached` 后以为文件被删了 | 文件**还在本地磁盘**，只是不再被 Git 跟踪；"文件不见了"是常见误解 |
+| 写了 .gitignore，但已提交的文件还是出现在提交里 | 已跟踪文件不受忽略规则影响；先 `git rm -r --cached   # 目录要 -r` 解除跟踪再提交 |
+| 执行 `git rm -r --cached   # 目录要 -r` 后以为文件被删了 | 文件**还在本地磁盘**，只是不再被 Git 跟踪；"文件不见了"是常见误解 |
 
 @@summary
 | 问题 | 答案 |
@@ -274,7 +274,7 @@ git commit -m "移除 target 目录的跟踪"   # 提交这次移除
 | add 了没 commit 怎么还原 | `git reset HEAD`（取消暂存） + `git checkout -- 文件` |
 | commit 了怎么回退 | `git reset HEAD^`（`^` 越多往前越多） |
 | reset 三模式 | `--soft` 只动指针；`--mixed` 默认、清暂存留工作区；`--hard` 全还原、丢未提交改动 |
-| 怎么忽略文件 | `.gitignore` 写规则；已跟踪文件要先 `git rm --cached` |
+| 怎么忽略文件 | `.gitignore` 写规则；已跟踪文件要先 `git rm -r --cached   # 目录要 -r` |
 
 一句话记住本章：**log 查历史、diff 看差异、checkout 还原工作区、reset 回退版本（--hard 是核弹）、.gitignore 挡新文件但管不了已跟踪的旧文件——两条后悔线：没 commit 的用 checkout，commit 了的用 reset，再不行 reflog 兜底。**
 

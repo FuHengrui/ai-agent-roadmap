@@ -341,7 +341,8 @@
 <pre>pip install torch torchvision torchaudio</pre>
 <p>适合普通 Python 环境；纯 CPU 或按官网给的 CUDA 版本命令安装（GPU 版需要按官网首页选对应 CUDA 版本）。</p>
 <p><strong>方式二：conda</strong></p>
-<pre>conda install pytorch torchvision torchaudio -c pytorch</pre>
+<pre># 官方 conda 频道 2.5（2024-10）后停更，现在推荐用 pip 装 GPU 版
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124</pre>
 <p>conda 会自动处理依赖和 CUDA 配套库，环境隔离更省心，是教程里的常用推荐方式。</p>
 <p>无论哪种方式，<strong>一定要在虚拟环境中安装</strong>（conda create -n 环境名），避免版本冲突污染全局环境。</p>
 </div>
