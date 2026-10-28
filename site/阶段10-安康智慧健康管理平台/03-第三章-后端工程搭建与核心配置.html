@@ -309,7 +309,7 @@ conda deactivate
 powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
 
 # 3. 创建项目文件夹并用 Cursor 打开
-mkdir diabetes_assistant &amp;&amp; cd diabetes_assistant
+mkdir diabetes_assistant; cd diabetes_assistant   # Windows PowerShell 不认 &amp;&amp;，用分号；或改用 Git Bash
 
 # 4. 初始化项目
 uv init
