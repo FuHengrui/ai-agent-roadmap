@@ -379,7 +379,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create( # ④ 发起对话
-    model=&quot;qwen3-0.6b&quot;,                    # ⑤ 模型名（对应当前加载的模型）
+model=&quot;qwen&quot;,   # 必须和启动时的 --served-model-name 一致，否则 404
     messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;你好&quot;}],
 )
 print(response.choices[0].message.content) # ⑥ 打印生成结果</pre>

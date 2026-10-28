@@ -361,7 +361,7 @@ qwen3-0.6b/
 <div class="step idea"><span class="label">核心思路</span>
 <table>
 <tr><th>参数</th><th>作用</th><th>示例</th></tr>
-<tr><td><code>--host</code></td><td>监听地址</td><td><code>0.0.0.0</code> 允许外部访问，默认 127.0.0.1</td></tr>
+<tr><td><code>--host</code></td><td>监听地址</td><td><strong>默认 0.0.0.0</strong>（所有网卡）；只想本机访问要显式 <code>--host 127.0.0.1</code></td></tr>
 <tr><td><code>--port</code></td><td>服务端口</td><td><code>8000</code></td></tr>
 <tr><td><code>--served-model-name</code></td><td>对外暴露的模型名</td><td><code>qwen</code>（客户端 requests 里填这个名字）</td></tr>
 </table>
@@ -370,7 +370,7 @@ qwen3-0.6b/
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>外部机器连不上</td><td>没加 <code>--host 0.0.0.0</code>，默认只监听本机</td></tr>
+<tr><td>外网访问不到服务</td><td>默认已经绑 <code>0.0.0.0</code>，先查<strong>安全组 / 防火墙 / 端口映射</strong>有没有放行</td></tr>
 <tr><td>客户端报"模型不存在"</td><td>请求里的 model 字段必须填 served-model-name（或默认模型名），不是本地路径</td></tr>
 <tr><td>把 served-model-name 当真实模型名下载</td><td>它只是服务别名，真实权重还是本地目录里的</td></tr>
 </table>

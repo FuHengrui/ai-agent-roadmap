@@ -349,7 +349,7 @@ pd.concat([d1, d2], axis=1)             # 沿列拼：两张表并排放</pre>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
-<tr><th>現象</th><th>原因 / 怎么办</th></tr>
+<tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>拼接后列对不齐（出现 NaN 列）</td><td>两表列名不完全一致；先列名对齐或用 join='inner'</td></tr>
 <tr><td>索引重复难看</td><td>ignore_index=True 重排</td></tr>
 <tr><td>concat 和 merge 选错</td><td>同构数据拼接用 concat，异表关联用 merge</td></tr>
@@ -452,10 +452,10 @@ idx2 = pd.date_range(&#x27;2026-01-01&#x27;, &#x27;2026-12-31&#x27;, freq=&#x27;
 idx = pd.date_range(&#x27;2026-10-01&#x27;, periods=60, freq=&#x27;D&#x27;)
 df = pd.DataFrame({&#x27;销售额&#x27;: range(60)}, index=idx)
 
-df.resample(&#x27;M&#x27;).sum()       # 按月求和 → 每月一行
+df.resample(&#x27;ME&#x27;).sum()       # 按月求和 → 每月一行
 df.resample(&#x27;W&#x27;).mean()      # 按周均值（W 默认周日至周六）
-df.resample(&#x27;Q&#x27;).sum()       # 按季度
-df.resample(&#x27;M&#x27;).agg([&#x27;sum&#x27;, &#x27;mean&#x27;, &#x27;max&#x27;])   # 多聚合</pre>
+df.resample(&#x27;QE&#x27;).sum()       # 按季度
+df.resample(&#x27;ME&#x27;).agg([&#x27;sum&#x27;, &#x27;mean&#x27;, &#x27;max&#x27;])   # 多聚合</pre>
 <p>要点：</p>
 <ul><li><strong>resample('频率').聚合方法</strong>（sum/mean/max/min/count）——和 groupby 语法同构；</li><li>常见频率：'D' 天、'W' 周、'M' 月末、'Q' 季末、'MS' 月初、'H' 时；</li><li>前提：<strong>索引必须是 datetime 类型</strong>（第 ⑤ 点）。</li></ul>
 <p>与 groupby 区别：<strong>groupby 按类别分组，resample 按时间频率分组</strong>——同一套聚合心智，两处复用。</p>
@@ -464,7 +464,7 @@ df.resample(&#x27;M&#x27;).agg([&#x27;sum&#x27;, &#x27;mean&#x27;, &#x27;max&#x2
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>resample 报"only DatetimeIndex"</td><td>索引不是时间类型；set_index + to_datetime 预处理好</td></tr>
-<tr><td>'M' 和 'MS' 结果差一天左右</td><td>M=月最后一天、MS=月初；要"每月 1 日"用 MS</td></tr>
+<tr><td>'ME' 的标签落在月末、'MS' 落在月初，同一段数据的标签相差近一个月</td><td>M=月最后一天、MS=月初；要"每月 1 日"用 MS</td></tr>
 <tr><td>想按"自然周"分组</td><td>用 'W-MON'（周一起）等明确锚点</td></tr>
 </table>
 </div>
@@ -520,7 +520,7 @@ df[&#x27;价格&#x27;].astype(str)                     # 或 str 访问器合并
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>replace 没替换掉</td><td>str.replace 默认正则模式要确认转义，或用 regex=True 明确</td></tr>
+<tr><td>replace 没替换掉</td><td>str.replace 默认按字面替换，要正则得显式 regex=True，或用 regex=True 明确</td></tr>
 <tr><td>astype(float) 报错</td><td>还有残余符号/空格：先 strip 再转，或 to_numeric(coerce)</td></tr>
 <tr><td>字符串里中文数字</td><td>要先映射（如 {'一': 1}）再做 replace</td></tr>
 </table>
@@ -534,14 +534,14 @@ df[&#x27;价格&#x27;].astype(str)                     # 或 str 访问器合并
 <tr><td>concat</td><td>axis=0/1、ignore_index</td><td>同构表按行/按列拼接</td></tr>
 <tr><td>时间对象</td><td>Timestamp（时刻）/ Period（周期）/ Timedelta（差值）</td><td>先认识三种时间角色</td></tr>
 <tr><td>时间转换</td><td>to_datetime + .dt 访问器</td><td>字符串→datetime，errors='coerce' 兜底</td></tr>
-<tr><td>时间索引</td><td>set_index + date_range(freq)</td><td>切月度/周数 ÷ 快照都靠它</td></tr>
-<tr><td>重采样</td><td>resample('M').sum()</td><td>按频率聚合，groupby 的时间版</td></tr>
+<tr><td>时间索引</td><td>set_index + date_range(freq)</td><td>按月/按周切片、重采样都靠它</td></tr>
+<tr><td>重采样</td><td>resample('ME').sum()</td><td>按频率聚合，groupby 的时间版</td></tr>
 <tr><td>平移</td><td>shift(n)</td><td>环比/滞后特征</td></tr>
 <tr><td>字符串 ↔ 数值</td><td>str 访问器 + astype</td><td>报表清洗标配</td></tr>
 </table>
 <p>一句话记住本章：<strong>两表关联用 merge（how 选留谁）、同构拼接用 concat；日期统一 to_datetime 后设成索引，resample 按月按周聚合，shift 造环比——时间与多表从此都在 Pandas 掌控中。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>merge 的四种 how 分别保留哪些行？键列在左表和右表中都不唯一时会发生什么？</li><li>concat 默认沿哪个轴拼接？ignore_index=True 解决了什么问题？</li><li>Timestamp、Period、Timedelta 三者的区别是什么？</li><li>to_datetime 的 errors='coerce' 参数作用是什么？转完怎么确认成功了？</li><li>DataFrame 想做时间切片（如取整个 10 月）需要满足什么前置条件？</li><li>resample('M') 与 resample('MS') 有何区别？resample 报"only DatetimeIndex"时该怎么修？</li><li>shift(1) 和 shift(-1) 分别得到什么？为什么平移后的第一行是 NaN？</li></ol>
+<ol><li>merge 的四种 how 分别保留哪些行？键列在左表和右表中都不唯一时会发生什么？</li><li>concat 默认沿哪个轴拼接？ignore_index=True 解决了什么问题？</li><li>Timestamp、Period、Timedelta 三者的区别是什么？</li><li>to_datetime 的 errors='coerce' 参数作用是什么？转完怎么确认成功了？</li><li>DataFrame 想做时间切片（如取整个 10 月）需要满足什么前置条件？</li><li>resample('ME') 与 resample('MS') 有何区别？resample 报"only DatetimeIndex"时该怎么修？</li><li>shift(1) 和 shift(-1) 分别得到什么？为什么平移后的第一行是 NaN？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://pandas.pydata.org/" target="_blank" rel="noopener"><span class="k">工具</span>Pandas 官网</a>
 <a href="https://pandas.pydata.org/docs/user_guide/timeseries.html" target="_blank" rel="noopener"><span class="k">文档</span>Pandas 时间序列指南</a>

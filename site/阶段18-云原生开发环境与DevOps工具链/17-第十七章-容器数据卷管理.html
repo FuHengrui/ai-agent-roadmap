@@ -326,7 +326,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为数据卷是"容器里的一块特殊磁盘"</td><td>数据卷<strong>物理上就在宿主机</strong>，容器只是"借用"它；把它理解成"容器目录开了一扇通向宿主机的门"更准确</td></tr>
-<tr><td>容器删了以为数据卷也删了</td><td>数据卷默认<strong>不随容器删除</strong>；只有 <code>docker rm -v</code> 或显式删卷才会清掉</td></tr>
+<tr><td>容器删了以为数据卷也删了</td><td>数据卷默认<strong>不随容器删除</strong>；<code>docker rm -v</code> 只清<strong>匿名卷</strong>，具名卷必须显式 <code>docker volume rm</code></td></tr>
 </table>
 </div>
 </div></div>
@@ -516,7 +516,7 @@ docker exec app-b cat /data/msg.txt     # 输出 hello =&amp;gt; 共享成功</d
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>删容器时顺手加 -v，把数据卷也删了还奇怪</td><td><code>rm -v</code> 会连容器挂的数据卷一起删；重要数据别用 -v 删，先备份</td></tr>
+<tr><td>删容器时顺手加 -v，把数据卷也删了还奇怪</td><td><code>rm -v</code> 只删<strong>匿名卷</strong>；具名卷（<code>-v 卷名:路径</code>）不会被删，得 <code>docker volume rm &lt;卷名&gt;</code> 手动清</td></tr>
 <tr><td>以为卷"在容器里"</td><td>卷是宿主机资源，<code>docker ps -a</code> 看不到它，要看 <code>docker volume ls</code></td></tr>
 </table>
 </div>
@@ -533,7 +533,7 @@ docker exec app-b cat /data/msg.txt     # 输出 hello =&amp;gt; 共享成功</d
 <tr><td>卷的命令</td><td>create / ls / inspect / rm / prune</td></tr>
 <tr><td>MySQL 实战</td><td>数据目录 /opt/mysql/data 挂卷，配合 -e 设密码</td></tr>
 <tr><td>容器间共享</td><td>一个具名卷挂多个容器，物理同源</td></tr>
-<tr><td>什么会丢</td><td>rm -v 会连卷一起删；stop 永不丢数据</td></tr>
+<tr><td>什么会丢</td><td><code>rm -v</code> 只清匿名卷（具名卷还在）；stop 永不丢数据</td></tr>
 </table>
 <p>一句话总结：<strong>数据卷就是把数据从"容器的草稿纸"搬到"宿主机的地盘"——容器生生死死，数据稳如泰山；删卷比删容器更危险，动手前先想清楚。</strong></p>
 <h4>自测：能不能答上来</h4>

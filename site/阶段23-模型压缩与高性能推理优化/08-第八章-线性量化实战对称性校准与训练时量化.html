@@ -289,7 +289,7 @@
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能写出对称与非对称量化的换算公式，能说清三种校准怎么定阈值、PTQ 与 QAT 怎么选，这章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
-<span class="node">上一章讲了量化动机与 K-means 聚类量化。<strong>本章深挖线性量化：非对称/对称公式、thresholding、三种校准方法、PTQ vs QAT 与 STE、混合精度与 Floating16</strong>。下一章收官阶段23：知识蒸馏。</span>
+<span class="node">FP16（Float16）</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 线性量化：均匀切分映射区间</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -324,7 +324,7 @@ x&#x27; = (q - z) * s</pre>
 <p><strong>非对称量化（Asymmetric）</strong>：记录最小值和最大值：</p>
 <pre>范围: [min, max] → q = round((x - min) / s)</pre>
 <p>优点：区间贴合数据分布，动态范围利用率高；代价：多一个零点偏移 z 要存储与计算。</p>
-<p>选择口诀：<strong>权重分布近似对称用对称量化（省事）；激活分布偏斜用非对称量化（省空间）</strong>。</p>
+<p>选择口诀：<strong>权重分布近似对称用对称量化（省事）；激活分布偏斜用非对称量化（利用率高、精度更贴合）</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -341,7 +341,7 @@ x&#x27; = (q - z) * s</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>阈值（threshold）</strong>决定浮点→整数的映射区间。常见策略：</p>
 <ol><li><strong>Min-Max</strong>：用数据的最小/最大值直接当边界。简单，但<strong>离群值（outliers）</strong>会撑大区间、稀释正常值的精度。</li><li><strong>百分位（Percentile）</strong>：取分布的 1%/99% 分位当边界，容忍少量溢出，换正常值更高精度——<strong>实际最常用</strong>。</li><li><strong>熵最小化（Entropy）</strong>：选阈值使量化前后的信息熵损失最小（如 TensorRT 的 calibration 核心思想）。</li></ol>
-<p>一句话：<strong>阈值本质是"容忍一点溢出，换取更大部分的高精度"</strong>——离群值截断 vs 主流值精度的取舍。这也是对称量化中 Tegra/TensorRT 用"熵校准"的原因。</p>
+<p>一句话：<strong>阈值本质是"容忍一点溢出，换取更大部分的高精度"</strong>——离群值截断 vs 主流值精度的取舍。这也是 TensorRT 的 INT8 校准常用"熵/KL 散度"定阈值的原因（Tegra 只是它的硬件平台名）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -387,12 +387,12 @@ x&#x27; = (q - z) * s</pre>
 3. 前向跑校准数据，统计权重/激活分布
 4. 计算量化参数（s, z, threshold）
 5. 转换 INT/FP16 模型，验证精度</pre>
-<p><strong>优点</strong>：快速、无需训练资源、对已有模型即插即用。 <strong>代价</strong>：量化误差无法被训练"纠正"，极低位（INT4 及以下）精度损失明显。 <strong>适用</strong>：8bit 场景（INT8/FP16）基本无损，绝大多数生产场景首选 PTQ。</p>
+<p><strong>优点</strong>：快速、无需训练资源、对已有模型即插即用。 <strong>代价</strong>：量化误差无法被训练"纠正"，极低位（INT4 及以下）精度损失明显。 适用：8bit（INT8）基本无损；16bit（FP16）几乎无损</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>PTQ 后精度不达预期就直接上 QAT</td><td>先查校准数据与方法，85% 的 PTQ 问题出在"校准不对"，而非"PTQ 不行"</td></tr>
+<tr><td>PTQ 后精度不达预期就直接上 QAT</td><td>先查校准数据与方法，多数 PTQ 问题出在"校准不对"，而非"PTQ 不行"</td></tr>
 <tr><td>用 PTQ 硬啃 INT4</td><td>极低位 PTQ 误差大，正常路径是 QAT 或混合精度</td></tr>
 </table>
 </div>
@@ -421,13 +421,13 @@ x&#x27; = (q - z) * s</pre>
 </table>
 </div>
 </div></div>
-<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 混合精度与 Floating16：不只有定点整数</div><div class="body">
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 混合精度与 FP16（Float16）：不只有定点整数</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>除了 INT8，量化还有哪些"精度档位"可以混用？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>量化位宽选择是连续的，且可以<strong>混合搭配</strong>：</p>
-<ul><li><strong>FP16/BF16（半精度浮点）</strong>：最"温柔"的量化，几乎无损、直接翻倍省显存（大模型推理标配）。</li><li><strong>INT8</strong>：精度/收益平衡之王，工业主流。</li><li><strong>INT4</strong>：省到极致，必须 QAT/先进算法（GPTQ/AWQ 等）配合。</li><li><strong>混合精度（Mixed Precision）</strong>：不同层用不同位宽——<strong>敏感层用高精度，冗余层用低位宽</strong>，吸收两者的优点。</li></ul>
+<ul><li><strong>FP16/BF16（半精度浮点）</strong>：最"温柔"的量化，几乎无损、显存直接减半（大模型推理标配）。</li><li><strong>INT8</strong>：精度/收益平衡之王，工业主流。</li><li><strong>INT4</strong>：省到极致，必须 QAT/先进算法（GPTQ/AWQ 等）配合。</li><li><strong>混合精度（Mixed Precision）</strong>：不同层用不同位宽——<strong>敏感层用高精度，冗余层用低位宽</strong>，吸收两者的优点。</li></ul>
 <p><strong>Floating16</strong> 值得一提：浮点低精度比定点简单——不需要范围校准（浮点天然带动态范围），所以 FP16 部署是无脑操作；而 INT 系列的校准知识本章前面的内容正是为此准备。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -476,7 +476,7 @@ x&#x27; = (q - z) * s</pre>
 <h4>自测：能不能答上来</h4>
 <ol><li>写出线性量化的正/反变换公式，并说明 s 和 z 各自的作用。</li><li>对称量化与非对称量化各适合什么场景？为什么？</li><li>阈值选择（Thresholding）的三类方法分别是什么？为什么 Min-Max 会吃亏？</li><li>校准（Calibration）的过程是什么？校准集质量为什么至关重要？</li><li>PTQ 与 QAT 的适用场景分别是什么？各自的优缺点？</li><li>STE（直通估计器）解决了什么难题？它是怎么运作的？</li><li>混合精度量化的思路是什么？FP16 为什么被称为"最温柔的量化"？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
-<a href="https://arxiv.org/abs/1412.6117" target="_blank" rel="noopener"><span class="k">文档</span>Quantization and Training of Neural Nets</a>
+<a href="https://arxiv.org/abs/1712.05877" target="_blank" rel="noopener"><span class="k">文档</span>Integer-Arithmetic-Only Inference（Jacob 等）</a>
 <a href="https://arxiv.org/abs/2103.13630" target="_blank" rel="noopener"><span class="k">文档</span>A Survey of Model Quantization</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>模型优化（章节1）</span></div>
 </div>
@@ -494,7 +494,7 @@ x&#x27; = (q - z) * s</pre>
   <a href="#p4" title="校准（Calibration）三法：Min-Max / Entropy / Percentile"><span class="n">4</span>校准（Calibration）三法：Min-Max / Entropy / Percentile</a>
   <a href="#p5" title="训练后量化（PTQ）：最省事的工业路线"><span class="n">5</span>训练后量化（PTQ）：最省事的工业路线</a>
   <a href="#p6" title="量化感知训练（QAT）与 STE：让模型&quot;学会&quot;量化"><span class="n">6</span>量化感知训练（QAT）与 STE：让模型"学会"量化</a>
-  <a href="#p7" title="混合精度与 Floating16：不只有定点整数"><span class="n">7</span>混合精度与 Floating16：不只有定点整数</a>
+  <a href="#p7" title="混合精度与 FP16（Float16）：不只有定点整数"><span class="n">7</span>混合精度与 FP16（Float16）：不只有定点整数</a>
   <a href="#p8" title="本章小结：线性量化+校准+PTQ/QAT 全图谱"><span class="n">8</span>本章小结：线性量化+校准+PTQ/QAT 全图谱</a>
 </div>
 </aside>

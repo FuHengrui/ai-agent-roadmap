@@ -282,7 +282,7 @@
 <h1>第一章　vLLM：大模型推理引擎的核心原理</h1>
 <div class="subtitle">阶段 24 · 大模型时代的模型运维与部署　|　vLLM入门　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>模型训练好了，怎么"跑起来"、还跑得快？<strong>vLLM</strong> 是目前大模型部署的主流推理引擎：它把吞吐做到传统实现的 10 倍以上，靠的是两项核心技术——<strong>PagedAttention（页式注意力）</strong> 与 <strong>连续批处理（Continuous Batching）</strong>。本章解决入门三问：<strong>vLLM 是什么、为什么快、PagedAttention 到底在优化什么</strong>。</p>
+<p>靠的是两项核心技术（PagedAttention + 连续批处理，后者含抢占式调度）</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装环境，这章只讲原理；上一阶段的量化与剪枝看完，正好知道为什么要省显存。</p></div></div>
@@ -345,7 +345,7 @@
 允许页在物理内存中不连续（靠页表映射）</pre>
 <p>效果：</p>
 <ol><li><strong>显存只分配给实际需要的长度</strong>，不再预分配整段。</li><li><strong>碎片化消除</strong>：小的洞可以容纳新请求，显存利用率大幅提高。</li><li>接近 0 的 KV 缓存浪费 → 同等显存装下<strong>更多并发请求</strong>。</li></ol>
-<p>这是 vLLM 吞吐"10 倍级"提升的第一功臣，也是它名字的来源（Virtual 化的 LLM Memory）。</p>
+<p>名字取自操作系统<strong>虚拟内存</strong>（virtual memory）的类比</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -380,8 +380,9 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>连续批处理引入了<strong>抢占式调度（Preemption）</strong>：</p>
-<ul><li>每个请求有优先级/公平额度（按已获得的调度机会计算）。</li><li>超长请求占用过多 GPU 时间时，可以被"抢占"，把算力让给等待中的请求。</li><li>被抢占的请求用 KV 缓存恢复（这正是 PagedAttention 分页的另一个好处：<strong>占用的 KV 页可以安全换出/复用</strong>）。</li></ul>
-<p>效果：<strong>短请求延迟有保障，长请求也能跑完</strong>——服务延迟分布更稳，Tail Latency 显著下降。</p>
+<p>KV 显存块不够用时，调度器会<strong>抢占</strong>部分请求（把它们的 KV 换出或丢弃、之后重算）来腾显存 只有当显存不足以容纳新请求时，才会有请求被抢占；<strong>长请求不会因为"占得久"被踢</strong></p>
+<ul><li>被抢占的请求用 KV 缓存恢复（这正是 PagedAttention 分页的另一个好处：<strong>占用的 KV 页可以安全换出/复用</strong>）。</li></ul>
+<p>减少显存不足导致的失败与重排，延迟分布更稳（默认调度是 FCFS，不保证短请求优先）</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

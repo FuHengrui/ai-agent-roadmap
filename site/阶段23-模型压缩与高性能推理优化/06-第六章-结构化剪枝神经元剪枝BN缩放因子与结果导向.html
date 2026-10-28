@@ -313,7 +313,7 @@
 <p>结构化的最小单元是"神经元"，怎么决定是否删除它？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p><strong>神经元剪枝（Neuron Pruning）</strong>：把一整列的权重（一个神经元关联的所有输入连接）删掉。</p>
+<p><strong>神经元剪枝（Neuron Pruning）</strong>：把这个神经元关联的所有输入连接删掉——PyTorch <code>nn.Linear</code> 的 weight 是 <code>(out, in)</code>，所以按 <strong>一行</strong> 删（若布局是 <code>(in, out)</code> 则是删一列）。</p>
 <p>关键问题：<strong>怎么给神经元打分（重要性）？</strong></p>
 <ul><li>常用方案：<strong>权重向量的 L1/L2 范数</strong>——一个神经元的权重向量幅值越大，它对输出的整体贡献越大，越重要。</li><li>打分后排序，删掉分数低于阈值的神经元，再微调恢复。</li></ul>
 <p>动手流程：</p>
@@ -322,7 +322,7 @@
   2. 按范数排序
   3. 保留范数较大的前 k 个神经元，删除其余
 4. 用保留的权重初始化小网络，微调</pre>
-<p>删除神经元=删除矩阵的一整列，网络宽度变小，<strong>宽度 × 深度都规整</strong>，直接受益于通用加速。</p>
+<p>网络变<strong>窄</strong>（深度不变），结构保持规整</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
