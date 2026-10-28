@@ -35,7 +35,7 @@ Transformer 整机 = **输入处理 + 编码器 + 解码器 + 输出层**：
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 以为编码器和解码器结构完全相同 | 解码器多一个"掩码自注意力 + 交叉注意力"子层，生成端才不偷看未来 |
+| 以为编码器和解码器结构完全相同 | 解码器**只多一个交叉注意力子层**；"掩码自注意力"是自注意力加了 mask，不算新增子层 |
 | 忘记输出层 | 解码器输出要过 Linear(vocab_size) + Softmax 才能得到单词概率 |
 
 @@point ② 解码器三件套：掩码自注意力、交叉注意力、FFN
@@ -89,7 +89,7 @@ Attention(Q, K, V):
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 交叉注意力也加掩码 | 编码器输出已完整，不加掩码；只有解码器内部的自注意力才加 |
-| 以为 K/V 每层都一样 | 每层有自己的交叉注意力，K/V 用的是**当前层**编码器输出 |
+| 以为 K/V 每层都一样 | 各解码层都有自己的交叉注意力投影，但 K/V **都来自编码器最后一层的输出** |
 
 @@point ④ 位置编码在编码器/解码器都要加吗
 @@need 要解决什么
@@ -166,11 +166,13 @@ class TinyTranslator(nn.Module):
         # src: [batch, src_len], tgt: [batch, tgt_len]
         src = self.src_embed(src)
         tgt = self.tgt_embed(tgt)
-        out = self.transformer(src, tgt)   # 内部已含掩码
+        # ⚠️ nn.Transformer 不会自动给你因果掩码，必须自己传，否则解码器能看见未来 token
+        tgt_mask = nn.Transformer.generate_square_subsequent_mask(tgt.size(1)).to(tgt.device)
+        out = self.transformer(src, tgt, tgt_mask=tgt_mask)
         return self.fc_out(out)            # [batch, tgt_len, vocab]
 ```
 
-`nn.Transformer` 已内置位置编码、掩码、多头注意力——**一行拿到整机**，训练前还需构造 src/tgt 掩码与 pad 填充。
+`nn.Transformer` 内置的是**多头注意力 + 前馈 + 残差/LayerNorm**，**没有位置编码**——PE 要自己写、在 embedding 之后相加；`tgt_mask`（因果掩码）、`src_key_padding_mask`/`tgt_key_padding_mask`（pad 掩码）也要自己传。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -204,14 +206,15 @@ for batch in dataloader:
 def translate(model, src, max_len=50):
     model.eval()
     with torch.no_grad():
-        out = model.encode(src)            # 编码一次
+        # TinyTranslator 本身没写 encode/decode，直接取内部的 encoder，并自己加位置编码
+        src_pad = model.encoder(model.src_embed(src) + model.pos_enc(src))   # 编码一次
         tgt = torch.tensor([[SOS_ID]])     # 从 <sos> 起
         for _ in range(max_len):
             logits = model.decode(tgt, out)
             word = logits[:, -1].argmax(-1)
             if word.item() == EOS_ID:
                 break
-            tgt = torch.cat([tgt, word], dim=1)  # 拼回继续
+            tgt = torch.cat([tgt, word.unsqueeze(1)], dim=1)  # word 是 [B]，先补一维再拼
     return tgt
 ```
 
@@ -266,7 +269,7 @@ def translate(model, src, max_len=50):
 
 @@quiz
 1. 画出 Transformer 整机的结构图，标出编码器与解码器各自的子层。
-2. 解码器比编码器多了哪两个子层？各自作用是什么？
+2. 解码器比编码器多的是哪个子层？它拿什么当 Q、什么当 K/V？
 3. 交叉注意力中 Q/K/V 分别来自哪里？为什么叫"交叉"？
 4. 位置编码在编码器和解码器都要加吗？为什么？
 5. 描述"我爱学习"翻译成英文的完整前向过程（含停止条件）。

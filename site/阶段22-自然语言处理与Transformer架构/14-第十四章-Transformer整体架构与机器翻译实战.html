@@ -306,7 +306,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为编码器和解码器结构完全相同</td><td>解码器多一个"掩码自注意力 + 交叉注意力"子层，生成端才不偷看未来</td></tr>
+<tr><td>以为编码器和解码器结构完全相同</td><td>解码器<strong>只多一个交叉注意力子层</strong>；"掩码自注意力"是自注意力加了 mask，不算新增子层</td></tr>
 <tr><td>忘记输出层</td><td>解码器输出要过 Linear(vocab_size) + Softmax 才能得到单词概率</td></tr>
 </table>
 </div>
@@ -353,7 +353,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>交叉注意力也加掩码</td><td>编码器输出已完整，不加掩码；只有解码器内部的自注意力才加</td></tr>
-<tr><td>以为 K/V 每层都一样</td><td>每层有自己的交叉注意力，K/V 用的是<strong>当前层</strong>编码器输出</td></tr>
+<tr><td>以为 K/V 每层都一样</td><td>各解码层都有自己的交叉注意力投影，但 K/V <strong>都来自编码器最后一层的输出</strong></td></tr>
 </table>
 </div>
 </div></div>
@@ -426,9 +426,11 @@ class TinyTranslator(nn.Module):
         # src: [batch, src_len], tgt: [batch, tgt_len]
         src = self.src_embed(src)
         tgt = self.tgt_embed(tgt)
-        out = self.transformer(src, tgt)   # 内部已含掩码
+        # ⚠️ nn.Transformer 不会自动给你因果掩码，必须自己传，否则解码器能看见未来 token
+        tgt_mask = nn.Transformer.generate_square_subsequent_mask(tgt.size(1)).to(tgt.device)
+        out = self.transformer(src, tgt, tgt_mask=tgt_mask)
         return self.fc_out(out)            # [batch, tgt_len, vocab]</pre>
-<p><code>nn.Transformer</code> 已内置位置编码、掩码、多头注意力——<strong>一行拿到整机</strong>，训练前还需构造 src/tgt 掩码与 pad 填充。</p>
+<p><code>nn.Transformer</code> 内置的是<strong>多头注意力 + 前馈 + 残差/LayerNorm</strong>，<strong>没有位置编码</strong>——PE 要自己写、在 embedding 之后相加；<code>tgt_mask</code>（因果掩码）、<code>src_key_padding_mask</code>/<code>tgt_key_padding_mask</code>（pad 掩码）也要自己传。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -458,14 +460,15 @@ for batch in dataloader:
 <pre>def translate(model, src, max_len=50):
     model.eval()
     with torch.no_grad():
-        out = model.encode(src)            # 编码一次
+        # TinyTranslator 本身没写 encode/decode，直接取内部的 encoder，并自己加位置编码
+        src_pad = model.encoder(model.src_embed(src) + model.pos_enc(src))   # 编码一次
         tgt = torch.tensor([[SOS_ID]])     # 从 &lt;sos&gt; 起
         for _ in range(max_len):
             logits = model.decode(tgt, out)
             word = logits[:, -1].argmax(-1)
             if word.item() == EOS_ID:
                 break
-            tgt = torch.cat([tgt, word], dim=1)  # 拼回继续
+            tgt = torch.cat([tgt, word.unsqueeze(1)], dim=1)  # word 是 [B]，先补一维再拼
     return tgt</pre>
 <p>完整工程配套：数据清洗、中英分词、批处理 pad、按长度排序——但<strong>核心逻辑就这两段</strong>。</p>
 </div>
@@ -516,7 +519,7 @@ for batch in dataloader:
 </table>
 <p>一句话记住本章：<strong>Transformer = 编码器读懂原文 + 解码器逐词生成，解码器内部用掩码自注意力防偷看、交叉注意力翻原文、FFN 做加工；PyTorch 里 nn.Transformer 一句话起整机，训练喂右移序列、推理自回归拼词到 eos——一个最小翻译系统就此跑通。下一章起，主角从"架构"切换到"预训练"：ELMo 率先登场。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>画出 Transformer 整机的结构图，标出编码器与解码器各自的子层。</li><li>解码器比编码器多了哪两个子层？各自作用是什么？</li><li>交叉注意力中 Q/K/V 分别来自哪里？为什么叫"交叉"？</li><li>位置编码在编码器和解码器都要加吗？为什么？</li><li>描述"我爱学习"翻译成英文的完整前向过程（含停止条件）。</li><li>nn.Transformer 一行封装了什么？实战中还需要手动构造哪些 mask？</li><li>训练循环与推理循环在输入上有什么本质区别？BLEU 指标的局限性是什么？</li></ol>
+<ol><li>画出 Transformer 整机的结构图，标出编码器与解码器各自的子层。</li><li>解码器比编码器多的是哪个子层？它拿什么当 Q、什么当 K/V？</li><li>交叉注意力中 Q/K/V 分别来自哪里？为什么叫"交叉"？</li><li>位置编码在编码器和解码器都要加吗？为什么？</li><li>描述"我爱学习"翻译成英文的完整前向过程（含停止条件）。</li><li>nn.Transformer 一行封装了什么？实战中还需要手动构造哪些 mask？</li><li>训练循环与推理循环在输入上有什么本质区别？BLEU 指标的局限性是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener"><span class="k">文档</span>Attention Is All You Need</a>
 <a href="https://pytorch.org/tutorials/beginner/translation_transformer.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch Transformer 官方教程</a>
