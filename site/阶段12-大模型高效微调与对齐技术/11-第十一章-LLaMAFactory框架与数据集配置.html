@@ -366,10 +366,10 @@
 </table>
 <p>安装（Python 环境内一键）：</p>
 <pre>pip install -U pip
-pip install llama-factory         # 核心包
+pip install llamafactory   # PyPI 上叫 llamafactory，带连字符的装不到         # 核心包
 # 或源码开发版：git clone https://github.com/hiyouga/LLaMA-Factory.git</pre>
 <p>验证：</p>
-<pre>import llama_factory
+<pre>import llamafactory
 print(llama_factory.__version__)</pre>
 <p>版本纪律（再次强调）：<strong>transformers/peft/trl 版本和 LLaMA-Factory 强绑定</strong>——它只测过特定组合。乱升版本 = 把已验证的链路炸掉。</p>
 </div>
@@ -506,7 +506,7 @@ with open(&quot;data/chinese_medical.json&quot;, encoding=&quot;utf-8&quot;) as 
 clean = [d for d in data
          if d.get(&quot;output&quot;) and len(d.get(&quot;output&quot;, &quot;&quot;)) &gt; 10]
 print(&quot;原始:&quot;, len(data), &quot;清洗后:&quot;, len(clean))</pre>
-<p>再对接第 12 章的患病监控思路：清洗比例、条目数记录进文档，训练前心里有数。</p>
+<p>再对接第 12 章的监控与评估：清洗比例、条目数记录进文档，训练前心里有数。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

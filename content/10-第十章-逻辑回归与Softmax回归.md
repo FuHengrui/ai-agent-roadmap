@@ -123,7 +123,7 @@ p = 1 / (1 + e^(-w·x))
 ```
 **形式完全一样**（只是 ŷ 的算法不同：回归里 ŷ=w·x，分类里 ŷ=σ(w·x)）。这就是"同构"的含义——同一套"残差×特征"结构贯穿两个算法。
 
-工程结论：逻辑回归完全可以用梯度下降（BGD/SGD/Mini-Batch）训练，代码和第 6 章几乎一致，只差一个 sigmoid 包装。sklearn 的 LogisticRegression / SGDClassifier(loss='log') 都基于此。
+工程结论：逻辑回归完全可以用梯度下降（BGD/SGD/Mini-Batch）训练，代码和第 6 章几乎一致，只差一个 sigmoid 包装。sklearn 的 LogisticRegression / SGDClassifier(loss='log_loss')   # 新版合法值，'log' 会 ValueError 都基于此。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -226,7 +226,7 @@ model.fit(X_train_s, y_train)
 print(model.score(X_test_s, y_test))    # 分类准确率
 
 # 多分类：显式 Softmax
-model_multi = LogisticRegression(multi_class='multinomial', max_iter=1000)
+model_multi = LogisticRegression(max_iter=1000   # sklearn 1.8 起移除了 multi_class，默认就是 multinomial)
 model_multi.fit(X_train_s, y_train)
 print(model_multi.score(X_test_s, y_test))
 ```

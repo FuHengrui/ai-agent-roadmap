@@ -98,14 +98,14 @@ LLaMA-Factory 定位：
 
 ```bash
 pip install -U pip
-pip install llama-factory         # 核心包
+pip install llamafactory   # PyPI 上叫 llamafactory，带连字符的装不到         # 核心包
 # 或源码开发版：git clone https://github.com/hiyouga/LLaMA-Factory.git
 ```
 
 验证：
 
 ```python
-import llama_factory
+import llamafactory
 print(llama_factory.__version__)
 ```
 
@@ -263,7 +263,7 @@ clean = [d for d in data
 print("原始:", len(data), "清洗后:", len(clean))
 ```
 
-再对接第 12 章的患病监控思路：清洗比例、条目数记录进文档，训练前心里有数。
+再对接第 12 章的监控与评估：清洗比例、条目数记录进文档，训练前心里有数。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

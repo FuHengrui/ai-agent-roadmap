@@ -382,7 +382,7 @@
 <p>对比线性回归的梯度：</p>
 <pre>∂J/∂w_j = Σ (ŷ_i - y_i) · x_ij</pre>
 <p><strong>形式完全一样</strong>（只是 ŷ 的算法不同：回归里 ŷ=w·x，分类里 ŷ=σ(w·x)）。这就是"同构"的含义——同一套"残差×特征"结构贯穿两个算法。</p>
-<p>工程结论：逻辑回归完全可以用梯度下降（BGD/SGD/Mini-Batch）训练，代码和第 6 章几乎一致，只差一个 sigmoid 包装。sklearn 的 LogisticRegression / SGDClassifier(loss='log') 都基于此。</p>
+<p>工程结论：逻辑回归完全可以用梯度下降（BGD/SGD/Mini-Batch）训练，代码和第 6 章几乎一致，只差一个 sigmoid 包装。sklearn 的 LogisticRegression / SGDClassifier(loss='log_loss')   # 新版合法值，'log' 会 ValueError 都基于此。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -475,7 +475,7 @@ model.fit(X_train_s, y_train)
 print(model.score(X_test_s, y_test))    # 分类准确率
 
 # 多分类：显式 Softmax
-model_multi = LogisticRegression(multi_class=&#x27;multinomial&#x27;, max_iter=1000)
+model_multi = LogisticRegression(max_iter=1000   # sklearn 1.8 起移除了 multi_class，默认就是 multinomial)
 model_multi.fit(X_train_s, y_train)
 print(model_multi.score(X_test_s, y_test))</pre>
 <p>要点：<strong>分类任务评分用准确率 accuracy（预测对的比例），不是 RMSE</strong>。若 max_iter 默认 100 报警告，调大到 1000 或先标准化（这里已做）。</p>
