@@ -420,7 +420,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>高德地图 MCP</strong> 为旅行助手提供地图类能力，包括：</p>
-<ul><li><strong>实时天气查询</strong>——每日高低温、天气状况；</li><li><strong>实时门票余量查询</strong>——景点余票动态获取；</li><li><strong>交通规划</strong>——高德地铁/公交 API；</li><li><strong>景点导航</strong>——唤起高德地图 App/网页导航；</li><li><strong>地图绘制</strong>——展示景点位置、访问路线。</li></ul>
+<ul><li><strong>实时天气查询</strong>——每日高低温、天气状况；</li><li><strong>天气与地理能力</strong>——城市天气、地理编码、路线规划（<strong>票价/余票不在高德 MCP 里</strong>，要用得另接票务接口）；</li><li><strong>交通规划</strong>——高德地铁/公交 API；</li><li><strong>景点导航</strong>——唤起高德地图 App/网页导航；</li><li><strong>地图绘制</strong>——展示景点位置、访问路线。</li></ul>
 <p>这些能力让旅行计划从"纸面攻略"升级为"实时可执行方案"：行程里可以直接带"门票余量柱状图"、"景点间路线连线"、"点名字唤起导航"。</p>
 <p>配置方式与 12306 相同：在魔塔 MCP 广场找到对应服务并接入 Trae；接入后核对工具的激活情况。</p>
 </div>
@@ -459,13 +459,13 @@
 <p><strong>先给角色与能力清单</strong>：</p>
 <pre>你是一个经验丰富的智能旅行行程规划师，基于智能集成平台（MCP）开发，拥有以下能力：
 - 实时天气查询（高德地图MCP）
-- 实时门票余量查询
+- 天气与地理编码查询（票价/余票需另接票务接口）
 - 交通规划（高德地铁/公交API）
 - 景点导航（高德地图唤起功能）
 - 地图绘制（高德地图）
 - 行程可视化（路线图、时间轴图、门票图表）</pre>
 <p><strong>再给输出结构（总体规划步骤）</strong>，要求最终产出包含六个区：</p>
-<ol><li><strong>行程标题区</strong>：目的地、旅行日期与天数、天气信息摘要；</li><li><strong>行程概览区</strong>：按日期分区的行程简表（用图标标识景点/餐饮/交通/住宿）；</li><li><strong>详细时间表区</strong>：时间轴/表格，含时间、地点、停留时间、门票价格与余票；</li><li><strong>交通信息区</strong>：换乘点、地铁公交线路、预计时间、路线可视化；</li><li><strong>住宿与餐饮区</strong>：酒店地址、入住退房时间、推荐餐厅、便利设施；</li><li><strong>实用信息区</strong>：紧急电话、旅行提示、预算摘要、行李清单。</li></ol>
+<ol><li><strong>行程标题区</strong>：目的地、旅行日期与天数、天气信息摘要；</li><li><strong>行程概览区</strong>：按日期分区的行程简表（用图标标识景点/餐饮/交通/住宿）；</li><li><strong>详细时间表区</strong>：时间轴/表格，含时间、地点、停留时间；票价信息若接入票务接口再展示；</li><li><strong>交通信息区</strong>：换乘点、地铁公交线路、预计时间、路线可视化；</li><li><strong>住宿与餐饮区</strong>：酒店地址、入住退房时间、推荐餐厅、便利设施；</li><li><strong>实用信息区</strong>：紧急电话、旅行提示、预算摘要、行李清单。</li></ol>
 <p>再配合网页生成要求（HTML5 + Font Awesome + Tailwind CSS + JavaScript、响应式、数字杂志风格、Mermaid 图表、高德地图 API 标点与路线）——一份完整可执行的 Agent 提示词就成型了。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
