@@ -506,7 +506,7 @@ firewall-cmd --reload</pre>
 systemctl stop mysqld
 
 # 2. 用 rpm 反查并删除所有 mysql 相关包
-rpm -qa | grep mysql
+rpm -qa \| grep mysql
 rpm -ev --nodeps 上面查到的每个包名
 
 # 3. 删残留目录和配置文件
@@ -521,8 +521,8 @@ groupdel mysql</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>只 rpm -e 主包，/var/lib/mysql 数据还在</td><td>数据目录要手动清（上一步 rm -rf）；不清会导致重装初始化冲突</td></tr>
-<tr><td>卸载后端口 3306 还被占用</td><td>有可能残留进程没杀干净：`netstat -atnlp</td><td>grep 3306` 找到 PID 再 kill</td></tr>
-<tr><td>重装包时说"包已经安装"</td><td>上次没卸净：rpm -qa</td><td>grep mysql 再把残留包删掉</td></tr>
+<tr><td>卸载后端口 3306 还被占用</td><td>有可能残留进程没杀干净：`netstat -atnlp \</td><td>grep 3306` 找到 PID 再 kill</td></tr>
+<tr><td>重装包时说"包已经安装"</td><td>上次没卸净：rpm -qa \</td><td>grep mysql 再把残留包删掉</td></tr>
 </table>
 </div>
 </div></div>
@@ -550,7 +550,7 @@ root  1234   0.3   1.2   Ss   10:00  0:01   sshd</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>ps aux</td><td>grep xxx 结果里有"自己"</td><td>grep 进程也会匹配到关键字；加 `</td><td>grep -v grep` 排除</td></tr>
+<tr><td>ps aux \</td><td>grep xxx 结果里有"自己"</td><td>grep 进程也会匹配到关键字；加 `\</td><td>grep -v grep` 排除</td></tr>
 <tr><td>想持续看动态变化</td><td>ps 是快照，会动的东西用 top（下一知识点）</td></tr>
 <tr><td>进程 CPU 显示 100%</td><td>ps 里 %CPU 是累计值/瞬时值，精确到秒；结合 top 看才直观</td></tr>
 </table>

@@ -431,16 +431,6 @@ for epoch in range(epochs):
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>优化算法全貌：</p>
-<table>
-<tr><th>优化器</th><th>核心机制</th><th>解决什么</th><th>一句话评价</th></tr>
-<tr><td>SGD</td><td>param -= lr*grad</td><td>基线</td><td>简单但慢、震荡</td></tr>
-<tr><td>SGD+Momentum</td><td>加"惯性"速度</td><td>峡谷震荡</td><td>震荡小、走得快</td></tr>
-<tr><td>Adagrad</td><td>梯度平方和缩放 lr</td><td>参数尺度不均</td><td>稀疏好，但 lr 趋零</td></tr>
-<tr><td>RMSProp</td><td>EWMA 平滑平方梯度</td><td>Adagrad 停摆</td><td>自适应且不枯竭</td></tr>
-<tr><td>Adam</td><td>动量 + RMSProp</td><td>前两者痛点</td><td><strong>默认标准</strong></td></tr>
-</table>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 优化器超参速查：默认值就是好起点</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>每个优化器有哪些超参？第一次用该设什么？</p>
@@ -491,6 +481,16 @@ for epoch in range(epochs):
 <p>一句话记住本章：<strong>裸 SGD 震荡又怕平原；动量加惯性、自适应调步长，合起来就是 Adam——深度学习默认优化器 lr=0.001；训练后期用 scheduler 降学习率精修，大模型换 AdamW。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>优化算法全貌：</p>
+<table>
+<tr><th>优化器</th><th>核心机制</th><th>解决什么</th><th>一句话评价</th></tr>
+<tr><td>SGD</td><td>param -= lr*grad</td><td>基线</td><td>简单但慢、震荡</td></tr>
+<tr><td>SGD+Momentum</td><td>加"惯性"速度</td><td>峡谷震荡</td><td>震荡小、走得快</td></tr>
+<tr><td>Adagrad</td><td>梯度平方和缩放 lr</td><td>参数尺度不均</td><td>稀疏好，但 lr 趋零</td></tr>
+<tr><td>RMSProp</td><td>EWMA 平滑平方梯度</td><td>Adagrad 停摆</td><td>自适应且不枯竭</td></tr>
+<tr><td>Adam</td><td>动量 + RMSProp</td><td>前两者痛点</td><td><strong>默认标准</strong></td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>裸 SGD 在"峡谷形"损失面上会遇到什么问题？为什么？</li><li>Momentum 的动量系数（如 0.9）起什么作用？动量太大会怎样？</li><li>EWMA 在优化算法里扮演什么角色？RMSProp 用它解决了 Adagrad 的什么问题？</li><li>Adagrad 为什么训练后期学习率会趋近 0？这会带来什么后果？</li><li>Adam 的一阶矩和二阶矩分别对应前面哪个算法的思想？</li><li>为什么说 Adam 是"对超参不敏感、几乎开箱可用"的默认选择？</li><li>学习率调度器在训练后期起什么作用？调用 scheduler.step() 的正确时机是？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

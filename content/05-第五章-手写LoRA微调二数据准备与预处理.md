@@ -205,7 +205,7 @@ print(tokenizer.decode(sample["labels"]))  # 应看到原 response
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 只看 shape 不 decode，训练完才发现数据是乱的 | 形状对不代表内容对（padding 错位、字段取错）。**decode 是最后一道人工防线**，训练前必做 |
-| decode 出来的文本夹杂特殊符号如 \<|endoftext|> | padding 位置被 pad token 填充或混入特殊 token 是正常的，不影响训练；若强迫症可用 `skip_special_tokens=True` 看正文 |
+| decode 出来的文本夹杂特殊符号如 `<\|endoftext\|>` | padding 位置被 pad token 填充或混入特殊 token 是正常的，不影响训练；若强迫症可用 `skip_special_tokens=True` 看正文 |
 | 截断导致多数样本 response 被切没 | `max_length=512` 装不下"长指令+长回答"时，应答被腰斩。解法：调大 max_length（显存允许）或**数据侧先做清洗**（太长的样本丢弃/切分） |
 
 @@point ⑦ 指令格式的取舍：这里为什么用"指令:\n回应:"
@@ -218,7 +218,7 @@ print(tokenizer.decode(sample["labels"]))  # 应看到原 response
 | 方案 | 格式示例 | 适合 |
 |---|---|---|
 | 简化模板 | `指令: xxx\n回应:` | 教学/快速起步，可控、直观 |
-| 模型官方 Chat 模板 | `<|user|>...<|assistant|>...`（tokenizer.apply_chat_template） | 生产项目，与模型预训练格式一致 |
+| 模型官方 Chat 模板 | `<\|user\|>...<\|assistant\|>...`（tokenizer.apply_chat_template） | 生产项目，与模型预训练格式一致 |
 | Alpaca 模板 | `### Instruction: ...\n### Response:` | 第 9 章 Unsloth 使用 |
 
 会不会"格式错了模型学不会"？——微调本质上会**学会你的格式**：只要训练/推理用同一模板，模型就能跟着学会"看到回应:就接话"。所以一致性 > 完美性：**训测同模板**比"用最官方模板但训测不一致"强得多。

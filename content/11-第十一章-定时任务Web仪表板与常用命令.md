@@ -83,7 +83,7 @@
 
 | 操作 | 途径 |
 |---|---|
-| 创建 | `/cron` 向导，或命令行：`hermes cron create "0 8 * * *" "任务内容"`、`hermes cron list|run|status` |
+| 创建 | `/cron` 向导，或命令行：`hermes cron create "0 8 * * *" "任务内容"`、`hermes cron list\|run\|status` |
 | 查看已有任务 | `/cron list` 类子命令 |
 | 管理（暂停/删除/手动触发） | `/cron pause / resume / run / remove <id>` |
 

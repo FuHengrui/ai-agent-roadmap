@@ -422,23 +422,6 @@ USER_ID=ops_demo</pre>
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<ul><li>Coze 三件套：Bot 人设、插件（联网搜索）、工作流编排</li><li>选题 Bot 使命：输入运营主题 → 结合实时热搜 → 5 板块 × 10 = 50 个标题</li><li>人设 Prompt = 代码：板块结构、条数、字数、JSON 输出全是硬约束</li><li>输出契约先行：JSON 的 key 直接映射数据库表字段，AI 输出生来就能落库</li><li>温度策略：选题低温度保格式，文案高温度保创意，按任务调参</li><li>调试循环：一轮一变量，记录对比，人设要版本管理</li><li>发布与 BOT_ID：发布后才可 API 调用，除人设改动记得重发</li><li>双子 Bot 架构：选题与文案各管一摊，人设聚焦输出才稳定</li></ul>
-<h4>自测：能不能答上来</h4>
-<ol><li>想让 Bot 结合"当下全网热搜"，正确做法是？</li></ol>
-<p>A. 提示词里写"结合热搜"　　B. 给 Bot 配联网搜索插件　　C. 数据库存热搜　　D. 训练模型</p>
-<ol><li>选题 Bot 一次要生成多少标题？</li></ol>
-<p>A. 10　　B. 25　　C. 50（5板块×10）　　D. 100</p>
-<ol><li>人设规范里"只输出标题、生成结束输出 JSON"是为了？</li></ol>
-<p>A. 好看　　B. 供后端直接解析入库　　C. 减少 token　　D. 方便人工阅读</p>
-<ol><li>选题任务建议把温度调得？</li></ol>
-<p>A. 高（保创意）　　B. 低（保格式稳定）　　C. 随意　　D. 关闭</p>
-<ol><li>后端 API 调用 Bot 前必须完成哪一步？</li></ol>
-<p>A. 保存人设　　B. 发布 Bot 并获取 BOT_ID　　C. 开启调试　　D. 添加插件</p>
-<ol><li>输出只有 43 个标题，最优先怎么修？</li></ol>
-<p>A. 提高温度　　B. 人设强调"必须满 5×10 共 50 个，缺少则补全"　　C. 换模型　　D. 加插件</p>
-<ol><li>改了人设但 API 行为没变，原因是？</li></ol>
-<p>A. 没重新发布　　B. 缓存　　C. 网络慢　　D. 后端没重启</p>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 双子 Bot 架构：选题与文案各管一摊</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>平台有两类 AI 任务：选题（结构化 50 标题）与文案（220-420 字自由正文）。它们人设、输出规范、温度要求都不同——塞进同一个 Bot 会互相干扰。</p>
@@ -462,6 +445,23 @@ USER_ID=ops_demo</pre>
 </table>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<ul><li>Coze 三件套：Bot 人设、插件（联网搜索）、工作流编排</li><li>选题 Bot 使命：输入运营主题 → 结合实时热搜 → 5 板块 × 10 = 50 个标题</li><li>人设 Prompt = 代码：板块结构、条数、字数、JSON 输出全是硬约束</li><li>输出契约先行：JSON 的 key 直接映射数据库表字段，AI 输出生来就能落库</li><li>温度策略：选题低温度保格式，文案高温度保创意，按任务调参</li><li>调试循环：一轮一变量，记录对比，人设要版本管理</li><li>发布与 BOT_ID：发布后才可 API 调用，除人设改动记得重发</li><li>双子 Bot 架构：选题与文案各管一摊，人设聚焦输出才稳定</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>想让 Bot 结合"当下全网热搜"，正确做法是？</li></ol>
+<p>A. 提示词里写"结合热搜"　　B. 给 Bot 配联网搜索插件　　C. 数据库存热搜　　D. 训练模型</p>
+<ol><li>选题 Bot 一次要生成多少标题？</li></ol>
+<p>A. 10　　B. 25　　C. 50（5板块×10）　　D. 100</p>
+<ol><li>人设规范里"只输出标题、生成结束输出 JSON"是为了？</li></ol>
+<p>A. 好看　　B. 供后端直接解析入库　　C. 减少 token　　D. 方便人工阅读</p>
+<ol><li>选题任务建议把温度调得？</li></ol>
+<p>A. 高（保创意）　　B. 低（保格式稳定）　　C. 随意　　D. 关闭</p>
+<ol><li>后端 API 调用 Bot 前必须完成哪一步？</li></ol>
+<p>A. 保存人设　　B. 发布 Bot 并获取 BOT_ID　　C. 开启调试　　D. 添加插件</p>
+<ol><li>输出只有 43 个标题，最优先怎么修？</li></ol>
+<p>A. 提高温度　　B. 人设强调"必须满 5×10 共 50 个，缺少则补全"　　C. 换模型　　D. 加插件</p>
+<ol><li>改了人设但 API 行为没变，原因是？</li></ol>
+<p>A. 没重新发布　　B. 缓存　　C. 网络慢　　D. 后端没重启</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://www.coze.cn/" target="_blank" rel="noopener"><span class="k">官方</span>Coze 扣子开放平台</a>
 <a href="https://www.coze.cn/docs/guides/" target="_blank" rel="noopener"><span class="k">官方</span>Coze 提示词工程指南</a>

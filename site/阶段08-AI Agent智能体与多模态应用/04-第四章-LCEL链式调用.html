@@ -360,7 +360,7 @@ result = chain.invoke({&quot;question&quot;: &quot;你好吗？&quot;})</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td>把 `</td><td>` 当普通运算符乱用（两侧不是 Runnable 就会报错）（两端不是 Runnable）</td><td>LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包</td></tr>
+<tr><td>把 `\</td><td>` 当普通运算符乱用（两侧不是 Runnable 就会报错）（两端不是 Runnable）</td><td>LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包</td></tr>
 <tr><td>invoke 拿到的是原始模型输出不是解析结果</td><td>链末端组件决定返回类型，忘了串 parser 就拿到裸文本</td></tr>
 </table>
 </div>

@@ -438,17 +438,6 @@ k = len(scales) * len(ratios)         # = 9</pre>
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>Faster R-CNN 精读核心结论：</p>
-<table>
-<tr><th>问题</th><th>答案</th></tr>
-<tr><td>痛点</td><td>区域提议（Selective Search 等）成检测系统新瓶颈（秒级）</td></tr>
-<tr><td>方案</td><td>RPN：与检测网络共享卷积特征的全卷积网络，端到端训练</td></tr>
-<tr><td>Anchor</td><td>每位置 9 个参考框（3尺度×3比例），预测偏移而非绝对坐标</td></tr>
-<tr><td>训练</td><td>256 anchor/图、正负 1:1、IoU&gt;0.7 正、IoU&lt;0.3 负、越界丢弃</td></tr>
-<tr><td>结果</td><td>VGG-16 上 5fps、300 提议达 SOTA；VOC/COCO 竞赛冠军基石</td></tr>
-<tr><td>读论文模板</td><td>摘要三问 → 架构图 → 创新点 → 损失/训练 → 消融 → 沉淀</td></tr>
-</table>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 论文的遗产：从 Faster R-CNN 到整个检测家族</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>这篇论文对后来者产生了什么影响？"读它"的长期价值在哪？</p>
@@ -468,6 +457,17 @@ k = len(scales) * len(ratios)         # = 9</pre>
 <p>一句话记住本章：<strong>Faster R-CNN 的核心是"共享+参考"：检测网络已算好的卷积特征，被 RPN 复用来以 10ms 成本生成提议；anchor 用 3尺度×3比例的参考框简化回归；端到端训练后 5fps、300 提议达 SOTA——读论文用"痛点/方案/结果"三问先立主干，再用消融实验验证信念。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>Faster R-CNN 精读核心结论：</p>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>痛点</td><td>区域提议（Selective Search 等）成检测系统新瓶颈（秒级）</td></tr>
+<tr><td>方案</td><td>RPN：与检测网络共享卷积特征的全卷积网络，端到端训练</td></tr>
+<tr><td>Anchor</td><td>每位置 9 个参考框（3尺度×3比例），预测偏移而非绝对坐标</td></tr>
+<tr><td>训练</td><td>256 anchor/图、正负 1:1、IoU&gt;0.7 正、IoU&lt;0.3 负、越界丢弃</td></tr>
+<tr><td>结果</td><td>VGG-16 上 5fps、300 提议达 SOTA；VOC/COCO 竞赛冠军基石</td></tr>
+<tr><td>读论文模板</td><td>摘要三问 → 架构图 → 创新点 → 损失/训练 → 消融 → 沉淀</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>Fast R-CNN 之后的"新瓶颈"是什么？为什么 GPU 移植提议算法不是最好解？</li><li>RPN 与检测网络共享的是什么？共享后提议的边际成本大约是多少？</li><li>"RPN 告诉网络往哪看"在论文中被类比成哪种机制？</li><li>默认每个滑动窗口位置有几个 anchor？由什么组合而来？</li><li>anchor 方案相比图像金字塔方案的核心优势是什么？</li><li>anchor 的正负样本怎么判定？0.3~0.7 之间的 anchor 为什么被排除？</li><li>论文如何用消融实验证明"3尺度3比例 anchor 有效"？你学到读论文的什么姿势？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

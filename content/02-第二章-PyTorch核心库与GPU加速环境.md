@@ -183,20 +183,6 @@ print(torch.cuda.is_available())  # CUDA 是否可用（有无 NVIDIA GPU）
 | 低配机器装了 GPU 版反而更卡 | 显卡太老或显存小，效果不如 CPU；勇气可嘉但先看显卡型号再决定 |
 | "反正以后要 GPU，先装 GPU 版" | GPU 版在无 CUDA 环境会运行失败或回退 CPU，装之前先确认有没有 NVIDIA 显卡 |
 
-@@summary
-本章解决了"把 PyTorch 跑起来"的全部前置问题：
-
-| 问题 | 答案 |
-|---|---|
-| PyTorch 是什么 | Meta 开源机器学习库，研究友好、动态计算图、灵活易用 |
-| torch / torchvision / torchaudio | 核心库 + 图像扩展 + 音频扩展，按任务选装 |
-| 怎么安装 | pip 或 conda，务必在独立虚拟环境里装 |
-| CPU 为什么慢 | CPU 强核心少；GPU 成千上万小核心并行算张量，天然适配深度学习 |
-| CUDA 是什么 | NVIDIA 的通用并行计算平台，让 GPU 做通用计算 |
-| cuDNN 是什么 | NVIDIA 的深度神经网络专用加速库，卷积等操作更极致地加速 |
-| 怎么验证 | `torch.__version__` + `torch.cuda.is_available()` |
-| 版本怎么选 | 无 NVIDIA 显卡装 CPU 版；有则 GPU 版；功能一致只有速度差 |
-
 @@point ⑧ 第一个最小示例：跑通就能开工
 @@need 要解决什么
 环境装完了，怎么确认"真的能用了"？从哪里开始写第一行代码？
@@ -224,6 +210,21 @@ print(x * 2)                        # 张量基本运算可用
 | 多个环境迷路 | 用 conda 专属环境隔离，每个项目一个环境，从根上避免 |
 
 一句话记住本章：**PyTorch 由 torch（核心）+ torchvision/torchaudio（扩展）组成，GPU 靠 CUDA+cuDNN 加速，装完用两行代码验证即可开始。**
+
+
+@@summary
+本章解决了"把 PyTorch 跑起来"的全部前置问题：
+
+| 问题 | 答案 |
+|---|---|
+| PyTorch 是什么 | Meta 开源机器学习库，研究友好、动态计算图、灵活易用 |
+| torch / torchvision / torchaudio | 核心库 + 图像扩展 + 音频扩展，按任务选装 |
+| 怎么安装 | pip 或 conda，务必在独立虚拟环境里装 |
+| CPU 为什么慢 | CPU 强核心少；GPU 成千上万小核心并行算张量，天然适配深度学习 |
+| CUDA 是什么 | NVIDIA 的通用并行计算平台，让 GPU 做通用计算 |
+| cuDNN 是什么 | NVIDIA 的深度神经网络专用加速库，卷积等操作更极致地加速 |
+| 怎么验证 | `torch.__version__` + `torch.cuda.is_available()` |
+| 版本怎么选 | 无 NVIDIA 显卡装 CPU 版；有则 GPU 版；功能一致只有速度差 |
 
 @@quiz
 1. torch、torchvision、torchaudio 三个库的分工分别是什么？做表格数据分类需要装哪些？

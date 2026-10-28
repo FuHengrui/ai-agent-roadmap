@@ -69,7 +69,7 @@ PERSONAL: list[str] = [
 ]
 
 
-STRICT = '--strict' in sys.argv
+STRICT = '--no-strict' not in sys.argv   # 两条结构规则已全库清零，默认就拦；临时放行用 --no-strict
 
 
 def main() -> int:

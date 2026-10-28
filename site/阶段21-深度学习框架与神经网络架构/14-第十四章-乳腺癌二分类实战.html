@@ -480,17 +480,6 @@ with torch.no_grad():
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>乳腺癌二分类实战全流程：</p>
-<table>
-<tr><th>阶段</th><th>关键动作</th><th>坑点</th></tr>
-<tr><td>数据认知</td><td>看 shape/分布/类别比</td><td>失衡要处理</td></tr>
-<tr><td>预处理</td><td>StandardScaler：只 fit 训练集</td><td>泄漏、没转张量</td></tr>
-<tr><td>划分</td><td>7:1.5:1.5 + stratify + 固定种子</td><td>分层抽样</td></tr>
-<tr><td>模型</td><td>30→64→32→1，ReLU+BN+Dropout</td><td>输出单神经元</td></tr>
-<tr><td>训练</td><td>五连 + 验证监控 + 存最优</td><td>eval+no_grad</td></tr>
-<tr><td>评估</td><td>测试集最终评估 + 混淆矩阵</td><td>阈值/召回率</td></tr>
-</table>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ AUC 与 ROC：二分类的"全局体检报告"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>阈值调到多少好？除了准确率，有没有"不依赖阈值"的综合指标？</p>
@@ -544,6 +533,17 @@ for params in ParameterGrid(grid):   # 3×2×3 = 18 组
 <p>一句话记住本章：<strong>乳腺癌实战 = 标准流水线：认知数据 → 先切分再标准化（只 fit 训练集）→ MLP(ReLU+BN+Dropout, 输出1神经元) + BCEWithLogits + Adam → epoch 循环里用验证集选模型、测试集最后裁决，评估别只看准确率，配混淆矩阵盯住假阴性。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>乳腺癌二分类实战全流程：</p>
+<table>
+<tr><th>阶段</th><th>关键动作</th><th>坑点</th></tr>
+<tr><td>数据认知</td><td>看 shape/分布/类别比</td><td>失衡要处理</td></tr>
+<tr><td>预处理</td><td>StandardScaler：只 fit 训练集</td><td>泄漏、没转张量</td></tr>
+<tr><td>划分</td><td>7:1.5:1.5 + stratify + 固定种子</td><td>分层抽样</td></tr>
+<tr><td>模型</td><td>30→64→32→1，ReLU+BN+Dropout</td><td>输出单神经元</td></tr>
+<tr><td>训练</td><td>五连 + 验证监控 + 存最优</td><td>eval+no_grad</td></tr>
+<tr><td>评估</td><td>测试集最终评估 + 混淆矩阵</td><td>阈值/召回率</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么标准化必须"先切分、只对训练集 fit、验证/测试集只 transform"？</li><li>stratify=y 参数是干什么的？类别分布不均衡的划分会有什么后果？</li><li>二分类模型为什么用"单神经元 + BCEWithLogitsLoss"而不是两个神经元 + softmax？</li><li>训练循环里保存模型时为什么按验证 loss 而不是训练 loss 选择？</li><li>为什么训练状态和评估状态要分开（model.train()/model.eval()）？分别影响什么？</li><li>混淆矩阵的四种情况分别是什么？医学场景为什么特别关注"假阴性"？</li><li>如果测试集准确率 90% 但恶性漏诊率很高，可以怎么调整？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

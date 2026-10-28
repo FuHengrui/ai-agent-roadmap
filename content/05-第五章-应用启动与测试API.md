@@ -133,7 +133,7 @@ uv run uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 8000 端口被占用 | 杀占用进程或改端口；`netstat -ano | findstr 8000` 定位 PID |
+| 8000 端口被占用 | 杀占用进程或改端口；`netstat -ano \| findstr 8000` 定位 PID |
 | 改 .env 后 --reload 不重启 | reload 只监听 .py；改配置需手动重启进程 |
 
 @@point ⑤ 第一个接口：GET /v1/test/styles
@@ -205,32 +205,6 @@ Postman 之前，FastAPI 自带交互文档是最快的调试入口——自动�
 
 **先 /docs 后 Postman**：/docs 能证明"服务与路由本身正常"，之后再用 Postman 专门测鉴权、头信息、异常分支等 /docs 不擅长模拟的场景。
 
-@@summary 这一章你学到了什么
-- main.py 三件事：CORS 中间件、APIRouter 路由注册（prefix 前缀）、RegisterTortoise 生命周期
-- CORS 参数语义：allow_origins/credentials/methods/headers；"*" 与 credentials=True 互斥
-- RegisterTortoise：startup 建连 + shutdown 关连 + generate_schemas=False 不自动建表
-- uvicorn 启动：uv run uvicorn main:app --reload；/docs Swagger 面板
-- 第一个接口 GET /v1/test/styles：await Style.all() + code/message/data 三件套
-- 全局响应契约：code 业务码 ≠ HTTP 状态码，前端靠 code 分支
-- 调试顺序：/docs 验路由 → Postman 验头与异常
-- 启动三板斧：看首条异常 → 分三段验证 import → 查位置与依赖
-
-@@quiz
-1. 以下哪项不属于 main.py 的职责？
-   A. 注册 CORS 中间件　　B. include_router 挂路由　　C. 写业务 SQL　　D. 注册数据库生命周期
-2. allow_origins=["*"] 与 allow_credentials=True 同时配置会？
-   A. 正常工作　　B. 浏览器拒绝通配源带凭据　　C. 后端崩溃　　D. 数据库断开
-3. RegisterTortoise 中 generate_schemas=False 表示？
-   A. 关闭建表，只连接　　B. 自动建表　　C. 生成迁移文件　　D. 生成表结构文档
-4. 异步 ORM 查询 Style.all() 必须？
-   A. 加 .all_now　　B. await　　C. 用同步模式　　D. 不需要特殊处理
-5. 前端判断业务成功的依据是？
-   A. HTTP 200　　B. data.code === 200　　C. data.message　　D. 响应头
-6. 开发期改代码自动重启用哪个参数？
-   A. --host　　B. --reload　　C. --debug　　D. --workers
-7. 路由注册为 /v1/test + 内部 /styles，最终路径是？
-   A. /v1/styles　　B. /v1/test/styles　　C. /styles　　D. /test/styles
-
 @@point ⑧ 启动失败的"三板斧"排查法
 @@need 要解决什么
 服务起不来时最常见的三句话："ImportError 找不到模块""端口被占""连不上数据库"。与其盲试，按序三板斧。
@@ -259,6 +233,33 @@ python -c "from main import app"                      # 应用层
 |---|---|
 | 报错一闪而过看不清 | uvicorn 用 --reload 时崩溃会重启刷屏；先不带 --reload 跑一次看完整堆栈 |
 | 改了代码却还是旧报错 | reload 节点没监听到该文件（新加的文件）；重启进程最稳 |
+
+
+@@summary 这一章你学到了什么
+- main.py 三件事：CORS 中间件、APIRouter 路由注册（prefix 前缀）、RegisterTortoise 生命周期
+- CORS 参数语义：allow_origins/credentials/methods/headers；"*" 与 credentials=True 互斥
+- RegisterTortoise：startup 建连 + shutdown 关连 + generate_schemas=False 不自动建表
+- uvicorn 启动：uv run uvicorn main:app --reload；/docs Swagger 面板
+- 第一个接口 GET /v1/test/styles：await Style.all() + code/message/data 三件套
+- 全局响应契约：code 业务码 ≠ HTTP 状态码，前端靠 code 分支
+- 调试顺序：/docs 验路由 → Postman 验头与异常
+- 启动三板斧：看首条异常 → 分三段验证 import → 查位置与依赖
+
+@@quiz
+1. 以下哪项不属于 main.py 的职责？
+   A. 注册 CORS 中间件　　B. include_router 挂路由　　C. 写业务 SQL　　D. 注册数据库生命周期
+2. allow_origins=["*"] 与 allow_credentials=True 同时配置会？
+   A. 正常工作　　B. 浏览器拒绝通配源带凭据　　C. 后端崩溃　　D. 数据库断开
+3. RegisterTortoise 中 generate_schemas=False 表示？
+   A. 关闭建表，只连接　　B. 自动建表　　C. 生成迁移文件　　D. 生成表结构文档
+4. 异步 ORM 查询 Style.all() 必须？
+   A. 加 .all_now　　B. await　　C. 用同步模式　　D. 不需要特殊处理
+5. 前端判断业务成功的依据是？
+   A. HTTP 200　　B. data.code === 200　　C. data.message　　D. 响应头
+6. 开发期改代码自动重启用哪个参数？
+   A. --host　　B. --reload　　C. --debug　　D. --workers
+7. 路由注册为 /v1/test + 内部 /styles，最终路径是？
+   A. /v1/styles　　B. /v1/test/styles　　C. /styles　　D. /test/styles
 
 @@links
 参考|智能运营平台.pdf|#

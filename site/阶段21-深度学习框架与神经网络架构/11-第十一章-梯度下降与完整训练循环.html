@@ -448,18 +448,6 @@ print(model.weight.item(), model.bias.item())</pre>
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>梯度下降与完整训练循环的要点：</p>
-<table>
-<tr><th>问题</th><th>答案</th></tr>
-<tr><td>梯度下降本质</td><td>沿负梯度方向反复小步走，逼近损失谷底</td></tr>
-<tr><td>学习率的作用</td><td>步长：太大振荡发散，太小收敛慢</td></tr>
-<tr><td>前向/反向分工</td><td>前向算预测和损失，反向用链式法则回传梯度填充 .grad</td></tr>
-<tr><td>训练五连</td><td>zero_grad → forward → loss → backward → step，顺序不可乱</td></tr>
-<tr><td>优化器</td><td>创建时传 model.parameters()，step() 用 .grad 更新参数</td></tr>
-<tr><td>DataLoader</td><td>自动小批量 + shuffle；1 epoch = 全部数据过一遍</td></tr>
-<tr><td>最小案例</td><td>造数据→模型/损失/优化器→loader→epoch 循环→验证</td></tr>
-</table>
 <div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ Epoch 与 Iteration：训练进度怎么数</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>训练时要跑多少轮？"跑了 500 步"和"跑了 10 个 epoch"分别什么意思？</p>
@@ -538,6 +526,18 @@ start_epoch = ckpt[&quot;epoch&quot;] + 1                # 从断点继续</pre>
 <p>一句话记住本章：<strong>训练就是"下山"：前向算出损失，反向拿到梯度，优化器沿负梯度迈一小步；五步口诀 zero_grad→forward→loss→backward→step 循环往复，数据交给 DataLoader 分批喂，跑出 loss 下降就是最朴素的成功。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>梯度下降与完整训练循环的要点：</p>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>梯度下降本质</td><td>沿负梯度方向反复小步走，逼近损失谷底</td></tr>
+<tr><td>学习率的作用</td><td>步长：太大振荡发散，太小收敛慢</td></tr>
+<tr><td>前向/反向分工</td><td>前向算预测和损失，反向用链式法则回传梯度填充 .grad</td></tr>
+<tr><td>训练五连</td><td>zero_grad → forward → loss → backward → step，顺序不可乱</td></tr>
+<tr><td>优化器</td><td>创建时传 model.parameters()，step() 用 .grad 更新参数</td></tr>
+<tr><td>DataLoader</td><td>自动小批量 + shuffle；1 epoch = 全部数据过一遍</td></tr>
+<tr><td>最小案例</td><td>造数据→模型/损失/优化器→loader→epoch 循环→验证</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么说梯度指向"上升最快"方向？更新参数时为什么要用负梯度？</li><li>学习率过大和过小分别会观察到什么现象？</li><li>训练循环里五步的顺序为什么不能乱？漏掉 zero_grad 会发生什么？</li><li>优化器创建时为什么要传入 model.parameters()？step() 内部做了什么？</li><li>批量梯度下降、随机梯度下降、小批量梯度下降各有什么特点？为什么实践中默认小批量？</li><li>DataLoader 的 shuffle=True 是干什么的？忘记它会有什么隐患？</li><li>写一个完整的线性回归训练循环骨架（模型、损失、优化器、两层循环、五连步骤）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

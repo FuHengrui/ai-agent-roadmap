@@ -606,7 +606,7 @@ hermes chat --toolsets &quot;web,terminal&quot;  # ① 本次任务限定工具�
 /tools disable browser                 # ② 会话内禁用某工具
 /tools enable rl                       # ③ 会话内启用某工具</pre>
 <p>配置后验证：<code>/tools list</code> 看变化是否生效（会话内）；持久配置后重启生效（跨会话）。</p>
-<p>记住宏观顺序：<strong>查能力（hermes tools）→ 配场景（--toolsets / 交互式）→ 会话内微调（/tools enable|disable）→ 验证（/tools list）</strong>。</p>
+<p>记住宏观顺序：<strong>查能力（hermes tools）→ 配场景（--toolsets / 交互式）→ 会话内微调（/tools enable\|disable）→ 验证（/tools list）</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -625,7 +625,7 @@ hermes chat --toolsets &quot;web,terminal&quot;  # ① 本次任务限定工具�
 <tr><td><strong>工具集=按平台开关的组</strong></td><td>按场景加载、省 token、隔离干扰、边界可控</td></tr>
 <tr><td><strong>八大类地图</strong>：网络/终端文件/浏览器/媒体/编排/记忆/自动化/集成</td><td>40+ 工具归位到 8 个格子里，见名知类</td></tr>
 <tr><td><strong>18 个常见工具集名</strong>：web、terminal、file、browser、vision、memory...</td><td>命令参数就是这些名字，开门钥匙</td></tr>
-<tr><td><strong>三组命令</strong>：hermes chat --toolsets / hermes tools / /tools enable</td><td>disable</td><td>查、配、调三件套，覆盖所有操作场景</td></tr>
+<tr><td><strong>三组命令</strong>：hermes chat --toolsets / hermes tools / /tools enable\</td><td>disable</td><td>查、配、调三件套，覆盖所有操作场景</td></tr>
 <tr><td><strong>边界三连</strong>：工具≠技能（动作 vs 手册）、内置≠MCP（固定 vs 无限）、记忆类工具=进化引擎</td><td>不被后面章节概念绕晕，地基打牢</td></tr>
 </table>
 <p>一句话记住本章：<strong>工具干活、工具集把关——八大类记心里，hermes tools 查一切，/tools 随时开关；能力边界你说了算。</strong></p>

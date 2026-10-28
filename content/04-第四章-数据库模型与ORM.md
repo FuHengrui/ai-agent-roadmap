@@ -178,7 +178,7 @@ await Case.filter(Q(court__icontains="北京") | Q(case_type="劳动争议"))
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 以为 `filter(Q(a=1), Q(b=2))` 是"或"，其实是"且" | 逗号分隔的多个 Q 是 AND；要 OR 必须显式 `Q(a=1) | Q(b=2)`；多个条件混用记得加括号 |
+| 以为 `filter(Q(a=1), Q(b=2))` 是"或"，其实是"且" | 逗号分隔的多个 Q 是 AND；要 OR 必须显式 `Q(a=1) \| Q(b=2)`；多个条件混用记得加括号 |
 
 @@point ⑦ 种子脚本与 CRUD 实操
 @@need 要解决什么

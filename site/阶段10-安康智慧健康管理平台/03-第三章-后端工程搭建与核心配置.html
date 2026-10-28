@@ -519,7 +519,7 @@ netstat -ano | findstr :3306
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>3306 端口被别的进程占用</td><td>`netstat -ano</td><td>findstr :3306` 看 PID，通过任务管理器处理；或改 MySQL 端口后同步 .env</td></tr>
+<tr><td>3306 端口被别的进程占用</td><td>`netstat -ano \</td><td>findstr :3306` 看 PID，通过任务管理器处理；或改 MySQL 端口后同步 .env</td></tr>
 <tr><td>MySQL 启动失败但 .env 没动</td><td>先看小皮日志；多半是内存不足/端口冲突，与代码无关</td></tr>
 </table>
 </div>

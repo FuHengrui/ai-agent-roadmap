@@ -98,7 +98,7 @@ RunnableParallel 自动优化并行调用：多条独立的分支管道路径，
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 把 `|` 当普通运算符乱用（两侧不是 Runnable 就会报错）（两端不是 Runnable） | LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包 |
+| 把 `\|` 当普通运算符乱用（两侧不是 Runnable 就会报错）（两端不是 Runnable） | LCEL 管道两侧必须实现 Runnable 协议，普通函数要用 RunnableLambda 包 |
 | invoke 拿到的是原始模型输出不是解析结果 | 链末端组件决定返回类型，忘了串 parser 就拿到裸文本 |
 
 @@point ⑤ RunnablePassthrough：原样透传的"数据搬运工"

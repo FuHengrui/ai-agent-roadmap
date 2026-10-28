@@ -453,7 +453,7 @@ function highlight(text) {
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>关键词输 <code>.</code> <code>(</code> 这类正则字符，高亮直接报错</td><td>new RegExp 前必须先 escapeRegExp 转义特殊字符；把 `. * + ? ^ $ { } ( )</td><td>[ ]` 等字符逐一加反斜杠转义</td></tr>
+<tr><td>关键词输 <code>.</code> <code>(</code> 这类正则字符，高亮直接报错</td><td>new RegExp 前必须先 escapeRegExp 转义特殊字符；把 `. * + ? ^ $ { } ( ) \</td><td>[ ]` 等字符逐一加反斜杠转义</td></tr>
 <tr><td>每敲一个字就请求一次，接口被打爆</td><td><code>watch(keyword)</code> 里接 300ms 防抖（debounce），并清理上次定时器</td></tr>
 </table>
 </div>

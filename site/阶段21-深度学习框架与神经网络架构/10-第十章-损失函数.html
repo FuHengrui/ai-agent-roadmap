@@ -430,17 +430,6 @@ loss2 = nn.BCEWithLogitsLoss()(logits, targets)  # 内部自动 sigmoid，数值
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>损失函数选择与使用要点：</p>
-<table>
-<tr><th>问题</th><th>答案</th></tr>
-<tr><td>损失函数作用</td><td>裁判：度量误差；教练：定义梯度方向</td></tr>
-<tr><td>回归默认</td><td>nn.MSELoss；离群点多换 HuberLoss</td></tr>
-<tr><td>多分类默认</td><td>nn.CrossEntropyLoss：内置 softmax，标签传索引</td></tr>
-<tr><td>二分类默认</td><td>nn.BCEWithLogitsLoss：内置 sigmoid，标签 0/1 浮点</td></tr>
-<tr><td>最大坑</td><td>CE/BCEWithLogits 前不要再手动过 softmax/sigmoid</td></tr>
-<tr><td>怎么选</td><td>先分任务（回归/分类），再按数据特性选变体</td></tr>
-</table>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 加权交叉熵：类别不平衡的补救</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>正样本 100 条、负样本 9000 条，模型学会"全猜负"损失也很低，怎么办？</p>
@@ -491,6 +480,17 @@ criterion2 = nn.BCEWithLogitsLoss(pos_weight=torch.tensor(90.0))</pre>
 <p>一句话记住本章：<strong>回归用 MSE（离群点换 Huber），分类用交叉熵——多分类 CrossEntropyLoss、二分类 BCEWithLogitsLoss，两者都内置了归一化层，别再手动加 softmax/sigmoid 铸成双保险 bug。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>损失函数选择与使用要点：</p>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>损失函数作用</td><td>裁判：度量误差；教练：定义梯度方向</td></tr>
+<tr><td>回归默认</td><td>nn.MSELoss；离群点多换 HuberLoss</td></tr>
+<tr><td>多分类默认</td><td>nn.CrossEntropyLoss：内置 softmax，标签传索引</td></tr>
+<tr><td>二分类默认</td><td>nn.BCEWithLogitsLoss：内置 sigmoid，标签 0/1 浮点</td></tr>
+<tr><td>最大坑</td><td>CE/BCEWithLogits 前不要再手动过 softmax/sigmoid</td></tr>
+<tr><td>怎么选</td><td>先分任务（回归/分类），再按数据特性选变体</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>损失函数在训练中扮演哪两个角色？为什么"损失选错训练白费"？</li><li>MSE 的公式是什么？为什么它对离群点敏感？</li><li>MAE 与 MSE 的梯度特性有什么区别？什么场景优先 Huber？</li><li>nn.CrossEntropyLoss 的输入要求是什么？标签应该传什么形式？</li><li>为什么说"手动 softmax 后再喂 CrossEntropyLoss"是双重 softmax bug？</li><li>BCEWithLogitsLoss 相对 BCELoss 的优势是什么？</li><li>多标签分类（一个样本可同时属于多个类）应该用什么损失？为什么不能用普通多分类 CE？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

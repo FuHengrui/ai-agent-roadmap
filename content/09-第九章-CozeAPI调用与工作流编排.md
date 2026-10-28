@@ -167,32 +167,6 @@ AI 调用是最不可控的环节：超时、限流、偶发空回复。生产�
 
 原则：**AI 失败要让用户可感知、可重试，绝不静默吞掉**。日志里记录 Bot ID、主题、耗时、返回摘要，便于复盘。
 
-@@summary 这一章你学到了什么
-- cozepy SDK：Coze + TokenAuth + COZE_CN_BASE_URL（国内必配）
-- create_and_poll 一步完成发起+轮询；遍历 message 只取 type=="answer"
-- chat 生命周期：插件搜热点 → 大模型生成 → 收口返回，单轮 15-90 秒
-- HotTopic_Workflow 节点链：开始 → 搜索 → 大模型 → JSON 收口 → 结束
-- 扣子应用：把工作流发布成可调用端点，与直调 Bot 是两条互补路线
-- coze_agent.py 收口全部 AI 调用，路由层只做解析与落库
-- 健壮性四板斧：超时可重试、限流退避、格式异常可感知、AI 与落库隔离
-- agent 层日志规范：入参与成果记 info、异常记 error 带堆栈，对外统一 500
-
-@@quiz
-1. cozepy 客户端必须显式配置什么才能在国内使用？
-   A. 代理　　B. base_url=COZE_CN_BASE_URL　　C. 重试次数　　D. 模型名
-2. create_and_poll 的作用是？
-   A. 只创建会话　　B. 发起并轮询到对话结束　　C. 直接返回最终结果　　D. 删除会话
-3. 从 chat.messages 取最终回复的正确方式是？
-   A. messages[0]　　B. 遍历过滤 type=="answer"　　C. messages[-1]　　D. 任意一条
-4. HotTopic_Workflow 中"搜索热点"放在哪个环节？
-   A. 最后　　B. 大模型之前（先有数据再生成）　　C. 收口节点　　D. 不需要
-5. 工作流相比直调 Bot 的核心优势是？
-   A. 更快　　B. 节点可单独调试、处理更可控　　C. 不需要 token　　D. 不耗 token
-6. AI 调用单轮超时上限大约是？
-   A. 10 秒　　B. 90 秒　　C. 5 分钟　　D. 无限制
-7. AI 返回非 JSON 时，正确处理是？
-   A. 忽略　　B. 路由层提取失败并向用户报"格式异常，可重试"　　C. 强制入库　　D. 重启服务
-
 @@point ⑧ agent 层异常与日志规范：失败要看得见
 @@need 要解决什么
 AI 调用是最难排查的环节——失败信息若被吞掉，前端只会看到玄学"生成失败"，无从定位。
@@ -228,6 +202,33 @@ async def hot_topic(theme: str) -> str:
 | 失败后日志为空 | 异常被 try 吞掉没打日志；log 必须放 except 内第一行 |
 | 日志全是堆栈、没有上下文 | 没记入参（theme/bot_id）；排查时无从复现 |
 | 把 SDK 原始报错直接回给前端 | 内部细节外泄 + 用户体验差；对外统一 500 提示语 |
+
+
+@@summary 这一章你学到了什么
+- cozepy SDK：Coze + TokenAuth + COZE_CN_BASE_URL（国内必配）
+- create_and_poll 一步完成发起+轮询；遍历 message 只取 type=="answer"
+- chat 生命周期：插件搜热点 → 大模型生成 → 收口返回，单轮 15-90 秒
+- HotTopic_Workflow 节点链：开始 → 搜索 → 大模型 → JSON 收口 → 结束
+- 扣子应用：把工作流发布成可调用端点，与直调 Bot 是两条互补路线
+- coze_agent.py 收口全部 AI 调用，路由层只做解析与落库
+- 健壮性四板斧：超时可重试、限流退避、格式异常可感知、AI 与落库隔离
+- agent 层日志规范：入参与成果记 info、异常记 error 带堆栈，对外统一 500
+
+@@quiz
+1. cozepy 客户端必须显式配置什么才能在国内使用？
+   A. 代理　　B. base_url=COZE_CN_BASE_URL　　C. 重试次数　　D. 模型名
+2. create_and_poll 的作用是？
+   A. 只创建会话　　B. 发起并轮询到对话结束　　C. 直接返回最终结果　　D. 删除会话
+3. 从 chat.messages 取最终回复的正确方式是？
+   A. messages[0]　　B. 遍历过滤 type=="answer"　　C. messages[-1]　　D. 任意一条
+4. HotTopic_Workflow 中"搜索热点"放在哪个环节？
+   A. 最后　　B. 大模型之前（先有数据再生成）　　C. 收口节点　　D. 不需要
+5. 工作流相比直调 Bot 的核心优势是？
+   A. 更快　　B. 节点可单独调试、处理更可控　　C. 不需要 token　　D. 不耗 token
+6. AI 调用单轮超时上限大约是？
+   A. 10 秒　　B. 90 秒　　C. 5 分钟　　D. 无限制
+7. AI 返回非 JSON 时，正确处理是？
+   A. 忽略　　B. 路由层提取失败并向用户报"格式异常，可重试"　　C. 强制入库　　D. 重启服务
 
 @@links
 参考|智能运营平台.pdf|#

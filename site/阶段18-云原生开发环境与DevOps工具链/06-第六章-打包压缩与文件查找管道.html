@@ -413,8 +413,8 @@ grep -E &quot;error|fail&quot; app.log # -E 支持正则 | 或关系</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>想搜目录却报错"是目录"</td><td>grep 默认不递归目录；加 -r 或在文件上搜</td></tr>
-<tr><td>grep 搜不到明明"肉眼可见"的词</td><td>看大小写（加 -i 试试）或特殊字符（</td><td>、. 在任何模式下都是正则元字符、都要转义（<code>\.</code>）；竖线只在 -E 下才是元字符）</td></tr>
-<tr><td>grep 出来的"进程"里总有 grep 自己</td><td>经典现象：`ps aux</td><td>grep xxx<code> 会匹配到自己；排除技巧 </code>grep -v grep`</td></tr>
+<tr><td>grep 搜不到明明"肉眼可见"的词</td><td>看大小写（加 -i 试试）或特殊字符（\</td><td>、. 在任何模式下都是正则元字符、都要转义（<code>\.</code>）；竖线只在 -E 下才是元字符）</td></tr>
+<tr><td>grep 出来的"进程"里总有 grep 自己</td><td>经典现象：`ps aux \</td><td>grep xxx<code> 会匹配到自己；排除技巧 </code>grep -v grep`</td></tr>
 </table>
 </div>
 </div></div>
@@ -500,7 +500,7 @@ ls /etc | less                   # 目录内容太多 → 分页翻着看</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>管道方向写反（tail</td><td>grep）</td><td>语法没错但逻辑反了；想清楚谁是源头、谁做后处理</td></tr>
+<tr><td>管道方向写反（tail \</td><td>grep）</td><td>语法没错但逻辑反了；想清楚谁是源头、谁做后处理</td></tr>
 <tr><td>管道后面接的不是"能吃输入的命令"</td><td>有些命令（如 rm 的部分参数）不读标准输入，管道就白搭；要处理文件路径改用 find -exec 或 xargs</td></tr>
 </table>
 </div>

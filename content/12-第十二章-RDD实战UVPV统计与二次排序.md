@@ -203,7 +203,7 @@ val hot5 = logs.map(log => (log.page, 1))
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 以为 sortBy 后 take 不是全局 TopN | 恰恰相反：`sortBy` 按区间分区、分区内有序，全局就是有序的，`take(n)` 拿到的就是全局前 n。**它没错，只是要把全量排一遍，贵**——TopN 用 `takeOrdered` |
-| takeOrdered 默认是取最小的 5 个 | 想要最大 5 个得把顺序倒过来，用 Ordering 表达（`Ordering.Int.reverse`，或 `Ordering.by((t: (Int, String)) => -t._1)`）；直接传比较函数 `(a,b) => b._1 - a._1` 编译不过 | |
+| takeOrdered 默认是取最小的 5 个 | 想要最大 5 个得把顺序倒过来，用 Ordering 表达（`Ordering.Int.reverse`，或 `Ordering.by((t: (Int, String)) => -t._1)`）；直接传比较函数 `(a,b) => b._1 - a._1` 编译不过 |
 | 忘了 `.swap` 让次数做排序主键 | `(页面, 次数)` 直接 takeOrdered 是按**页面**排序（String 顺序），不对。swap 成 (次数, 页面) 才能按次数 |
 | 全排序 1 个分区太慢 | 大数据别用全局 sortBy；TopN 一律用 takeOrdered 只保头部 |
 

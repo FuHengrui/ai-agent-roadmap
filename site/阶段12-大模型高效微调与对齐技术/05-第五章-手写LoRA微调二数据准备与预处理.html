@@ -462,7 +462,7 @@ print(tokenizer.decode(sample[&quot;labels&quot;]))  # 应看到原 response</pr
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>只看 shape 不 decode，训练完才发现数据是乱的</td><td>形状对不代表内容对（padding 错位、字段取错）。<strong>decode 是最后一道人工防线</strong>，训练前必做</td></tr>
-<tr><td>decode 出来的文本夹杂特殊符号如 \&lt;</td><td>endoftext</td><td>&gt;</td><td>padding 位置被 pad token 填充或混入特殊 token 是正常的，不影响训练；若强迫症可用 <code>skip_special_tokens=True</code> 看正文</td></tr>
+<tr><td>decode 出来的文本夹杂特殊符号如 `&lt;\</td><td>endoftext\</td><td>&gt;`</td><td>padding 位置被 pad token 填充或混入特殊 token 是正常的，不影响训练；若强迫症可用 <code>skip_special_tokens=True</code> 看正文</td></tr>
 <tr><td>截断导致多数样本 response 被切没</td><td><code>max_length=512</code> 装不下"长指令+长回答"时，应答被腰斩。解法：调大 max_length（显存允许）或<strong>数据侧先做清洗</strong>（太长的样本丢弃/切分）</td></tr>
 </table>
 </div>
@@ -476,7 +476,7 @@ print(tokenizer.decode(sample[&quot;labels&quot;]))  # 应看到原 response</pr
 <table>
 <tr><th>方案</th><th>格式示例</th><th>适合</th></tr>
 <tr><td>简化模板</td><td><code>指令: xxx\n回应:</code></td><td>教学/快速起步，可控、直观</td></tr>
-<tr><td>模型官方 Chat 模板</td><td>`&lt;</td><td>user</td><td>&gt;...&lt;</td><td>assistant</td><td>&gt;...`（tokenizer.apply_chat_template）</td><td>生产项目，与模型预训练格式一致</td></tr>
+<tr><td>模型官方 Chat 模板</td><td>`&lt;\</td><td>user\</td><td>&gt;...&lt;\</td><td>assistant\</td><td>&gt;...`（tokenizer.apply_chat_template）</td><td>生产项目，与模型预训练格式一致</td></tr>
 <tr><td>Alpaca 模板</td><td><code>### Instruction: ...\n### Response:</code></td><td>第 9 章 Unsloth 使用</td></tr>
 </table>
 <p>会不会"格式错了模型学不会"？——微调本质上会<strong>学会你的格式</strong>：只要训练/推理用同一模板，模型就能跟着学会"看到回应:就接话"。所以一致性 &gt; 完美性：<strong>训测同模板</strong>比"用最官方模板但训测不一致"强得多。</p>

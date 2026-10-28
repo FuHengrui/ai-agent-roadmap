@@ -335,7 +335,7 @@ hermes chat --toolsets "web,terminal"  # ① 本次任务限定工具集
 
 配置后验证：`/tools list` 看变化是否生效（会话内）；持久配置后重启生效（跨会话）。
 
-记住宏观顺序：**查能力（hermes tools）→ 配场景（--toolsets / 交互式）→ 会话内微调（/tools enable|disable）→ 验证（/tools list）**。
+记住宏观顺序：**查能力（hermes tools）→ 配场景（--toolsets / 交互式）→ 会话内微调（/tools enable\|disable）→ 验证（/tools list）**。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -353,7 +353,7 @@ hermes chat --toolsets "web,terminal"  # ① 本次任务限定工具集
 | **工具集=按平台开关的组** | 按场景加载、省 token、隔离干扰、边界可控 |
 | **八大类地图**：网络/终端文件/浏览器/媒体/编排/记忆/自动化/集成 | 40+ 工具归位到 8 个格子里，见名知类 |
 | **18 个常见工具集名**：web、terminal、file、browser、vision、memory... | 命令参数就是这些名字，开门钥匙 |
-| **三组命令**：hermes chat --toolsets / hermes tools / /tools enable|disable | 查、配、调三件套，覆盖所有操作场景 |
+| **三组命令**：hermes chat --toolsets / hermes tools / /tools enable\|disable | 查、配、调三件套，覆盖所有操作场景 |
 | **边界三连**：工具≠技能（动作 vs 手册）、内置≠MCP（固定 vs 无限）、记忆类工具=进化引擎 | 不被后面章节概念绕晕，地基打牢 |
 
 一句话记住本章：**工具干活、工具集把关——八大类记心里，hermes tools 查一切，/tools 随时开关；能力边界你说了算。**

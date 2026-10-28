@@ -446,18 +446,6 @@ print(probs, probs.sum())  # 和为 1，最大概率对应最大 logit</pre>
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>神经网络与激活函数的关键结论：</p>
-<table>
-<tr><th>问题</th><th>答案</th></tr>
-<tr><td>网络结构</td><td>输入层 + 一个或多个隐藏层 + 输出层，层层复合</td></tr>
-<tr><td>前向传播</td><td>逐层"矩阵乘 + 偏置 + 激活"，数据从输入流到输出</td></tr>
-<tr><td>为什么需要激活</td><td>没有它，多层线性变换等价单层，学不了非线性</td></tr>
-<tr><td>Sigmoid</td><td>(0,1)，二分类输出层；隐藏层梯度消失</td></tr>
-<tr><td>Tanh</td><td>(-1,1)，0 中心；仍会饱和</td></tr>
-<tr><td>ReLU</td><td>max(0,z)，现代隐藏层默认，缓解梯度消失</td></tr>
-<tr><td>Softmax</td><td>和为 1 的概率分布，多分类输出；CE 已内置勿重复用</td></tr>
-</table>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ ReLU 家族：LeakyReLU、ELU、GELU</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>ReLU 有"神经元死亡"的毛病，有没有它的改良亲戚？</p>
@@ -487,6 +475,18 @@ g = nn.GELU()</pre>
 <p>一句话记住本章：<strong>神经网络就是"线性+非线性"逐层堆叠的复合函数；激活函数是引入非线性的唯一来源——隐藏层默认 ReLU，二分类输出 Sigmoid，多分类输出 Softmax（CE 内置，别再叠一次）。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>神经网络与激活函数的关键结论：</p>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>网络结构</td><td>输入层 + 一个或多个隐藏层 + 输出层，层层复合</td></tr>
+<tr><td>前向传播</td><td>逐层"矩阵乘 + 偏置 + 激活"，数据从输入流到输出</td></tr>
+<tr><td>为什么需要激活</td><td>没有它，多层线性变换等价单层，学不了非线性</td></tr>
+<tr><td>Sigmoid</td><td>(0,1)，二分类输出层；隐藏层梯度消失</td></tr>
+<tr><td>Tanh</td><td>(-1,1)，0 中心；仍会饱和</td></tr>
+<tr><td>ReLU</td><td>max(0,z)，现代隐藏层默认，缓解梯度消失</td></tr>
+<tr><td>Softmax</td><td>和为 1 的概率分布，多分类输出；CE 已内置勿重复用</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>为什么说"没有激活函数，多层网络等价于单层线性模型"？</li><li>前向传播的一层里包含哪两个计算步骤？权重矩阵的形状与输入输出维度的关系是？</li><li>Sigmoid 输出范围是多少？它作为隐藏层激活的核心问题是什么？</li><li>ReLU 为什么能缓解梯度消失？它自己的"神经元死亡"问题是怎么产生的？</li><li>多分类输出层为什么用 Softmax 而不用 Sigmoid？</li><li>使用 CrossEntropyLoss 时还能手动加 Softmax 吗？为什么？</li><li>一个二分类网络，隐藏层用什么、输出层用什么最合适？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

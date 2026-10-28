@@ -364,7 +364,7 @@ print(t[row_mask])              # 只取第 0、2 行</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>布尔索引结果是一维数组，形状"消失了"</td><td>条件筛选本来就会扁平化；要保留结构就先选行/列再用布尔掩码</td></tr>
-<tr><td>组合条件用 and/or 报错</td><td>张量里布尔组合用位运算 **&amp;、</td><td>、~**，不是 Python 的 and/or</td></tr>
+<tr><td>组合条件用 and/or 报错</td><td>张量里布尔组合用位运算 **&amp;、\</td><td>、~**，不是 Python 的 and/or</td></tr>
 <tr><td>列表索引传了超界索引</td><td>报错；先检查数据规模，或用 clamp 限制范围</td></tr>
 </table>
 </div>
@@ -538,7 +538,7 @@ print(torch.stack((a, b), dim=0).shape) # (2, 2, 3)：新增第 0 维</pre>
 <tr><th>问题</th><th>答案</th></tr>
 <tr><td>基本索引</td><td>t[行, 列]，从 0 开始，: 表示全取</td></tr>
 <tr><td>切片</td><td>start:end:step，左闭右开，支持负数从尾部数</td></tr>
-<tr><td>花式索引</td><td>列表索引选不连续行/列；布尔索引按条件过滤（&amp;/</td><td>组合）</td></tr>
+<tr><td>花式索引</td><td>列表索引选不连续行/列；布尔索引按条件过滤（&amp;/\</td><td>组合）</td></tr>
 <tr><td>省略号 ...</td><td>代表"其余所有冒号"，高维张量偷懒神器</td></tr>
 <tr><td>查形状</td><td>.shape（属性）/ .size()（方法）</td></tr>
 <tr><td>重定形状</td><td>reshape 通用；view 要求连续，不连续先 .contiguous()</td></tr>

@@ -401,7 +401,7 @@ def register_db(app: FastAPI):
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td>8000 端口被占用</td><td>杀占用进程或改端口；`netstat -ano</td><td>findstr 8000` 定位 PID</td></tr>
+<tr><td>8000 端口被占用</td><td>杀占用进程或改端口；`netstat -ano \</td><td>findstr 8000` 定位 PID</td></tr>
 <tr><td>改 .env 后 --reload 不重启</td><td>reload 只监听 .py；改配置需手动重启进程</td></tr>
 </table>
 </div>
@@ -467,23 +467,6 @@ async def get_styles():
 <p><strong>先 /docs 后 Postman</strong>：/docs 能证明"服务与路由本身正常"，之后再用 Postman 专门测鉴权、头信息、异常分支等 /docs 不擅长模拟的场景。</p>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<ul><li>main.py 三件事：CORS 中间件、APIRouter 路由注册（prefix 前缀）、RegisterTortoise 生命周期</li><li>CORS 参数语义：allow_origins/credentials/methods/headers；"*" 与 credentials=True 互斥</li><li>RegisterTortoise：startup 建连 + shutdown 关连 + generate_schemas=False 不自动建表</li><li>uvicorn 启动：uv run uvicorn main:app --reload；/docs Swagger 面板</li><li>第一个接口 GET /v1/test/styles：await Style.all() + code/message/data 三件套</li><li>全局响应契约：code 业务码 ≠ HTTP 状态码，前端靠 code 分支</li><li>调试顺序：/docs 验路由 → Postman 验头与异常</li><li>启动三板斧：看首条异常 → 分三段验证 import → 查位置与依赖</li></ul>
-<h4>自测：能不能答上来</h4>
-<ol><li>以下哪项不属于 main.py 的职责？</li></ol>
-<p>A. 注册 CORS 中间件　　B. include_router 挂路由　　C. 写业务 SQL　　D. 注册数据库生命周期</p>
-<ol><li>allow_origins=["*"] 与 allow_credentials=True 同时配置会？</li></ol>
-<p>A. 正常工作　　B. 浏览器拒绝通配源带凭据　　C. 后端崩溃　　D. 数据库断开</p>
-<ol><li>RegisterTortoise 中 generate_schemas=False 表示？</li></ol>
-<p>A. 关闭建表，只连接　　B. 自动建表　　C. 生成迁移文件　　D. 生成表结构文档</p>
-<ol><li>异步 ORM 查询 Style.all() 必须？</li></ol>
-<p>A. 加 .all_now　　B. await　　C. 用同步模式　　D. 不需要特殊处理</p>
-<ol><li>前端判断业务成功的依据是？</li></ol>
-<p>A. HTTP 200　　B. data.code === 200　　C. data.message　　D. 响应头</p>
-<ol><li>开发期改代码自动重启用哪个参数？</li></ol>
-<p>A. --host　　B. --reload　　C. --debug　　D. --workers</p>
-<ol><li>路由注册为 /v1/test + 内部 /styles，最终路径是？</li></ol>
-<p>A. /v1/styles　　B. /v1/test/styles　　C. /styles　　D. /test/styles</p>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 启动失败的"三板斧"排查法</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>服务起不来时最常见的三句话："ImportError 找不到模块""端口被占""连不上数据库"。与其盲试，按序三板斧。</p>
@@ -511,6 +494,23 @@ python -c &quot;from main import app&quot;                      # 应用层</pre
 </table>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<ul><li>main.py 三件事：CORS 中间件、APIRouter 路由注册（prefix 前缀）、RegisterTortoise 生命周期</li><li>CORS 参数语义：allow_origins/credentials/methods/headers；"*" 与 credentials=True 互斥</li><li>RegisterTortoise：startup 建连 + shutdown 关连 + generate_schemas=False 不自动建表</li><li>uvicorn 启动：uv run uvicorn main:app --reload；/docs Swagger 面板</li><li>第一个接口 GET /v1/test/styles：await Style.all() + code/message/data 三件套</li><li>全局响应契约：code 业务码 ≠ HTTP 状态码，前端靠 code 分支</li><li>调试顺序：/docs 验路由 → Postman 验头与异常</li><li>启动三板斧：看首条异常 → 分三段验证 import → 查位置与依赖</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>以下哪项不属于 main.py 的职责？</li></ol>
+<p>A. 注册 CORS 中间件　　B. include_router 挂路由　　C. 写业务 SQL　　D. 注册数据库生命周期</p>
+<ol><li>allow_origins=["*"] 与 allow_credentials=True 同时配置会？</li></ol>
+<p>A. 正常工作　　B. 浏览器拒绝通配源带凭据　　C. 后端崩溃　　D. 数据库断开</p>
+<ol><li>RegisterTortoise 中 generate_schemas=False 表示？</li></ol>
+<p>A. 关闭建表，只连接　　B. 自动建表　　C. 生成迁移文件　　D. 生成表结构文档</p>
+<ol><li>异步 ORM 查询 Style.all() 必须？</li></ol>
+<p>A. 加 .all_now　　B. await　　C. 用同步模式　　D. 不需要特殊处理</p>
+<ol><li>前端判断业务成功的依据是？</li></ol>
+<p>A. HTTP 200　　B. data.code === 200　　C. data.message　　D. 响应头</p>
+<ol><li>开发期改代码自动重启用哪个参数？</li></ol>
+<p>A. --host　　B. --reload　　C. --debug　　D. --workers</p>
+<ol><li>路由注册为 /v1/test + 内部 /styles，最终路径是？</li></ol>
+<p>A. /v1/styles　　B. /v1/test/styles　　C. /styles　　D. /test/styles</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://fastapi.tiangolo.com/tutorial/cors/" target="_blank" rel="noopener"><span class="k">官方</span>FastAPI CORS 文档</a>
 <a href="https://tortoise.github.io/contrib/fastapi.html" target="_blank" rel="noopener"><span class="k">官方</span>Tortoise FastAPI 集成</a>

@@ -429,23 +429,6 @@ def content_creation(...) -&gt; str:           # 调文案 Bot 生成本文（�
 <p>原则：<strong>AI 失败要让用户可感知、可重试，绝不静默吞掉</strong>。日志里记录 Bot ID、主题、耗时、返回摘要，便于复盘。</p>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<ul><li>cozepy SDK：Coze + TokenAuth + COZE_CN_BASE_URL（国内必配）</li><li>create_and_poll 一步完成发起+轮询；遍历 message 只取 type=="answer"</li><li>chat 生命周期：插件搜热点 → 大模型生成 → 收口返回，单轮 15-90 秒</li><li>HotTopic_Workflow 节点链：开始 → 搜索 → 大模型 → JSON 收口 → 结束</li><li>扣子应用：把工作流发布成可调用端点，与直调 Bot 是两条互补路线</li><li>coze_agent.py 收口全部 AI 调用，路由层只做解析与落库</li><li>健壮性四板斧：超时可重试、限流退避、格式异常可感知、AI 与落库隔离</li><li>agent 层日志规范：入参与成果记 info、异常记 error 带堆栈，对外统一 500</li></ul>
-<h4>自测：能不能答上来</h4>
-<ol><li>cozepy 客户端必须显式配置什么才能在国内使用？</li></ol>
-<p>A. 代理　　B. base_url=COZE_CN_BASE_URL　　C. 重试次数　　D. 模型名</p>
-<ol><li>create_and_poll 的作用是？</li></ol>
-<p>A. 只创建会话　　B. 发起并轮询到对话结束　　C. 直接返回最终结果　　D. 删除会话</p>
-<ol><li>从 chat.messages 取最终回复的正确方式是？</li></ol>
-<p>A. messages[0]　　B. 遍历过滤 type=="answer"　　C. messages[-1]　　D. 任意一条</p>
-<ol><li>HotTopic_Workflow 中"搜索热点"放在哪个环节？</li></ol>
-<p>A. 最后　　B. 大模型之前（先有数据再生成）　　C. 收口节点　　D. 不需要</p>
-<ol><li>工作流相比直调 Bot 的核心优势是？</li></ol>
-<p>A. 更快　　B. 节点可单独调试、处理更可控　　C. 不需要 token　　D. 不耗 token</p>
-<ol><li>AI 调用单轮超时上限大约是？</li></ol>
-<p>A. 10 秒　　B. 90 秒　　C. 5 分钟　　D. 无限制</p>
-<ol><li>AI 返回非 JSON 时，正确处理是？</li></ol>
-<p>A. 忽略　　B. 路由层提取失败并向用户报"格式异常，可重试"　　C. 强制入库　　D. 重启服务</p>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ agent 层异常与日志规范：失败要看得见</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>AI 调用是最难排查的环节——失败信息若被吞掉，前端只会看到玄学"生成失败"，无从定位。</p>
@@ -478,6 +461,23 @@ async def hot_topic(theme: str) -&gt; str:
 </table>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<ul><li>cozepy SDK：Coze + TokenAuth + COZE_CN_BASE_URL（国内必配）</li><li>create_and_poll 一步完成发起+轮询；遍历 message 只取 type=="answer"</li><li>chat 生命周期：插件搜热点 → 大模型生成 → 收口返回，单轮 15-90 秒</li><li>HotTopic_Workflow 节点链：开始 → 搜索 → 大模型 → JSON 收口 → 结束</li><li>扣子应用：把工作流发布成可调用端点，与直调 Bot 是两条互补路线</li><li>coze_agent.py 收口全部 AI 调用，路由层只做解析与落库</li><li>健壮性四板斧：超时可重试、限流退避、格式异常可感知、AI 与落库隔离</li><li>agent 层日志规范：入参与成果记 info、异常记 error 带堆栈，对外统一 500</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>cozepy 客户端必须显式配置什么才能在国内使用？</li></ol>
+<p>A. 代理　　B. base_url=COZE_CN_BASE_URL　　C. 重试次数　　D. 模型名</p>
+<ol><li>create_and_poll 的作用是？</li></ol>
+<p>A. 只创建会话　　B. 发起并轮询到对话结束　　C. 直接返回最终结果　　D. 删除会话</p>
+<ol><li>从 chat.messages 取最终回复的正确方式是？</li></ol>
+<p>A. messages[0]　　B. 遍历过滤 type=="answer"　　C. messages[-1]　　D. 任意一条</p>
+<ol><li>HotTopic_Workflow 中"搜索热点"放在哪个环节？</li></ol>
+<p>A. 最后　　B. 大模型之前（先有数据再生成）　　C. 收口节点　　D. 不需要</p>
+<ol><li>工作流相比直调 Bot 的核心优势是？</li></ol>
+<p>A. 更快　　B. 节点可单独调试、处理更可控　　C. 不需要 token　　D. 不耗 token</p>
+<ol><li>AI 调用单轮超时上限大约是？</li></ol>
+<p>A. 10 秒　　B. 90 秒　　C. 5 分钟　　D. 无限制</p>
+<ol><li>AI 返回非 JSON 时，正确处理是？</li></ol>
+<p>A. 忽略　　B. 路由层提取失败并向用户报"格式异常，可重试"　　C. 强制入库　　D. 重启服务</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://www.coze.cn/open/docs/developer_guides/coze_api_overview" target="_blank" rel="noopener"><span class="k">官方</span>Coze Python SDK</a>
 <a href="https://www.coze.cn/docs/guides/workflow_overview" target="_blank" rel="noopener"><span class="k">官方</span>Coze 工作流使用指南</a>

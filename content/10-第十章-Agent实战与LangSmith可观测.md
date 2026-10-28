@@ -156,27 +156,6 @@ RAG Agent（自主决策）：
 
 类比：传统 RAG = 每次出门都背百科全书（不管用不用）；RAG Agent = 需要时再查（手机查资料），还懂得换关键词再搜。
 
-@@summary 这一章你学到了什么
-- 理解 Agent 三合一：Tools（能力）+ Memory（记忆）+ Graph（流程）缺一不可
-- 会用 create_agent + checkpointer + system_prompt 组装个人助手 Agent
-- 看清单一 Agent 局限：工具堆积、提示词膨胀、无法支撑复杂多领域任务
-- 掌握 Supervisor 主管模式：主管只做意图分析与任务路由，专业 Agent 执行，主管汇总
-- 会用 LangGraph 状态图表达多 Agent 协作（Supervisor 中心节点 + 条件边路由）
-- 掌握 RAG Agent：检索即工具，Agent 自主判断是否检索、换关键词、自我修正
-- 对比传统 RAG 与 RAG Agent：减少无效检索、支持检索修正
-
-下一部分：LangSmith 可观测——把黑盒 Agent 变成可视化流程，Token 消耗不再是个谜。
-
----
-
-@@h1 附：LangSmith 调试与可观测性
-
-@@trap 坑在哪
-| 现象 | 原因 |
-|---|---|
-| 不管用户问什么都先检索，Token 白白烧 | RAG Agent 要自主判断"是否需要检索"，不是固定流程 |
-| 检索结果不相关也不修正 | Agent 应根据检索质量决定重检索或直接作答 |
-
 @@point ① 为什么需要 LangSmith：黑盒三问
 @@need 要解决什么
 链式调用和 LangGraph 是黑盒：prompt 真正发给模型的内容是什么？哪一步耗时最长？今天跑 50 次花了多少 Token？没有工具，只能 print 调试。
@@ -275,6 +254,28 @@ Trace: ChatPromptTemplate | ChatOpenAI | ...
 - 掌握生产四件套：成本追踪、性能监控、Eval 评估、协作复现
 
 下一章，从"单机 Agent"走向"Agent 互联"：A2A 跨 Agent 协作协议——Agent 之间如何发现彼此、派发任务、传递结果。
+
+
+@@summary 这一章你学到了什么
+- 理解 Agent 三合一：Tools（能力）+ Memory（记忆）+ Graph（流程）缺一不可
+- 会用 create_agent + checkpointer + system_prompt 组装个人助手 Agent
+- 看清单一 Agent 局限：工具堆积、提示词膨胀、无法支撑复杂多领域任务
+- 掌握 Supervisor 主管模式：主管只做意图分析与任务路由，专业 Agent 执行，主管汇总
+- 会用 LangGraph 状态图表达多 Agent 协作（Supervisor 中心节点 + 条件边路由）
+- 掌握 RAG Agent：检索即工具，Agent 自主判断是否检索、换关键词、自我修正
+- 对比传统 RAG 与 RAG Agent：减少无效检索、支持检索修正
+
+下一部分：LangSmith 可观测——把黑盒 Agent 变成可视化流程，Token 消耗不再是个谜。
+
+---
+
+@@h1 附：LangSmith 调试与可观测性
+
+@@trap 坑在哪
+| 现象 | 原因 |
+|---|---|
+| 不管用户问什么都先检索，Token 白白烧 | RAG Agent 要自主判断"是否需要检索"，不是固定流程 |
+| 检索结果不相关也不修正 | Agent 应根据检索质量决定重检索或直接作答 |
 
 @@quiz
 1. 完整 Agent 的三大组合要素是？

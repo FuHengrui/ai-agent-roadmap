@@ -450,23 +450,6 @@ async def get_current_user_id(
 <p>认知：<strong>鉴权是"体系"不是"一个函数"</strong>——从库表设计（密码列宽）到中间件（拦截器）到运维（secret 管理）是一条链，任何一环裸奔都白搭。</p>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<ul><li>JWT 三段式：header.payload.signature，HS256 + 服务端 secret 保证不可伪造</li><li>签发：payload 用 sub/iat/exp（Unix 秒），PyJWT encode/decode</li><li>登录流程：查用户 → 比对密码 → _make_token → 返回 token；登录接口白名单</li><li>校验：HTTPBearer(auto_error=False) + Depends 注入，业务直接拿 user_id</li><li>错误分层：401 未登录/过期，403 令牌无效/无权限，前端分动作响应</li><li>挂法：单接口 Depends 逐个锁为主，白名单（login）绝不挂鉴权</li><li>生产加固：哈希密码、强 secret、限流、精确 CORS、token 吊销</li><li>实操拆 token：sub/iat/exp 当场可见；jwt.io 或 pyjwt decode 验证签名与过期</li></ul>
-<h4>自测：能不能答上来</h4>
-<ol><li>JWT 的 signature 用什么保证不可伪造？</li></ol>
-<p>A. 用户密码　　B. 服务端 JWT_SECRET + HS256　　C. 数据库　　D. 前端 cookie</p>
-<ol><li>JWT payload 中 exp 字段的作用是？</li></ol>
-<p>A. 标识用户　　B. 令牌过期时间（Unix 秒）　　C. 签名算法　　D. 用户头像</p>
-<ol><li>HTTPBearer 参数 auto_error=False 的意义是？</li></ol>
-<p>A. 关闭校验　　B. 不自动抛错，交给自定义 401/403 逻辑　　C. 跳过签名校验　　D. 自动生成 token</p>
-<ol><li>login 接口为什么不能挂鉴权依赖？</li></ol>
-<p>A. 效率低　　B. 它本身就是白名单，挂了无法登录　　C. 语法不支持　　D. 数据库限制</p>
-<ol><li>令牌过期时应该返回？</li></ol>
-<p>A. HTTP 200　　B. HTTP 401（登录已过期）　　C. HTTP 403　　D. HTTP 500</p>
-<ol><li>示例中密码比对方式是什么？生产建议是？</li></ol>
-<p>A. 明文比对；哈希+加盐　　B. 哈希比对；明文　　C. AES 加密；base64　　D. 不作比对</p>
-<ol><li>前端请求如何携带 token？</li></ol>
-<p>A. URL 参数　　B. Authorization: Bearer &lt;token&gt; 头　　C. Cookie 无头　　D. 请求体</p>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 实操：现场拆解一个 JWT</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>令牌理论背了一堆，不如亲手拆一个——眼见为实，paylaod 长什么样、过期时间在哪、为什么改一个字符就验签失败。</p>
@@ -489,6 +472,23 @@ print(payload)   # {&#x27;sub&#x27;: &#x27;1&#x27;, &#x27;iat&#x27;: 1710..., &#
 </table>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<ul><li>JWT 三段式：header.payload.signature，HS256 + 服务端 secret 保证不可伪造</li><li>签发：payload 用 sub/iat/exp（Unix 秒），PyJWT encode/decode</li><li>登录流程：查用户 → 比对密码 → _make_token → 返回 token；登录接口白名单</li><li>校验：HTTPBearer(auto_error=False) + Depends 注入，业务直接拿 user_id</li><li>错误分层：401 未登录/过期，403 令牌无效/无权限，前端分动作响应</li><li>挂法：单接口 Depends 逐个锁为主，白名单（login）绝不挂鉴权</li><li>生产加固：哈希密码、强 secret、限流、精确 CORS、token 吊销</li><li>实操拆 token：sub/iat/exp 当场可见；jwt.io 或 pyjwt decode 验证签名与过期</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>JWT 的 signature 用什么保证不可伪造？</li></ol>
+<p>A. 用户密码　　B. 服务端 JWT_SECRET + HS256　　C. 数据库　　D. 前端 cookie</p>
+<ol><li>JWT payload 中 exp 字段的作用是？</li></ol>
+<p>A. 标识用户　　B. 令牌过期时间（Unix 秒）　　C. 签名算法　　D. 用户头像</p>
+<ol><li>HTTPBearer 参数 auto_error=False 的意义是？</li></ol>
+<p>A. 关闭校验　　B. 不自动抛错，交给自定义 401/403 逻辑　　C. 跳过签名校验　　D. 自动生成 token</p>
+<ol><li>login 接口为什么不能挂鉴权依赖？</li></ol>
+<p>A. 效率低　　B. 它本身就是白名单，挂了无法登录　　C. 语法不支持　　D. 数据库限制</p>
+<ol><li>令牌过期时应该返回？</li></ol>
+<p>A. HTTP 200　　B. HTTP 401（登录已过期）　　C. HTTP 403　　D. HTTP 500</p>
+<ol><li>示例中密码比对方式是什么？生产建议是？</li></ol>
+<p>A. 明文比对；哈希+加盐　　B. 哈希比对；明文　　C. AES 加密；base64　　D. 不作比对</p>
+<ol><li>前端请求如何携带 token？</li></ol>
+<p>A. URL 参数　　B. Authorization: Bearer &lt;token&gt; 头　　C. Cookie 无头　　D. 请求体</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://pyjwt.readthedocs.io/" target="_blank" rel="noopener"><span class="k">官方</span>PyJWT 文档</a>
 <a href="https://fastapi.tiangolo.com/tutorial/security/" target="_blank" rel="noopener"><span class="k">官方</span>FastAPI Security 教程</a>

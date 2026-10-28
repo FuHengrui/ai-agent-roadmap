@@ -186,6 +186,32 @@ async def get_current_user_id(
 
 认知：**鉴权是"体系"不是"一个函数"**——从库表设计（密码列宽）到中间件（拦截器）到运维（secret 管理）是一条链，任何一环裸奔都白搭。
 
+@@point ⑧ 实操：现场拆解一个 JWT
+@@need 要解决什么
+令牌理论背了一堆，不如亲手拆一个——眼见为实，paylaod 长什么样、过期时间在哪、为什么改一个字符就验签失败。
+
+@@idea 核心思路
+登录拿到 token 后，最直观的验证姿势是去 **jwt.io**（调试器）或本地 Python 拆解：
+```python
+import jwt
+# token 换成你登录接口实际返回的 JWT
+payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+print(payload)   # {'sub': '1', 'iat': 1710..., 'exp': 1710..., ...}
+```
+- **sub** 就是当前用户 id——后端依赖注入取的就是它；
+- **exp** 用 Unix 秒表示，超时时刻转成可读时间就知道"7 天后几点过期"；
+- 把 token 随便改一个字符再 decode → 立刻报签名失败——这就是"不可篡改"的直观证据。
+
+实战价值：以后遇到"登录了但请求还是 401"，用这个方法把 token 拆开看 exp 是否已过、sub 是否为当前用户——两分钟定位是"令牌问题"还是"业务问题"。
+
+@@trap 坑在哪
+| 现象 | 原因 |
+|---|---|
+| 拆开 payload 看到 sub 是字符串"1" | 后端签发时 str(user_id)；比对/使用时记得 int() 转换 |
+| jwt.io 用 secret 验签总是失败 | 有些 JWT 用非对称算法（RS256），需公钥而非 secret；本项目是 HS256 对称密钥 |
+| 拆开 token 内容有敏感信息 | JWT payload 只 base64 编码**不加密**——别往 payload 放密码等敏感数据 |
+
+
 @@summary 这一章你学到了什么
 - JWT 三段式：header.payload.signature，HS256 + 服务端 secret 保证不可伪造
 - 签发：payload 用 sub/iat/exp（Unix 秒），PyJWT encode/decode
@@ -211,31 +237,6 @@ async def get_current_user_id(
    A. 明文比对；哈希+加盐　　B. 哈希比对；明文　　C. AES 加密；base64　　D. 不作比对
 7. 前端请求如何携带 token？
    A. URL 参数　　B. Authorization: Bearer <token> 头　　C. Cookie 无头　　D. 请求体
-
-@@point ⑧ 实操：现场拆解一个 JWT
-@@need 要解决什么
-令牌理论背了一堆，不如亲手拆一个——眼见为实，paylaod 长什么样、过期时间在哪、为什么改一个字符就验签失败。
-
-@@idea 核心思路
-登录拿到 token 后，最直观的验证姿势是去 **jwt.io**（调试器）或本地 Python 拆解：
-```python
-import jwt
-# token 换成你登录接口实际返回的 JWT
-payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-print(payload)   # {'sub': '1', 'iat': 1710..., 'exp': 1710..., ...}
-```
-- **sub** 就是当前用户 id——后端依赖注入取的就是它；
-- **exp** 用 Unix 秒表示，超时时刻转成可读时间就知道"7 天后几点过期"；
-- 把 token 随便改一个字符再 decode → 立刻报签名失败——这就是"不可篡改"的直观证据。
-
-实战价值：以后遇到"登录了但请求还是 401"，用这个方法把 token 拆开看 exp 是否已过、sub 是否为当前用户——两分钟定位是"令牌问题"还是"业务问题"。
-
-@@trap 坑在哪
-| 现象 | 原因 |
-|---|---|
-| 拆开 payload 看到 sub 是字符串"1" | 后端签发时 str(user_id)；比对/使用时记得 int() 转换 |
-| jwt.io 用 secret 验签总是失败 | 有些 JWT 用非对称算法（RS256），需公钥而非 secret；本项目是 HS256 对称密钥 |
-| 拆开 token 内容有敏感信息 | JWT payload 只 base64 编码**不加密**——别往 payload 放密码等敏感数据 |
 
 @@links
 参考|智能运营平台.pdf|#

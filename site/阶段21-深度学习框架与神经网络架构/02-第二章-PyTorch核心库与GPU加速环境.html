@@ -438,19 +438,6 @@ print(torch.cuda.is_available())  # CUDA 是否可用（有无 NVIDIA GPU）</pr
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>本章解决了"把 PyTorch 跑起来"的全部前置问题：</p>
-<table>
-<tr><th>问题</th><th>答案</th></tr>
-<tr><td>PyTorch 是什么</td><td>Meta 开源机器学习库，研究友好、动态计算图、灵活易用</td></tr>
-<tr><td>torch / torchvision / torchaudio</td><td>核心库 + 图像扩展 + 音频扩展，按任务选装</td></tr>
-<tr><td>怎么安装</td><td>pip 或 conda，务必在独立虚拟环境里装</td></tr>
-<tr><td>CPU 为什么慢</td><td>CPU 强核心少；GPU 成千上万小核心并行算张量，天然适配深度学习</td></tr>
-<tr><td>CUDA 是什么</td><td>NVIDIA 的通用并行计算平台，让 GPU 做通用计算</td></tr>
-<tr><td>cuDNN 是什么</td><td>NVIDIA 的深度神经网络专用加速库，卷积等操作更极致地加速</td></tr>
-<tr><td>怎么验证</td><td><code>torch.__version__</code> + <code>torch.cuda.is_available()</code></td></tr>
-<tr><td>版本怎么选</td><td>无 NVIDIA 显卡装 CPU 版；有则 GPU 版；功能一致只有速度差</td></tr>
-</table>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 第一个最小示例：跑通就能开工</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>环境装完了，怎么确认"真的能用了"？从哪里开始写第一行代码？</p>
@@ -475,6 +462,19 @@ print(x * 2)                        # 张量基本运算可用</pre>
 <p>一句话记住本章：<strong>PyTorch 由 torch（核心）+ torchvision/torchaudio（扩展）组成，GPU 靠 CUDA+cuDNN 加速，装完用两行代码验证即可开始。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>本章解决了"把 PyTorch 跑起来"的全部前置问题：</p>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>PyTorch 是什么</td><td>Meta 开源机器学习库，研究友好、动态计算图、灵活易用</td></tr>
+<tr><td>torch / torchvision / torchaudio</td><td>核心库 + 图像扩展 + 音频扩展，按任务选装</td></tr>
+<tr><td>怎么安装</td><td>pip 或 conda，务必在独立虚拟环境里装</td></tr>
+<tr><td>CPU 为什么慢</td><td>CPU 强核心少；GPU 成千上万小核心并行算张量，天然适配深度学习</td></tr>
+<tr><td>CUDA 是什么</td><td>NVIDIA 的通用并行计算平台，让 GPU 做通用计算</td></tr>
+<tr><td>cuDNN 是什么</td><td>NVIDIA 的深度神经网络专用加速库，卷积等操作更极致地加速</td></tr>
+<tr><td>怎么验证</td><td><code>torch.__version__</code> + <code>torch.cuda.is_available()</code></td></tr>
+<tr><td>版本怎么选</td><td>无 NVIDIA 显卡装 CPU 版；有则 GPU 版；功能一致只有速度差</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>torch、torchvision、torchaudio 三个库的分工分别是什么？做表格数据分类需要装哪些？</li><li>pip 和 conda 安装 PyTorch 各自的优缺点是什么？为什么建议用虚拟环境？</li><li>为什么 GPU 比 CPU 更适合深度学习训练？请从核心数量与任务类型角度解释。</li><li>CUDA 和 cuDNN 的关系是什么？只装 CUDA 不装 cuDNN 会怎样？</li><li><code>torch.cuda.is_available()</code> 返回 False 的可能原因有哪些？逐一说明排查思路。</li><li>你的机器没有 NVIDIA 显卡，应该装哪个版本？如果之后想用 GPU，可以怎么解决？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

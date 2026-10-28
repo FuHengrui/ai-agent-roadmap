@@ -444,17 +444,6 @@ y = gamma * x_hat + beta</pre>
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<p>正则化与过拟合核心结论：</p>
-<table>
-<tr><th>问题</th><th>答案</th></tr>
-<tr><td>过拟合是什么</td><td>记住训练细节噪声，验证/测试表现差；曲线：训练降、验证升</td></tr>
-<tr><td>数据划分纪律</td><td>训练/验证/测试三分；测试只在最后用一次</td></tr>
-<tr><td>L1 vs L2</td><td>L1 稀疏（权重归 0），L2 小权重（权重衰减，weight_decay 一行）</td></tr>
-<tr><td>Dropout</td><td>训练随机丢弃神经元并除以 (1-p)（inverted）；eval 自动关闭</td></tr>
-<tr><td>BatchNorm</td><td>每个 batch 标准化 + 可学习 gamma/beta；稳定训练、可加大 lr</td></tr>
-<tr><td>组合策略</td><td>先确认过拟合，再按低到高成本逐项叠加，配合早停</td></tr>
-</table>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 数据增强：最便宜的过拟合解药</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>没有更多数据，又要治过拟合，还有什么"变出"数据的方法？</p>
@@ -518,6 +507,17 @@ model.load_state_dict(best_state)   # 回退最优</pre>
 <p>一句话记住本章：<strong>过拟合是"背题"，靠验证集发现、靠正则化治疗——L2 压权重、Dropout 断依赖、BatchNorm 稳分布；纪律是测试集最后才碰，推理记得 eval()，收尾用早停兜底。</strong></p>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<p>正则化与过拟合核心结论：</p>
+<table>
+<tr><th>问题</th><th>答案</th></tr>
+<tr><td>过拟合是什么</td><td>记住训练细节噪声，验证/测试表现差；曲线：训练降、验证升</td></tr>
+<tr><td>数据划分纪律</td><td>训练/验证/测试三分；测试只在最后用一次</td></tr>
+<tr><td>L1 vs L2</td><td>L1 稀疏（权重归 0），L2 小权重（权重衰减，weight_decay 一行）</td></tr>
+<tr><td>Dropout</td><td>训练随机丢弃神经元并除以 (1-p)（inverted）；eval 自动关闭</td></tr>
+<tr><td>BatchNorm</td><td>每个 batch 标准化 + 可学习 gamma/beta；稳定训练、可加大 lr</td></tr>
+<tr><td>组合策略</td><td>先确认过拟合，再按低到高成本逐项叠加，配合早停</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>过拟合的典型曲线特征是什么？欠拟合与过拟合怎么区分？</li><li>验证集和测试集的分工分别是什么？为什么测试集不能在调参时反复使用？</li><li>L1 与 L2 正则化对权重的影响有什么本质区别？weight_decay 对应哪种？</li><li>Dropout 的 inverted 实现是什么？为什么它能让推理阶段"什么都不用做"？</li><li>为什么说 Dropout 相当于在训练多个子网络并做集成？</li><li>BatchNorm 在 train 与 eval 模式下分别使用什么统计量？忘记 eval() 的后果是？</li><li>设计一个"过拟合排查与治疗"的处理顺序（至少 4 步）。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

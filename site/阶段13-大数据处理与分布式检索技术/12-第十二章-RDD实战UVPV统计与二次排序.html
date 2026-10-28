@@ -450,7 +450,7 @@ val hot5 = logs.map(log =&gt; (log.page, 1))
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>以为 sortBy 后 take 不是全局 TopN</td><td>恰恰相反：<code>sortBy</code> 按区间分区、分区内有序，全局就是有序的，<code>take(n)</code> 拿到的就是全局前 n。<strong>它没错，只是要把全量排一遍，贵</strong>——TopN 用 <code>takeOrdered</code></td></tr>
-<tr><td>takeOrdered 默认是取最小的 5 个</td><td>想要最大 5 个得把顺序倒过来，用 Ordering 表达（<code>Ordering.Int.reverse</code>，或 <code>Ordering.by((t: (Int, String)) =&gt; -t._1)</code>）；直接传比较函数 <code>(a,b) =&gt; b._1 - a._1</code> 编译不过</td><td></td></tr>
+<tr><td>takeOrdered 默认是取最小的 5 个</td><td>想要最大 5 个得把顺序倒过来，用 Ordering 表达（<code>Ordering.Int.reverse</code>，或 <code>Ordering.by((t: (Int, String)) =&gt; -t._1)</code>）；直接传比较函数 <code>(a,b) =&gt; b._1 - a._1</code> 编译不过</td></tr>
 <tr><td>忘了 <code>.swap</code> 让次数做排序主键</td><td><code>(页面, 次数)</code> 直接 takeOrdered 是按<strong>页面</strong>排序（String 顺序），不对。swap 成 (次数, 页面) 才能按次数</td></tr>
 <tr><td>全排序 1 个分区太慢</td><td>大数据别用全局 sortBy；TopN 一律用 takeOrdered 只保头部</td></tr>
 </table>

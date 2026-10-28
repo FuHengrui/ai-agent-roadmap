@@ -196,19 +196,6 @@ model.eval()    # 评估模式：Dropout 停用、BN 用累计的 running 统计
 | train 之后没切 eval 就测试 | 同上；规范流程：训练循环内 train，评估循环前 eval |
 | 以为 eval 等于 no_grad | 两者独立：eval 管层的模式，no_grad 管是否建计算图；推理常用 eval + no_grad 组合 |
 
-@@summary
-用 nn.Module 构建模型的要点：
-
-| 问题 | 答案 |
-|---|---|
-| nn.Linear | 一行线性层：自动建 W/b、自动登记参数、fc(x) 自动前向 |
-| nn.Module | 所有模型的父类：自动管理子模块与参数，统一 .to(device)/train()/eval() |
-| 标准写法 | __init__ 定义层 + super().__init__()，forward 定义前向 |
-| Sequential | 纯串联网络的最简写法；复杂结构用继承手写 forward |
-| 查参数 | named_parameters()/parameters()/numel()；总参数量 ≈ 显存估算基准 |
-| 初始化 | 打破对称 + 控制范围：ReLU 配 Kaiming、Tanh 配 Xavier |
-| train/eval | train 开 Dropout、BN 用 batch 统计；eval 关 Dropout、用全局统计 |
-
 @@point ⑦ 设备管理：model.to(device) 与 CPU/GPU 无缝切换
 @@need 要解决什么
 代码想先在 CPU 上跑通、再上 GPU 加速，怎么不写两套代码？
@@ -269,6 +256,20 @@ torch.save({"epoch": 10, "model": model.state_dict(),
 | 加载后忘了 eval() | 推理结果漂移；加载完训练就 train()、推理就 eval() |
 
 一句话记住本章：**继承 nn.Module、在 __init__ 里用 super().__init__() 登记层、在 forward 里写前向；层用 nn.Linear/nn.Sequential，参数靠 model.parameters() 统一管理；初始化打破对称按激活选 Xavier/Kaiming，训练和评估记得切 train()/eval()。**
+
+
+@@summary
+用 nn.Module 构建模型的要点：
+
+| 问题 | 答案 |
+|---|---|
+| nn.Linear | 一行线性层：自动建 W/b、自动登记参数、fc(x) 自动前向 |
+| nn.Module | 所有模型的父类：自动管理子模块与参数，统一 .to(device)/train()/eval() |
+| 标准写法 | __init__ 定义层 + super().__init__()，forward 定义前向 |
+| Sequential | 纯串联网络的最简写法；复杂结构用继承手写 forward |
+| 查参数 | named_parameters()/parameters()/numel()；总参数量 ≈ 显存估算基准 |
+| 初始化 | 打破对称 + 控制范围：ReLU 配 Kaiming、Tanh 配 Xavier |
+| train/eval | train 开 Dropout、BN 用 batch 统计；eval 关 Dropout、用全局统计 |
 
 @@quiz
 1. nn.Linear(4, 3) 创建了哪些参数？形状分别是什么？前向时输入 (N,4) 输出是什么形状？

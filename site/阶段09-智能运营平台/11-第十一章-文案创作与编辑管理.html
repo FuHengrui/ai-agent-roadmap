@@ -448,23 +448,6 @@ async def styles():
 <p>判定通过 = 六步全部符合预期且刷新后数据一致。任一步异常，按接口顺序排查：路径 → 鉴权 → 归属校验 → agent 调用 → 落库。</p>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<ul><li>文案 Bot 人设：220-420 字、口语化、emoji、引导互动、禁违禁词——内容是"规格化"产物</li><li>/copy 接口：归属校验（防 IDOR）→ 调 AI → 验证非空 → 更新 content + status=1</li><li>详情 /title/{id} 与 重置 reset：软操作（清字段回状态），不删记录</li><li>save-copy：人工改稿落库，服务端强制非空校验</li><li>风格接口 /styles：平台共享配置，不加用户过滤；与测试接口区别使用</li><li>状态机：0↔1 可逆、1→2 发布冻结、可弃为 3；变更收敛到统一守卫函数</li><li>联调剧本六步：详情/生成/重试/保存/重置/风格，刷新校验一致性</li><li>编辑态与保存态分离：脏标记 + 显式保存 + 离开拦截，保存成功才清脏</li></ul>
-<h4>自测：能不能答上来</h4>
-<ol><li>文案 Bot 的正文长度规格是？</li></ol>
-<p>A. 100 字以内　　B. 220-420 字　　C. 1000 字以上　　D. 不限</p>
-<ol><li>/copy 查询标题时带上 user_id 的目的是？</li></ol>
-<p>A. 性能　　B. 防越权（IDOR）修改他人标题　　C. 排序　　D. 统计</p>
-<ol><li>文案生成失败但 status 却变了 1，原因是？</li></ol>
-<p>A. 正常　　B. 先改状态后验证文本导致的顺序错误　　C. 缓存　　D. 数据库 bug</p>
-<ol><li>reset 接口的正确行为是？</li></ol>
-<p>A. 删除标题记录　　B. 清空 content 且 status 回 0　　C. 标记已废弃　　D. 重新生成</p>
-<ol><li>save-copy 与 /copy 的落库逻辑应如何组织？</li></ol>
-<p>A. 各写各的　　B. 收敛到共享更新函数　　C. 一个调另一个　　D. 前端处理</p>
-<ol><li>风格列表接口为什么不加 user 过滤？</li></ol>
-<p>A. 忘了加　　B. 风格是平台共享配置　　C. 用户不能选风格　　D. 性能考虑</p>
-<ol><li>published（status=2）后再改文案的正确处理是？</li></ol>
-<p>A. 直接改　　B. 新开一条或先废弃——已发布内容冻结　　C. 只能重置　　D. 删库</p>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 编辑态与保存态的边界：脏标记与未保存提示</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>用户手动改了文案，没保存就切走/刷新——改的内容全丢，是最伤体验的坑。前端需要一个"编辑态"机制。</p>
@@ -483,6 +466,23 @@ async def styles():
 </table>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<ul><li>文案 Bot 人设：220-420 字、口语化、emoji、引导互动、禁违禁词——内容是"规格化"产物</li><li>/copy 接口：归属校验（防 IDOR）→ 调 AI → 验证非空 → 更新 content + status=1</li><li>详情 /title/{id} 与 重置 reset：软操作（清字段回状态），不删记录</li><li>save-copy：人工改稿落库，服务端强制非空校验</li><li>风格接口 /styles：平台共享配置，不加用户过滤；与测试接口区别使用</li><li>状态机：0↔1 可逆、1→2 发布冻结、可弃为 3；变更收敛到统一守卫函数</li><li>联调剧本六步：详情/生成/重试/保存/重置/风格，刷新校验一致性</li><li>编辑态与保存态分离：脏标记 + 显式保存 + 离开拦截，保存成功才清脏</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>文案 Bot 的正文长度规格是？</li></ol>
+<p>A. 100 字以内　　B. 220-420 字　　C. 1000 字以上　　D. 不限</p>
+<ol><li>/copy 查询标题时带上 user_id 的目的是？</li></ol>
+<p>A. 性能　　B. 防越权（IDOR）修改他人标题　　C. 排序　　D. 统计</p>
+<ol><li>文案生成失败但 status 却变了 1，原因是？</li></ol>
+<p>A. 正常　　B. 先改状态后验证文本导致的顺序错误　　C. 缓存　　D. 数据库 bug</p>
+<ol><li>reset 接口的正确行为是？</li></ol>
+<p>A. 删除标题记录　　B. 清空 content 且 status 回 0　　C. 标记已废弃　　D. 重新生成</p>
+<ol><li>save-copy 与 /copy 的落库逻辑应如何组织？</li></ol>
+<p>A. 各写各的　　B. 收敛到共享更新函数　　C. 一个调另一个　　D. 前端处理</p>
+<ol><li>风格列表接口为什么不加 user 过滤？</li></ol>
+<p>A. 忘了加　　B. 风格是平台共享配置　　C. 用户不能选风格　　D. 性能考虑</p>
+<ol><li>published（status=2）后再改文案的正确处理是？</li></ol>
+<p>A. 直接改　　B. 新开一条或先废弃——已发布内容冻结　　C. 只能重置　　D. 删库</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://www.samr.gov.cn/" target="_blank" rel="noopener"><span class="k">官方</span>广告法违禁词核查（参考）</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>智能运营平台.pdf</span></div>

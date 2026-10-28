@@ -448,7 +448,7 @@ await Case.filter(Q(court__icontains=&quot;北京&quot;) | Q(case_type=&quot;劳
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为 <code>filter(Q(a=1), Q(b=2))</code> 是"或"，其实是"且"</td><td>逗号分隔的多个 Q 是 AND；要 OR 必须显式 `Q(a=1)</td><td>Q(b=2)`；多个条件混用记得加括号</td></tr>
+<tr><td>以为 <code>filter(Q(a=1), Q(b=2))</code> 是"或"，其实是"且"</td><td>逗号分隔的多个 Q 是 AND；要 OR 必须显式 `Q(a=1) \</td><td>Q(b=2)`；多个条件混用记得加括号</td></tr>
 </table>
 </div>
 </div></div>
