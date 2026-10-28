@@ -28,7 +28,8 @@
 | torch.int32 / torch.int | 32 位整数 |
 | torch.int64 / torch.long | 64 位整数 |
 | torch.int16 / torch.short | 16 位整数 |
-| torch.int8 / torch.uint8 | 8 位（无符号）整数 |
+| torch.int8 | 8 位**有符号**整数（-128~127） |
+| torch.uint8 | 8 位**无符号**整数（0~255，图像常用） |
 | torch.bool | 布尔 |
 
 ```python

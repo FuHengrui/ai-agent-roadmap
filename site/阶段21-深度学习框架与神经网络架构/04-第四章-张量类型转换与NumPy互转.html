@@ -305,7 +305,8 @@
 <tr><td>torch.int32 / torch.int</td><td>32 位整数</td></tr>
 <tr><td>torch.int64 / torch.long</td><td>64 位整数</td></tr>
 <tr><td>torch.int16 / torch.short</td><td>16 位整数</td></tr>
-<tr><td>torch.int8 / torch.uint8</td><td>8 位（无符号）整数</td></tr>
+<tr><td>torch.int8</td><td>8 位<strong>有符号</strong>整数（-128~127）</td></tr>
+<tr><td>torch.uint8</td><td>8 位<strong>无符号</strong>整数（0~255，图像常用）</td></tr>
 <tr><td>torch.bool</td><td>布尔</td></tr>
 </table>
 <pre>float_tensor = torch.tensor([1.0, 2.0, 3.0])

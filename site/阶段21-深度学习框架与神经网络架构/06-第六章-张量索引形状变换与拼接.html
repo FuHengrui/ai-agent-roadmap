@@ -525,7 +525,7 @@ print(torch.stack((a, b), dim=0).shape) # (2, 2, 3)：新增第 0 维</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>cat 时维度对不上报错</td><td>除拼接维外其他维必须严格相等；(2,3) 拼 (2,4) 无论沿哪维都失败</td></tr>
+<tr><td>cat 时维度对不上报错</td><td>除拼接维外其他维必须相等：(2,3) 拼 (2,4) 沿 <code>dim=1</code> 可以拼成 (2,7)，沿 <code>dim=0</code> 才失败</td></tr>
 <tr><td>stack 形状不同报错</td><td>stack 要求所有张量形状完全一致，因为它要新增维度</td></tr>
 <tr><td>误把 cat 当 stack</td><td>想"加一维装起来"用 stack；想"同一维变大"用 cat</td></tr>
 <tr><td>cat 的别名 torch.concatenate</td><td>两者等价，混用无碍</td></tr>

@@ -284,7 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>Agent 有人格（SOUL）、有能力（工具）、会做事（技能）、记得住（记忆）——<strong>但它的"外貌"还是出厂默认</strong>：黑底白字的终端、朴素的横幅、一个转圈的加载动画。天天看着这套界面，多少有点"工装味"。</p>
 <p><strong>皮肤（skin）就是 CLI 的"换装系统"</strong>：改横幅颜色、改旋转器表情、改响应框的标签——让终端界面有辨识度、有情绪。别小看这一步：<strong>皮肤和 SOUL 一外一内，共同塑造"这个 Agent 是谁"的完整感知</strong>。而且皮肤机制（YAML 配置文件）是后面 MCP、Cron 里"用配置驱动行为"思路的预热。</p>
-<p>学完这一章，你能回答：<strong>皮肤在 CLI 里改哪些东西、8 款内置皮肤怎么切换、<code>/skin</code> 命令怎么用、皮肤和 SOUL 的分工边界、自定义皮肤 YAML 怎么写</strong>。五分钟完工的一章，但能让你的 Agent 从"默认款"变成"定制款"。</p>
+<p>学完这一章，你能回答：<strong>皮肤在 CLI 里改哪些东西、9 款内置皮肤怎么切换、<code>/skin</code> 命令怎么用、皮肤和 SOUL 的分工边界、自定义皮肤 YAML 怎么写</strong>。五分钟完工的一章，但能让你的 Agent 从"默认款"变成"定制款"。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用准备什么，也不用装环境——Hermes 能启动就能改，五分钟的事。</p></div></div>
@@ -311,7 +311,7 @@
 <tr><td>旋转器（spinner）</td><td>等待时的加载动画表情</td></tr>
 <tr><td>响应框标签</td><td>每条回复信息边框上的标签文字</td></tr>
 </table>
-<p>把它类比成"终端主题"：<strong>默认皮肤是出厂款，skin 可换 8 款内置皮肤，也支持 YAML 自定义</strong>。操作方式是对话内斜杠命令 <code>/skin</code>。</p>
+<p>把它类比成"终端主题"：<strong>默认皮肤是出厂款，skin 可换 9 款内置皮肤，也支持 YAML 自定义</strong>。操作方式是对话内斜杠命令 <code>/skin</code>。</p>
 <p>◎ 与第 5 章的边界再划一次：皮肤改"脸"，SOUL 改"性格"——改皮肤不会让你 Agent 说话变温柔，改 SOUL 也不会让终端变好看。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -323,15 +323,15 @@
 </table>
 </div>
 </div></div>
-<div class="point" id="p2"><div class="head"><span class="no">2</span>② 8 款内置皮肤 + 支持自定义</div><div class="body">
+<div class="point" id="p2"><div class="head"><span class="no">2</span>② 9 款内置皮肤 + 支持自定义</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>"换皮肤"到底有多少款可选？自定义怎么搞？先摸清供给清单。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>一句话概括：<strong>提供 8 款内置皮肤，支持用户自定义皮肤</strong>。</p>
+<p>一句话概括：<strong>提供 9 款内置皮肤，支持用户自定义皮肤</strong>。</p>
 <table>
 <tr><th>皮肤类型</th><th>怎么获得/使用</th></tr>
-<tr><td>8 款内置皮肤</td><td>通过 <code>/skin</code> 命令切换（免安装）</td></tr>
+<tr><td>9 款内置皮肤</td><td>通过 <code>/skin</code> 命令切换（免安装）</td></tr>
 <tr><td>自定义皮肤</td><td>写 YAML 配置文件（第 ⑤ 点）放对应目录</td></tr>
 </table>
 <p>切换动作就是对话里敲 <code>/skin</code>，按提示选择想要的款式。想确认有哪些，跑一遍 <code>/skin</code> 就能看到列表。<strong>外观定制就是这样"一行命令 + 一个选择"的轻量操作</strong>——不是重工程量。</p>
@@ -339,7 +339,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>想"安装皮肤"却发现没有商店</td><td>内置 8 款即装即用；自定义走 YAML 文件，没有额外的"皮肤市场"</td></tr>
+<tr><td>想"安装皮肤"却发现没有商店</td><td>内置 9 款即装即用；自定义走 YAML 文件，没有额外的"皮肤市场"</td></tr>
 <tr><td>/skin 里没有自己想要的款</td><td>那就写自定义 YAML（第 ⑤ 点），管够</td></tr>
 <tr><td>换了皮肤重启又变回默认</td><td>自定义/选择的皮肤要确认保存进配置；重启后仍生效才是持久配置</td></tr>
 </table>
@@ -357,7 +357,7 @@
 <table>
 <tr><th>步骤</th><th>动作</th></tr>
 <tr><td>1</td><td>对话里输入 <code>/skin</code></td></tr>
-<tr><td>2</td><td>列出可用皮肤（8 款内置 + 可能的自定义）</td></tr>
+<tr><td>2</td><td>列出可用皮肤（9 款内置 + 可能的自定义）</td></tr>
 <tr><td>3</td><td>选择心仪皮肤 -&gt; 界面即时更新</td></tr>
 <tr><td>4</td><td>不喜欢？再 <code>/skin</code> 换另一款，直到满意</td></tr>
 </table>
@@ -414,7 +414,7 @@ label:
 ② 填写结构   name + banner/spinner/label 等字段（按 YAML 语法）
 ③ 验证语法   启动 Hermes 无报错 / hermes --version 类命令不带配置错误
 ④ 选择应用   对话内 /skin → 选 my-skin
-⑤ 确认生效   观察横幅/转圈/标签变化；持久生效（重启后仍用该皮肤）</pre>
+⑤ 确认生效   观察横幅/转圈/标签变化。注意 `/skin` **只对本次会话生效**；要重启后仍然生效，得在 `~/.hermes/config.yaml` 里写 `display.skin: my-skin`</pre>
 <p>若不想独立文件，也可以直接在 <code>~/.hermes/config.yaml</code> 的皮肤配置块内联定义，效果等同。<strong>核心心法：先抄内置模板，改小参数，逐步加花活</strong>——别一上来手搓全套 YAML。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -492,7 +492,7 @@ label:
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>花一小时试 8 款皮肤</td><td>换装 5 分钟即可收手；时间应留给 SOUL/技能等行为层配置</td></tr>
+<tr><td>花一小时试 9 款皮肤</td><td>换装 5 分钟即可收手；时间应留给 SOUL/技能等行为层配置</td></tr>
 <tr><td>以为换皮肤=调教完成</td><td>行为层（人格/工具/技能/记忆）才是"调教"，皮肤是外壳</td></tr>
 <tr><td>因皮肤暂时无法渲染就否定框架</td><td>外观是增强项；核心价值在行为层，别因装点问题影响主线</td></tr>
 </table>
@@ -574,7 +574,7 @@ label:
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>外观定制"够用"清单（按序做，做完收工）：</p>
-<pre>□ 敲 /skin 浏览 8 款内置皮肤
+<pre>□ 敲 /skin 浏览 9 款内置皮肤
 □ 选中一款顺眼的（5 分钟内敲定）
 □ （可选）在 ~/.hermes/skins/ 建一款自定义 YAML，改 banner/spinner
 □ 重启验证持久生效
@@ -595,13 +595,13 @@ label:
 <table>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
 <tr><td><strong>皮肤=外观系统</strong>：banner/spinner/响应框标签</td><td>明确了"皮肤改脸、SOUL 改性格"的分工边界</td></tr>
-<tr><td><strong>8 款内置+自定义</strong></td><td>即装即用、可扩展，5 分钟换装不折腾</td></tr>
+<tr><td><strong>9 款内置+自定义</strong></td><td>即装即用、可扩展，5 分钟换装不折腾</td></tr>
 <tr><td><strong>/skin 命令</strong>：交互式即改即用</td><td>最简单直接的外观操作入口，无需改配置</td></tr>
 <tr><td><strong>自定义 YAML</strong>：~/.hermes/skins/*.yaml 或 config.yaml 内联</td><td>"配置驱动"理念第一次完整亮相，为 MCP/Cron 热身</td></tr>
 <tr><td><strong>排查表</strong>：命令/终端/持久/重启/语法五排查</td><td>外观问题快速定位，技巧复用于一切配置问题</td></tr>
 <tr><td><strong>边界感</strong>：CLI 私享、不影响平台与行为</td><td>想怎么折腾都行，不碰行为层，不涉及任何权责</td></tr>
 </table>
-<p>一句话记住本章：<strong>皮肤是"终端换装"：/skin 切 8 款内置、YAML 自定义花色；改的是脸不是性格，5 分钟搞定收工去学重头戏。</strong></p>
+<p>一句话记住本章：<strong>皮肤是"终端换装"：/skin 切 9 款内置、YAML 自定义花色；改的是脸不是性格，5 分钟搞定收工去学重头戏。</strong></p>
 <h4>自测：能不能答上来</h4>
 <ol><li>皮肤（skin）控制 CLI 的哪些外观元素？请列出至少三个。</li><li>皮肤和 SOUL.md 的分工边界是什么？"想让 Agent 说话更简洁"应该改哪个？</li><li>Hermes 内置多少款皮肤？切换皮肤的命令是什么？它属于终端命令还是对话内斜杠命令？</li><li>自定义皮肤有两种配置途径，分别是什么？（提示：主配置内联 / 独立皮肤文件）</li><li>请写出自定义皮肤从"创建 YAML 到应用生效"的五个步骤。</li><li>皮肤切换后没生效，请按顺序列出至少 3 个排查点（从最常见的原因开始）。</li><li>皮肤配置在消息平台（微信/QQ）上会生效吗？为什么？这条结论对你"折腾皮肤"的时间分配有什么启发？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
@@ -618,7 +618,7 @@ label:
 <div class="toc-inner">
   <div class="toc-head">本页目录</div>
   <a href="#p1" title="皮肤是什么：CLI 的&quot;外貌系统&quot;"><span class="n">1</span>皮肤是什么：CLI 的"外貌系统"</a>
-  <a href="#p2" title="8 款内置皮肤 + 支持自定义"><span class="n">2</span>8 款内置皮肤 + 支持自定义</a>
+  <a href="#p2" title="9 款内置皮肤 + 支持自定义"><span class="n">2</span>9 款内置皮肤 + 支持自定义</a>
   <a href="#p3" title="/skin 命令：切换皮肤的操作入口"><span class="n">3</span>/skin 命令：切换皮肤的操作入口</a>
   <a href="#p4" title="皮肤配置的存在形态：YAML 与配置文件"><span class="n">4</span>皮肤配置的存在形态：YAML 与配置文件</a>
   <a href="#p5" title="自定义皮肤完整流程：从写 YAML 到生效"><span class="n">5</span>自定义皮肤完整流程：从写 YAML 到生效</a>

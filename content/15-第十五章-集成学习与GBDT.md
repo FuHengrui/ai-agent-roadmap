@@ -69,7 +69,7 @@ Bagging 只随机了"行"（样本）；如果所有树都用同一策略挑特�
 
 @@idea 核心思路
 **随机森林（Random Forest）** = Bagging 决策树 + **特征子采样**：
-| `max_features` | 每次分裂看多少特征 | 分类默认 √n；**回归默认 1.0（全部特征）**，`p/3` 只是 Breiman 的经验建议 |
+- 除了每棵树用不同自助样本，**每次分裂只在随机抽出的"特征子集"里挑最优切分**（分类默认 √n 个特征；**回归默认 `max_features=1.0`，即全部特征**，`p/3` 只是 Breiman 的经验建议）。
 - 双随机（行随机 + 列随机）让树之间的差异被拉满，从而大幅压低方差、抗过拟合。
 
 ```python
@@ -218,10 +218,10 @@ from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error
 import numpy as np
 
-models = {
-from sklearn.linear_model import Ridge   # 下面要用
+from sklearn.linear_model import Ridge   # 基线模型要用
 
-"Ridge(基线)": Ridge(alpha=10)
+models = {
+    "Ridge(基线)": Ridge(alpha=10),
     "RandomForest": RandomForestRegressor(n_estimators=200, max_depth=8, random_state=42),
     "GBDT": GradientBoostingRegressor(n_estimators=200, learning_rate=0.1,
                                       max_depth=4, random_state=42),
