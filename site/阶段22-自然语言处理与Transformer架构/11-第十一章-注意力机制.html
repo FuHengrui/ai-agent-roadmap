@@ -358,7 +358,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>公式里的 <strong>√d 就是"缩放因子"</strong>：</p>
 <pre>Attention(Q, K, V) = softmax(Q·K^T / √d) · V</pre>
-<p>问题背景：当向量维度 d 较大时，点积的数值会<strong>随维度增长而变大</strong>（多个维度求和累加），导致 Softmax 输入过大 → 软max 输出趋近"一个 1、其余 0"（饱和）→ 饱和区梯度≈0，训练困难。</p>
+<p>问题背景：当向量维度 d 较大时，点积的数值会<strong>随维度增长而变大</strong>（多个维度求和累加），导致 Softmax 输入过大 → Softmax 输出趋近"一个 1、其余 0"（饱和）→ 饱和区梯度≈0，训练困难。</p>
 <p>除以 √d 把点积<strong>拉回温和区间</strong>，Softmax 分布不饱和，梯度顺畅。这是一处"不起眼但致命"的工程细节，很多新手实现漏了它导致训练不稳。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
