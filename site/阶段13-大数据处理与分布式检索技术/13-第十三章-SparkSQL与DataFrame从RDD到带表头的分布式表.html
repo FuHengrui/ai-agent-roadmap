@@ -410,7 +410,7 @@ DataFrame 不可变：每次变换生成新 DataFrame
 val json = spark.read.json(&quot;path/users.json&quot;)
 val csv  = spark.read.option(&quot;header&quot;, &quot;true&quot;).csv(&quot;path/users.csv&quot;)
 val parquet = spark.read.parquet(&quot;path/users.parquet&quot;)   // 自带 Schema，最快
-// Schema 推断：json/csv 自动推断；也可手动指定 .schema(customSchema)</pre>
+// Schema 推断：json 默认就推断；csv 默认**全读成 String**，要 .option(&quot;inferSchema&quot;,&quot;true&quot;) 或手动 .schema(...)</pre>
 <p><strong>② 从集合造（测试/演示用）</strong>：</p>
 <pre>import spark.implicits._
 
@@ -419,9 +419,10 @@ val df = Seq(
   (&quot;李四&quot;, 30, &quot;上海&quot;)
 ).toDF(&quot;name&quot;, &quot;age&quot;, &quot;city&quot;)     // toDF 指定列名</pre>
 <p><strong>③ 从 RDD 转换（老代码升级）</strong>：</p>
-<pre>val rdd = sc.makeRDD(List((&quot;张三&quot;, 25), (&quot;李四&quot;, 30)))
+<pre>val sc  = spark.sparkContext                      # 拿到底层 SparkContext 才能 makeRDD
+val rdd = sc.makeRDD(List((&quot;张三&quot;, 25), (&quot;李四&quot;, 30)))
 val df1 = rdd.toDF(&quot;name&quot;, &quot;age&quot;)                        // 方式一：命名列
-val df2 = spark.createDataFrame(rdd)                     // 方式二：需先定义 Schema
+val df2 = spark.createDataFrame(rdd).toDF(&quot;name&quot;, &quot;age&quot;)   // 方式二：先变 DataFrame 再命名；不给名就是 _1/_2
 // DataFrame → RDD 反向转换：df.rdd</pre>
 <p><strong>优先级建议</strong>：能用 <code>spark.read</code> 直接读的别转 RDD；非要转换，用 <code>toDF("列名"...）</code> 最省事。</p>
 </div>
@@ -525,16 +526,16 @@ spark.conf.set(...)      // 运行时改配置</pre>
 <tr><th>配置</th><th>作用</th></tr>
 <tr><td><code>spark.sql.shuffle.partitions</code></td><td><strong>SQL/DSL 的 shuffle 分区数</strong>（默认 200，RDD 默认并行度不归它管）</td></tr>
 <tr><td><code>spark.sql.autoBroadcastJoinThreshold</code></td><td>自动广播 join 的最大表大小</td></tr>
-<tr><td><code>spark.sql.adaptive.enabled</code></td><td>AQE 自适应执行（Spark 3 默认开）</td></tr>
+<tr><td><code>spark.sql.adaptive.enabled</code></td><td>AQE 自适应执行（<strong>Spark 3.2 起默认开启</strong>，3.0/3.1 默认关）</td></tr>
 </table>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>教程让 new SQLContext 找不到</td><td>2.0+ 全整合进 SparkSession。用 <code>spark</code> 一个对象就够，不要再 new 旧的</td></tr>
-<tr><td><code>local[*]</code> 在生产提交时被硬编码</td><td>写 <code>master("local[*]")</code> 是本地演示；<code>spark-submit</code> 提交时 <code>--master yarn</code> 会覆盖 builder 里的值，不必删。但要注意别在集群代码里写死 local</td></tr>
-<tr><td><code>.config</code> 和 <code>spark-submit --conf</code> 谁优先</td><td><strong>命令行 --conf 覆盖代码 config</strong>。所以"代码默认+命令行覆盖"是最佳实践</td></tr>
-<tr><td>一个 JVM 里 getOrCreate 两次</td><td>getOrCreate 是"有就复用，没就建"，一个进程只建一个 SparkSession 是规范——重复建会报 AlreadyActiveException</td></tr>
+<tr><td><code>local[*]</code> 在生产提交时被硬编码</td><td>写 <code>master("local[*]")</code> 是本地演示；集群提交一般由 <code>spark-submit --master</code> 指定，但别在集群代码里写死 local（优先级见下一条）</td></tr>
+<tr><td><code>.config</code> 和 <code>spark-submit --conf</code> 谁优先</td><td>官方优先级：<strong>代码里的 SparkConf 最高</strong>，其次 spark-submit 参数，最后 spark-defaults.conf。所以想留出运维口子，就别在代码里把关键项写死</td></tr>
+<tr><td>一个 JVM 里 getOrCreate 两次</td><td>getOrCreate 是"有就复用，没就建"，一个进程只建一个 SparkSession 是规范。真重复 new 一个会报 <code>Only one SparkContext may be active per JVM</code></td></tr>
 </table>
 </div>
 </div></div>

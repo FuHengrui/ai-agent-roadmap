@@ -155,7 +155,7 @@ val spark = SparkSession.builder().master("local[*]").appName("demo").getOrCreat
 val json = spark.read.json("path/users.json")
 val csv  = spark.read.option("header", "true").csv("path/users.csv")
 val parquet = spark.read.parquet("path/users.parquet")   // 自带 Schema，最快
-// Schema 推断：json/csv 自动推断；也可手动指定 .schema(customSchema)
+// Schema 推断：json 默认就推断；csv 默认**全读成 String**，要 .option("inferSchema","true") 或手动 .schema(...)
 ```
 
 **② 从集合造（测试/演示用）**：
@@ -172,9 +172,10 @@ val df = Seq(
 **③ 从 RDD 转换（老代码升级）**：
 
 ```scala
+val sc  = spark.sparkContext                      # 拿到底层 SparkContext 才能 makeRDD
 val rdd = sc.makeRDD(List(("张三", 25), ("李四", 30)))
 val df1 = rdd.toDF("name", "age")                        // 方式一：命名列
-val df2 = spark.createDataFrame(rdd)                     // 方式二：需先定义 Schema
+val df2 = spark.createDataFrame(rdd).toDF("name", "age")   // 方式二：先变 DataFrame 再命名；不给名就是 _1/_2
 // DataFrame → RDD 反向转换：df.rdd
 ```
 
@@ -293,15 +294,15 @@ spark.conf.set(...)      // 运行时改配置
 |---|---|
 | `spark.sql.shuffle.partitions` | **SQL/DSL 的 shuffle 分区数**（默认 200，RDD 默认并行度不归它管） |
 | `spark.sql.autoBroadcastJoinThreshold` | 自动广播 join 的最大表大小 |
-| `spark.sql.adaptive.enabled` | AQE 自适应执行（Spark 3 默认开） |
+| `spark.sql.adaptive.enabled` | AQE 自适应执行（**Spark 3.2 起默认开启**，3.0/3.1 默认关） |
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 教程让 new SQLContext 找不到 | 2.0+ 全整合进 SparkSession。用 `spark` 一个对象就够，不要再 new 旧的 |
-| `local[*]` 在生产提交时被硬编码 | 写 `master("local[*]")` 是本地演示；`spark-submit` 提交时 `--master yarn` 会覆盖 builder 里的值，不必删。但要注意别在集群代码里写死 local |
-| `.config` 和 `spark-submit --conf` 谁优先 | **命令行 --conf 覆盖代码 config**。所以"代码默认+命令行覆盖"是最佳实践 |
-| 一个 JVM 里 getOrCreate 两次 | getOrCreate 是"有就复用，没就建"，一个进程只建一个 SparkSession 是规范——重复建会报 AlreadyActiveException |
+| `local[*]` 在生产提交时被硬编码 | 写 `master("local[*]")` 是本地演示；集群提交一般由 `spark-submit --master` 指定，但别在集群代码里写死 local（优先级见下一条） |
+| `.config` 和 `spark-submit --conf` 谁优先 | 官方优先级：**代码里的 SparkConf 最高**，其次 spark-submit 参数，最后 spark-defaults.conf。所以想留出运维口子，就别在代码里把关键项写死 |
+| 一个 JVM 里 getOrCreate 两次 | getOrCreate 是"有就复用，没就建"，一个进程只建一个 SparkSession 是规范。真重复 new 一个会报 `Only one SparkContext may be active per JVM` |
 
 @@point ⑧ 显式 Schema：生产代码为什么都手写类型
 @@need 要解决什么

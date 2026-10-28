@@ -169,17 +169,18 @@ trainer.train()
 典型配置（整理为可运行版）：
 
 ```python
-from trl import SFTTrainer
+from trl import SFTConfig, SFTTrainer
 from transformers import TrainingArguments
 
 trainer = SFTTrainer(
     model=model,
-    tokenizer=tokenizer,
+    processing_class=tokenizer,        # 新版参数名（旧版叫 tokenizer）
     train_dataset=train_dataset,       # 已按模板拼好 prompt 的数据
-    dataset_text_field="text",         # 告诉它哪个字段是"拼接后文本"
-    max_seq_length=max_seq_length,     # 自动截断
-    dataset_num_proc=2,                # 多进程预处理
-    args=TrainingArguments(
+    args=SFTConfig(                    # 新版 TRL 把下面三个参数并进了 SFTConfig
+        dataset_text_field="text",     # 哪个字段是"拼接后文本"
+        max_length=max_seq_length,     # 自动截断（旧名 max_seq_length）
+        dataset_num_proc=2,            # 多进程预处理
+
         per_device_train_batch_size=2,
         gradient_accumulation_steps=4,
         warmup_steps=5,                # 学习率预热
