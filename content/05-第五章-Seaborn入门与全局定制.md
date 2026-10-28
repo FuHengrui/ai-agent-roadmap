@@ -4,7 +4,7 @@
 @@why 这一章在解决什么问题
 **Matplotlib 什么都能画，但"什么都要自己配"：配色靠自己、样式靠自己、统计图（箱线、密度、回归）要一堆代码拼。** 一个统计图，Matplotlib 要 20 行，Seaborn 一行出图还自带置信区间——你缺的就是这个"高效层"。
 
-这一章解决 Seaborrn 的"**选型与全局定制**"：为什么数据分析用它、怎么装、自带数据集哪来的、四套全局风格怎么设、调色板体系怎么玩。学完你能回答：Seaborn 和 Matplotlib 的关系、set_style/set_context/set_palette 各自管什么、调色板的"离散/连续"两类怎么选。
+这一章解决 Seaborn 的"**选型与全局定制**"：为什么数据分析用它、怎么装、自带数据集哪来的、四套全局风格怎么设、调色板体系怎么玩。学完你能回答：Seaborn 和 Matplotlib 的关系、set_style/set_context/set_palette 各自管什么、调色板的"离散/连续"两类怎么选。
 
 @@prep 开始之前
 上一章的 Matplotlib 会用就能开始，先 pip install seaborn，自带数据集要联网下一次。

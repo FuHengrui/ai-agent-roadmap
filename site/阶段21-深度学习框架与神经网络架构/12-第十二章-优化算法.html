@@ -419,7 +419,7 @@ for epoch in range(epochs):
     for xb, yb in loader:
         ...   # 训练五连
     scheduler.step()       # 每个 epoch 后调用，自动调低 lr</pre>
-<p>常用调度器：StepLR（每 N 轮减半）、CosineAnnealingLR（余弦衰减）、ReduceLROnPlateau（loss 不降了再降 lr）。</p>
+<p>常用调度器：StepLR（每 N 轮乘 gamma，示例 gamma=0.5 即减半）、CosineAnnealingLR（余弦衰减）、ReduceLROnPlateau（loss 不降了再降 lr）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
