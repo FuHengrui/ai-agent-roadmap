@@ -358,7 +358,7 @@ class LLMClient:
         response = self._llm.invoke(messages)
         return str(response.content)
     except Exception as e:
-        return f&quot;抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。错误信息: {e}&quot;</pre>
+        logger.exception(&quot;LLM 调用失败&quot;)\n        return &quot;抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。&quot;   # 别把 {e} 拼给用户，内部错误只进日志</pre>
 <p>三处细节：</p>
 <ul><li><strong>SystemMessage 开头</strong>：全局设定"你是糖尿病健康管理专家"，约束说话方式；</li><li><strong>历史截断 10 条</strong>：<code>chat_history[-10:]</code> 只取最近，既控 token 又防上下文漂移；</li><li><strong>角色映射</strong>：历史里 user → HumanMessage、assistant/bot → AIMessage，LangChain 消息类型与角色一一对应。</li></ul>
 </div>
@@ -376,7 +376,7 @@ class LLMClient:
 <p>"生成一份周报"背后发生了什么？数据、统计、AI、落库怎么串？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p><code>POST /reports/generate/{patient_id}?report_type=周报</code> 的完整流水线：</p>
+<p><code>POST /api/reports/generate/{patient_id}?report_type=周报</code> 的完整流水线：</p>
 <pre>@router.post(&quot;/generate/{patient_id}&quot;, response_model=HealthReportResponse)
 async def generate_report(patient_id: int, report_type: str = Query(default=&quot;周报&quot;)):
     patient = await Patient.get_or_none(id=patient_id)
@@ -391,10 +391,10 @@ async def generate_report(patient_id: int, report_type: str = Query(default=&quo
     summary = health_analyzer.generate_summary(analysis)
     # 第4步：LLM 生成专家建议
     if analysis.get(&#x27;error&#x27;):
-        recommondations = &quot;血糖数据不足，无法生成报告。&quot;
+        recommendations = &quot;血糖数据不足，无法生成报告。&quot;
     else:
         prompt = f&quot;请根据以下{report_type}数据生成健康建议：\n{summary}\n\n请给出3-5条具体建议。&quot;
-        recommondations = llm_client.chat(
+        recommendations = llm_client.chat(
             system_prompt=&quot;你是糖尿病健康管理专家，请给出简洁实用的健康建议。&quot;,
             user_message=prompt,
         )
@@ -406,7 +406,7 @@ async def generate_report(patient_id: int, report_type: str = Query(default=&quo
         avg_blood_sugar=analysis.get(&#x27;avg&#x27;, 0),
         blood_sugar_std=analysis.get(&#x27;std&#x27;, 0),
         time_in_range=analysis.get(&#x27;time_in_range&#x27;, 0),
-        summary=summary, recommendations=recommondations,
+        summary=summary, recommendations=recommendations,
         risk_level=analysis.get(&#x27;risk_level&#x27;) or &quot;低风险&quot;,
     )
     ...</pre>
@@ -456,7 +456,7 @@ async def generate_report(patient_id: int, report_type: str = Query(default=&quo
 <p>生成的报告存哪？历史报告怎么查？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>HealthReport 模型（第七章 models 之一）核心字段：</p>
+<p>HealthReport 模型（第四章 models 之一）核心字段：</p>
 <ul><li><code>report_type</code>：周报/月报；<code>period_start / period_end</code>：统计周期；</li><li><code>avg_blood_sugar / blood_sugar_std / time_in_range</code>：<strong>关键指标快照</strong>（生成时固化，历史不随新数据漂移）；</li><li><code>summary / recommendations</code>：摘要与 AI 建议；</li><li><code>risk_level</code>：风险等级快照；<code>generated_at</code>：生成时间（auto_now_add）。</li></ul>
 <p>历史查询接口：</p>
 <pre>@router.get(&quot;/patient/{patient_id}&quot;, response_model=List[HealthReportResponse])

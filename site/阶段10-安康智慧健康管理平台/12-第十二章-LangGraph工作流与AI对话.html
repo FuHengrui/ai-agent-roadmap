@@ -486,7 +486,7 @@ class AgentState(TypedDict, total=False):
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>async def risk_assessment(state: AgentState) -&gt; AgentState:
-    bg_data = state.get(&#x27;blood_sugar_data&#x27;, {})
+    bg_data = state.get(&#x27;blood_sugar_data&#x27;) or {}   # 键存在但值是 None，所以不能用 .get(k, {})
     risk_level = bg_data.get(&#x27;risk_level&#x27;) or &quot;低风险&quot;
     state[&#x27;risk_level&#x27;] = risk_level
     warning = &quot;&quot;
@@ -536,7 +536,7 @@ async def run_agent(patient_id, user_message) -&gt; Dict:
     initial_state = { &quot;patient_id&quot;: patient_id, &quot;user_message&quot;: user_message, ... }  # 完整初始状态
     result = await agent_app.ainvoke(initial_state)
     return {&quot;response&quot;: result[&#x27;response&#x27;], &quot;risk_level&quot;: result[&#x27;risk_level&#x27;],
-            &quot;input_type&quot;: result[&#x27;input_type&#x27;], &quot;blood_sugar_data&quot;: result[&#x27;blood_sugar_data&#x27;]}</pre>
+            &quot;input_type&quot;: result[&#x27;input_type&#x27;], &quot;blood_sugar_data&quot;: result.get(&#x27;blood_sugar_data&#x27;)}</pre>
 <p>chat 路由（第五章已见雏形）：</p>
 <pre>@router.post(&quot;/message&quot;, response_model=ChatResponse)
 async def send_message(data: ChatMessage):

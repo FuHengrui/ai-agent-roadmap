@@ -86,7 +86,7 @@ def chat(self, system_prompt: str, user_message: str,
         response = self._llm.invoke(messages)
         return str(response.content)
     except Exception as e:
-        return f"抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。错误信息: {e}"
+        logger.exception("LLM 调用失败")\n        return "抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。"   # 别把 {e} 拼给用户，内部错误只进日志
 ```
 
 三处细节：
@@ -106,7 +106,7 @@ def chat(self, system_prompt: str, user_message: str,
 "生成一份周报"背后发生了什么？数据、统计、AI、落库怎么串？
 
 @@idea 核心思路
-`POST /reports/generate/{patient_id}?report_type=周报` 的完整流水线：
+`POST /api/reports/generate/{patient_id}?report_type=周报` 的完整流水线：
 
 ```python
 @router.post("/generate/{patient_id}", response_model=HealthReportResponse)
@@ -123,10 +123,10 @@ async def generate_report(patient_id: int, report_type: str = Query(default="周
     summary = health_analyzer.generate_summary(analysis)
     # 第4步：LLM 生成专家建议
     if analysis.get('error'):
-        recommondations = "血糖数据不足，无法生成报告。"
+        recommendations = "血糖数据不足，无法生成报告。"
     else:
         prompt = f"请根据以下{report_type}数据生成健康建议：\n{summary}\n\n请给出3-5条具体建议。"
-        recommondations = llm_client.chat(
+        recommendations = llm_client.chat(
             system_prompt="你是糖尿病健康管理专家，请给出简洁实用的健康建议。",
             user_message=prompt,
         )
@@ -138,7 +138,7 @@ async def generate_report(patient_id: int, report_type: str = Query(default="周
         avg_blood_sugar=analysis.get('avg', 0),
         blood_sugar_std=analysis.get('std', 0),
         time_in_range=analysis.get('time_in_range', 0),
-        summary=summary, recommendations=recommondations,
+        summary=summary, recommendations=recommendations,
         risk_level=analysis.get('risk_level') or "低风险",
     )
     ...
@@ -191,7 +191,7 @@ def generate_summary(self, analysis: Dict[str, Any]) -> str:
 生成的报告存哪？历史报告怎么查？
 
 @@idea 核心思路
-HealthReport 模型（第七章 models 之一）核心字段：
+HealthReport 模型（第四章 models 之一）核心字段：
 - `report_type`：周报/月报；`period_start / period_end`：统计周期；
 - `avg_blood_sugar / blood_sugar_std / time_in_range`：**关键指标快照**（生成时固化，历史不随新数据漂移）；
 - `summary / recommendations`：摘要与 AI 建议；

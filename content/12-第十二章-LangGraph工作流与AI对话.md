@@ -231,7 +231,7 @@ LLM 说了一堆好话，但患者血糖其实很危险——风险评估怎么�
 @@idea 核心思路
 ```python
 async def risk_assessment(state: AgentState) -> AgentState:
-    bg_data = state.get('blood_sugar_data', {})
+    bg_data = state.get('blood_sugar_data') or {}   # 键存在但值是 None，所以不能用 .get(k, {})
     risk_level = bg_data.get('risk_level') or "低风险"
     state['risk_level'] = risk_level
     warning = ""
@@ -285,7 +285,7 @@ async def run_agent(patient_id, user_message) -> Dict:
     initial_state = { "patient_id": patient_id, "user_message": user_message, ... }  # 完整初始状态
     result = await agent_app.ainvoke(initial_state)
     return {"response": result['response'], "risk_level": result['risk_level'],
-            "input_type": result['input_type'], "blood_sugar_data": result['blood_sugar_data']}
+            "input_type": result['input_type'], "blood_sugar_data": result.get('blood_sugar_data')}
 ```
 
 chat 路由（第五章已见雏形）：
