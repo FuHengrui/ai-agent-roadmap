@@ -170,7 +170,7 @@ async def get_styles():
 |---|---|
 | 返回 {"detail": "Not Found"} 405/404 | 路径拼错：路由前缀 /v1/test + 内部路径必须拼对；最稳的是看 Swagger 文档里的实际路径 |
 | 报 TypeError coroutine 对象 | 异步查询没 await；`Style.all()` 返回协程，必须 await |
-| 返回空 data | 表里没种子数据：回到第 2 章重新导入 baizhan_operation.sql |
+| 返回空 data | 表里没种子数据：回到第 2 章重新导入 ai_operation.sql |
 
 @@point ⑥ 响应格式约定：code/message/data 三件套
 @@need 要解决什么

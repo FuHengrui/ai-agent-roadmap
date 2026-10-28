@@ -305,8 +305,8 @@
 cd operation
 uv venv                 # 创建虚拟环境 .venv</pre>
 <p>随后用一条命令把全部依赖装齐（uv 会自动解析版本、生成 uv.lock）：</p>
-<pre>uv add fastapi uvicorn tortoise-orm aerich pydantic-settings
-uv add &quot;pymysql&quot; cozepy dashscope pyjwt oss2
+<pre>uv add fastapi uvicorn &quot;tortoise-orm[asyncmy]&quot; aerich pydantic-settings
+uv add cozepy dashscope pyjwt oss2
 uv add &quot;python-multipart&quot; python-dotenv</pre>
 <p>要点：uv 的 <code>uv add</code> 会<strong>同时更新 pyproject.toml 并生成 uv.lock</strong>，团队其他人 <code>uv sync</code> 一条命令还原一模一样的环境——这就是"可复现构建"。装好后 <code>uv run uvicorn main:app</code> 即可在虚拟环境里跑起来。</p>
 </div>
@@ -325,13 +325,13 @@ uv add &quot;python-multipart&quot; python-dotenv</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>uv 生成 <code>.python-version</code> 文件，内容如 <code>3.12</code>，再用命令确认解释器版本：</p>
 <pre>uv python pin 3.12     # 锁定 3.12
-python --version       # 期望输出 Python 3.12.x</pre>
+uv run python --version   # 期望输出 Python 3.12.x</pre>
 <p><code>.python-version</code> 的作用：<strong>任何人在任何机器上执行 uv 命令，都会自动使用该版本</strong>。版本不匹配时某些 SDK（尤其涉及事件循环、二进制编译的包）会报 <code>TypeError: __init__() got an unexpected keyword argument</code> 之类难懂的错误。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td>Python 3.11 下 coze SDK 报错、3.12 下正常</td><td>AI SDK 对不同小版本支持不一致；务必用 .python-version 钉死，别用"当前机器默认版本"</td></tr>
+<tr><td>某些 AI SDK 在新 Python 上装不上/一跑就报 <code>TypeError</code></td><td>这类 SDK 对 Python 小版本支持有滞后（二进制扩展尤其明显）；用 <code>.python-version</code> 钉死版本，别用机器默认版本</td></tr>
 <tr><td>只在本机好了，换机器又崩</td><td>版本约束只写进 .python-version + pyproject（requires-python），缺一不可</td></tr>
 </table>
 </div>
@@ -349,14 +349,13 @@ description = &quot;智能运营平台后端&quot;
 readme = &quot;README.md&quot;
 requires-python = &quot;&gt;=3.12&quot;
 dependencies = [
-    &quot;cozepy&gt;=1.x&quot;,
-    &quot;dashscope&gt;=1.x&quot;,
-    &quot;fastapi&gt;=0.1xx&quot;,
-    &quot;pyjwt&gt;=2.x&quot;,
-    &quot;pymysql&gt;=1.x&quot;,
-    &quot;tortoise-orm&gt;=0.2x&quot;,
-    &quot;uvicorn&gt;=0.3x&quot;,
-    ...
+    &quot;cozepy&gt;=0.20&quot;,
+    &quot;dashscope&gt;=1.20&quot;,
+    &quot;fastapi&gt;=0.115&quot;,
+    &quot;pyjwt&gt;=2.8&quot;,
+    &quot;tortoise-orm[asyncmy]&gt;=0.23&quot;,
+    &quot;uvicorn&gt;=0.30&quot;,
+    # 其余（aerich / python-multipart / python-dotenv 等）由上面的 uv add 装齐
 ]</pre>
 <p>注意：Aerich 的数据库配置（TORTOISE_ORM 指向 config.py）两种写法都行——写在 pyproject <code>[tool.aerich]</code> 或直接在 aerich init 时指定。标准做法是：<strong>config.py 里导出 TORTOISE_ORM，Aerich 通过导入该配置工作</strong>（下一章揭晓）。</p>
 </div>
@@ -376,9 +375,9 @@ DB_HOST = os.getenv(&quot;DB_HOST&quot;, &quot;localhost&quot;)
 DB_PORT = os.getenv(&quot;DB_PORT&quot;, &quot;3306&quot;)
 DB_USER = os.getenv(&quot;DB_USER&quot;, &quot;root&quot;)
 DB_PASSWORD = os.getenv(&quot;DB_PASSWORD&quot;, &quot;root&quot;)
-DB_NAME = os.getenv(&quot;DB_NAME&quot;, &quot;baizhan_operation&quot;)</pre>
+DB_NAME = os.getenv(&quot;DB_NAME&quot;, &quot;ai_operation&quot;)</pre>
 <p>要点：</p>
-<ul><li><code>os.getenv(key, default)</code> 提供<strong>默认值兜底</strong>——本机五连：localhost/3306/root/root/baizhan_operation，一套 .env 就能跑。</li><li>敏感项（JWT_SECRET、COZE_TOKEN、QWEN_KEY、OSS 密钥）<strong>不给默认值</strong>，缺失即显式报错，避免"无声地用错密钥"。</li></ul>
+<ul><li><code>os.getenv(key, default)</code> 提供<strong>默认值兜底</strong>——本机五连：localhost/3306/root/root/ai_operation，一套 .env 就能跑。</li><li>敏感项（JWT_SECRET、COZE_TOKEN、QWEN_KEY、OSS 密钥）<strong>不给默认值</strong>，缺失即显式报错，避免"无声地用错密钥"。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -448,21 +447,6 @@ TORTOISE_ORM = {
 </table>
 </div>
 </div></div>
-<h2>本章小结</h2>
-<ul><li>uv 三连：uv init → uv venv → uv add，依赖进 pyproject + uv.lock，可复现构建</li><li>.python-version 钉死 Python 3.12，避免 AI SDK 版本敏感问题</li><li>pyproject.toml：元数据 + 依赖清单 + Aerich 配置入口</li><li>.env 五类配置 + load_dotenv + os.getenv（带默认值兜底，敏感项不给默认）</li><li>config.py：DATABASE_URL 用 quote_plus 编码密码，charset=utf8mb4</li><li>TORTOISE_ORM：connections/apps/models 结构，"app.models" + "aerich.models" 缺一不可</li><li>配置读取两派：轻量 os.getenv 与 pydantic-settings，混用会互相干扰</li><li>uv 日常：uv run/uv add/uv remove/uv sync；IDE 必须切 .venv 解释器</li></ul>
-<h4>自测：能不能答上来</h4>
-<ol><li>下列哪条命令能更新依赖并生成锁文件？</li></ol>
-<p>A. pip install　　B. uv add fastapi　　C. python setup.py　　D. npm install</p>
-<ol><li>.python-version 的作用是？</li></ol>
-<p>A. 记录当前 Python 版本号　　B. 钉死项目使用的 Python 版本　　C. Python 的配置文件　　D. 虚拟环境标识</p>
-<ol><li>密码为 p@ss123 时，连接串正确写法是？</li></ol>
-<p>A. mysql://root:p@ss123@localhost:3306/db　　B. mysql://root:p%40ss123@localhost:3306/db　　C. mysql://localhost/db　　D. 密码不能含特殊字符</p>
-<ol><li>TORTOISE_ORM 的 models 列表必须包含哪些模块？</li></ol>
-<p>A. app.models 和 aerich.models　　B. 只有 app.models　　C. app.routers 和 app.agent　　D. aerich.main</p>
-<ol><li>修改 .env 后代码不生效，最可能原因是？</li></ol>
-<p>A. 配置文件写错　　B. 需要重启 uvicorn 进程　　C. 中文注释　　D. 密码过期</p>
-<ol><li>敏感配置（如 COZE_TOKEN）的正确保存方式？</li></ol>
-<p>A. 硬编码在 config.py　　B. 只放 .env 且不提交仓库　　C. 放前端　　D. 存数据库</p>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ uv 常用命令速查与 IDE 联动</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>uv 的命令不止 init/add 三个。日常高频操作（跑脚本、装新依赖、还原环境、删除依赖）分别用什么？IDE 识别不到依赖又是怎么回事？</p>
@@ -475,7 +459,7 @@ TORTOISE_ORM = {
 <tr><td>加新依赖</td><td><code>uv add 包名</code>（自动解析+锁文件）</td></tr>
 <tr><td>删依赖</td><td><code>uv remove 包名</code></td></tr>
 <tr><td>按锁文件还原环境</td><td><code>uv sync</code>（克隆仓库后第一条命令）</td></tr>
-<tr><td>升级某个包</td><td><code>uv add 包名@latest</code> 或手动改 pyproject 再 sync</td></tr>
+<tr><td>升级某个包</td><td><code>uv add 包名 --upgrade</code>（或 <code>uv lock --upgrade-package 包名</code> 再 <code>uv sync</code>）</td></tr>
 <tr><td>看已装包</td><td><code>uv pip list</code></td></tr>
 </table>
 <p><strong>IDE 联动的坑</strong>：VS Code 打开项目后，如果没选 .venv 解释器，import 全部飘红（"ModuleNotFoundError: fastapi"）。解决：Ctrl+Shift+P → Python: Select Interpreter → 选 <code>.venv\Scripts\python.exe</code>。命令行能跑 ≠ IDE 能跑，两个入口都要指向同一个虚拟环境。</p>
@@ -489,6 +473,21 @@ TORTOISE_ORM = {
 </table>
 </div>
 </div></div>
+<h2>本章小结</h2>
+<ul><li>uv 三连：uv init → uv venv → uv add，依赖进 pyproject + uv.lock，可复现构建</li><li>.python-version 钉死 Python 3.12，避免 AI SDK 版本敏感问题</li><li>pyproject.toml：元数据 + 依赖清单 + Aerich 配置入口</li><li>.env 五类配置 + load_dotenv + os.getenv（带默认值兜底，敏感项不给默认）</li><li>config.py：DATABASE_URL 用 quote_plus 编码密码，charset=utf8mb4</li><li>TORTOISE_ORM：connections/apps/models 结构，"app.models" + "aerich.models" 缺一不可</li><li>配置读取两派：轻量 os.getenv 与 pydantic-settings，混用会互相干扰</li><li>uv 日常：uv run/uv add/uv remove/uv sync；IDE 必须切 .venv 解释器</li></ul>
+<h4>自测：能不能答上来</h4>
+<ol><li>下列哪条命令能更新依赖并生成锁文件？</li></ol>
+<p>A. pip install　　B. uv add fastapi　　C. python setup.py　　D. npm install</p>
+<ol><li>.python-version 的作用是？</li></ol>
+<p>A. 记录系统全局安装的 Python 版本　　B. 钉死项目使用的 Python 版本　　C. Python 的配置文件　　D. 虚拟环境标识</p>
+<ol><li>密码为 p@ss123 时，连接串正确写法是？</li></ol>
+<p>A. mysql://root:p@ss123@localhost:3306/db　　B. mysql://root:p%40ss123@localhost:3306/db　　C. mysql://localhost/db　　D. 密码不能含特殊字符</p>
+<ol><li>TORTOISE_ORM 的 models 列表必须包含哪些模块？</li></ol>
+<p>A. app.models 和 aerich.models　　B. 只有 app.models　　C. app.routers 和 app.agent　　D. aerich.main</p>
+<ol><li>修改 .env 后代码不生效，最可能原因是？</li></ol>
+<p>A. 配置文件写错　　B. 需要重启 uvicorn 进程　　C. 中文注释　　D. 密码过期</p>
+<ol><li>敏感配置（如 COZE_TOKEN）的正确保存方式？</li></ol>
+<p>A. 硬编码在 config.py　　B. 只放 .env 且不提交仓库　　C. 放前端　　D. 存数据库</p>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener"><span class="k">官方</span>uv 指南</a>
 <a href="https://github.com/theskumar/python-dotenv" target="_blank" rel="noopener"><span class="k">官方</span>python-dotenv 文档</a>

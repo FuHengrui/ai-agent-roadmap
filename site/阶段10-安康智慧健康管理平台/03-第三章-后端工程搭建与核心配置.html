@@ -369,7 +369,7 @@ uv add &quot;fastapi&gt;=0.115.6&quot; &quot;uvicorn[standard]&gt;=0.34.0&quot; 
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>把引擎代码放路由文件里</td><td>路由文件越来越臃肿，AI 逻辑没法单独测试；必须进 core/</td></tr>
-<tr><td>models 目录忘记 <code>__init__.py</code></td><td>Tortoise 扫描 "app.models" 找不到模型类，启动不建表</td></tr>
+<tr><td>models 目录忘记 <code>__init__.py</code></td><td>Tortoise 扫描 "app.models" 找不到模型类；表是 SQL 建的、不会自动补，接口一查就报 relation 不存在</td></tr>
 </table>
 </div>
 </div></div>
@@ -428,7 +428,7 @@ load_dotenv()
 DB_HOST = os.getenv(&#x27;DB_HOST&#x27;, &quot;localhost&quot;)
 DB_PORT = os.getenv(&#x27;DB_PORT&#x27;, &quot;3306&quot;)
 DB_USER = os.getenv(&#x27;DB_USER&#x27;, &quot;root&quot;)
-DB_PASSWORD = os.getenv(&#x27;DB_PASSWORD&#x27;)
+DB_PASSWORD = os.getenv(&#x27;DB_PASSWORD&#x27;, &quot;&quot;)
 DB_NAME = os.getenv(&#x27;DB_NAME&#x27;, &quot;diabetes&quot;)
 
 # 密码 URL 编码处理：密码里的特殊字符（@、:、#、%等）会被转义
@@ -439,7 +439,7 @@ DATABASE_URL = (
     f&quot;mysql://{DB_USER}:{_encoded_password}@{DB_HOST}:{DB_PORT}/{DB_NAME}&quot;
     f&quot;?charset=utf8mb4&quot;
 )</pre>
-<p>关键点 <code>quote_plus</code>：连接串是 <code>mysql://user:password@host:port/db</code> 格式，如果密码是 <code>abc@123</code>，裸拼会把 <code>@</code> 当作分隔符导致连接失败。<code>quote_plus('abc@123')</code> 会转成 <code>abc%40123</code>，安全。所有从环境变量读的敏感值都应该过一遍 URL 编码。</p>
+<p>关键点 <code>quote_plus</code>：连接串是 <code>mysql://user:password@host:port/db</code> 格式，如果密码是 <code>abc@123</code>，裸拼会把 <code>@</code> 当作分隔符导致连接失败。<code>quote_plus('abc@123')</code> 会转成 <code>abc%40123</code>，安全。注意只有拼进 URL 的密码需要这一层；模型 API Key 之类不要编码，编了反而用不了。 另外，如果 <code>.env</code> 里压根没写 <code>DB_PASSWORD</code>，<code>getenv</code> 会拿到空串，连接时只报一个含糊的认证失败——先确认 <code>.env</code> 存在、且 <code>load_dotenv()</code> 在读取前执行过。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -468,7 +468,7 @@ TORTOISE_ORM = {
 }</pre>
 <p>结构拆解：</p>
 <ul><li><code>connections.default</code>：默认数据库连接串；</li><li><code>apps.models.models</code>：<strong>模型扫描路径列表</strong>——这里写 <code>["app.models"]</code> 表示遍历 <code>app/models/</code> 包，通过 <code>__init__.py</code> 里导出的所有模型类建立映射；</li><li><code>default_connection</code>：该 app 用哪个连接。</li></ul>
-<p>这就是为什么上一章强调 <code>models/__init__.py</code> 必须统一导出——Tortoise 靠它发现模型。</p>
+<p>这就是为什么前面第②点强调 <code>models/__init__.py</code> 必须统一导出——Tortoise 靠它发现模型。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

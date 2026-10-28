@@ -445,7 +445,7 @@
 <table>
 <tr><th>章</th><th>做什么</th><th>性质</th></tr>
 <tr><td>1</td><td>项目全景与技术选型</td><td>本章</td></tr>
-<tr><td>2</td><td>数据库设计与初始化</td><td>复用（阶段 10 之前已建过表）</td></tr>
+<tr><td>2</td><td>数据库设计与初始化</td><td>新建（八张表）</td></tr>
 <tr><td>3</td><td>后端工程搭建：uv + FastAPI 骨架</td><td>半新（uv 是新工具）</td></tr>
 <tr><td>4</td><td>数据模型与 Aerich 迁移</td><td><strong>新增</strong>（Aerich 做表结构版本管理）</td></tr>
 <tr><td>5</td><td>应用启动与测试 API</td><td>复用</td></tr>
@@ -457,7 +457,7 @@
 <tr><td>11</td><td>文案创作与编辑管理</td><td>复用 + 提示词工程</td></tr>
 <tr><td>12</td><td>AI 配图与 OSS 上传发布</td><td><strong>新增</strong>（对象存储 + 发布闭环）</td></tr>
 </table>
-<p>学习策略：<strong>复用章节快速过，四个新增点（Aerich、JWT、Coze 接入、OSS）逐行精读</strong>——那才是这个阶段真正长本事的地方。</p>
+<p>学习策略：<strong>复用章节快速过；标了「新增」的五章（4、6、8、9、12）合起来是四个方向——迁移、鉴权、Coze 平台、对象存储——逐行精读</strong>，那才是这个阶段真正长本事的地方。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -495,7 +495,7 @@
 <tr><td><strong>八张表的数据链</strong></td><td>「提主题 → 出标题 → 写正文 → 配图 → 发布」的落点想清楚了，第二章建表就不会漏</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li>内容运营的四道手工关卡分别是什么？为什么说这个系统的价值不是"替人写一篇文章"？</li><li>四大功能模块里，哪一块必须落到"表 + 权限 + 发布记录"，而不能只靠大模型？</li><li>十四项技术里，为什么要用 uv 而不是 pip + venv？<code>pip install</code> 装的包为什么在 <code>uv run</code> 里找不到？</li><li>自己写 LangGraph 和用 Coze 平台的取舍分别在哪？这个阶段为什么选平台？</li><li>一个 title 为什么要能对应多条 <code>t_publish_records</code>？如果只有一个字段会出什么问题？</li><li>十二个章节里，哪四个是"新增技能"？为什么第 2 章不能跳过？</li></ol>
+<ol><li>内容运营的四道手工关卡分别是什么？为什么说这个系统的价值不是"替人写一篇文章"？</li><li>四大功能模块里，哪一块必须落到"表 + 权限 + 发布记录"，而不能只靠大模型？</li><li>十四项技术里，为什么要用 uv 而不是 pip + venv？<code>pip install</code> 装的包为什么在 <code>uv run</code> 里找不到？</li><li>自己写 LangGraph 和用 Coze 平台的取舍分别在哪？这个阶段为什么选平台？</li><li>一个 title 为什么要能对应多条 <code>t_publish_records</code>？如果只有一个字段会出什么问题？</li><li>十二个章节里，哪几章标了"新增"？它们合起来是哪四个方向？为什么第 2 章不能跳过？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener"><span class="k">官网</span>FastAPI 官方文档</a>
 <a href="https://tortoise.github.io/" target="_blank" rel="noopener"><span class="k">官网</span>Tortoise-ORM 文档</a>

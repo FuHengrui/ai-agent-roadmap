@@ -432,7 +432,7 @@ async def get_styles():
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>返回 {"detail": "Not Found"} 405/404</td><td>路径拼错：路由前缀 /v1/test + 内部路径必须拼对；最稳的是看 Swagger 文档里的实际路径</td></tr>
 <tr><td>报 TypeError coroutine 对象</td><td>异步查询没 await；<code>Style.all()</code> 返回协程，必须 await</td></tr>
-<tr><td>返回空 data</td><td>表里没种子数据：回到第 2 章重新导入 baizhan_operation.sql</td></tr>
+<tr><td>返回空 data</td><td>表里没种子数据：回到第 2 章重新导入 ai_operation.sql</td></tr>
 </table>
 </div>
 </div></div>

@@ -145,11 +145,11 @@ Bot 做好只是"内部可用"，后端要通过 API 调它，必须发布并拿
 ```
 BOT_ID_TOPIC=你的选题机器人ID       # 即将在 coze_agent.py 里使用的
 COZE_TOKEN=你的扣子个人令牌（pat_开头）
-USER_ID=baizhan
+USER_ID=ops_demo
 ```
 - BOT_ID_TOPIC 就是本章建的"热搜选题机器人"。
 - COZE_TOKEN 是开发者令牌（个人访问令牌，pat_ 开头），**等同账号权限，绝不入库**。
-- USER_ID 是业务自定的用户标识（如 baizhan），传给 Coze 用于会话追踪。
+- USER_ID 是业务自定的用户标识（如 ops_demo），传给 Coze 用于会话追踪。
 
 ⚠️ 拿到 Bot ID 后验证是否可调：在"扣子 API"或调试面板里用测试请求跑一次，能返回 50 标题 JSON 才算"发布成功可调用"。
 

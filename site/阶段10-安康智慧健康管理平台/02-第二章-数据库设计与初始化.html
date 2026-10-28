@@ -334,7 +334,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>建表名用了单数（blood_sugar_record）</td><td>与代码里的表名不一致，迁移和查询会对不上；以 <code>baizhan_</code> / 建表 SQL 中的表名为准</td></tr>
+<tr><td>建表名用了单数（blood_sugar_record）</td><td>与代码里的表名不一致，迁移和查询会对不上；以建表 SQL 里的表名为准</td></tr>
 <tr><td>忘了建外键</td><td>后面用 ORM 关联查询会报「字段不存在」；建表 SQL 必须带 FOREIGN KEY</td></tr>
 </table>
 </div>
