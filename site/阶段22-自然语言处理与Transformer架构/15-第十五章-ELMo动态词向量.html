@@ -284,6 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>Word2Vec 生成的词向量是"静态"的：无论语境如何，"bank"永远只有一个向量，可它既可能是"河岸"也可能是"银行"。<strong>ELMo（Embeddings from Language Models）</strong> 第一次给出"动态词向量"方案：让同一个词的表示<strong>随上下文实时变化</strong>——核心是用一个<strong>双向语言模型</strong>把每个词编码成上下文的函数。这是 NLP 从"词向量"走向"预训练"的转折点。</p>
 </div>
+
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章训好了 Transformer 整机。<strong>本章回归"表示"本身：ELMo 用双向 LSTM 语言模型产出上下文相关的动态词向量</strong>。下一章 BERT 把"预训练+微调"模式发扬光大，GPT 侧则走"生成式"路线——三条线共同开启预训练大模型时代。</span>
 </div>

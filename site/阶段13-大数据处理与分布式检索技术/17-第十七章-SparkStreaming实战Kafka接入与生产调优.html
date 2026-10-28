@@ -285,6 +285,7 @@
 <p>上一章的 Socket 输入只是教学玩具——<strong>生产环境 90% 的流都来自 Kafka</strong>，因为 Kafka 能存能重放、天然支持"消费状态"管理。而接入 Kafka 有新旧两代 API（Receiver vs Direct），踩的人最多；消费偏移量（offset）管理不当=丢数据或重复消费；Driver 挂掉怎么优雅恢复……这一章把"生产级 Streaming + Kafka"的完整配套讲透：<strong>Direct 模式、偏移量管理、优雅关闭、背压调优</strong>。</p>
 <p>学完这一章你能：<strong>用 Direct 模式从 Kafka 消费实时数据做统计，配置偏移量与 checkpoint 保障不丢不重，并让程序可以优雅停止与恢复</strong>。</p>
 </div>
+
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：Streaming 基础（架构、DStream、窗口、有状态）</span>
 <span class="node"><span class="here">本章 ← 你在这里：生产实战——Kafka 整合、偏移量、优雅关闭、调优</span></span>

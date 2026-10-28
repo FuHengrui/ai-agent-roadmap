@@ -272,20 +272,43 @@ def _subblocks(bd):
 # ======================================================================
 # 渲染一页
 # ======================================================================
+def meta_panel(meta) -> str:
+    """「开始之前 / 学到这儿就够了」小面板。
+
+    它回答的是读者真正的两个问题：我现在能不能开始、学到哪儿可以停。
+    故意不做成清单：两句话能说清就别凑条目（条数不固定，内容为真比格式整齐重要）。
+    """
+    rows = []
+    for key, label in (("prep", "开始之前"), ("goal", "学到这儿就够了")):
+        b = meta.get(key)
+        if not b:
+            continue
+        rows.append('<div class="meta-row"><span class="meta-k">%s</span>'
+                    '<div class="meta-v">%s</div></div>' % (label, body(b["body"])))
+    if not rows:
+        return ""
+    return '<div class="chapter-meta">\n%s\n</div>' % "\n".join(rows)
+
+
 def render(src: Path, idx: int):
     blocks = parse(src.read_text(encoding="utf-8"))
     title = sub = ""
     parts = []
     ntoc = 0
     toc_items = []          # [(编号, 标题)] —— 用来生成右侧「本页目录」
+    # 这两个块不按原位置渲染，而是合成一个面板，插在 @@why 后面
+    meta = {b["k"]: b for b in blocks if b["k"] in ("prep", "goal")}
     for b in blocks:
         k, a, bd = b["k"], b["arg"], b["body"]
+        if k in ("prep", "goal"):
+            continue
         if k == "h1":
             title = a
         elif k == "sub":
             sub = a
         elif k == "why":
             parts.append('<div class="why"><span class="tag">%s</span>\n%s\n</div>' % (inline(a), body(bd)))
+            parts.append(meta_panel(meta))
         elif k == "map":
             rows = [x.strip() for x in bd if x.strip()]
             node = []

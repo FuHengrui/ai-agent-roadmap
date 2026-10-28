@@ -285,6 +285,7 @@
 <p>上一章我们有了配置好的工程与数据库 URL，但 Tortoise-ORM 还不认识数据库里那 8 张表。本章解决两件事：<strong>一是把 8 张表翻译成 Python 模型类</strong>（定义字段、类型、约束、表名），<strong>二是用 Aerich 完成初始化迁移</strong>，让迁移框架能持续追踪表结构变化。</p>
 <p>关键认知：<strong>模型定义必须与建库 SQL 完全一致</strong>——字段名、类型、表名、默认值一处对不上，启动即崩或查询即错。这也是这类示例工程最容易翻车的地方：建库 SQL 与代码里的 models.py 偶有细节出入，必须以 models.py 为准。</p>
 </div>
+
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：后端工程搭建——uv 工程 + config.py 数据源配置就绪</span>
 <span class="node"><span class="here">本章 ← 你在这里：数据模型与迁移——8 张表的 Python 化身 + Aerich 迁移启动</span></span>

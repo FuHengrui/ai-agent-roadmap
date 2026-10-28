@@ -284,6 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面学了自注意力、多头注意力、位置编码等一堆零件，这一章把它们<strong>组装成整机</strong>：完整的 Transformer 由编码器（Encoder）和解码器（Decoder）构成，编码器负责"读懂原文"，解码器负责"生成译文"——两者之间用<strong>交叉注意力</strong>对接，解码器内部用<strong>掩码自注意力</strong>防止偷看未来。最后用 PyTorch 实跑一遍"英译中"的最小翻译系统，把理论落到代码。</p>
 </div>
+
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章集齐了单层零件。<strong>本章完成整机组装：编码器堆 N 层、解码器堆 N 层（掩码多头注意力 + 交叉注意力），端到端跑通翻译</strong>。下一章进入预训练时代：ELMo 首次实现"动态词向量"，宣告从"训练词向量"转向"预训练语言模型"。</span>
 </div>

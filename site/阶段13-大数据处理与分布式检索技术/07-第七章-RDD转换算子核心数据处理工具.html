@@ -286,6 +286,7 @@
 <p>转换算子有一个核心特点必须先记住：<strong>惰性（lazy）</strong>——调用它们只是"记下要做的事"，不立刻执行。这个特点让 Spark 能优化执行计划，也让新手反复困惑"为什么没跑"。本章把最常用的转换算子逐个讲透：<strong>它解决什么问题、怎么写、有哪些坑</strong>。你会建立自己的"算子工具箱"。</p>
 <p>学完这一章，你能：<strong>熟练用 map/flatMap/filter/groupBy/reduceByKey/distinct/union/join/sortBy 等 10+ 个转换算子组合出完整的数据处理流水线</strong>。</p>
 </div>
+
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（RDD 抽象）：你会创建 RDD 了，但还不会"处理"</span>
 <span class="node"><span class="here">本章 ← 你在这里：转换算子——RDD 数据处理的主力军（惰性执行、返回新 RDD）</span></span>

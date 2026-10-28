@@ -285,6 +285,7 @@
 <p>上一章我们在 MySQL 里把 7 张表建好了，但 Python 代码还不认识数据库——连接串在哪、ORM 怎么配、工程目录怎么摆，全是空白。本章解决两件事：<strong>一是用 uv 建起 FastAPI 工程</strong>（目录结构、依赖安装），<strong>二是写好 config.py 数据源配置</strong>，让应用能找到 MySQL。</p>
 <p>关键认知：<strong>配置是"一处错误、处处躺枪"的重灾区</strong>——数据库密码里带特殊符号会拆了连接串、<code>.env</code> 没加载应用读不到 Key、Tortoise 扫描的模型路径写错直接不建表。本章把这些坑一次踩平。</p>
 </div>
+
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：数据库设计与初始化——7 张表建好，MySQL 就绪</span>
 <span class="node"><span class="here">本章 ← 你在这里：后端工程搭建——uv 工程 + 依赖 + config.py 数据源配置</span></span>

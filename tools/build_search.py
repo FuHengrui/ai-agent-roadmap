@@ -89,7 +89,7 @@ def chapter_text(blocks) -> str:
     """章节级摘要：为什么学 + 小结 + 自测题（这三块最像「别人会怎么搜」）。"""
     parts = []
     for b in blocks:
-        if b["k"] in ("why", "summary", "quiz", "note"):
+        if b["k"] in ("why", "summary", "quiz", "note", "prep", "goal"):
             parts.append(plain([b["arg"]] + b["body"]))
     return cut(" ".join(x for x in parts if x), CHAPTER_CHARS)
 

@@ -286,6 +286,7 @@
 <p>同时你的日志、帖子、新闻、商品库都是<strong>非结构化文本</strong>，用 MySQL 的 <code>LIKE '%关键词%'</code> 去搜：一慢（全表扫）、二笨（搜不到同义词）、三弱（不能打分排序）。百度、京东、淘宝的搜索框背后，都不是数据库 LIKE，而是一个叫<strong>搜索引擎</strong>的东西。</p>
 <p>这一章的主角 Elasticsearch（ES）就是全世界用得最多的开源搜索引擎：学完你能装起一套 ES，把数据灌进去，用 REST API 完成"搜得快、搜得准、还带高亮"的全文检索，并用 Spring Data ES 在 Java 项目里调起来——这正是企业级 RAG 系统的第二块地基。</p>
 </div>
+
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：向量数据库——解决了"语义相似"检索</span>
 <span class="node"><span class="here">本章 ← 你在这里：Elasticsearch——解决"精确/关键词"检索，全文检索的工业标准</span></span>

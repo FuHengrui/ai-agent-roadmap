@@ -442,3 +442,24 @@ th { background: var(--bg-soft); font-weight: 600; }
     border-radius: 20px;
 }
 .chip:hover { border-color: var(--accent); background: var(--accent-bg); }
+/* ---- 章节开头：开始之前 / 学到这儿就够了 ---- */
+.chapter-meta {
+    margin: 24px 0 0; padding: 2px 18px;
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.chapter-meta .meta-row {
+    display: flex; gap: 14px; padding: 12px 0;
+    border-bottom: 1px dashed var(--line);
+}
+.chapter-meta .meta-row:last-child { border-bottom: none; }
+.chapter-meta .meta-k {
+    flex: 0 0 88px; padding-top: 3px;
+    font-size: 12px; font-weight: 700; color: var(--ink-faint); letter-spacing: .06em;
+}
+.chapter-meta .meta-v { flex: 1; font-size: 15px; line-height: 1.75; }
+.chapter-meta .meta-v p { margin: 0 0 6px; }
+.chapter-meta .meta-v p:last-child { margin-bottom: 0; }
+@media (max-width: 700px) {
+    .chapter-meta .meta-row { display: block; }
+    .chapter-meta .meta-k { display: block; margin-bottom: 2px; }
+}

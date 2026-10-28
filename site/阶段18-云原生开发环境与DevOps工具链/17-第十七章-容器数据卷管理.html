@@ -284,6 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章结尾你跑了 Tomcat，但只要执行一条 <code>docker rm -f mytomcat</code>，容器里存的东西——你部署的网页、写的文件、MySQL 的数据库——<strong>全没了</strong>。 这就是容器最大的"原罪"：<strong>它的可读写层跟着容器走，容器一删，数据灰飞烟灭。</strong> 数据库总不能每次重启容器都重新建库吧？本章用数据卷（Volume）解决三件事： ① 数据持久化（容器删了数据还在）；② 宿主机和容器互相传文件；③ 多个容器共享同一份数据。</p>
 </div>
+
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章</strong>：镜像与容器基本操作——能跑起容器，但数据是"一次性"的</span>
 <span class="node"><span class="here">本章 ← 你在这里：数据卷——把数据从容器里"摘出来"挂到宿主机上</span></span>

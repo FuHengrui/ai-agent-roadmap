@@ -284,6 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>上一章数据库活了，但代码入口还是空的。国外教程最爱讲"Hello World"，可真实的 FastAPI 应用不止一个路由文件——它要处理<strong>启动时连数据库、挂向量库、初始化记忆系统</strong>，要解决 <strong>Windows 上 asyncio 事件的兼容坑</strong>，要配置跨域让前端能访问，还要按模块挂载四组路由。 本章把这套"骨架"一次搭好。学完这章，你的 <code>uvicorn app.main:app</code> 一跑，就是一个<strong>带完整生命周期的真实应用</strong>：启动即建表、即连向量库、即有健康检查，为第 4 章起的每个模块提供挂载点。</p>
 </div>
+
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章（第二章 开发环境）：Postgres/Redis 容器已起，依赖已装，.env 已配置</span>
 <span class="node"><span class="here">本章 你在这里：搭 FastAPI 骨架——main.py 入口 + Settings 配置 + lifespan 生命周期 + CORS + 路由注册</span></span>

@@ -285,6 +285,7 @@
 <p>KMeans 家族有个"天生的残疾"：它偏好球形簇。但现实数据经常长这样——<strong>月牙形、环状、S 形、疏密不均</strong>。硬拿 KMeans 切，会把弯月拦腰截断、给环形的空洞硬塞一个中心。这一章学<strong>密度聚类（Density-Based Clustering）</strong>：把"簇"定义为<strong>密度相连的区域</strong>——点密集的地方连成一个簇，稀疏的地方算噪声。</p>
 <p>主角是 <strong>DBSCAN（基于密度的带噪空间聚类）</strong>，两个参数（epsilon、minPts）就能处理任意形状、自动发现噪声点、甚至不用预先指定簇数 K——这对 KMeans 来说是降维打击。配角是它的两个进阶兄弟：<strong>OPTICS</strong>（解决 epsilon 难选的痛点）和 <strong>MeanShift</strong>（均值漂移，一张图即可理解）。</p>
 </div>
+
 <div class="map"><span class="tag">上一章→本章→下一章</span>
 <span class="node">上一章修完 KMeans 家族，但形状问题依旧无解。<strong>本章回答"形状自由"：DBSCAN 的密度概念与三型点、epsilon/minPts 选参、流程与实战，再扩展到 OPTICS 与 MeanShift</strong>。下一章进入新的监督学习家族——决策树：不靠"线性组合"，靠"一连串 if-else 提问"分类。</span>
 </div>
