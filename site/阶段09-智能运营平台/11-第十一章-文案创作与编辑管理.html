@@ -326,8 +326,8 @@
 <div class="step idea"><span class="label">核心思路</span>
 <pre>@router.post(&quot;/copy&quot;)
 async def copy_content(title_id: int, user_id: int = Depends(get_current_user_id)):
-    title = await Title.filter(id=title_id, user_id=user_id).first()  # 先确认归属
-    if not title:
+    title = await Title.get_or_none(id=title_id)   # Title 没有 user_id 列，归属要顺着 section_id 查 Section
+    if not title or not await Section.get_or_none(id=title.section_id, user_id=user_id):
         raise HTTPException(404, &quot;标题不存在&quot;)
     text = await content_creation(title.title)     # agent 层调文案 Bot
     if not text or not text.strip():
@@ -356,8 +356,9 @@ async def copy_content(title_id: int, user_id: int = Depends(get_current_user_id
 <pre># 详情：单条标题的完整信息
 @router.get(&quot;/title/{title_id}&quot;)
 async def title_detail(title_id: int, user_id: int = Depends(...)):
-    title = await Title.filter(id=title_id, user_id=user_id).first()
-    if not title: raise HTTPException(404, &quot;标题不存在&quot;)
+    title = await Title.get_or_none(id=title_id)   # Title 没有 user_id 列，归属要顺着 section_id 查 Section
+    if not title or not await Section.get_or_none(id=title.section_id, user_id=user_id):
+        raise HTTPException(404, &quot;标题不存在&quot;)
     return {&quot;code&quot;: 200, &quot;data&quot;: {
         &quot;id&quot;: title.id, &quot;title&quot;: title.title,
         &quot;content&quot;: title.content, &quot;status&quot;: title.status,
@@ -367,8 +368,9 @@ async def title_detail(title_id: int, user_id: int = Depends(...)):
 # 重置：清空文案回到&quot;未生成&quot;
 @router.post(&quot;/title/{title_id}/reset&quot;)
 async def title_reset(title_id: int, user_id: int = Depends(...)):
-    title = await Title.filter(id=title_id, user_id=user_id).first()
-    if not title: raise HTTPException(404, &quot;标题不存在&quot;)
+    title = await Title.get_or_none(id=title_id)   # Title 没有 user_id 列，归属要顺着 section_id 查 Section
+    if not title or not await Section.get_or_none(id=title.section_id, user_id=user_id):
+        raise HTTPException(404, &quot;标题不存在&quot;)
     title.content = None
     title.status = 0
     await title.save()
@@ -383,8 +385,9 @@ async def title_reset(title_id: int, user_id: int = Depends(...)):
 <div class="step idea"><span class="label">核心思路</span>
 <pre>@router.post(&quot;/save-copy&quot;)
 async def save_copy(title_id: int, content: str, user_id: int = Depends(...)):
-    title = await Title.filter(id=title_id, user_id=user_id).first()
-    if not title: raise HTTPException(404, &quot;标题不存在&quot;)
+    title = await Title.get_or_none(id=title_id)   # Title 没有 user_id 列，归属要顺着 section_id 查 Section
+    if not title or not await Section.get_or_none(id=title.section_id, user_id=user_id):
+        raise HTTPException(404, &quot;标题不存在&quot;)
     if not content or not content.strip():
         raise HTTPException(400, &quot;正文不能为空&quot;)
     title.content = content
