@@ -300,7 +300,7 @@
 <span class="node">阶段终点 —— 一个能跑一整晚、出错也能自己恢复的自动化系统</span>
 </div>
 <div class="note info"><span class="t">这一章为什么短，但很重要</span>
-<p>篇幅很短，是阶段 1 最短的一章。<strong>但它是"玩具代码"和"能用的程序"的分界线。</strong></p>
+<p>篇幅不长，是阶段 1 里偏轻的一章。<strong>但它是"玩具代码"和"能用的程序"的分界线。</strong></p>
 <p>实际跑采集的时候你会遇到：网络超时、页面改版、被限速、模型返回垃圾 JSON、磁盘写满……<strong>每一种都可能发生。</strong> 没有异常处理，你的程序只能跑一次演示。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 异常的本质</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
@@ -534,7 +534,7 @@ print(bad())     # 没事   ← 异常无声无息地消失了</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong><code>raise</code> 主动抛出异常</strong>：</p>
-<pre>def set_salary(v):
+<pre>def set_salary(self, v):   # 方法第一个参数是 self，漏了后面 self.salary 就 NameError
     if v &lt; 0:
         raise ValueError(f&quot;薪资不能为负：{v}&quot;)
     self.salary = v</pre>

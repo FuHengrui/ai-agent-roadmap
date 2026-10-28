@@ -84,11 +84,11 @@ CREATE TABLE t (
     id INT PRIMARY KEY AUTO_INCREMENT,      -- 主键索引
     email VARCHAR(50) UNIQUE,               -- 唯一索引
     name VARCHAR(20),
-    idx_name (name)                         -- 普通索引
+INDEX idx_name (name)                    -- 普通索引（必须带 INDEX/KEY 关键字，裸写索引名会报 1064）
 );
 
 -- 单独追加
-ALTER TABLE t ADD INDEX idx_name (name);
+ALTER TABLE t ADD INDEX idx_name2 (name);   # 换个名字，避免与上面建表里的重名
 ALTER TABLE t ADD UNIQUE INDEX uk_email (email);
 CREATE INDEX idx_name ON t (name);          -- 等价写法
 
@@ -350,7 +350,7 @@ SHOW GRANTS FOR 'dev'@'%';
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 授权立即不生效 | 老版本需 FLUSH PRIVILEGES；8.0 GRANT 自动刷新缓存，但养成刷新习惯无害 |
-| 想让某人"能连不能查" | 只有 CONNECT 不给 SELECT；授权粒度可以很细 |
+| 想让某人"能连不能查" | 只授 `USAGE`（MySQL 没有 Oracle 那种 CONNECT 权限）：能登录，但没有任何库权限；授权粒度可以很细 |
 | REVOKE 漏了部分表 | ON 范围要一致：demo.* 收回就收回整个库的 DELETE |
 
 @@point ⑪ 导出、导入与备份恢复

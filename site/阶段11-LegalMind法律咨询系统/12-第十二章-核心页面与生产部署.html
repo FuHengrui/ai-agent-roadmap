@@ -443,7 +443,9 @@ watch(keyword, () =&gt; search(1))   // 输入即搜索（防抖可加）
 function highlight(text) {
   if (!keyword.value) return text
   const esc = keyword.value.replace(/[.*+?^${}()|[\]\\]/g, &#x27;\\$&amp;&#x27;)
-  return text.replace(new RegExp(esc, &#x27;gi&#x27;), (m) =&gt; `⟦${m}⟧`)  // 交给 CSS 高亮
+  // 用 &lt;mark&gt; 包住命中的词，模板里用 v-html 渲染（⟦⟧ 这种符号 CSS 选不中，页面上会原样显示）
+  const safe = m =&gt; m.replace(/[&amp;&lt;&gt;]/g, ch =&gt; ({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;}[ch]))
+  return text.replace(new RegExp(esc, &#x27;gi&#x27;), (m) =&gt; `&lt;mark&gt;${safe(m)}&lt;/mark&gt;`)
 }
 &lt;/script&gt;</pre>
 <ul><li><strong>检索后端走向量检索</strong>（第 8 章 HybridRetriever）——<code>/cases/search</code> 复用 RAG 链路。</li><li><strong>分页</strong>：<code>page/page_size/total</code> 三段式，翻页只换 page 参数。</li><li><strong>关键词高亮</strong>：正则转义（<code>RegExp</code> 特殊字符必须转义，否则输入 <code>.</code> 会炸）后包标记，CSS 给 <code>⟦⟧</code> 上色。</li><li><code>watch(keyword)</code> 输入即搜 + 防抖（300ms），避免每敲一个字打一次接口。</li></ul>
@@ -463,22 +465,27 @@ function highlight(text) {
 <div class="step idea"><span class="label">核心思路</span>
 <p><code>scripts/seed_cases.py</code> 的两次写入：</p>
 <pre>async def main():
-    await Tortoise.init(config=TORTOISE_CONFIG)
+    await Tortoise.init(config=TORTOISE_ORM)
     await Tortoise.generate_schemas()
 
     CASES = [
-        {&quot;title&quot;: &quot;某公司与劳动者劳动合同纠纷案&quot;, &quot;summary&quot;: &quot;…&quot;, &quot;category&quot;: &quot;劳动法&quot;,
-         &quot;content&quot;: &quot;…完整判决要旨…&quot;, &quot;publish_date&quot;: &quot;2026-01-15&quot;},
-        {&quot;title&quot;: &quot;借款合同纠纷逾期利息计算案&quot;, &quot;summary&quot;: &quot;…&quot;, &quot;category&quot;: &quot;合同法&quot;, …},
+        {&quot;case_number&quot;: &quot;（2025）京01民终1234号&quot;, &quot;title&quot;: &quot;某公司与劳动者劳动合同纠纷案&quot;,
+         &quot;court&quot;: &quot;北京市第一中级人民法院&quot;, &quot;case_type&quot;: &quot;民事&quot;, &quot;laws&quot;: &quot;劳动合同法第39条&quot;,
+         &quot;summary&quot;: &quot;…&quot;, &quot;content&quot;: &quot;…完整判决要旨…&quot;, &quot;judgment_date&quot;: &quot;2026-01-15&quot;},
+        {&quot;case_number&quot;: &quot;（2025）沪02民终5678号&quot;, &quot;title&quot;: &quot;借款合同纠纷逾期利息计算案&quot;,
+         &quot;court&quot;: &quot;上海市第二中级人民法院&quot;, &quot;case_type&quot;: &quot;民事&quot;, &quot;laws&quot;: &quot;民法典第676条&quot;,
+         &quot;summary&quot;: &quot;…&quot;, &quot;content&quot;: &quot;…&quot;, &quot;judgment_date&quot;: &quot;2025-11-02&quot;},
         # 20+ 条真实风格案例
     ]
 …（以下省略 3 行，完整代码见仓库对应位置）
-        await LegalCase.get_or_create(title=c[&quot;title&quot;], defaults={**c})
+        await Case.get_or_create(case_number=c[&quot;case_number&quot;], defaults={**c})
 
     # 2) 向量化入库（供语义检索）
     texts = [f&quot;{c[&#x27;title&#x27;]}。{c[&#x27;summary&#x27;]}&quot; for c in CASES]
-    vectors = await embedding_model.embed_documents(texts)
-    vector_store.add(ids=[c[&quot;id&quot;] for c in CASES], embeddings=vectors, metadatas=CASES)
+    vectors = await embedding_model.aembed_documents(texts)   # 异步版本以 a 开头
+    # 注意：ORM 生成的是 UUID，CASES 字典里没有 id，得从 get_or_create 的返回值取
+    ids = [obj.id for obj in created]           # created 是上面 get_or_create 的结果列表
+    vector_store.add(ids=ids, embeddings=vectors, metadatas=CASES)
 
     print(f&quot;成功导入 {len(CASES)} 条案例&quot;)</pre>
 <ul><li><strong>双通道写入</strong>：关系表（元数据/列表）+ 向量库（语义检索），两条链路都喂饱。</li><li><code>get_or_create</code> 幂等：<strong>重复执行不产生重复数据</strong>——部署脚本要能安全重跑。</li><li>种子内容用"真实案例风格"的模拟数据（标注来源），不是编造判决。</li></ul>

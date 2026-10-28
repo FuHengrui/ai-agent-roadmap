@@ -731,6 +731,10 @@ OUTLINE_PROMPT = &quot;&quot;&quot;请根据以下设定，生成 {n} 章的章�
 本章要点：...
 &quot;&quot;&quot;
 
+CHARACTER_PROMPT = &quot;&quot;&quot;请根据以下设定，列出 3-5 个主要人物。
+格式：姓名｜身份｜一句话性格｜与主角的关系
+设定：{idea}&quot;&quot;&quot;
+
 CHAPTER_PROMPT = &quot;&quot;&quot;请写第 {index} 章《{title}》的正文。
 
 本章要点：{outline}
@@ -938,7 +942,7 @@ class NovelPipeline:
 
     def _build_characters(self, novel, idea):
         text = self.llm.chat(
-            prompts.CHARACTER_PROMPT.format(**idea),
+            prompts.CHARACTER_PROMPT.format(**idea),   # 模板与 OUTLINE_PROMPT 同构，见下方定义
             system=prompts.SYSTEM_WRITER,
         )
         novel.characters = parse_characters(text)      # 解析成 Character 列表
@@ -999,7 +1003,7 @@ import sys
 import logging
 from pathlib import Path
 
-from src.config import load_config
+from config import load_config   # config/ 在项目根，不在 src/ 下
 from src.pipeline import NovelPipeline
 from src.llm_client import LLMError
 

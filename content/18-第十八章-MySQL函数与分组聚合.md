@@ -229,7 +229,7 @@ SELECT COUNT(*), MAX(score), AVG(score) FROM student;
 -- 按班级分组，每组统计
 SELECT class_id, COUNT(*), AVG(score)
 FROM student
-GROUP BY class_id;
+GROUP BY gender;   # 用 student 表已有的列演示（建表里没有 class_id）
 
 -- 多列分组：班 × 性别
 SELECT class_id, gender, COUNT(*)
@@ -240,7 +240,7 @@ GROUP BY class_id, gender;
 规则三连：
 
 - **GROUP BY 把相同值的行并成一组**，聚合函数每组各算一次（结果行数=组数）；
-- **SELECT 里出现的非聚合列必须是 GROUP BY 里的列**（如 class_id）——这是 SQL 标准约束，MySQL 默认宽松但别依赖；
+- **SELECT 里出现的非聚合列必须是 GROUP BY 里的列**（如 class_id）——这是 SQL 标准约束，MySQL **8.0 默认开启 `ONLY_FULL_GROUP_BY`**：SELECT 里的非聚合列必须出现在 GROUP BY 里，否则直接报错（老版本才宽松）；
 - **WHERE 在分组之前过滤行**（先滤后组）。
 
 **执行顺序**（接上章总纲）：`FROM → WHERE → GROUP BY → 聚合 → HAVING → SELECT → ORDER BY → LIMIT`——分组在过滤后、投影前。
