@@ -286,7 +286,7 @@
 <p>学完这一章，你会得到两个可复用的关键产物：<strong>挂好 LoRA 的可训练模型</strong> + <strong>训练结束后保存下来的 LoRA 权重目录</strong>（几十到几百 MB，而不是几个 GB 的完整模型——这正是 LoRA 的意义）。</p>
 </div>
 <div class="chapter-meta">
-<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 5 章的数据集 token 化完成就能开始，这章不用装新东西，只是要显卡跑训练。</p></div></div>
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 5 章的数据集 token 化完成就能开始：除了显卡，只用再 <code>pip install tensorboard</code>（看训练曲线用，不是 transformers 自带的）；其余不用装。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能挂上 LoRA、配好超参跑完训练并保存出几十 MB 的权重，这一章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
@@ -316,7 +316,7 @@ lora_config = LoraConfig(
 <table>
 <tr><th>参数</th><th>作用</th><th>常用值</th></tr>
 <tr><td>r</td><td>秩：A(d×r)、B(r×k) 的宽度</td><td>8/16/32</td></tr>
-<tr><td>lora_alpha</td><td>强度缩放</td><td>通常 = 2×r 左右（这里 8→32）</td></tr>
+<tr><td>lora_alpha</td><td>强度缩放，看 α/r 这个比值</td><td>常见 1~4×r；示例 r=8、α=32 即 4×r</td></tr>
 <tr><td>target_modules</td><td>挂在哪</td><td><code>["q_proj","v_proj"]</code> 起步</td></tr>
 <tr><td>lora_dropout</td><td>防过拟合</td><td>0.05~0.1</td></tr>
 <tr><td>bias</td><td>是否训偏置</td><td>"none"</td></tr>
@@ -327,8 +327,8 @@ lora_config = LoraConfig(
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td><code>get_peft_model</code> 报 "module q_proj not found"</td><td>模块名和模型架构对不上（比如模型叫 self.query）。<strong>先 print(model) 看真实模块名</strong>（第 4 章），再填 target_modules</td></tr>
-<tr><td>忘记显式 <code>lora_alpha</code>，效果弱到看不见</td><td>只设 r 不设 α，默认 α=r（强度=1），浮在表面。<strong>明确配（如 α=2r）</strong>，变化才可观</td></tr>
-<tr><td>dropout 设 0.5 这种离谱值</td><td>dropout 太高会把补丁学信号丢掉，训练半天不收敛。0.05~0.2 之间试</td></tr>
+<tr><td>忘记显式 <code>lora_alpha</code>，效果弱到看不见</td><td>PEFT 的 <code>lora_alpha</code> 默认是 <strong>8</strong>，和 r 无关——r=16 时默认强度只有 0.5。<strong>始终显式配 α</strong>（如 4×r），变化才可观</td></tr>
+<tr><td>dropout 设 0.5 这种离谱值</td><td>dropout 太高会把补丁学信号丢掉，训练半天不收敛。0.05~0.1 之间试</td></tr>
 </table>
 </div>
 </div></div>
@@ -345,7 +345,7 @@ model = prepare_model_for_kbit_training(model)
 # 把 LoRA 配置应用到模型上
 peft_model = get_peft_model(model, lora_config)
 print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B</pre>
-<p>为什么量化后要 prepare：bitsandbytes 量化会<strong>冻结</strong>部分层，prepare 会解冻需要训练的层、必要时打开 gradient checkpointing——不做这步，量化模型上训练可能完全不动或报错。</p>
+<p>为什么量化后要 prepare：<code>prepare_model_for_kbit_training</code> 做的是<strong>把底座参数全部冻结</strong>、把 LayerNorm 等敏感层转回 fp32、并开启 gradient checkpointing——真正“可训练”的是随后挂上去的 LoRA 补丁。不做这步，量化模型上训练可能完全不动或报错。</p>
 <p>验证"挂上了"的方法：再次 print 模型，注意力层里能看到：</p>
 <pre>(q_proj): lora.Linear(...)
     (lora_dropout): ...
@@ -356,7 +356,7 @@ print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B</pre
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>忘了 prepare_model_for_kbit_training，量化模型训练报错/不动</td><td>4bit 加载 + 训练的组合必须 prepare；<strong>非量化（fp16 全精度加载）时这步可省</strong>，环境里默认都装了 bitsandbytes，加了最稳</td></tr>
+<tr><td>忘了 prepare_model_for_kbit_training，量化模型训练报错/不动</td><td>4bit 加载 + 训练的组合必须 prepare；<strong>非量化（fp16 / bf16 加载，本来就是半精度）时这步可省</strong>，环境里默认都装了 bitsandbytes，加了最稳</td></tr>
 <tr><td>看不到 lora_A/lora_B 就开训</td><td>先 debug：检查 get_peft_model 是否成功、print 是否显示 PEFT 结构。<strong>没挂上就训练 = 训了个原模型</strong>，白烧电</td></tr>
 <tr><td>以为"挂 LoRA 后再打印的模型还是原来那坨"</td><td>挂载后模型结构会多出 lora_* 子层、参数统计变化。看到多出的部分才是挂成功的标志</td></tr>
 </table>
@@ -444,7 +444,7 @@ trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）</p
 <tr><td>tokenizer 相关</td><td>tokenizer_config / vocab 文件</td></tr>
 </table>
 <p>关键点：</p>
-<ul><li><strong>没有完整 model 权重</strong>（几个 GB），而是补丁（视 r 和模块数，几十~几百 MB）——这是 LoRA 最核心的工程价值：<strong>轻、快、可复用</strong>；</li><li><code>adapter_config.json</code> 里记录了 <code>base_model_name_or_path</code>，第 7 章按它找回底座；</li><li>完整模型一份都不落？——要的（合并版）在下一章 merge 时再产生，训练阶段先存补丁即可。</li></ul>
+<ul><li><strong>没有完整 model 权重</strong>（几个 GB），而是补丁：本章这种 1.5B + 只挂 q/v + r=8 的配置，adapter 只有几万参数（不到 1 MB）；换成 7B 全挂线性层才会到几十 MB 级——这就是 LoRA 最核心的工程价值：<strong>轻、快、可复用</strong>；</li><li><code>adapter_config.json</code> 里记录了 <code>base_model_name_or_path</code>，第 7 章按它找回底座；</li><li>完整模型一份都不落？——要的（合并版）在下一章 merge 时再产生，训练阶段先存补丁即可。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

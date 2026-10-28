@@ -7,7 +7,7 @@
 学完这一章，你会得到两个可复用的关键产物：**挂好 LoRA 的可训练模型** + **训练结束后保存下来的 LoRA 权重目录**（几十到几百 MB，而不是几个 GB 的完整模型——这正是 LoRA 的意义）。
 
 @@prep 开始之前
-第 5 章的数据集 token 化完成就能开始，这章不用装新东西，只是要显卡跑训练。
+第 5 章的数据集 token 化完成就能开始：除了显卡，只用再 `pip install tensorboard`（看训练曲线用，不是 transformers 自带的）；其余不用装。
 
 @@goal 学到这儿就够了
 能挂上 LoRA、配好超参跑完训练并保存出几十 MB 的权重，这一章就算过了。
@@ -44,7 +44,7 @@ lora_config = LoraConfig(
 | 参数 | 作用 | 常用值 |
 |---|---|---|
 | r | 秩：A(d×r)、B(r×k) 的宽度 | 8/16/32 |
-| lora_alpha | 强度缩放 | 通常 = 2×r 左右（这里 8→32） |
+| lora_alpha | 强度缩放，看 α/r 这个比值 | 常见 1~4×r；示例 r=8、α=32 即 4×r |
 | target_modules | 挂在哪 | `["q_proj","v_proj"]` 起步 |
 | lora_dropout | 防过拟合 | 0.05~0.1 |
 | bias | 是否训偏置 | "none" |
@@ -54,8 +54,8 @@ lora_config = LoraConfig(
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | `get_peft_model` 报 "module q_proj not found" | 模块名和模型架构对不上（比如模型叫 self.query）。**先 print(model) 看真实模块名**（第 4 章），再填 target_modules |
-| 忘记显式 `lora_alpha`，效果弱到看不见 | 只设 r 不设 α，默认 α=r（强度=1），浮在表面。**明确配（如 α=2r）**，变化才可观 |
-| dropout 设 0.5 这种离谱值 | dropout 太高会把补丁学信号丢掉，训练半天不收敛。0.05~0.2 之间试 |
+| 忘记显式 `lora_alpha`，效果弱到看不见 | PEFT 的 `lora_alpha` 默认是 **8**，和 r 无关——r=16 时默认强度只有 0.5。**始终显式配 α**（如 4×r），变化才可观 |
+| dropout 设 0.5 这种离谱值 | dropout 太高会把补丁学信号丢掉，训练半天不收敛。0.05~0.1 之间试 |
 
 @@point ② 挂载 LoRA：prepare + get_peft_model
 @@need 要解决什么
@@ -74,7 +74,7 @@ peft_model = get_peft_model(model, lora_config)
 print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B
 ```
 
-为什么量化后要 prepare：bitsandbytes 量化会**冻结**部分层，prepare 会解冻需要训练的层、必要时打开 gradient checkpointing——不做这步，量化模型上训练可能完全不动或报错。
+为什么量化后要 prepare：`prepare_model_for_kbit_training` 做的是**把底座参数全部冻结**、把 LayerNorm 等敏感层转回 fp32、并开启 gradient checkpointing——真正“可训练”的是随后挂上去的 LoRA 补丁。不做这步，量化模型上训练可能完全不动或报错。
 
 验证"挂上了"的方法：再次 print 模型，注意力层里能看到：
 
@@ -90,7 +90,7 @@ print(peft_model)   # ← 关键验证：输出里应出现 lora_A / lora_B
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 忘了 prepare_model_for_kbit_training，量化模型训练报错/不动 | 4bit 加载 + 训练的组合必须 prepare；**非量化（fp16 全精度加载）时这步可省**，环境里默认都装了 bitsandbytes，加了最稳 |
+| 忘了 prepare_model_for_kbit_training，量化模型训练报错/不动 | 4bit 加载 + 训练的组合必须 prepare；**非量化（fp16 / bf16 加载，本来就是半精度）时这步可省**，环境里默认都装了 bitsandbytes，加了最稳 |
 | 看不到 lora_A/lora_B 就开训 | 先 debug：检查 get_peft_model 是否成功、print 是否显示 PEFT 结构。**没挂上就训练 = 训了个原模型**，白烧电 |
 | 以为"挂 LoRA 后再打印的模型还是原来那坨" | 挂载后模型结构会多出 lora_* 子层、参数统计变化。看到多出的部分才是挂成功的标志 |
 
@@ -188,7 +188,7 @@ trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）
 | tokenizer 相关 | tokenizer_config / vocab 文件 |
 
 关键点：
-- **没有完整 model 权重**（几个 GB），而是补丁（视 r 和模块数，几十~几百 MB）——这是 LoRA 最核心的工程价值：**轻、快、可复用**；
+- **没有完整 model 权重**（几个 GB），而是补丁：本章这种 1.5B + 只挂 q/v + r=8 的配置，adapter 只有几万参数（不到 1 MB）；换成 7B 全挂线性层才会到几十 MB 级——这就是 LoRA 最核心的工程价值：**轻、快、可复用**；
 - `adapter_config.json` 里记录了 `base_model_name_or_path`，第 7 章按它找回底座；
 - 完整模型一份都不落？——要的（合并版）在下一章 merge 时再产生，训练阶段先存补丁即可。
 

@@ -335,7 +335,9 @@ class BloodSugarResponse(BloodSugarBase):
 <div class="step idea"><span class="label">核心思路</span>
 <pre>@router.post(&quot;/&quot;, response_model=BloodSugarResponse)
 async def create_record(data: BloodSugarCreate):
-    await Patient.get_or_none(id=data.patient_id)   # ① 检查患者存在与否
+    patient = await Patient.get_or_none(id=data.patient_id)
+    if not patient:                                  # ① 拿返回值判断，别只调用不接
+        raise HTTPException(status_code=404, detail=&quot;患者不存在&quot;)
     record = await BloodSugar.create(**data.model_dump())  # ② 创建记录
     return BloodSugarResponse(
         id=record.id, patient_id=record.patient_id,
@@ -371,7 +373,7 @@ async def get_records(patient_id: int, days: int = Query(7, ge=1, le=90)):
     ).order_by(&quot;-measured_at&quot;).all()
     ...</pre>
 <p>三个新语法逐个拆：</p>
-<ol><li><strong>Q 表达式</strong>：<code>Q(patient_id=1) &amp; Q(measured_at__gte=since)</code> 表示 AND 组合；ORM 需要多条件+同一个 filter 里做逻辑组合时用 Q；</li><li><strong>双下划线运算符</strong>：<code>measured_at__gte=since</code> 是"大于等于"（Great Than or Equal）；还有 <code>__lt</code>/<code>__lte</code>/<code>__contains</code> 等；</li><li><strong>倒序排序</strong>：<code>order_by("-measured_at")</code> 负号 = 倒序，最新记录排最前。</li></ol>
+<ol><li><strong>Q 表达式</strong>：<code>Q(patient_id=1) &amp; Q(measured_at__gte=since)</code> 表示 AND 组合；ORM 需要多条件+同一个 filter 里做逻辑组合时用 Q；</li><li><strong>双下划线运算符</strong>：<code>measured_at__gte=since</code> 是"大于等于"（Greater Than or Equal）；还有 <code>__lt</code>/<code>__lte</code>/<code>__contains</code> 等；</li><li><strong>倒序排序</strong>：<code>order_by("-measured_at")</code> 负号 = 倒序，最新记录排最前。</li></ol>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -405,6 +407,7 @@ async def get_records(patient_id: int, days: int = Query(7, ge=1, le=90)):
 <p>更新血糖 value 后，status 变了，返回的数据要不要重新算？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
+<p>（<code>BloodSugarUpdate</code> 的字段和 <code>BloodSugarCreate</code> 一样，照患者章那套 Create/Update/Response 三件套再补一个即可，这里只讲更新逻辑。）</p>
 <pre>@router.put(&quot;/{record_id}&quot;, response_model=BloodSugarResponse)
 async def update_record(record_id: int, data: BloodSugarUpdate):
     record = await BloodSugar.get_or_none(id=record_id)
@@ -530,7 +533,7 @@ async def get_stats(patient_id: int, days: int = Query(7, ge=1, le=90)):
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td><code>**analysis</code> 报多余关键字</td><td>Schema 字段与字典键不完全一致；多一个少一个都会炸</td></tr>
-<tr><td>error 字段漏了</td><td>无数据时引擎返回带 error 的字典；Schema 不加 error 字段就会 422</td></tr>
+<tr><td>error 字段漏了</td><td>无数据时引擎返回带 <code>error</code> 的字典；响应 Schema 没定义这个字段，构造响应时会抛 <code>ValidationError</code>，最终是 <strong>500</strong> 而不是 422（请求体缺字段才是 422；多余的键 Pydantic 默认忽略）</td></tr>
 </table>
 </div>
 </div></div>
