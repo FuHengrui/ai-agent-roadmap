@@ -314,7 +314,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>TF-IDF（Term Frequency - Inverse Document Frequency）= 词频 × 逆文档频率</strong>，是信息检索最经典的词权重算法：</p>
-<ul><li><strong>TF（词频）</strong>：词在<strong>当前文档</strong>中出现的次数/比例。出现越多越重要。</li><li><strong>IDF（逆文档频率）</strong>：<code>log(总文档数 / 包含该词的文档数)</code>。<strong>越少文档包含它，它越能区分文档</strong>，IDF 越大。</li></ul>
+<ul><li><strong>TF（词频）</strong>：词在<strong>当前文档</strong>中出现的次数/比例。出现越多越重要。</li><li><strong>IDF（逆文档频率）</strong>：<code>log(总文档数 / (包含该词的文档数 + 1))</code>（+1 是平滑，避免除零）。<strong>越少文档包含它，它越能区分文档</strong>，IDF 越大。</li></ul>
 <pre>TF = 词在当前文本出现的次数 / 当前文本的总词数
 IDF = log(总文档数 / (包含该词的文档数 + 1))
 TF-IDF = TF × IDF</pre>
@@ -333,7 +333,7 @@ TF-IDF = TF × IDF</pre>
 <p>不自己实现 TF-IDF，jieba 一行代码能抽关键词吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>jieba 的 <code>jieba.analyse.extract_tags</code> 内置了 TF-IDF 实现（默认基于 IF-IDF 权重），直接调用即可：</p>
+<p>jieba 的 <code>jieba.analyse.extract_tags</code> 内置了 TF-IDF 实现（默认基于 TF-IDF 权重），直接调用即可：</p>
 <pre>import jieba.analyse
 
 text = &quot;人工智能正在深刻改变自然语言处理领域，\
@@ -343,7 +343,7 @@ keywords = jieba.analyse.extract_tags(
     text, topK=5)  # topK: 返回前5个关键词
 print(keywords)
 # 输出形如：[&#x27;大模型&#x27;, &#x27;自然语言处理&#x27;, &#x27;机器翻译&#x27;, ...]</pre>
-<p>常用参数：<code>topK</code>（返回个数）、<code>withWeight=True</code>（同时返回权重分数，便于调阈值）。它内部会自动分词并过滤停用词，非常省事。</p>
+<p>常用参数：<code>topK</code>（返回个数）、<code>withWeight=True</code>（同时返回权重分数，便于调阈值）。它内部会自动分词，并丢掉单字词；但中文停用词要自己过滤（坑表里说的就是这个）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -433,7 +433,7 @@ for word, flag in pseg.cut(text):
 <p>posseg 输出的一堆字母（nr、ns、v、d）到底代表什么？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>jieba 采用北大词性标注体系的简化版，常见标记速查：</p>
+<p>jieba 的词性标记与 ICTCLAS 兼容，常见标记速查：</p>
 <table>
 <tr><th>标记</th><th>含义</th><th>示例</th></tr>
 <tr><td>n</td><td>名词</td><td>学习、苹果</td></tr>
