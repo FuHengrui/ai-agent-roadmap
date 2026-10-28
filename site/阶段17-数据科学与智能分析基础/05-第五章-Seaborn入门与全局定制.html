@@ -446,7 +446,7 @@ sns.diverging_palette(250, 30, s=80, l=55, as_cmap=True)   # 蓝到红</pre>
 
 mat = np.random.rand(8, 8)
 sns.heatmap(mat, cmap=&#x27;viridis&#x27;)           # 数值大 = 颜色浅亮</pre>
-<p>选色提示：发散类延续顺序用 <strong>'RdBu_r'/'coolwarm'</strong>（红蓝），自定义时手动设置 diverge_range。</p>
+<p>选色提示：发散类延续顺序用 <strong>'RdBu_r'/'coolwarm'</strong>（红蓝），heatmap 用 <code>center=0</code>；需要手动归一化用 <code>matplotlib.colors.TwoSlopeNorm</code>（<code>diverge_range</code> 这个参数不存在）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -487,7 +487,7 @@ sns.scatterplot(x=[1, 2, 3], y=[1, 4, 9], ax=axes[1])   # 图二</pre>
 <p>这一章你掌握了 Seaborn 的地基：</p>
 <table>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
-<tr><td><strong>选型认知</strong>：Seaborn 是 Matplotlib 高层封装，一行出图 + 自动统计</td><td>知道"为什么雪它"，才知道什么时候切回 Matplotlib</td></tr>
+<tr><td><strong>选型认知</strong>：Seaborn 是 Matplotlib 高层封装，一行出图 + 自动统计</td><td>知道"为什么选它"，才知道什么时候切回 Matplotlib</td></tr>
 <tr><td><strong>安装导入</strong>：pip/conda 安装，<code>import seaborn as sns</code></td><td>标准姿势</td></tr>
 <tr><td><strong>练手数据</strong>：load_dataset 内置数据</td><td>所有教程案例都基于它们，可复现</td></tr>
 <tr><td><strong>四件套定制</strong>：style 背景 / context 字号 / palette 配色 / font 字体</td><td>一次设置全局生效</td></tr>

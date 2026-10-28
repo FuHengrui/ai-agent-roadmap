@@ -201,7 +201,7 @@ mat = np.random.rand(8, 8)
 sns.heatmap(mat, cmap='viridis')           # 数值大 = 颜色浅亮
 ```
 
-选色提示：发散类延续顺序用 **'RdBu_r'/'coolwarm'**（红蓝），自定义时手动设置 diverge_range。
+选色提示：发散类延续顺序用 **'RdBu_r'/'coolwarm'**（红蓝），heatmap 用 `center=0`；需要手动归一化用 `matplotlib.colors.TwoSlopeNorm`（`diverge_range` 这个参数不存在）。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -247,7 +247,7 @@ sns.scatterplot(x=[1, 2, 3], y=[1, 4, 9], ax=axes[1])   # 图二
 
 | 拿到了什么 | 为什么要紧 |
 |---|---|
-| **选型认知**：Seaborn 是 Matplotlib 高层封装，一行出图 + 自动统计 | 知道"为什么雪它"，才知道什么时候切回 Matplotlib |
+| **选型认知**：Seaborn 是 Matplotlib 高层封装，一行出图 + 自动统计 | 知道"为什么选它"，才知道什么时候切回 Matplotlib |
 | **安装导入**：pip/conda 安装，`import seaborn as sns` | 标准姿势 |
 | **练手数据**：load_dataset 内置数据 | 所有教程案例都基于它们，可复现 |
 | **四件套定制**：style 背景 / context 字号 / palette 配色 / font 字体 | 一次设置全局生效 |

@@ -126,12 +126,12 @@ pairs.reduce((x, y) => (x._1 + y._1, x._2 + y._2))  // ("ab", 3)
 分区间：10 + 16 + 25 + 34 = 85      ← 初始值参与每个分区+最终合并！
 ```
 
-**关键结论**：fold 的初始值**每个分区都要加一次**，最后合并再加一次。`分区数×zero + 数据总和`——所以 fold 的结果**不等于** zero+sum，这是最容易算错的地方。
+**关键结论**：fold 的初始值**每个分区都要加一次**，最后合并再加一次。`(分区数+1)×zero + 数据总和   # 每个分区一次 + 最后合并一次`——所以 fold 的结果**不等于** zero+sum，这是最容易算错的地方。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| fold 结果和自己手算的 zero+sum 对不上 | 初始值参与了**每个分区内**和**最终合并**，结果 = 元素和 + zero×分区数（本例 45+60=105 才对，不是 sum+10=55）。数字诡异时先想分区 |
+| fold 结果和自己手算的 zero+sum 对不上 | 初始值参与了**每个分区内**和**最终合并**，结果 = 元素和 + zero×分区数（本例 45+40=85 才对，不是 45+10=55）。数字诡异时先想分区 |
 | reduce 的 func 不满足结合律 | reduce 要求 func 有**结合律**（如求和/乘）。`(a-b)` 这种不可结合的会因分区边界算出不同结果 |
 | 初始值类型和 RDD 元素类型不一致 | fold 要求 zero 与元素同一类型（Int RDD → zero 也 Int）。异构聚合（求总和+最大值）用 `aggregate`，下一章实战见 |
 | 空 RDD 上调 reduce | 空 RDD reduce 抛异常（无可归并）。先 `rdd.isEmpty()` 或给 reduce 兜底（用 fold 带 zero） |
@@ -169,7 +169,7 @@ rdd.foreachPartition(write_batch)
 |---|---|
 | 在 foreach/map 里建 DB 连接 | 每条数据建一个连接，Direct 疯狂报 OOM/超时。**连接类资源一律 foreachPartition 每分区建一次** |
 | foreach 里打印"没看到输出" | foreach 在 **Executor** 执行，local 模式看得见（同进程），集群模式打印在 worker 日志里，不在 Driver 终端。想回显用 `collect().foreach(print)`（仅小数据） |
-| 在 foreach 里改了 Driver 变量的值 | **改不了**——foreach 在 Executor 上跑的是序列化副本，Driver 的变量不会变。跨 Executor 共享用累加器（内核章见），跨节点改全局用广播变量 |
+| 在 foreach 里改了 Driver 变量的值 | **改不了**——foreach 在 Executor 上跑的是序列化副本，Driver 的变量不会变。跨 Executor 共享用累加器（内核章见），跨 Executor 汇总用累加器、传大只读数据用广播变量（第十一章见）；广播变量本身是**只读**的 |
 
 @@point ⑥ saveAsTextFile：结果落盘的正确姿势
 @@need 要解决什么
@@ -221,7 +221,7 @@ nums.countByValue()
 | `countByKey()` | KV 型 | key | Map[K, Long] |
 | `countByValue()` | 任意 | 元素自身 | Map[V, Long] |
 
-**对比 reduceByKey(_+_)**：countByKey 是"数条数"，reduceByKey 是"合并 value"。求"每个词出现次数"用 WordCount 的 `map(_,1).reduceByKey(_+_)`；直接 countByValue 也一样。
+**对比 reduceByKey(_+_)**：countByKey 是"数条数"，reduceByKey 是"合并 value"。求"每个词出现次数"用 WordCount 的 `map((_, 1)).reduceByKey(_ + _)`；直接 countByValue 也一样。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

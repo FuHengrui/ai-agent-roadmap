@@ -342,7 +342,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>标准化后出现负数或超 1 的值，以为错了</td><td>标准化的结果本来就不限区间，可正可负可超 1；正常现象</td></tr>
-<tr><td>用 MinMax 的思维要求 StandardScaler 的区间</td><td>两者定位不同：要区间找 MinMax，要鲁棒+正态用 StandardScaler</td></tr>
+<tr><td>用 MinMax 的思维要求 StandardScaler 的区间</td><td>两者定位不同：要区间找 MinMax，要抗离群值、要权重可比用 StandardScaler（它<strong>不会</strong>把数据变成正态）</td></tr>
 </table>
 </div>
 </div></div>

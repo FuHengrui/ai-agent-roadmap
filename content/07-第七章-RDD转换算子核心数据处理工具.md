@@ -177,7 +177,7 @@ val gbk = pairs.groupByKey()
 |---|---|
 | 分组后想"对每组求和"却在 groupBy 里硬写 | groupBy 只是**分**，后续统计要再 map：`gb.map(x => (x._1, x._2.size))`。想一步聚合用 reduceByKey（下一知识点） |
 | 用 groupByKey 但数据不是 KV | groupByKey 要求 `RDD[(K,V)]`，不是 KV 型编译报错。先用 map 转成元组 |
-| groupByKey 全量 shuffie 后 OOM | 单个 key 数据极多（数据倾斜）会打爆分区。后续实战章专门讲倾斜处理；能用 reduceByKey 就地聚合就优先用它 |
+| groupByKey 全量 shuffle 后 OOM | 单个 key 数据极多（数据倾斜）会打爆分区。后续实战章专门讲倾斜处理；能用 reduceByKey 就地聚合就优先用它 |
 
 @@point ⑥ reduceByKey：按 key 聚合，最常用也最高效
 @@need 要解决什么
@@ -209,7 +209,7 @@ reduceByKey: shuffle 前先在每个分区内"预聚合"（combine），
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | `reduceByKey(_ + _)` 的 `_` 数量 | 函数是二元 `(x,y) => x+y`，所以写两个 `_`。写错成单 `_` 会类型不匹配 |
-| 聚合逻辑不是加法（找最大/拼接字符串） | func 可以任意：`reduceByKey(math.max)`、`reduceByKey(_ + ",")` 拼字符串。但**两次函数返回类型必须都是 V**（value 类型不变） |
+| 聚合逻辑不是加法（找最大/拼接字符串） | func 可以任意：`reduceByKey(math.max)`、`reduceByKey(_ + _)   # 要拼分隔符写成 (a, b) => a + "," + b` 拼字符串。但**两次函数返回类型必须都是 V**（value 类型不变） |
 | 以为 reduceByKey 和 groupByKey 结果一样 | 前者已聚合（value 是标量/合并结果），后者是集合（Iterable）。需求"只要统计值"用 reduceByKey |
 
 @@point ⑦ distinct / union / 交集差集：集合操作家族
@@ -224,7 +224,7 @@ val rdd = sc.makeRDD(List(1, 1, 2, 3, 3))
 rdd.distinct()          // [1, 2, 3]
 ```
 
-**② union：并集（不重、无方向）**
+**② union：并集（**不去重**、无方向）**
 
 ```scala
 rdd1.union(rdd2)        // 两份拼接，重复的保留
@@ -311,7 +311,7 @@ stu.rightOuterJoin(job)
 @@quiz
 1. 转换算子的两大特点（返回值必须是 RDD + 惰性）分别意味着什么？
 2. 一句话说清 map 与 flatMap 的区别，并举一个必须用 flatMap 的场景。
-3. `rdd.map(x => x).filter(x > 0).collect().take(5)` 这段代码有什么问题？（提示：算子顺序）
+3. `rdd.map(x => x).filter(_ > 0).take(5)   # take 作用在 RDD 上，别先 collect 拉全量` 这段代码有什么问题？（提示：算子顺序）
 4. reduceByKey 相比 groupByKey 高效在哪？
 5. 用户表 `(id, 姓名)`、订单表 `(id, 金额)`，要输出"所有用户及其订单（含没下过单的）"，用哪个 join？
 6. 判断题：union 会自动去重，所以两个 RDD 合并后一定没有重复元素。

@@ -317,7 +317,7 @@ sns.kdeplot(x='total_bill', data=tips, hue='sex', multiple='stack')  # 按组堆
 ```
 
 - **shade**：曲线下方填充（老参数 fill=True 新写法）；
-- **multiple**：多组 draw 方式——'layer' 叠加、'stack' 堆叠（面积不重叠）、'fill' 镜像填充（两两对比）。
+- **multiple**：多组 draw 方式——'layer' 叠加、'stack' 堆叠（面积不重叠）、'fill'：每组按占比归一到 1，堆满到 1（看构成比例，不是镜像填充）。
 
 对比 histplot：**kde 平滑、无桶数选择问题，但小样本失真**；直方忠实原始分桶但依赖 bins。常用 combo：histplot(kde=True)。
 

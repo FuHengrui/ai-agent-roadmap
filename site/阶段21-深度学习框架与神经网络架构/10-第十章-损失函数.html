@@ -416,7 +416,7 @@ loss2 = nn.BCEWithLogitsLoss()(logits, targets)  # 内部自动 sigmoid，数值
 <tr><td>nn.CrossEntropyLoss</td><td>多分类</td><td><strong>内置 softmax</strong>，标签传索引</td></tr>
 <tr><td>nn.BCEWithLogitsLoss</td><td>二分类</td><td><strong>内置 sigmoid</strong>，数值更稳</td></tr>
 <tr><td>nn.BCELoss</td><td>二分类</td><td>需手动 sigmoid，少用</td></tr>
-<tr><td>nn.NLLLoss</td><td>或然分类</td><td>配 log_softmax 手动，底层组件</td></tr>
+<tr><td>nn.NLLLoss</td><td>多分类</td><td>配 log_softmax 手动，底层组件</td></tr>
 <tr><td>自定义损失</td><td>特殊任务</td><td>返回标量张量即可，参与计算图</td></tr>
 </table>
 <p><strong>原则：先选对任务类型（回归/分类），再在同一类型里挑合适的变体。</strong></p>

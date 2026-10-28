@@ -544,7 +544,7 @@ sns.heatmap(corr,
 
 sns.kdeplot(x=&#x27;total_bill&#x27;, data=tips, shade=True)      # 填充
 sns.kdeplot(x=&#x27;total_bill&#x27;, data=tips, hue=&#x27;sex&#x27;, multiple=&#x27;stack&#x27;)  # 按组堆叠</pre>
-<ul><li><strong>shade</strong>：曲线下方填充（老参数 fill=True 新写法）；</li><li><strong>multiple</strong>：多组 draw 方式——'layer' 叠加、'stack' 堆叠（面积不重叠）、'fill' 镜像填充（两两对比）。</li></ul>
+<ul><li><strong>shade</strong>：曲线下方填充（老参数 fill=True 新写法）；</li><li><strong>multiple</strong>：多组 draw 方式——'layer' 叠加、'stack' 堆叠（面积不重叠）、'fill'：每组按占比归一到 1，堆满到 1（看构成比例，不是镜像填充）。</li></ul>
 <p>对比 histplot：<strong>kde 平滑、无桶数选择问题，但小样本失真</strong>；直方忠实原始分桶但依赖 bins。常用 combo：histplot(kde=True)。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

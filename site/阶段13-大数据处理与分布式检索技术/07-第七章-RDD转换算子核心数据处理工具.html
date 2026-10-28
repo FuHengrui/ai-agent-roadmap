@@ -420,7 +420,7 @@ val gbk = pairs.groupByKey()
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>分组后想"对每组求和"却在 groupBy 里硬写</td><td>groupBy 只是<strong>分</strong>，后续统计要再 map：<code>gb.map(x =&gt; (x._1, x._2.size))</code>。想一步聚合用 reduceByKey（下一知识点）</td></tr>
 <tr><td>用 groupByKey 但数据不是 KV</td><td>groupByKey 要求 <code>RDD[(K,V)]</code>，不是 KV 型编译报错。先用 map 转成元组</td></tr>
-<tr><td>groupByKey 全量 shuffie 后 OOM</td><td>单个 key 数据极多（数据倾斜）会打爆分区。后续实战章专门讲倾斜处理；能用 reduceByKey 就地聚合就优先用它</td></tr>
+<tr><td>groupByKey 全量 shuffle 后 OOM</td><td>单个 key 数据极多（数据倾斜）会打爆分区。后续实战章专门讲倾斜处理；能用 reduceByKey 就地聚合就优先用它</td></tr>
 </table>
 </div>
 </div></div>
@@ -446,7 +446,7 @@ reduceByKey: shuffle 前先在每个分区内&quot;预聚合&quot;（combine）�
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td><code>reduceByKey(_ + _)</code> 的 <code>_</code> 数量</td><td>函数是二元 <code>(x,y) =&gt; x+y</code>，所以写两个 <code>_</code>。写错成单 <code>_</code> 会类型不匹配</td></tr>
-<tr><td>聚合逻辑不是加法（找最大/拼接字符串）</td><td>func 可以任意：<code>reduceByKey(math.max)</code>、<code>reduceByKey(_ + ",")</code> 拼字符串。但<strong>两次函数返回类型必须都是 V</strong>（value 类型不变）</td></tr>
+<tr><td>聚合逻辑不是加法（找最大/拼接字符串）</td><td>func 可以任意：<code>reduceByKey(math.max)</code>、<code>reduceByKey(_ + _)   # 要拼分隔符写成 (a, b) =&gt; a + "," + b</code> 拼字符串。但<strong>两次函数返回类型必须都是 V</strong>（value 类型不变）</td></tr>
 <tr><td>以为 reduceByKey 和 groupByKey 结果一样</td><td>前者已聚合（value 是标量/合并结果），后者是集合（Iterable）。需求"只要统计值"用 reduceByKey</td></tr>
 </table>
 </div>
@@ -459,7 +459,7 @@ reduceByKey: shuffle 前先在每个分区内&quot;预聚合&quot;（combine）�
 <p><strong>① distinct：去重</strong></p>
 <pre>val rdd = sc.makeRDD(List(1, 1, 2, 3, 3))
 rdd.distinct()          // [1, 2, 3]</pre>
-<p><strong>② union：并集（不重、无方向）</strong></p>
+<p><strong>② union：并集（</strong>不去重<strong>、无方向）</strong></p>
 <pre>rdd1.union(rdd2)        // 两份拼接，重复的保留</pre>
 <p><strong>③ intersection：交集（共有数据）</strong></p>
 <pre>rdd1.intersection(rdd2) // 两边都有的元素</pre>
@@ -531,7 +531,7 @@ stu.rightOuterJoin(job)</pre>
 <tr><td><strong>性能意识</strong>：能 reduceByKey 不 groupByKey、连接不放 map</td><td>同样的代码，性能差一个量级</td></tr>
 </table>
 <h4>自测：能不能答上来</h4>
-<ol><li>转换算子的两大特点（返回值必须是 RDD + 惰性）分别意味着什么？</li><li>一句话说清 map 与 flatMap 的区别，并举一个必须用 flatMap 的场景。</li><li><code>rdd.map(x =&gt; x).filter(x &gt; 0).collect().take(5)</code> 这段代码有什么问题？（提示：算子顺序）</li><li>reduceByKey 相比 groupByKey 高效在哪？</li><li>用户表 <code>(id, 姓名)</code>、订单表 <code>(id, 金额)</code>，要输出"所有用户及其订单（含没下过单的）"，用哪个 join？</li><li>判断题：union 会自动去重，所以两个 RDD 合并后一定没有重复元素。</li></ol>
+<ol><li>转换算子的两大特点（返回值必须是 RDD + 惰性）分别意味着什么？</li><li>一句话说清 map 与 flatMap 的区别，并举一个必须用 flatMap 的场景。</li><li><code>rdd.map(x =&gt; x).filter(_ &gt; 0).take(5)   # take 作用在 RDD 上，别先 collect 拉全量</code> 这段代码有什么问题？（提示：算子顺序）</li><li>reduceByKey 相比 groupByKey 高效在哪？</li><li>用户表 <code>(id, 姓名)</code>、订单表 <code>(id, 金额)</code>，要输出"所有用户及其订单（含没下过单的）"，用哪个 join？</li><li>判断题：union 会自动去重，所以两个 RDD 合并后一定没有重复元素。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations" target="_blank" rel="noopener"><span class="k">官网</span>RDD API 文档（Transformation 部分）</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>Spark 分布式计算框架基础（第 8 章：转换算子 1）</span>
