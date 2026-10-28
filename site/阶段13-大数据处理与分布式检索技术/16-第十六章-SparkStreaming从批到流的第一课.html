@@ -413,7 +413,8 @@ val nums = ssc.socketTextStream(&quot;localhost&quot;, 9999).map(_.toInt)
 nums.map(_ * 2)                    // 批内×2
 nums.filter(_ &gt; 100)               // 批内过滤
 nums.reduce(_ + _)                 // 本批之和（只算本批！）
-nums.reduceByKey(_ + _)            // 本批按键聚合（跨批不累计）
+// nums 是 Int 流：reduceByKey 只对 (K, V) 流有效
+nums.map(x =&gt; (x % 10, 1)).reduceByKey(_ + _)   // 先转成键值流，再按 key 聚合（跨批不累计）
 
 // 双流 join（同时间片对齐再关联）
 val a: DStream[(Int, String)] = ...
@@ -422,8 +423,12 @@ a.join(b)                          // 每个时间片上做 join</pre>
 <p><strong>无状态算子的特点</strong>：</p>
 <ol><li><strong>每批独立计算</strong>：输出不携带历史状态，天然无记忆</li><li><strong>转换函数和 RDD 极像</strong>：<code>map</code>/<code>flatMap</code>/<code>filter</code>/<code>reduceByKey</code>/<code>join</code>/<code>transform</code>，签名几乎一致</li><li><strong>性能模型</strong>：N 批 = N 个独立 Job，互不阻塞</li></ol>
 <p><strong>最有用的特殊算子 <code>transform</code></strong>：把 DStream 转成 RDD 做"批处理专属操作"（如和静态 RDD 做 broadcast 关联）：</p>
-<pre>val bigDict: RDD[Map[String, String]] = ...
-ds.transform(rdd =&gt; rdd.leftOuterJoin(bigDict))   // 每批 RDD 与静态维表 join</pre>
+<pre>val bigDict = sc.parallelize(Seq((&quot;a&quot;, &quot;A&quot;), (&quot;b&quot;, &quot;B&quot;))).collectAsMap()   // 静态维表收成 Map
+val dictBC  = sc.broadcast(bigDict)
+
+val enriched = stream.transform { rdd =&gt;        // stream: DStream[(String, Int)]
+  rdd.map { case (k, v) =&gt; (k, dictBC.value.getOrElse(k, &quot;&quot;), v) }
+}</pre>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

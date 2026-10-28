@@ -44,7 +44,7 @@ Unsloth 的核心手段，一句话说就是：
 所以：
 - **模型权重、结构、训练逻辑全不变**——你学的 LoRA 理论照样成立；
 - 快是因为**算得少、访存少**：内核融合 + 更聪明的内存布局；
-- 省显存是因为**梯度累积、检查点、分段计算等细节被优化**（结合 LoRA 只训补丁，整体显存大幅下降）。
+- 省显存是因为**梯度检查点、内核融合、4bit 量化等细节被优化**（结合 LoRA 只训补丁，整体显存大幅下降）。
 
 结论：Unsloth = 同一套 LoRA 训练的"换引擎"，不是换车。
 
@@ -64,14 +64,14 @@ Unsloth 的核心手段，一句话说就是：
 
 | 项目 | 要求 |
 |---|---|
-| 显卡 | NVIDIA GPU，**8GB 显存**以上（Q4 量化微调） |
+| 显卡 | NVIDIA GPU，**8GB 显存**以上（这是 fp16 LoRA 的建议值；Q4 量化下 1.5B 约 2GB、7B 约 5GB） |
 | 驱动 | 已装 NVIDIA 驱动 + CUDA 可用 |
 | Python | 3.10~3.12（示例环境以 3.11 为例） |
 | PyTorch | 2.3.0+（CUDA 版本） |
 | bitsandbytes | 有它支持 QLoRA 4bit 量化微调 |
 
 补充说明：
-- 显存不够 8GB？→ 用 **QLoRA（4bit 量化 + LoRA）**，同样模型显存再降约 70%，4GB 卡也能玩转 1.5B~7B 模型；
+- 显存不够 8GB？→ 用 **QLoRA（4bit 量化 + LoRA）**，同样模型显存再降约 70%：**4GB 卡够跑 1.5B，7B 的 Q4 大约要 5GB**，4GB 还是紧；
 - 纯 CPU / AMD / Mac？→ Unsloth 支持有限，本书以 NVIDIA CUDA 为主线（示例环境为 Colab T4 ~15GB 显存，够跑 7B 量化微调）。
 
 @@trap 坑在哪
@@ -184,12 +184,13 @@ DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（mod
 |---|---|---|
 | Qwen 族 | Qwen2.5、R1-Distill-Qwen | 强 |
 | Llama 族 | Llama3、R1-Distill-Llama | 中 |
-| Mistral 族 | Mistral、Phi-3 | 中 |
+| Mistral 族 | Mistral、Mixtral | 中 |
+| Phi 族 | Phi-3（`phi3`，独立架构，不属于 Mistral） | 中（Unsloth 有单独适配） |
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| "DeepSeek-R1-1.5B 不是 Qwen 吗？为什么跟 Qwen 代码一样？" | 蒸馏模型的架构继承逼近源模型骨架。**按架构族写代码**，别认错系列名 |
+| "DeepSeek-R1-1.5B 不是 Qwen 吗？为什么跟 Qwen 代码一样？" | 学生模型的骨架沿用 Qwen 基座，只蒸馏 R1 的输出。**按架构族写代码**，别认错系列名 |
 | 冷门架构模型用 Unsloth 报错 | Unsloth 只优化主流架构。**冷门模型退回手写 LoRA**（第 4~7 章的能力这时候派上用场） |
 | 用错了"家族"对应的代码片段 | 认准架构族名写加载/训练代码。**不确定就 print(model)** 看内部结构对号入座 |
 
@@ -256,7 +257,7 @@ DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（mod
 | **安装方法** | 一行 pip + 版本纪律，Colab 与本地两条路线 |
 | **选型眼光** | 按显存红线/任务语言/先小后大选模型，认架构族 |
 
-下一章上手实操：FastLanguageModel 加载、Alpaca 数据集、SFTTrainer 一键训练，与手写基线对比"快了多少钱"。
+下一章上手实操：FastLanguageModel 加载、Alpaca 数据集、SFTTrainer 一键训练，与手写基线对比"快了多少、省了多少显存"。
 
 @@quiz
 1. Unsloth 加速的核心机制是什么？（一句话）

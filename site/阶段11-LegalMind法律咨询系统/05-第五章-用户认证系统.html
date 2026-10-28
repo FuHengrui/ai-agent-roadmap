@@ -282,7 +282,7 @@
 <h1>第五章　用户认证系统</h1>
 <div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>还没登录就能让系统调用大模型给你生成文书？不行——LLM 按 token 计费，一次裸奔请求就是一次白嫖。LegalMind 需要一个<strong>账号体系</strong>：注册、登录、签发"令牌"（JWT），并且让聊天、文书、案例检索这些接口<strong>只认登录用户</strong>。 本章把认证全链路做透：<strong>bcrypt 密码哈希</strong>（密码不存明文）、<strong>JWT 签发与校验</strong>（无状态令牌）、<strong>FastAPI 依赖注入</strong>（<code>get_current_user</code> 一插，任何路由自动鉴权）。学完本章，你会有四个接口（注册/登录）和一套"插拔式"的鉴权守卫，后面所有需要登录的接口加一个 <code>Depends(get_current_user)</code> 就完事。</p>
+<p>还没登录就能让系统调用大模型给你生成文书？不行——LLM 按 token 计费，一次裸奔请求就是一次白嫖。LegalMind 需要一个<strong>账号体系</strong>：注册、登录、签发"令牌"（JWT），并且让聊天、文书、案例检索这些接口<strong>只认登录用户</strong>。 本章把认证全链路做透：<strong>bcrypt 密码哈希</strong>（密码不存明文）、<strong>JWT 签发与校验</strong>（无状态令牌）、<strong>FastAPI 依赖注入</strong>（<code>get_current_user</code> 一插，任何路由自动鉴权）。学完本章，你会有两个接口（注册/登录）和一套"插拔式"的鉴权守卫，后面所有需要登录的接口加一个 <code>Depends(get_current_user)</code> 就完事。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 4 章的 User 表建好了就能开始，这章写的是哈希和签发令牌，不用配新服务。</p></div></div>
@@ -292,7 +292,7 @@
 <span class="node">上一章（第四章 数据库模型）：User 表已定义——username/email/hashed_password/nickname 字段都在</span>
 <span class="node"><span class="here">本章 你在这里：把 User 表用起来——密码哈希、JWT、注册/登录 API、get_current_user 依赖</span></span>
 <span class="node">下一章：LLM 多供应商客户端——认证用到的 config（SECRET_KEY）等继续复用</span>
-<span class="node">再往后：第 9 章所有业务 API 挂上 Depends(get_current_user) 完成鉴权</span>
+<span class="node">再往后：第 10 章所有业务 API 挂上 Depends(get_current_user) 完成鉴权</span>
 <span class="node">阶段终点：/api/auth/register、/api/auth/login 可用，受保护接口 401 一团乱麻的时代结束</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 密码存储：为什么必须哈希</div><div class="body">
@@ -337,7 +337,7 @@ from app.config import settings
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({&quot;exp&quot;: expire})
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=&quot;HS256&quot;)</pre>
 <p>核心点：</p>
@@ -346,7 +346,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为 JWT 是加密的，把手机号、住址塞进 payload</td><td>JWT 只是签名防篡改，payload 是明文 base64，谁都能解码；密钥只能放 uid、过期时间这类非敏感信息</td></tr>
+<tr><td>以为 JWT 是加密的，把手机号、住址塞进 payload</td><td>JWT 只是签名防篡改，payload 是明文 base64，谁都能解码；payload 里只能放 uid、过期时间这类非敏感信息</td></tr>
 <tr><td>token 不设过期时间</td><td>泄露的 token 永远有效，等于把钥匙交出去；access token 短时效（15-60 分钟）必须配 exp，刷新用 refresh token</td></tr>
 </table>
 </div>
@@ -360,7 +360,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 <pre>from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from app.models.user import User
-from app.utils.security import get_password_hash, create_access_token
+from app.utils.security import get_password_hash, verify_password, create_access_token
 
 router = APIRouter()
 
@@ -439,11 +439,11 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     if not user:
         raise HTTPException(status_code=401, detail=&quot;用户不存在&quot;)
     return user</pre>
-<p>使用方式（第 9 章 API 的标配）：</p>
+<p>使用方式（第 10 章 API 的标配）：</p>
 <pre>@router.post(&quot;/stream&quot;)
 async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
     ...</pre>
-<ul><li><code>HTTPBearer(auto_error=False)</code>：<strong>不自动报错</strong>，让 credentials 为 None 时走我们自己的 401 文案（而不是 Swagger 默认英文报错）。</li><li>校验链：<strong>拿了 Bearer → 解密验签 → 取 sub → 查库确认用户存在</strong>——令牌合法但用户被删了也能拦住。</li></ul>
+<ul><li><code>HTTPBearer(auto_error=False)</code>：<strong>不自动报错</strong>，让 credentials 为 None 时走我们自己的 401 文案（而不是 Swagger 默认英文报错）。</li><li>校验链：<strong>拿了 Bearer → </strong>验签<strong>（JWT 只签名不加密，payload 是明文 base64）→ 解出 payload → 取 sub → 查库确认用户存在</strong>——令牌合法但用户被删了也能拦住。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -460,7 +460,7 @@ async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
 <p>后端签发 token，前端要"存下并每次带上"。localStorage vs cookie、请求拦截器在哪加，这些对接细节决定登录态好不好用。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>LegalMind 前端（第 10、11 章展开）的策略：</p>
+<p>LegalMind 前端（第 11、12 章展开）的策略：</p>
 <ul><li><strong>存储</strong>：<code>localStorage.setItem('token', resp.access_token)</code>，同时存 user 对象（含 nickname）。</li><li><strong>自动携带</strong>：axios 请求拦截器统一加头：</li></ul>
 <pre>// api/client.js
 client.interceptors.request.use((config) =&gt; {
@@ -485,7 +485,7 @@ client.interceptors.request.use((config) =&gt; {
 <p>就算 token 逻辑都对，用户手动输 URL 访问 /chat 也会直接进页面——必须在路由层挡住未登录访问，这就是"前端守卫"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>vue-router 的 <code>beforeEach</code> 全局守卫（第 10 章细讲，这里给结论）：</p>
+<p>vue-router 的 <code>beforeEach</code> 全局守卫（第 11 章细讲，这里给结论）：</p>
 <pre>router.beforeEach((to, from, next) =&gt; {
   const token = localStorage.getItem(&#x27;token&#x27;)
   if (to.meta.requiresAuth &amp;&amp; !token) {
@@ -516,7 +516,7 @@ curl -X POST http://localhost:8000/api/auth/login \
 
 # 3. 不带 token 访问受保护接口 → 401
 curl http://localhost:8000/api/chat/sessions
-# {&quot;detail&quot;:&quot;未登录&quot;}
+# {&quot;detail&quot;:&quot;无效的认证凭证&quot;}
 
 # 4. 带 token 访问 → 正常返回
 curl http://localhost:8000/api/chat/sessions \

@@ -430,7 +430,7 @@ result = [x for x in range(10000)]</pre>
 </div></div>
 <div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 列表：删除元素与"删除的本质"</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>删元素有三种方式，<strong>它们的区别不在"删掉"，而在"返回什么"和"怎么找"</strong>。搞混了会出 bug。</p>
+<p>删元素有四种方式，<strong>它们的区别不在"删掉"，而在"返回什么"和"怎么找"</strong>。搞混了会出 bug。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <table>
@@ -474,7 +474,7 @@ a.count(&quot;昆明&quot;)    # 2           数出现次数
 
 len(a)            # 3           长度</pre>
 <p><strong><code>in</code> 的隐藏代价</strong>：列表的 <code>in</code> 是<strong>逐个比对</strong>，列表越长越慢（O(n)）。如果只是判断"在不在"而且数据很多，<strong>用集合</strong>：</p>
-<pre>cities_list = [...10000 个...]
+<pre>cities_list = list(range(10000))   # 一万个城市名，这里用数字占位
 &quot;北京&quot; in cities_list    # 🐢 最坏要比 10000 次
 
 cities_set = set(cities_list)
@@ -652,7 +652,7 @@ dict(zip(names, scores))     # {&#x27;张三&#x27;:90, &#x27;李四&#x27;:85}  �
     &quot;salary&quot;: 12000,
 }
 job[&quot;city&quot;]        # &#x27;昆明&#x27;      ← 按名字取，不用记它是第几个</pre>
-<p><strong>四种创建方式</strong>：</p>
+<p><strong>几种常见创建方式</strong>：</p>
 <pre>d = {}                                       # 空字典（注意：不是集合！）
 d = dict()                                   # 空字典
 d = {&quot;a&quot;: 1, &quot;b&quot;: 2}                         # 字面量

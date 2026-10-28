@@ -466,7 +466,7 @@ def _carb_status(self, total_carbs: float) -&gt; str:
 <tr><td>recommend_meal</td><td>❌ 同步</td><td>纯内存计算（列表筛选+排序），无 I/O</td></tr>
 <tr><td>_calorie_status / _carb_status</td><td>❌ 同步</td><td>纯函数，无 I/O</td></tr>
 </table>
-<p>设计纪律：<strong>有数据库/网络 I/O 才 async，纯计算必须同步</strong>。路由调用时 <code>await diet_advisor.get_daily_nutrition(...)</code>（异步）与 <code>diet_advisor.recommend_meal(...)</code>（同步，但要保险可包 await）——<strong>同步方法在 async 路由里直接调用即可</strong>（不 await），不会有问题；反之同步方法里 await 才会炸。</p>
+<p>设计纪律：<strong>有数据库/网络 I/O 才 async，纯计算必须同步</strong>。路由调用时 <code>await diet_advisor.get_daily_nutrition(...)</code>（异步）与 <code>diet_advisor.recommend_meal(...)</code>（同步方法：直接调用就行，<strong>不能 await</strong>）——<strong>同步方法在 async 路由里直接调用即可</strong>（不 await），不会有问题；反之同步方法里 await 才会炸。</p>
 <p>另外注意明确边界：<code>recommend_meal</code> 在章节里的路由为 <code>recommend/{meal_type}</code>，接 <code>patient_id</code> 与 <code>meal_type</code> 从路径取，内部拿最近血糖——<strong>引擎不自己连数据库</strong>，数据由路由喂进来，保持纯函数可单测。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

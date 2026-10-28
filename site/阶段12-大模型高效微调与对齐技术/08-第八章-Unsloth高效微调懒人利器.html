@@ -314,7 +314,7 @@
 <tr><td>模型本身一视同仁</td><td>逐模型定制（llama 系、qwen 系专门优化）</td></tr>
 </table>
 <p>所以：</p>
-<ul><li><strong>模型权重、结构、训练逻辑全不变</strong>——你学的 LoRA 理论照样成立；</li><li>快是因为<strong>算得少、访存少</strong>：内核融合 + 更聪明的内存布局；</li><li>省显存是因为<strong>梯度累积、检查点、分段计算等细节被优化</strong>（结合 LoRA 只训补丁，整体显存大幅下降）。</li></ul>
+<ul><li><strong>模型权重、结构、训练逻辑全不变</strong>——你学的 LoRA 理论照样成立；</li><li>快是因为<strong>算得少、访存少</strong>：内核融合 + 更聪明的内存布局；</li><li>省显存是因为<strong>梯度检查点、内核融合、4bit 量化等细节被优化</strong>（结合 LoRA 只训补丁，整体显存大幅下降）。</li></ul>
 <p>结论：Unsloth = 同一套 LoRA 训练的"换引擎"，不是换车。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -334,14 +334,14 @@
 <p>系统要求（整理为清单）：</p>
 <table>
 <tr><th>项目</th><th>要求</th></tr>
-<tr><td>显卡</td><td>NVIDIA GPU，<strong>8GB 显存</strong>以上（Q4 量化微调）</td></tr>
+<tr><td>显卡</td><td>NVIDIA GPU，<strong>8GB 显存</strong>以上（这是 fp16 LoRA 的建议值；Q4 量化下 1.5B 约 2GB、7B 约 5GB）</td></tr>
 <tr><td>驱动</td><td>已装 NVIDIA 驱动 + CUDA 可用</td></tr>
 <tr><td>Python</td><td>3.10~3.12（示例环境以 3.11 为例）</td></tr>
 <tr><td>PyTorch</td><td>2.3.0+（CUDA 版本）</td></tr>
 <tr><td>bitsandbytes</td><td>有它支持 QLoRA 4bit 量化微调</td></tr>
 </table>
 <p>补充说明：</p>
-<ul><li>显存不够 8GB？→ 用 <strong>QLoRA（4bit 量化 + LoRA）</strong>，同样模型显存再降约 70%，4GB 卡也能玩转 1.5B~7B 模型；</li><li>纯 CPU / AMD / Mac？→ Unsloth 支持有限，本书以 NVIDIA CUDA 为主线（示例环境为 Colab T4 ~15GB 显存，够跑 7B 量化微调）。</li></ul>
+<ul><li>显存不够 8GB？→ 用 <strong>QLoRA（4bit 量化 + LoRA）</strong>，同样模型显存再降约 70%：<strong>4GB 卡够跑 1.5B，7B 的 Q4 大约要 5GB</strong>，4GB 还是紧；</li><li>纯 CPU / AMD / Mac？→ Unsloth 支持有限，本书以 NVIDIA CUDA 为主线（示例环境为 Colab T4 ~15GB 显存，够跑 7B 量化微调）。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -437,13 +437,14 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <tr><th>架构族</th><th>代表模型</th><th>中文适配</th></tr>
 <tr><td>Qwen 族</td><td>Qwen2.5、R1-Distill-Qwen</td><td>强</td></tr>
 <tr><td>Llama 族</td><td>Llama3、R1-Distill-Llama</td><td>中</td></tr>
-<tr><td>Mistral 族</td><td>Mistral、Phi-3</td><td>中</td></tr>
+<tr><td>Mistral 族</td><td>Mistral、Mixtral</td><td>中</td></tr>
+<tr><td>Phi 族</td><td>Phi-3（<code>phi3</code>，独立架构，不属于 Mistral）</td><td>中（Unsloth 有单独适配）</td></tr>
 </table>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>"DeepSeek-R1-1.5B 不是 Qwen 吗？为什么跟 Qwen 代码一样？"</td><td>蒸馏模型的架构继承逼近源模型骨架。<strong>按架构族写代码</strong>，别认错系列名</td></tr>
+<tr><td>"DeepSeek-R1-1.5B 不是 Qwen 吗？为什么跟 Qwen 代码一样？"</td><td>学生模型的骨架沿用 Qwen 基座，只蒸馏 R1 的输出。<strong>按架构族写代码</strong>，别认错系列名</td></tr>
 <tr><td>冷门架构模型用 Unsloth 报错</td><td>Unsloth 只优化主流架构。<strong>冷门模型退回手写 LoRA</strong>（第 4~7 章的能力这时候派上用场）</td></tr>
 <tr><td>用错了"家族"对应的代码片段</td><td>认准架构族名写加载/训练代码。<strong>不确定就 print(model)</strong> 看内部结构对号入座</td></tr>
 </table>
@@ -511,7 +512,7 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <tr><td><strong>安装方法</strong></td><td>一行 pip + 版本纪律，Colab 与本地两条路线</td></tr>
 <tr><td><strong>选型眼光</strong></td><td>按显存红线/任务语言/先小后大选模型，认架构族</td></tr>
 </table>
-<p>下一章上手实操：FastLanguageModel 加载、Alpaca 数据集、SFTTrainer 一键训练，与手写基线对比"快了多少钱"。</p>
+<p>下一章上手实操：FastLanguageModel 加载、Alpaca 数据集、SFTTrainer 一键训练，与手写基线对比"快了多少、省了多少显存"。</p>
 <h4>自测：能不能答上来</h4>
 <ol><li>Unsloth 加速的核心机制是什么？（一句话）</li><li>Windows 原生装 Unsloth 常遇什么问题？推荐的替代环境是什么？</li><li>选微调模型的三原则是什么？</li><li>DeepSeek-R1-Distill-Qwen-1.5B 属于哪个架构族？判断依据是什么？</li><li>为什么说"先手写 LoRA、再用 Unsloth"？换个模型遇到报错，谁兜底？</li><li>Colab 免费版的两个典型限制是什么？对应解法？</li><li>本章验收清单里最关键的显存相关检查是什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

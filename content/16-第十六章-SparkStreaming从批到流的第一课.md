@@ -157,7 +157,8 @@ val nums = ssc.socketTextStream("localhost", 9999).map(_.toInt)
 nums.map(_ * 2)                    // 批内×2
 nums.filter(_ > 100)               // 批内过滤
 nums.reduce(_ + _)                 // 本批之和（只算本批！）
-nums.reduceByKey(_ + _)            // 本批按键聚合（跨批不累计）
+// nums 是 Int 流：reduceByKey 只对 (K, V) 流有效
+nums.map(x => (x % 10, 1)).reduceByKey(_ + _)   // 先转成键值流，再按 key 聚合（跨批不累计）
 
 // 双流 join（同时间片对齐再关联）
 val a: DStream[(Int, String)] = ...
@@ -174,8 +175,12 @@ a.join(b)                          // 每个时间片上做 join
 **最有用的特殊算子 `transform`**：把 DStream 转成 RDD 做"批处理专属操作"（如和静态 RDD 做 broadcast 关联）：
 
 ```scala
-val bigDict: RDD[Map[String, String]] = ...
-ds.transform(rdd => rdd.leftOuterJoin(bigDict))   // 每批 RDD 与静态维表 join
+val bigDict = sc.parallelize(Seq(("a", "A"), ("b", "B"))).collectAsMap()   // 静态维表收成 Map
+val dictBC  = sc.broadcast(bigDict)
+
+val enriched = stream.transform { rdd =>        // stream: DStream[(String, Int)]
+  rdd.map { case (k, v) => (k, dictBC.value.getOrElse(k, ""), v) }
+}
 ```
 
 @@trap 坑在哪

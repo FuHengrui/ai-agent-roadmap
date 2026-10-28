@@ -359,11 +359,11 @@
 <div class="step idea"><span class="label">核心思路</span>
 <table>
 <tr><th>优势</th><th>RAG 的做法</th><th>对比</th></tr>
-<tr><td><strong>知识实时更新</strong></td><td>资料进库 = 立即生效，改一个字分钟级可查</td><td>微调要重新训练，动辄几小时</td></tr>
+<tr><td><strong>知识实时更新</strong></td><td>重新走一遍入库流程（分块 → 向量化 → 入库）就生效，通常分钟到小时级，<strong>改一个字也要重跑这一段</strong></td><td>微调要重新训练，动辄数小时到数天</td></tr>
 <tr><td><strong>可溯源、可信</strong></td><td>每句回答都能指回"出自哪份文档"，方便追问"依据呢"</td><td>模型自由发挥，错都不知道错哪</td></tr>
 <tr><td><strong>数据安全</strong></td><td>私有数据只存在于本地检索库，<strong>不进模型、不上训练</strong></td><td>关键行业（金融/医疗）的合规刚需</td></tr>
 <tr><td><strong>成本低</strong></td><td>只需给模型做推理，不用为每个领域花钱训练</td><td>微调大模型是百万级投入</td></tr>
-<tr><td><strong>可控衰减幻觉</strong></td><td>资料里没有 → 模型能说"不知道"</td><td>大幅缓解胡说八道</td></tr>
+<tr><td><strong>大幅缓解幻觉</strong></td><td>资料里没有 → 模型能说"不知道"</td><td>比纯生成可靠得多，但不是零幻觉</td></tr>
 </table>
 <p>一句话总结：<strong>RAG = 让模型只回答"你提供的事实"，不回答"它脑补的"</strong>。对预算有限、业务多变、行业敏感的企业，这是性价比最高的路线。</p>
 </div>
@@ -464,8 +464,8 @@
 <pre>一次请求同时执行：
   match 查询（BM25 打分） + dense_vector kNN查询（余弦打分）
   ↓
-两路分数按权重合并（0.5 * bm25 + 0.5 * cosine）→ 排序取 Top-K</pre>
-<p><strong>决策建议</strong>：知识库内容以"规章制度、产品文档、FAQ"这种<strong>术语密集、表述固定</strong>为主 → 混合检索是标配；以"综述、散文、自然聊天资料"为主 → 纯向量也能跑。第一篇先把标准 RAG 跑通，再按效果决定加不加另一路。</p>
+两路分数**先各自归一化**（如 min-max），再按权重合并（0.5 * norm(bm25) + 0.5 * norm(cosine)）→ 排序取 Top-K</pre>
+<p><strong>决策建议</strong>：知识库内容以"规章制度、产品文档、FAQ"这种<strong>术语密集、表述固定</strong>为主 → 混合检索是标配；以"综述、散文、自然聊天资料"为主 → 纯向量也能跑。第一步先把标准 RAG 跑通，再按效果决定加不加另一路。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -570,7 +570,7 @@
 <ol><li>RAG vs 微调的选择依据，正确的是？</li></ol>
 <p>A. RAG 解决"知道什么"，微调解决"怎么表现"　　B. 微调比 RAG 永远便宜　　C. 两者互斥，只能二选一　　D. 数据量大就该微调</p>
 <div class="links"><span class="tag">本章配套资料</span>
-<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>章节2_RAG基础理论.pdf</span>
+<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>章节3_RAG基础理论.pdf</span>
 <span class="lk"><span class="k">文档</span>（资料存放于 6.企业级RAG系统架构与实现/章节3/文档/）</span>
 <span class="lk"><span class="k">文档</span>RAG 演进参考（Modular RAG / Self-RAG / CRAG 延伸阅读）</span></div>
 </div>
