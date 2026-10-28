@@ -42,7 +42,7 @@ class ChatResponse(BaseModel):
     sources: List[dict]
     session_id: str
 ```
-设计要点：**session_id 由前端生成后传入**（`None` 则后端生成）——这样前端可以在 SessionStorage 里先记住，避免"发完消息不知道会话 ID 是什么"。
+设计要点：**session_id 由前端生成后传入——**但后端必须用 _get_owned_session 校验归属**，否则拿到别人的 session_id 就能读写他人会话**（`None` 则后端生成）——这样前端可以在 SessionStorage 里先记住，避免"发完消息不知道会话 ID 是什么"。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

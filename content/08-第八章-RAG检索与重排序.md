@@ -15,7 +15,7 @@ LegalMind 的 RetrievalAgent 用 **"多路召回 + 重排序"** 的组合拳：�
 上一章（第七章 向量库）：ChromaDB 里已有案例向量，similarity_search 可用了
 **本章** 你在这里：把检索升级为完整 RAG——向量+BM25 双路召回、重排序、过滤、阈值筛选
 下一章：Agent 系统与 LangGraph——RetrievalAgent 成为工作流里的"case_retrieval 节点"
-再往后：第 9 章聊天/文书 API 用上 QAAgent 这套 RAG 链路
+再往后：第 10 章聊天/文书 API 用上 QAAgent 这套 RAG 链路
 阶段终点：检索质量可调可验，QA 回答有据可依
 
 @@point ① RAG 的完整链路回顾
@@ -142,7 +142,7 @@ class RetrievalAgent:
 @@need 要解决什么
 检索出 5 条案例，不能直接把 dict 丢给 LLM——要格式化成"案例清单"文本，让模型一眼看懂每个案例的标题、案号、法院、要旨、法条。
 @@idea 核心思路
-QAAgent（第 8 章）+ 第 6 章 `QA_SYSTEM_PROMPT` 的组装（`_format_cases`）：
+QAAgent（第 9 章）+ 第 6 章 `QA_SYSTEM_PROMPT` 的组装（`_format_cases`）：
 ```python
 def _format_cases(self, cases: list[dict]) -> str:
     if not cases:

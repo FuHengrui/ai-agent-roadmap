@@ -15,7 +15,7 @@
 @@map 这一章在整个知识库里的位置
 **上一章**：分支管理——贴纸模型、合并、误删找回
 **本章** ← 你在这里：收官两件套——标签（给版本打记号）+ Git Flow（团队分支规范）+ IDEA 集成
-**下一章**：走出版本控制这一站，进入阶段 18 后续章节——持续集成与更多 DevOps 工具链
+**下一章**：走出版本控制这一站，进入第 15 章 Docker 概述与容器化思想
 
 @@point ① 标签是什么：给重要的提交贴"永久名牌"
 @@need 要解决什么
@@ -216,7 +216,7 @@ git push origin develop
 
 # 2. 发布：从 develop 开 release，测试后合入 master
 git checkout -b release-0.1.0 develop
-git checkout master && git merge --no-ff release-0.1.0
+git checkout master && git checkout master && git merge --no-ff release-0.1.0`ngit checkout develop && git merge --no-ff release-0.1.0   # release 要双合：master 和 develop 都要合回
 
 # 3. 打标签并推送
 git tag v0.1.0
@@ -232,7 +232,7 @@ git add . && git commit -m "修复线上 bug"
 git checkout master && git merge --no-ff hotfix-0.1.1
 git checkout develop && git merge hotfix-0.1.1
 git push origin master develop
-git tag v0.1.1 && git push origin v0.1.1
+git checkout master   # 标签要打在发布提交上，别在 develop 上打`ngit tag v0.1.1 && git push origin v0.1.1
 ```
 
 每一步对应 Git Flow 的一张"角色卡"：功能合 develop、release 双合、master 必打标签、hotfix 双向补。这套流程跑顺了，团队协作就稳了。
