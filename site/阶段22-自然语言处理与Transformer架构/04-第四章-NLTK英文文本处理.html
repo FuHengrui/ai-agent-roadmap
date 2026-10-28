@@ -300,7 +300,7 @@
 <ul><li><strong>文本处理</strong>：分句、分词、停用词过滤。</li><li><strong>词形处理</strong>：词干提取、词形还原。</li><li><strong>语法层面</strong>：分块、句法树、命名实体识别（简单版）。</li><li><strong>语料库</strong>：内置电影评论、布朗语料等，可当教学与研究数据。</li></ul>
 <p>安装：</p>
 <pre>pip install nltk</pre>
-<p>首次使用部分功能需下载数据资源：<code>nltk.download('punkt')</code>（分词模型）、<code>nltk.download('wordnet')</code>（词形还原词典）等。它是英文文本分析的标准起点，非常适合做特征工程和小型 NLP 实验。</p>
+<p>首次使用部分功能需下载数据资源：<code>nltk.download('punkt_tab')   # NLTK 3.8.2+ 分词要用 punkt_tab，只下 punkt 会 LookupError</code>（分词模型）、<code>nltk.download('wordnet')</code>（词形还原词典）等。它是英文文本分析的标准起点，非常适合做特征工程和小型 NLP 实验。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -317,7 +317,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>英文初中级用法是空格分词，但<strong>标点粘连</strong>是坑：<code>Dr.</code> 里的句点不是句子结束、<code>U.S.A.</code> 里的点不能拆开。NLTK 的分句分词器专门处理这类歧义：</p>
 <pre>import nltk
-nltk.download(&#x27;punkt&#x27;)
+nltk.download(&#x27;punkt_tab&#x27;)   # NLTK 3.8.2+ 分词要用 punkt_tab，只下 punkt 会 LookupError
 
 from nltk.tokenize import sent_tokenize, word_tokenize
 
@@ -398,7 +398,7 @@ from nltk.tokenize import word_tokenize
 
 sentence = &quot;The quick fox jumps over the lazy dog.&quot;
 tokens = word_tokenize(sentence)
-tagged = pos_tag(tokens)   # 先做词性标注
+nltk.download(&#x27;averaged_perceptron_tagger_eng&#x27;)   # 词性标注器要单独下\ntagged = pos_tag(tokens)   # 先做词性标注
 
 # 规则：名词短语 = 可选冠词/形容词 + 名词
 grammar = &quot;NP: {&lt;DT&gt;?&lt;JJ&gt;*&lt;NN.*&gt;}&quot;
@@ -458,7 +458,7 @@ filtered = [w.lower() for w in tokens if w.lower() not in stop]
 print(filtered)
 # [&#x27;love&#x27;, &#x27;sun&#x27;, &#x27;moon&#x27;]</pre>
 <p>要点：</p>
-<ul><li>停用词过滤前通常先 <code>lower()</code> 统一大小写，否则 "The" 和 "the" 不一致。</li><li>要不要过滤要对齐任务：情感分析里 "not"（不在通用停用词表中）语义重要，别乱过滤；主题抽取可以过滤。</li><li>可以组合 <code>stopwords.words('english')</code> 与自己的领域停用词表取并集。</li></ul>
+<ul><li>停用词过滤前通常先 <code>lower()</code> 统一大小写，否则 "The" 和 "the" 不一致。</li><li>要不要过滤要对齐任务：情感分析里 "not"（其实在停用词表里，做情感分析时要专门剔掉）语义重要，别乱过滤；主题抽取可以过滤。</li><li>可以组合 <code>stopwords.words('english')</code> 与自己的领域停用词表取并集。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

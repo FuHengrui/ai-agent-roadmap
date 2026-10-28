@@ -31,7 +31,7 @@
 pip install nltk
 ```
 
-首次使用部分功能需下载数据资源：`nltk.download('punkt')`（分词模型）、`nltk.download('wordnet')`（词形还原词典）等。它是英文文本分析的标准起点，非常适合做特征工程和小型 NLP 实验。
+首次使用部分功能需下载数据资源：`nltk.download('punkt_tab')   # NLTK 3.8.2+ 分词要用 punkt_tab，只下 punkt 会 LookupError`（分词模型）、`nltk.download('wordnet')`（词形还原词典）等。它是英文文本分析的标准起点，非常适合做特征工程和小型 NLP 实验。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -48,7 +48,7 @@ pip install nltk
 
 ```python
 import nltk
-nltk.download('punkt')
+nltk.download('punkt_tab')   # NLTK 3.8.2+ 分词要用 punkt_tab，只下 punkt 会 LookupError
 
 from nltk.tokenize import sent_tokenize, word_tokenize
 
@@ -137,7 +137,7 @@ from nltk.tokenize import word_tokenize
 
 sentence = "The quick fox jumps over the lazy dog."
 tokens = word_tokenize(sentence)
-tagged = pos_tag(tokens)   # 先做词性标注
+nltk.download('averaged_perceptron_tagger_eng')   # 词性标注器要单独下\ntagged = pos_tag(tokens)   # 先做词性标注
 
 # 规则：名词短语 = 可选冠词/形容词 + 名词
 grammar = "NP: {<DT>?<JJ>*<NN.*>}"
@@ -205,7 +205,7 @@ print(filtered)
 要点：
 
 - 停用词过滤前通常先 `lower()` 统一大小写，否则 "The" 和 "the" 不一致。
-- 要不要过滤要对齐任务：情感分析里 "not"（不在通用停用词表中）语义重要，别乱过滤；主题抽取可以过滤。
+- 要不要过滤要对齐任务：情感分析里 "not"（其实在停用词表里，做情感分析时要专门剔掉）语义重要，别乱过滤；主题抽取可以过滤。
 - 可以组合 `stopwords.words('english')` 与自己的领域停用词表取并集。
 
 @@trap 坑在哪

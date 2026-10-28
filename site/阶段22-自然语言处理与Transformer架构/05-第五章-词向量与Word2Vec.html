@@ -422,7 +422,7 @@ model = Word2Vec(
     sentences,
     vector_size=100,  # 词向量维度
     window=5,         # 上下文窗口
-    min_count=2,      # 低频词过滤
+    min_count=1,      # 本例语料小，min_count=2 会把词全滤掉
     sg=1,             # 1=Skip-gram, 0=CBOW
     negative=5,       # 负采样个数
     epochs=10,        # 训练轮数
@@ -452,7 +452,7 @@ print(v[:3], sim)</pre>
 <pre>vec(&quot;国王&quot;) - vec(&quot;男人&quot;) + vec(&quot;女人&quot;) ≈ vec(&quot;女王&quot;)</pre>
 <p>代码验证：</p>
 <pre>result = model.wv.most_similar(
-    positive=[&quot;女人&quot;], negative=[&quot;男人&quot;], topn=1
+    positive=[&quot;女人&quot;, &quot;国王&quot;], negative=[&quot;男人&quot;], topn=1   # 国王 - 男人 + 女人 ≈ 女王
 )
 # = vec(男人-&gt;女人 方向) + 关系 检索</pre>
 <p>另一种简单评估是 <strong>most_similar / similarity 直觉检查</strong>：</p>
