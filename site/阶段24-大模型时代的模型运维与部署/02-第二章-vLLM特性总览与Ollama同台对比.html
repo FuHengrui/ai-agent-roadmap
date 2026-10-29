@@ -325,7 +325,7 @@
 <pre>你的 OpenAI SDK / 调用代码
    ↓ 只需改 base_url
 http://localhost:8000/v1   ← vLLM 服务</pre>
-<p><strong>收益</strong>：所有为 OpenAI API 写的客户端（LangChain、OpenAI SDK、各类 Agent 框架）<strong>零改动</strong>切换到自部署模型。这让 vLLM 在企业内"无缝替换"私有化模型成为可能。</p>
+<p><strong>收益</strong>：所有为 OpenAI API 写的客户端（LangChain、OpenAI SDK、各类 Agent 框架）<strong>只改 base_url（外加 model 名和 api_key）</strong>就能切换到自部署模型。这让 vLLM 在企业内"无缝替换"私有化模型成为可能。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -421,7 +421,7 @@ http://localhost:8000/v1   ← vLLM 服务</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>vLLM 的扩展路径：</p>
-<ul><li><strong>张量并行（Tensor Parallelism）</strong>：把模型按权重维度切到多张 GPU 卡上，单卡放不下的大模型靠多卡拼起来（如 70B 模型 2~4 卡）。</li><li><strong>多实例/横向扩展</strong>：一台机多实例、多台机负载均衡，承接更大并发。</li><li>与 <strong>Ray</strong> 等分布式框架集成，编排推理集群。</li></ul>
+<ul><li><strong>张量并行（Tensor Parallelism）</strong>：把模型按权重维度切到多张 GPU 卡上，单卡放不下的大模型靠多卡拼起来（如 70B 模型 FP16 权重约 140GB，要 2×80GB 起、4×80GB 较稳（24GB 卡得 6~8 张，或改量化））。</li><li><strong>多实例/横向扩展</strong>：一台机多实例、多台机负载均衡，承接更大并发。</li><li>与 <strong>Ray</strong> 等分布式框架集成，编排推理集群。</li></ul>
 <p>选型参考：先算模型参数"重量"（如 7B FP16 ≈ 14GB），再按单卡显存决定并行度与部署拓扑。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -442,7 +442,7 @@ http://localhost:8000/v1   ← vLLM 服务</pre>
 企业私有化服务    → vLLM（吞吐、API、量化、并行）
 生产高并发压测    → vLLM + 负载均衡 + 监控
 模型太大单卡不够  → 张量并行 / 量化（4bit/FP8）
-手上有 OpenAI 客户端 → vLLM 零改造接入（改 base_url）</pre>
+手上有 OpenAI 客户端 → vLLM 接入（改 base_url + model 名；OpenAI SDK 强制要 api_key，本地没设就填 &quot;EMPTY&quot;）</pre>
 <p>无论选哪个，部署前都先回答：<strong>并发预期、模型大小、显存预算、API 生态</strong>——这四个问题锁定方案。</p>
 </div>
 </div></div>
@@ -451,7 +451,7 @@ http://localhost:8000/v1   ← vLLM 服务</pre>
 <table>
 <tr><th>主题</th><th>结论</th></tr>
 <tr><td>特性矩阵</td><td>优化/量化/API/并行/监控一站服务</td></tr>
-<tr><td>OpenAI 兼容</td><td>改 base_url 即插即用，生态零改造</td></tr>
+<tr><td>OpenAI 兼容</td><td>改 base_url（外加 model 名、api_key）即插即用</td></tr>
 <tr><td>前缀缓存+流式</td><td>首令牌延迟大降，体验符合 ChatGPT 标准</td></tr>
 <tr><td>量化支持</td><td>AWQ/GPTQ/FP8，承接阶段23 成果</td></tr>
 <tr><td>多 LoRA</td><td>一套底座服务多个适配器</td></tr>

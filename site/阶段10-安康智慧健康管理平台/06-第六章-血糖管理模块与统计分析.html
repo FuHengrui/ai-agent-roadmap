@@ -366,8 +366,10 @@ async def create_record(data: BloodSugarCreate):
 @router.get(&quot;/patient/{patient_id}&quot;, response_model=List[BloodSugarResponse])
 async def get_records(patient_id: int, days: int = Query(7, ge=1, le=90)):
     await Patient.get_or_none(id=patient_id)
-    # 从&quot;当前时间往前推 days 天&quot;，取那天 0 点作为起始
-    since = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=days)
+    # 近 N 天 = 含今天往前数 N 个自然日，起点是「N-1 天前的本地 0 点」
+    # 别用 utcnow()：UTC 0 点 = 北京 8 点，会少算 8 小时；也别减 days（会多算一天）
+    today = datetime.now().date()
+    since = datetime.combine(today - timedelta(days=days - 1), datetime.min.time())
     records = await BloodSugar.filter(
         Q(patient_id=patient_id) &amp; Q(measured_at__gte=since)
     ).order_by(&quot;-measured_at&quot;).all()

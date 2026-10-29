@@ -24,7 +24,7 @@
 |---|---|
 | GPU | NVIDIA（CUDA 生态） |
 | 显存 | ≥ 24GB（7B 跑 FP16；13B 要 INT4 量化才塞得下） |
-| CUDA | ≥ 12.1（官方预编译 wheel 默认 cu128（较老的版本是 cu124 / cu121）） |
+| CUDA | 跟 wheel 走：装 cu128 就要 CUDA 12.8 的驱动，装 cu124 就要 12.4（别把 12.1 当统一门槛） |
 
 为什么 24GB：7B 模型 FP16 权重≈14GB，再算上 KV 缓存与激活，"刚好塞进 24GB"是能流畅服务的最低线。**显存是部署的第一约束**，模型/位宽/并发全围绕它设计。
 
@@ -58,7 +58,7 @@ nvidia-smi
 
 - **Name**：GPU 型号（如 RTX 4090、A100）。
 - **Memory-Usage**：总显存/已用显存（验证 ≥24GB）。
-- **CUDA Version**：驱动支持的 CUDA 版本（≥12.1 才满足当前 vLLM 预编译包的要求）。
+- **CUDA Version**：驱动**能支持的最高** CUDA 版本；它必须 ≥ 你要装的那个 cuXXX wheel 的版本。
 
 如果 `nvidia-smi` 找不到：说明没有 NVIDIA 驱动/显卡，vLLM 无法工作，需要先装驱动或用 CPU 替代方案（vLLM 基本不适用）。
 
@@ -68,7 +68,7 @@ nvidia-smi
 | 把驱动 CUDA 当运行库 CUDA | nvidia-smi 显示的是驱动支持上限，容器内还要装对应 CUDA 运行库 |
 | 显存被其他进程占满 | 部署前 `nvidia-smi` 看已用显存，避免"显存够但被占"的假象 |
 
-@@point ③ CUDA ≥ 12.1 意味着什么
+@@point ③ CUDA 版本门槛到底怎么算
 @@need 要解决什么
 为什么 vLLM 对 CUDA 版本有硬要求？
 
@@ -76,7 +76,7 @@ nvidia-smi
 **CUDA 是 NVIDIA GPU 的编程接口**，vLLM 的高性能内核（PagedAttention 等）依赖它编译/运行：
 
 - **版本太低**：无法调用新算子/新指令，甚至编译失败。
-- **版本匹配**：驱动 ≥ 运行库版本即可（驱动向下兼容，运行库要求写在 vLLM 文档里）。
+- **版本匹配**：驱动**支持的最高 CUDA 版本** ≥ 运行库 CUDA 版本 ≥ 框架编译版本（驱动版本号是 5xx.xx，和 CUDA 版本号不是一个量纲，别直接比大小）（驱动向下兼容，运行库要求写在 vLLM 文档里）。
 
 官方预编译 wheel 现在默认配 cu128（较老的版本是 cu124 / cu121，11.8 只存在于更老的版本）。所以核对时按 **≥12.1** 看，驱动比运行库新一点没关系——越新对新一代 GPU 与算子的支持越好。注意分清三层：**驱动（driver）≥ 运行库（runtime）≥ PyTorch/vLLM 编译版本**。
 
@@ -95,7 +95,7 @@ vLLM 依赖的 PyTorch 等包版本敏感，**直接装进系统 Python 容易�
 
 ```
 python -m venv vllm_env        # 创建
-source vllm_env/bin/activate   # 激活（Windows: vllm_env\Scripts\activate）
+source vllm_env/bin/activate   # 激活（Windows PowerShell: .\vllm_env\Scripts\Activate.ps1（cmd 用 activate.bat））
 ```
 
 之后所有 `pip install` 都只影响该环境，互不污染。用 conda 也行，顺序不一样：`conda create -n vllm_env python=3.11` 建，再 `conda activate vllm_env` 激活。

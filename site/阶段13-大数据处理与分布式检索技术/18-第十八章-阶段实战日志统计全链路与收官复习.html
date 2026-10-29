@@ -349,7 +349,7 @@ val clean = raw
   .filter(col(&quot;ts_str&quot;).isNotNull &amp;&amp; col(&quot;user_id&quot;).isNotNull)
   .withColumn(&quot;dt&quot;, to_date(col(&quot;ts_str&quot;), &quot;yyyy-MM-dd HH:mm:ss&quot;))
   .withColumn(&quot;page&quot;, regexp_replace(col(&quot;page&quot;), &quot;\?.*$&quot;, &quot;&quot;))
-  .drop(&quot;ts_str&quot;).filter(col(&quot;dt&quot;).isNotNull)
+  .drop(&quot;ts_str&quot;).filter(col(&quot;dt&quot;).isNotNull)   # 注意：DWD 还要留 ts（timestamp），批流按分钟对账时要用；只留 dt 就只能按天对
 
 // 写 DWD 分区表（按 dt 分区）
 clean.write.mode(&quot;overwrite&quot;).partitionBy(&quot;dt&quot;).saveAsTable(&quot;dwd.log_clean&quot;)</pre>

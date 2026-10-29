@@ -326,18 +326,25 @@
 <div class="step idea"><span class="label">核心思路</span>
 <pre>@router.post(&quot;/copy&quot;)
 async def copy_content(title_id: int, user_id: int = Depends(get_current_user_id)):
-    title = await Title.get_or_none(id=title_id)   # Title 没有 user_id 列，归属要顺着 section_id 查 Section
+    # 归属校验：t_titles 没有 user_id 列，先查 Title 再顺 section_id 查 Section
+    title = await Title.get_or_none(id=title_id)
     if not title or not await Section.get_or_none(id=title.section_id, user_id=user_id):
         raise HTTPException(404, &quot;标题不存在&quot;)
+
+    # 状态守卫：已发布(2)/已废弃(3) 不能再生成，否则违反发布冻结
+    if title.status in (2, 3):
+        raise HTTPException(400, &quot;已发布/已废弃的文案不能重新生成&quot;)
+
     text = await content_creation(title.title)     # agent 层调文案 Bot
     if not text or not text.strip():
         raise HTTPException(500, &quot;文案生成失败，请重试&quot;)
+
     title.content = text
-    title.status = 1   # 模型是 SmallIntField，字符串会让前端 === 1 判空                             # 1=已生成
+    title.status = 1              # 存 int：模型是 SmallIntField，前端按 === 1 判断
     await title.save()
     return {&quot;code&quot;: 200, &quot;data&quot;: {&quot;id&quot;: title.id, &quot;content&quot;: title.content}}</pre>
 <p>三个要点：</p>
-<ol><li><strong>归属校验</strong>：<code>filter(id, user_id=user_id)</code> —— 防越权改别人的标题（一石二鸟：404 vs 403 语义，本项目用 404 防"枚举探测"）；</li><li><strong>状态机推进</strong>：生成成功才把 status 从 0 置 1；</li><li>返回 id+content 让前端直接渲染新文案。</li></ol>
+<ol><li><strong>归属校验</strong>：<code>t_titles</code> 没有 <code>user_id</code> 列，所以先 <code>Title.get_or_none(id)</code>，再顺 <code>section_id</code> 查 <code>Section(id=..., user_id=...)</code> —— 防越权改别人的标题（本项目统一回 404，避免"枚举探测"知道哪些 id 存在）；</li><li><strong>状态机推进</strong>：生成成功才把 status 从 0 置 1；</li><li>返回 id+content 让前端直接渲染新文案。</li></ol>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -371,6 +378,8 @@ async def title_reset(title_id: int, user_id: int = Depends(...)):
     title = await Title.get_or_none(id=title_id)   # Title 没有 user_id 列，归属要顺着 section_id 查 Section
     if not title or not await Section.get_or_none(id=title.section_id, user_id=user_id):
         raise HTTPException(404, &quot;标题不存在&quot;)
+    if title.status != 1:
+        raise HTTPException(400, &quot;只有「已生成」才能重置&quot;)
     title.content = None
     title.status = 0
     await title.save()
@@ -391,7 +400,9 @@ async def save_copy(title_id: int, content: str, user_id: int = Depends(...)):
     if not content or not content.strip():
         raise HTTPException(400, &quot;正文不能为空&quot;)
     title.content = content
-    title.status = 1   # 模型是 SmallIntField，字符串会让前端 === 1 判空                # 手工保存也视为&quot;已生成&quot;
+    if title.status in (2, 3):
+        raise HTTPException(400, &quot;已发布/已废弃的文案不能重新生成&quot;)
+    title.status = 1 手工保存也视为&quot;已生成&quot;
     await title.save()
     return {&quot;code&quot;: 200, &quot;message&quot;: &quot;保存成功&quot;}</pre>
 <p>与前一个拷贝接口共享同一落库逻辑——提取一个 <code>_update_content(title, text)</code> 工具函数，重置/生成/保存三处复用，避免"三份差不多的代码三个不同 bug"。</p>
@@ -444,7 +455,7 @@ async def styles():
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>验收剧本：</p>
-<ol><li>素材页点某标题 → GET /v1/create/title/{id} 返回细节；</li><li>点"生成文案" → POST /v1/create/copy（等待 10-30s，显示 loading）→ content 出现、status=1；</li><li>点"重新生成"→ 再次 /copy → content 被覆盖；</li><li>手动改正文 → POST /v1/save-copy → 刷新页面内容仍在；</li><li>点"重置" → content 清空、status=0；</li><li>下拉风格列表 → GET /v1/create/styles 有条目。</li></ol>
+<ol><li>素材页点某标题 → GET /v1/create/title/{id} 返回细节；</li><li>点"生成文案" → POST /v1/create/copy（等待 10-30s，显示 loading）→ content 出现、status=1；</li><li>点"重新生成"→ 再次 /copy → content 被覆盖；</li><li>手动改正文 → POST /v1/create/save-copy → 刷新页面内容仍在；</li><li>点"重置" → content 清空、status=0；</li><li>下拉风格列表 → GET /v1/create/styles 有条目。</li></ol>
 <p>判定通过 = 六步全部符合预期且刷新后数据一致。任一步异常，按接口顺序排查：路径 → 鉴权 → 归属校验 → agent 调用 → 落库。</p>
 </div>
 </div></div>
@@ -454,7 +465,7 @@ async def styles():
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>关键设计（前端职责，与后端 save-copy 配合）：</p>
-<ol><li><strong>脏标记（dirty flag）</strong>：进入编辑后，对原文做一次深比较，发生差异即标记"已修改"；</li><li><strong>保存动作显式化</strong>：只有点"保存"才调 POST /v1/save-copy，编辑中不自动提交——避免每次敲键盘都打接口；</li><li><strong>离开拦截</strong>：有脏标记时，切标题/刷新/跳路由前先提示"有未保存的修改，确定离开？"（路由守卫或 beforeunload）；</li><li><strong>保存成功清脏</strong>：save-copy 返回成功后才清除脏标记，防止"以为存了其实失败"。</li></ol>
+<ol><li><strong>脏标记（dirty flag）</strong>：进入编辑后，对原文做一次深比较，发生差异即标记"已修改"；</li><li><strong>保存动作显式化</strong>：只有点"保存"才调 POST /v1/create/save-copy，编辑中不自动提交——避免每次敲键盘都打接口；</li><li><strong>离开拦截</strong>：有脏标记时，切标题/刷新/跳路由前先提示"有未保存的修改，确定离开？"（路由守卫或 beforeunload）；</li><li><strong>保存成功清脏</strong>：save-copy 返回成功后才清除脏标记，防止"以为存了其实失败"。</li></ol>
 <p>边界：<strong>"重置"与"未保存修改"是两件事</strong>——重置清的是数据库里的 content（后端操作），脏标记管的是前端编辑框里的临时状态。前端先确认是否丢弃本地修改，再决定是否调 reset。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

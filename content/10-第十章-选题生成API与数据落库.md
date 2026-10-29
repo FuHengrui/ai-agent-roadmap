@@ -41,7 +41,7 @@ router = APIRouter()   # prefix="/v1/create"
 @@idea 核心思路
 ```python
 @router.post("/start")
-async def start(theme: str, user_id: int = Depends(get_current_user_id)):
+async def start(theme: str = Body(embed=True), user_id: int = Depends(get_current_user_id)):
     if not theme or not theme.strip():
         raise HTTPException(status_code=400, detail="主题不能为空")
     # theme 为空 → 400：在调 AI 之前就拦住，而不是白烧 token
@@ -213,7 +213,7 @@ async def load(theme: str, user_id: int = Depends(get_current_user_id)):
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 前端加载慢/数据库连接数爆 | 循环内逐条查标题（N+1）；用 prefetch_related 或按 section_id in (...) 批量查 |
+| 前端加载慢/数据库连接数爆 | 循环内逐条查标题（N+1）；按 `section_id__in=[...]` 一次查回所有标题（Title 与 Section 之间没有 ORM 外键，`prefetch_related` 用不了） (...) 批量查 |
 | 中文主题 GET 请求 400/乱码 | 未 URL 编码；axios 自动处理，手测工具要手动 encode |
 | load 返回空但明明生成过 | user_id 不匹配（另一个账号登录）或 source_name 精确匹配失败（空格/换行） |
 
@@ -243,7 +243,7 @@ async def load(theme: str, user_id: int = Depends(get_current_user_id)):
 - _extract_json 三级防御：直接解析 → 代码块提取 → 首尾大括号截取，失败返回 None
 - 解析成功 ≠ 可用：5 板块 key 与标题结构必须显式校验，坏数据不入库
 - 落库顺序：先 Section 后 Title，事务包裹防孤儿数据；bulk_create 优化批量
-- /themes：倒序 + 去重保留最新，返回带 count；/load：倒序 sort_order + prefetch 防 N+1
+- /themes：倒序 + 去重保留最新，返回带 count；/load：按 `sort_order` **升序**（第 2 章定义：越小越靠前）+ `section_id__in` 防 N+1
 - 中文主题 GET 要 URL 编码；错误码即链路定位器（400→校验 401/403→鉴权 500→AI/解析）
 
 @@quiz
