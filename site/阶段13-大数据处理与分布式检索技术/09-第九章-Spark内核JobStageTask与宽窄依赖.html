@@ -434,13 +434,14 @@ P3: [c,1][b,1]
 每个 Map 分区按 key 哈希生成 2 个分桶文件   每个 Reduce 分区从每个&quot;上游文件&quot;拉自己那份
 （分区数 = 下游分区数）                  再做聚合（合并相同 key）</pre>
 <p><strong>关键细节</strong>：</p>
-<ol><li><strong>Map 端落盘</strong>：每个上游分区为每个下游分区写一个小文件（<code>Shuffle Write</code> 指标），所以 <code>上游分区数 × 下游分区数</code> 可能=成千上万小文件——这就是"小文件爆炸"</li><li><strong>数据倾斜时</strong>：某个 key 数据量巨大 → 对应那个 Reduce 分区拉取极慢 → 单个 Task 拖垮整个 Job（UI 上能看到"某 Task 耗时远超其他"）</li><li><strong>Shuffle 可能排序</strong>：部分算子（sortByKey）要求 shuffle 时排序，额外开销</li></ol>
+<p>才是下游分区数（<code>上游×下游 个小文件</code> 是早期 hash shuffle 的老模型）。所以现在文件数 ≈ Map Task 数，不是「上游×下游」——那个数字只在老的 hash shuffle 下成立。</p>
+<ol><li><strong>数据倾斜时</strong>：某个 key 数据量巨大 → 对应那个 Reduce 分区拉取极慢 → 单个 Task 拖垮整个 Job（UI 上能看到"某 Task 耗时远超其他"）</li><li><strong>Shuffle 可能排序</strong>：部分算子（sortByKey）要求 shuffle 时排序，额外开销</li></ol>
 <p><strong>调优常识</strong>：Spark 会把 Map 端的小文件聚合批量写（shuffle 合并），但根本出路还是控制分区数和避免不必要的宽依赖。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>日志报 <code>Too many open files</code></td><td>Shuffle 小文件过多（上游×下游 文件数爆炸）。调低分区数，或开 shuffle 文件合并</td></tr>
+<tr><td>日志报 <code>Too many open files</code></td><td>Shuffle 分桶/文件过多（早期 hash shuffle 是 上游×下游，现在是每 Map Task 一组文件）。调低分区数，或开 shuffle 文件合并</td></tr>
 <tr><td>UI 上 Shuffle Write 巨大</td><td>数据在网络搬运前全落盘了，正常但说明 shuffle 量真的大。考虑 map 端先预聚合（reduceByKey 的 combine）减少传输</td></tr>
 <tr><td>一个 Task 特别慢、其他早就完了</td><td>经典<strong>数据倾斜</strong>：那个分区 key 太多。前处理：过滤热点 key / 加盐（实战章细讲）</td></tr>
 <tr><td>怀疑 shuffle 丢数据</td><td>不会丢。Spark 的 shuffle 有完整性校验（写类/校验和），失败会重试。真丢了是代码逻辑问题不是框架问题</td></tr>

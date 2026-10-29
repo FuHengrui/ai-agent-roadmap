@@ -475,7 +475,7 @@ docker -H tcp://127.0.0.1:1234 ps</div>
        ▼
 容器视角 = 所有这些层&quot;糊&quot;成一个完整文件系统</pre>
 <p>关键点：</p>
-<ul><li><strong>Dockerfile 里 </strong>RUN / COPY / ADD<strong> 才真正加文件系统层；<code>ENV</code>、<code>CMD</code>、<code>EXPOSE</code> 这类只改镜像配置（BuildKit 下不占层）</strong>；</li><li>容器看到的是"分层叠加后"的完整文件系统，读写发生在最上层可读写层；</li><li>镜像层<strong>只读、共享</strong>：多个容器共用底层，内存里相同内容只加载一份。</li></ul>
+<ul><li><strong>Dockerfile 里 </strong>RUN / COPY / ADD<strong> 才真正加文件系统层；<code>ENV</code>、<code>CMD</code>、<code>EXPOSE</code> 这类只改镜像配置（BuildKit 下不占层）</strong>；</li><li>容器看到的是"分层叠加后"的完整文件系统，读写发生在最上层可读写层；</li><li>镜像层<strong>只读、共享</strong>：多个容器共用底层，<strong>磁盘上只存一份</strong>，容器运行时不会复制；写入落在最上面的可写层。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
