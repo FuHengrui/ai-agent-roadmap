@@ -145,6 +145,14 @@ def main() -> int:
         results.append(("LangGraph 最小图", False, "未安装 langgraph，跳过"))
         print("- LangGraph 最小图：未安装，跳过")
 
+    if "--check" in sys.argv:
+        bad = [n for n, ok, _ in results if not ok]
+        if bad:
+            print("失败：%s" % "、".join(bad))
+            return 1
+        print("全部通过")
+        return 0
+
     if "--doc" in sys.argv:
         ok = sum(1 for _, p, _ in results if p)
         lines = ["# 冒烟测试", "",

@@ -323,22 +323,33 @@
 <p><code>app/rag/retriever.py</code> 的 HybridRetriever 核心：</p>
 <pre>class HybridRetriever:
     def __init__(self):
-        self.vector_store = get_vector_store()          # Chroma
-        self.bm25_index, self.bm25_docs = self._build_bm25_index()  # rank-bm25
+        self.vector_store = get_vector_store()                        # Chroma
+        self.bm25_index, self.bm25_cases = self._build_bm25_index()   # rank-bm25
 
     def _build_bm25_index(self):
-        &quot;&quot;&quot;从向量库元数据重建 BM25 索引（亦可直接读 cases 表）&quot;&quot;&quot;
-        docs = [d.page_content for d in self.vector_store.db.get()[&quot;documents&quot;]]
-        tokenized = [list(jieba.cut(d)) for d in docs]   # 中文分词
-        return BM25Okapi(tokenized), docs
-…（以下省略 6 行，完整代码见仓库对应位置）
-        tokenized_query = list(jieba.cut(query))
-        bm25_scores = self.bm25_index.get_scores(tokenized_query)
-        bm25_top = sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)[:top_k * 3]
-        bm25_hits = [self.bm25_docs[i] for i in bm25_top if bm25_scores[i] &gt; 0]
+        &quot;&quot;&quot;从向量库重建 BM25 索引。注意：Chroma 的 get() 直接给字符串，不是 Document&quot;&quot;&quot;
+        raw = self.vector_store.db.get()
+        docs = [str(d) for d in raw[&quot;documents&quot;]]                     # ← 这里已经是字符串
+        metas = raw.get(&quot;metadatas&quot;) or [{} for _ in docs]
+        cases = [{&quot;content&quot;: d, **m} for d, m in zip(docs, metas)]    # 统一成 dict
+        tokenized = [list(jieba.cut(d)) for d in docs]                # 中文必须分词
+        return BM25Okapi(tokenized), cases
 
-        # 合并：按 case_number 去重
-        merged = {d.metadata[&quot;case_number&quot;]: d for d in vector_hits + bm25_hits}
+    def retrieve(self, query: str, top_k: int = 5):
+        # ① 向量召回（返回 Document，先转成 dict）
+        vector_hits = self.vector_store.similarity_search(query, top_k=top_k * 3)
+        vector_cases = [{&quot;content&quot;: d.page_content, **d.metadata} for d in vector_hits]
+
+        # ② BM25 召回（本身就是 dict，两边结构对齐才能合并）
+        tokenized_query = list(jieba.cut(query))
+        scores = self.bm25_index.get_scores(tokenized_query)
+        order = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:top_k * 3]
+        bm25_cases = [self.bm25_cases[i] for i in order if scores[i] &gt; 0]
+
+        # ③ 合并去重：都取 case_number，别一边 Document 一边 str
+        merged = {}
+        for c in vector_cases + bm25_cases:
+            merged.setdefault(c.get(&quot;case_number&quot;), c)
         return list(merged.values())</pre>
 <p>三个要点：</p>
 <ul><li><strong>中文必须分词</strong>：BM25 是词袋模型，中文要先 <code>jieba.cut</code> 切词，否则"离婚"匹配不到"离"+"婚"。</li><li><strong>候选池放大</strong>：每路捞 <code>top_k*3</code>（15 条），重排才有足够的选择空间。</li><li><strong>归一去重</strong>：合并后可能同一案例两边都命中，按 case_number 去重，避免重复进 prompt。</li></ul>
@@ -360,7 +371,7 @@
 <pre>class Reranker:
     async def rerank(self, query: str, documents: list[dict], top_k: int = 5) -&gt; list[dict]:
         scored_docs = []
-        query_terms = set(query.lower().split())     # 简化：英文按空格，中文可结合分词
+        query_terms = set(jieba.cut(query.lower()))   # 中文必须分词，否则整句当一个词、重叠打分退化成 0/1
 
         for doc in documents:
             content = doc.get(&quot;content&quot;, &quot;&quot;)
@@ -404,7 +415,7 @@
 
     async def search_by_article(self, article: str, top_k: int = 10) -&gt; list[dict]:
         &quot;&quot;&quot;按法条检索&quot;&quot;&quot;
-        filters = {&quot;laws&quot;: {&quot;$contains&quot;: article}}
+filters = {&quot;laws&quot;: {&quot;$in&quot;: [article]}}   # 法条存成拼接字符串时用 $in；Chroma 的 metadata 只收标量
         return await self.retrieve(article, top_k, filters)</pre>
 <p><strong>设计亮点</strong>：<code>filters</code> 参数一路透传——向量侧交给 Chroma 的 metadata 过滤，BM25 侧可在合并时过滤。案例搜索页的"按法院/按案件类型"筛选（第 9 章）就靠它。</p>
 </div>
@@ -479,12 +490,12 @@
 filters = {}
 if court:     filters[&quot;court&quot;] = court
 if case_type: filters[&quot;case_type&quot;] = case_type
-if article:   filters[&quot;laws&quot;] = {&quot;$contains&quot;: article}
+if article:   filters[&quot;laws&quot;] = {&quot;$in&quot;: [article]}
 
 results = await agent.retrieve(query=q, top_k=limit, filters=filters or None)</pre>
-<p>Chroma 的 metadata 过滤语法（<code>$contains</code> 是数组字段的包含判断）：</p>
+<p>Chroma 的 metadata <strong>只支持标量</strong>（字符串/数字/布尔），不能存数组；所以 <code>laws</code> 入库时要拼成一个字符串（如 <code>"民法典第1087条;婚姻法第39条"</code>），过滤用 <code>$in</code> / <code>$eq</code> 或干脆把候选拉回来在内存里过滤：</p>
 <pre>filter={&quot;court&quot;: &quot;北京市第一中级人民法院&quot;}          # 等值过滤
-filter={&quot;laws&quot;: {&quot;$contains&quot;: &quot;民法典第一千零八十七条&quot;}}  # 数组包含</pre>
+filter={&quot;laws&quot;: {&quot;$in&quot;: [&quot;民法典第1087条&quot;]}}   # 标量字段的精确匹配；数组值 Chroma 会直接拒收</pre>
 <ul><li><strong>API 层拿 query 参数 → 组 filters → 透传</strong>，检索内部逻辑完全不变。</li><li>向量检索支持 metadata 过滤（查得快），BM25 侧在合并时一并对齐过滤即可。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
