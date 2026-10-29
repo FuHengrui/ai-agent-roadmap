@@ -71,11 +71,12 @@ class HybridRetriever:
         # ③ 合并去重：都取 case_number，别一边 Document 一边 str
         merged = {}
         for c in vector_cases + bm25_cases:
-            merged.setdefault(c.get("case_number"), c)
+            key = c.get("case_number") or ("__nocase_%d" % id(c))   # 空案号不能都并成一条
+            merged.setdefault(key, c)
         return list(merged.values())
 ```
 三个要点：
-- **中文必须分词**：BM25 是词袋模型，中文要先 `jieba.cut` 切词，否则"离婚"匹配不到"离"+"婚"。
+- **中文必须分词**：BM25 是词袋模型，中文要先 `jieba.cut` 切词。不切的话一整句只当一个 token，query 和文档几乎永远对不上，召回直接归零。
 - **候选池放大**：每路捞 `top_k*3`（15 条），重排才有足够的选择空间。
 - **归一去重**：合并后可能同一案例两边都命中，按 case_number 去重，避免重复进 prompt。
 
@@ -83,7 +84,7 @@ class HybridRetriever:
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 双路结果直接拼接 | 向量和 BM25 得分量纲不同，直接 concat 会偏向某一路；先各自归一化/打分再合并（见 reranker） |
-| BM25 路没做关键词归一 | 中文不切词时 BM25 对"民法典"和"民法典第一百条"区分不出；检索前做基础归一（全半角、大写、去空白） |
+| BM25 路没做关键词归一 | 中文不切词时整句成一个 token，等于完全不匹配（不是"区分不出"）；检索前做基础归一（全半角、大写、去空白）并统一切词 |
 
 @@point ③ Reranker：词重叠启发式重排
 @@need 要解决什么
@@ -128,19 +129,21 @@ class RetrievalAgent:
         self.reranker = Reranker() if settings.RERANK_ENABLED else None
 
     async def retrieve(self, query: str, top_k: int = 5, filters: dict | None = None) -> list[dict]:
-        # 1. 多路召回（放大候选池）
-        candidates = await self.retriever.retrieve(query=query, top_k=top_k * 3, filters=filters)
+        # 1. 多路召回（候选池的放大在 retriever 内部做一次，别再叠加）
+        candidates = self.retriever.retrieve(query=query, top_k=top_k, filters=filters)
 
-        # 2. 重排序
-…（以下省略 6 行，完整代码见仓库对应位置）
+        # 2. 重排序（可选；不开就用截断）
+        candidates = self.reranker.rerank(query, candidates, top_k) if self.reranker else candidates[:top_k]
+        return candidates
+
     async def search_by_keywords(self, keywords: list[str], top_k: int = 10) -> list[dict]:
         """关键词检索（案例搜索页用）"""
         return await self.retrieve(" ".join(keywords), top_k)
 
     async def search_by_article(self, article: str, top_k: int = 10) -> list[dict]:
-        """按法条检索"""
-filters = {"laws": {"$in": [article]}}   # 法条存成拼接字符串时用 $in；Chroma 的 metadata 只收标量
-        return await self.retrieve(article, top_k, filters)
+        """按法条检索：laws 在 Chroma 里是拼接串，只能拉回内存做子串筛"""
+        hits = self.retriever.retrieve(query=article, top_k=top_k * 3)
+        return [h for h in hits if article in (h.get("laws") or "")][:top_k]
 ```
 **设计亮点**：`filters` 参数一路透传——向量侧交给 Chroma 的 metadata 过滤，BM25 侧可在合并时过滤。案例搜索页的"按法院/按案件类型"筛选（第 9 章）就靠它。
 
@@ -213,10 +216,10 @@ if article:   filters["laws"] = {"$in": [article]}
 
 results = await agent.retrieve(query=q, top_k=limit, filters=filters or None)
 ```
-Chroma 的 metadata **只支持标量**（字符串/数字/布尔），不能存数组；所以 `laws` 入库时要拼成一个字符串（如 `"民法典第1087条;婚姻法第39条"`），过滤用 `$in` / `$eq` 或干脆把候选拉回来在内存里过滤：
+Chroma 的 metadata **只支持标量**（字符串/数字/布尔），不能存数组；`laws` 入库时拼成一个字符串（如 `"民法典第1087条;婚姻法第39条"`）。这样只能做**精确等于**，按单个法条筛就得把候选拉回内存过滤：
 ```text
 filter={"court": "北京市第一中级人民法院"}          # 等值过滤
-filter={"laws": {"$in": ["民法典第1087条"]}}   # 标量字段的精确匹配；数组值 Chroma 会直接拒收
+filter={"laws": {"$eq": "民法典第1087条"}}   # 只能整串相等；想按单个法条筛，拉回内存再过滤
 ```
 - **API 层拿 query 参数 → 组 filters → 透传**，检索内部逻辑完全不变。
 - 向量检索支持 metadata 过滤（查得快），BM25 侧在合并时一并对齐过滤即可。

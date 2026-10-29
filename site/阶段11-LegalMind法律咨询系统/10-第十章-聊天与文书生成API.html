@@ -319,7 +319,7 @@ class ChatResponse(BaseModel):
     intent: str
     sources: List[dict]
     session_id: str</pre>
-<p>设计要点：<strong>session_id 由前端生成后传入——</strong>但后端必须用 _get_owned_session 校验归属<strong>，否则拿到别人的 session_id 就能读写他人会话</strong>（<code>None</code> 则后端生成）——这样前端可以在 SessionStorage 里先记住，避免"发完消息不知道会话 ID 是什么"。</p>
+<p>设计要点：<strong>session_id 由前端生成后传入——</strong>但后端每次都必须用 _get_owned_session 校验归属<strong>，否则拿到别人的 session_id 就能往他人会话里写消息。/send 与 /stream 里不能只调 <code>_ensure_session</code>（那是 get_or_create，会直接命中别人的会话）</strong>（<code>None</code> 则后端生成）——这样前端可以在 SessionStorage 里先记住，避免"发完消息不知道会话 ID 是什么"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

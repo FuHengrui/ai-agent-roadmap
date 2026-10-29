@@ -349,16 +349,17 @@
         # ③ 合并去重：都取 case_number，别一边 Document 一边 str
         merged = {}
         for c in vector_cases + bm25_cases:
-            merged.setdefault(c.get(&quot;case_number&quot;), c)
+            key = c.get(&quot;case_number&quot;) or (&quot;__nocase_%d&quot; % id(c))   # 空案号不能都并成一条
+            merged.setdefault(key, c)
         return list(merged.values())</pre>
 <p>三个要点：</p>
-<ul><li><strong>中文必须分词</strong>：BM25 是词袋模型，中文要先 <code>jieba.cut</code> 切词，否则"离婚"匹配不到"离"+"婚"。</li><li><strong>候选池放大</strong>：每路捞 <code>top_k*3</code>（15 条），重排才有足够的选择空间。</li><li><strong>归一去重</strong>：合并后可能同一案例两边都命中，按 case_number 去重，避免重复进 prompt。</li></ul>
+<ul><li><strong>中文必须分词</strong>：BM25 是词袋模型，中文要先 <code>jieba.cut</code> 切词。不切的话一整句只当一个 token，query 和文档几乎永远对不上，召回直接归零。</li><li><strong>候选池放大</strong>：每路捞 <code>top_k*3</code>（15 条），重排才有足够的选择空间。</li><li><strong>归一去重</strong>：合并后可能同一案例两边都命中，按 case_number 去重，避免重复进 prompt。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>双路结果直接拼接</td><td>向量和 BM25 得分量纲不同，直接 concat 会偏向某一路；先各自归一化/打分再合并（见 reranker）</td></tr>
-<tr><td>BM25 路没做关键词归一</td><td>中文不切词时 BM25 对"民法典"和"民法典第一百条"区分不出；检索前做基础归一（全半角、大写、去空白）</td></tr>
+<tr><td>BM25 路没做关键词归一</td><td>中文不切词时整句成一个 token，等于完全不匹配（不是"区分不出"）；检索前做基础归一（全半角、大写、去空白）并统一切词</td></tr>
 </table>
 </div>
 </div></div>
@@ -404,19 +405,21 @@
         self.reranker = Reranker() if settings.RERANK_ENABLED else None
 
     async def retrieve(self, query: str, top_k: int = 5, filters: dict | None = None) -&gt; list[dict]:
-        # 1. 多路召回（放大候选池）
-        candidates = await self.retriever.retrieve(query=query, top_k=top_k * 3, filters=filters)
+        # 1. 多路召回（候选池的放大在 retriever 内部做一次，别再叠加）
+        candidates = self.retriever.retrieve(query=query, top_k=top_k, filters=filters)
 
-        # 2. 重排序
-…（以下省略 6 行，完整代码见仓库对应位置）
+        # 2. 重排序（可选；不开就用截断）
+        candidates = self.reranker.rerank(query, candidates, top_k) if self.reranker else candidates[:top_k]
+        return candidates
+
     async def search_by_keywords(self, keywords: list[str], top_k: int = 10) -&gt; list[dict]:
         &quot;&quot;&quot;关键词检索（案例搜索页用）&quot;&quot;&quot;
         return await self.retrieve(&quot; &quot;.join(keywords), top_k)
 
     async def search_by_article(self, article: str, top_k: int = 10) -&gt; list[dict]:
-        &quot;&quot;&quot;按法条检索&quot;&quot;&quot;
-filters = {&quot;laws&quot;: {&quot;$in&quot;: [article]}}   # 法条存成拼接字符串时用 $in；Chroma 的 metadata 只收标量
-        return await self.retrieve(article, top_k, filters)</pre>
+        &quot;&quot;&quot;按法条检索：laws 在 Chroma 里是拼接串，只能拉回内存做子串筛&quot;&quot;&quot;
+        hits = self.retriever.retrieve(query=article, top_k=top_k * 3)
+        return [h for h in hits if article in (h.get(&quot;laws&quot;) or &quot;&quot;)][:top_k]</pre>
 <p><strong>设计亮点</strong>：<code>filters</code> 参数一路透传——向量侧交给 Chroma 的 metadata 过滤，BM25 侧可在合并时过滤。案例搜索页的"按法院/按案件类型"筛选（第 9 章）就靠它。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -493,9 +496,9 @@ if case_type: filters[&quot;case_type&quot;] = case_type
 if article:   filters[&quot;laws&quot;] = {&quot;$in&quot;: [article]}
 
 results = await agent.retrieve(query=q, top_k=limit, filters=filters or None)</pre>
-<p>Chroma 的 metadata <strong>只支持标量</strong>（字符串/数字/布尔），不能存数组；所以 <code>laws</code> 入库时要拼成一个字符串（如 <code>"民法典第1087条;婚姻法第39条"</code>），过滤用 <code>$in</code> / <code>$eq</code> 或干脆把候选拉回来在内存里过滤：</p>
+<p>Chroma 的 metadata <strong>只支持标量</strong>（字符串/数字/布尔），不能存数组；<code>laws</code> 入库时拼成一个字符串（如 <code>"民法典第1087条;婚姻法第39条"</code>）。这样只能做<strong>精确等于</strong>，按单个法条筛就得把候选拉回内存过滤：</p>
 <pre>filter={&quot;court&quot;: &quot;北京市第一中级人民法院&quot;}          # 等值过滤
-filter={&quot;laws&quot;: {&quot;$in&quot;: [&quot;民法典第1087条&quot;]}}   # 标量字段的精确匹配；数组值 Chroma 会直接拒收</pre>
+filter={&quot;laws&quot;: {&quot;$eq&quot;: &quot;民法典第1087条&quot;}}   # 只能整串相等；想按单个法条筛，拉回内存再过滤</pre>
 <ul><li><strong>API 层拿 query 参数 → 组 filters → 透传</strong>，检索内部逻辑完全不变。</li><li>向量检索支持 metadata 过滤（查得快），BM25 侧在合并时一并对齐过滤即可。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

@@ -60,7 +60,7 @@ LABEL maintainer="yourname@example.com"
 RUN echo "开始安装 Tomcat..."
 
 # 容器启动执行指令：run 时执行
-CMD /usr/local/tomcat/bin/catalina.sh
+CMD ["catalina.sh", "run"]   # 不带 run 的话 catalina.sh 只打印用法就退出，容器秒退
 ```
 
 **核心区别**：第 ③ 段是**构建时**执行（做镜像时跑一次），第 ④ 段是**运行时**执行（每次启动容器都跑）——这个区别是本章最重要的认知，很多坑都源于搞混它。
@@ -116,7 +116,7 @@ RUN 的中间结果会被**缓存**：下次构建时，如果这条 RUN 没变�
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 改了后面的 RUN，构建却还是很慢 | 前面的层被缓存复用了；整套重建用 `docker build --no-cache` |
+| 改了后面的 RUN，构建却还是很慢 | 改了靠前的 COPY/ENV，导致它后面所有层的缓存全部失效、逐层重建；整套重建用 `docker build --no-cache` |
 | 一条 RUN 一条 RUN 堆了 20 层 | 镜像又大又慢；用 `&&` 合并（见本章末） |
 | RUN yum install 报"没有可用的软件包" | 基础镜像太精简没配源/源失效；先配置 yum 源或换基础镜像 |
 
@@ -400,7 +400,7 @@ ENV PATH=$PATH:$TOMCAT_HOME/bin
 EXPOSE 8080
 
 # 7. 启动命令：启动 Tomcat，并持续输出日志（tail -F 防止容器退出）
-CMD startup.sh && tail -F /usr/local/apache-tomcat-9.0.50/bin/catalina.out
+CMD startup.sh && tail -F /usr/local/apache-tomcat-9.0.50/logs/catalina.out   # 日志在 logs/ 下，不是 bin/
 ```
 
 ```cmd

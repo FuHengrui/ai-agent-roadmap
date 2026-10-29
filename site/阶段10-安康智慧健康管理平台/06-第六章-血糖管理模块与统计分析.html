@@ -447,9 +447,20 @@ async def update_record(record_id: int, data: BloodSugarUpdate):
         if not records:
             return {&#x27;error&#x27;: &#x27;暂无血糖数据&#x27;, ...}
         values = [record.value for record in records]
-        high_count = sum(1 for v in values if v &gt; BG_HIGH_THRESHOLD)
-        low_count = sum(1 for v in values if v &lt; BG_LOW_THRESHOLD)
-        normal_count = len(values) - high_count - low_count
+
+        # 阈值必须按测量类型分：空腹 3.9~6.1、餐后 2h &lt;7.8、随机 3.9~11.1
+        # 用一套 3.9/10.0 套所有记录，会把空腹 8.5 判成&quot;正常&quot;，达标率虚高
+        HIGH = {&#x27;fasting&#x27;: 6.1, &#x27;postprandial&#x27;: 7.8, &#x27;random&#x27;: 11.1}
+        LOW = {&#x27;fasting&#x27;: 3.9, &#x27;postprandial&#x27;: 3.9, &#x27;random&#x27;: 3.9}
+
+        def _normal(r):
+            hi = HIGH.get(r.measure_type, BG_HIGH_THRESHOLD)
+            lo = LOW.get(r.measure_type, BG_LOW_THRESHOLD)
+            return lo &lt;= r.value &lt;= hi
+
+        high_count = sum(1 for r in records if r.value &gt; HIGH.get(r.measure_type, BG_HIGH_THRESHOLD))
+        low_count = sum(1 for r in records if r.value &lt; LOW.get(r.measure_type, BG_LOW_THRESHOLD))
+        normal_count = sum(1 for r in records if _normal(r))
         return {
             &#x27;period_days&#x27;: days, &#x27;record_count&#x27;: len(values),
             &#x27;avg&#x27;: round(statistics.mean(values), 1),
@@ -464,7 +475,7 @@ async def update_record(record_id: int, data: BloodSugarUpdate):
 
 health_analyzer = HealthAnalyzer()   # 模块底部实例化单例</pre>
 <p>设计要点：</p>
-<ul><li><strong>单例导出</strong> <code>health_analyzer</code>：路由统一 import 这一个实例，逻辑只有一份；</li><li><strong>无数据兜底</strong>：records 为空返回带 <code>error</code> 字段的字典，不抛异常——调用方（报告/对话）看到 error 就知道"数据不足"；</li><li><strong>阈值来源</strong>：<code>BG_LOW_THRESHOLD</code>/<code>BG_HIGH_THRESHOLD</code> 从 .env 读（3.9/10.0），与模型层的 status 阈值同一口径。</li></ul>
+<ul><li><strong>单例导出</strong> <code>health_analyzer</code>：路由统一 import 这一个实例，逻辑只有一份；</li><li><strong>无数据兜底</strong>：records 为空返回带 <code>error</code> 字段的字典，不抛异常——调用方（报告/对话）看到 error 就知道「数据不足」。注意这时<strong>字段不全</strong>，响应模型里统计字段要给默认值或设成 Optional，否则空数据直接把接口打成 500；</li><li><strong>阈值要分类型</strong>：空腹 3.9~6.1、餐后 2h &lt;7.8、随机 3.9~11.1（饭后本来就高，用同一套阈值会把餐后正常值算成偏高）。<code>BG_LOW_THRESHOLD</code>/<code>BG_HIGH_THRESHOLD</code> 只作为缺省兜底，且必须与模型层 <code>status</code> 的判定口径一致——否则会出现「达标率 100%、风险却是中风险」这种自相矛盾。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

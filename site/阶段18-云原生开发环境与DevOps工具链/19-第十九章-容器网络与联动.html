@@ -308,7 +308,7 @@
 │   ├───── veth ── 容器A  172.17.0.2   │
 │   └───── veth ── 容器B  172.17.0.3   │
 └──────────────────────────────────────┘</pre>
-<p><strong>容器重启后 IP 可能变（Docker 按顺序分配）</strong>——这就是网络的第一课：IP 不可靠，可靠的是"名字"。</p>
+<p><strong>容器</strong>删除重建<strong>后 IP 才可能变；<code>docker restart</code> 沿用原网络、IP 不变（Docker 按顺序分配）</strong>——这就是网络的第一课：IP 不可靠，可靠的是"名字"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -344,7 +344,7 @@ eth0 ◄──veth──► docker0 ◄──veth──► eth0</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <div class="cmd"><span class="c"># --link 源容器名字:别名 —— 在&amp;quot;本容器&amp;quot;里给&amp;quot;对方容器&amp;quot;起个别名</span>
-docker run --name tomcat01 --link tomcat02 -d -P docker.io/tomee
+docker run --name tomcat01 --link tomcat02   # 注意：tomcat02 必须先 docker run 起来，--link 不能链一个不存在的容器 -d -P docker.io/tomee
 <span class="c">#                  └本容器   └ 源容器：以后 tomcat01 里访问 tomcat02 就找到它</span></div>
 <ul><li>语法：<code>--link &lt;name or id&gt;:alias</code>，name/id 是<strong>源容器</strong>（被链接方），alias 是你在本容器里称呼它的别名；</li><li>效果：tomcat01 里可以直接 <code>ping tomcat02</code>（或用别名），<strong>不用关心它的 IP</strong>；</li><li>本质：Docker 把源容器的 IP 登记进本容器的 <code>/etc/hosts</code>，等于做了一次"IP → 名字"的动态翻译。</li></ul>
 <p>应用场景：数据库容器 IP 变了 → web 容器里写的 <code>mysql:3306</code> 依然有效，程序不用改。</p>
@@ -510,7 +510,7 @@ docker network inspect mynet</div>
 </table>
 <p>一句话总结：<strong>容器网络 = docker0 网桥 + veth 网线 + 四种模式选边界；IP 会变所以用名字——旧招 --link 单向登记，正路建自定义网络让同网容器按名互访。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>docker0 是什么？每个容器启动后能得到什么？</li><li>veth pair 为什么天生成对？容器删除后它会怎样？</li><li><code>--link tomcat02</code> 解决什么问题？它有什么局限？</li><li>四种网络模式分别是什么？各自一句话描述。</li><li>哪种网络模式最安全？host 模式有什么代价？</li><li><code>--subnet 192.168.0.0/16</code> 里的 <code>/16</code> 是什么意思？</li><li>怎样让两个容器不写死 IP 也能互访？给出两种做法。</li></ol>
+<ol><li>docker0 是什么？每个容器启动后能得到什么？</li><li>veth pair 为什么天生成对？容器删除后它会怎样？</li><li><code>--link tomcat02   # 注意：tomcat02 必须先 docker run 起来，--link 不能链一个不存在的容器</code> 解决什么问题？它有什么局限？</li><li>四种网络模式分别是什么？各自一句话描述。</li><li>哪种网络模式最安全？host 模式有什么代价？</li><li><code>--subnet 192.168.0.0/16</code> 里的 <code>/16</code> 是什么意思？</li><li>怎样让两个容器不写死 IP 也能互访？给出两种做法。</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://docs.docker.com/network/" target="_blank" rel="noopener"><span class="k">文档</span>Docker 网络概览</a>
 <a href="https://docs.docker.com/engine/reference/commandline/network/" target="_blank" rel="noopener"><span class="k">文档</span>docker network 命令</a>

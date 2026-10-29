@@ -406,13 +406,13 @@ qwen3-0.6b/
 <p>两个"长度"参数分工不同：</p>
 <table>
 <tr><th>参数</th><th>层级</th><th>作用</th></tr>
-<tr><td><code>--max-model-len</code></td><td>服务级</td><td>模型支持的最大上下文总长（输入+输出），决定 KV 缓存预算</td></tr>
+<tr><td><code>--max-model-len</code></td><td>服务级</td><td>模型支持的最大上下文总长（输入+输出），决定<strong>单条序列</strong>的 KV 上限（总预算看 utilization）</td></tr>
 <tr><td><code>max_tokens</code></td><td>请求级</td><td>单次请求允许生成的最大 token 数（客户端传参）</td></tr>
 </table>
 <p>示例：</p>
-<pre>vllm serve qwen3-0.6b --max-model-len 8192
+<pre>vllm serve ./qwen3-0.6b --served-model-name qwen --max-model-len 8192   # 客户端才用 model=&#x27;qwen&#x27;
 # 客户端: {&quot;model&quot;:&quot;qwen&quot;,&quot;max_tokens&quot;:1024,...}</pre>
-<p><code>max-model-len</code> 越大 → KV 缓存预算越大 → 显存/并发受影响，要按业务真实需要设。</p>
+<p>KV 缓存的<strong>总预算</strong>由 <code>--gpu-memory-utilization</code> 划定（总显存×比例 − 权重 − 激活峰值）；<code>--max-model-len</code> 只决定<strong>单条序列</strong>最多吃多少 KV——设得越大，同样显存下能同时跑的并发越少，超过可分配块会直接启动失败或请求报长度超限。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
