@@ -361,7 +361,7 @@
 <tr><th>部件</th><th>Transformer 编码器</th><th>BERT</th></tr>
 <tr><td>主体</td><td>多头自注意力 + FFN</td><td>完全一致</td></tr>
 <tr><td>输入</td><td>词嵌入 + 位置编码</td><td>词嵌入 + 位置编码 + 段嵌入</td></tr>
-<tr><td>堆叠</td><td>6 层</td><td>BERT-base=12 层 / BERT-large=24 层</td></tr>
+<tr><td>堆叠</td><td>6 层（原论文的 base 配置，可调；别和 BERT-base 的 12 层混）</td><td>BERT-base=12 层 / BERT-large=24 层</td></tr>
 <tr><td>特殊 token</td><td>无</td><td>[CLS] / [SEP] / [MASK]</td></tr>
 <tr><td>训练任务</td><td>无（监督微调）</td><td>MLM + NSP 预训练</td></tr>
 </table>
@@ -415,7 +415,7 @@
 
 ④ 序列标注（如: 命名实体识别 NER）
    输入: [CLS] 句 [SEP]       → 每个 token 过分类头 → B-ORG/I-PER...</pre>
-<p>关键洞察：<strong>同一个预训练模型，只换头部 + 少量全量微调，就能吃下理解类任务的绝大多数形态</strong>。这正是 BERT 能"一个模型打天下"的原因。</p>
+<p>关键洞察：<strong>同一个预训练模型，只换头部 + 全参微调（通常 2–4 个 epoch），就能吃下理解类任务的绝大多数形态</strong>。这正是 BERT 能"一个模型打天下"的原因。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -301,7 +301,7 @@
                               │ 每层输出(含全句信息)
 翻译起点 → 词嵌入+位置编码 → [解码器 ×N] → 线性层 → Softmax → 预测词</pre>
 <ul><li><strong>编码器（Encoder）</strong>：N 层堆叠，每层 = 多头自注意力 + FFN。输出是源句每个词的<strong>全上下文表示</strong>（携带全句信息）。</li><li><strong>解码器（Decoder）</strong>：N 层堆叠，每层比编码器<strong>多一个子层</strong>——掩码多头自注意力 → 交叉注意力 → FFN。</li><li><strong>输出层</strong>：线性层把解码器输出映射到词表大小，Softmax 出概率。</li></ul>
-<p>编码器管"理解"，解码器管"生成"，中间靠交叉注意力桥接——这是翻译类任务的标准双塔结构。</p>
+<p>编码器管"理解"，解码器管"生成"，中间靠交叉注意力桥接——这是翻译类任务的标准「编码器-解码器（seq2seq）」结构（双塔是检索里的说法，别混）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -352,7 +352,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>交叉注意力也加掩码</td><td>编码器输出已完整，不加掩码；只有解码器内部的自注意力才加</td></tr>
+<tr><td>交叉注意力也加掩码</td><td>交叉注意力<strong>不加因果掩码</strong>（编码器那边已经看全了），但<strong>源句的 padding 掩码还得传</strong>（<code>src_key_padding_mask</code>），否则 pad 位置会参与注意力</td></tr>
 <tr><td>以为 K/V 每层都一样</td><td>各解码层都有自己的交叉注意力投影，但 K/V <strong>都来自编码器最后一层的输出</strong></td></tr>
 </table>
 </div>
