@@ -181,7 +181,7 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-async with stdio_client(server_params) as (read, write):
+async with stdio_client(server) as (read, write):   # 变量名要和上面的定义一致（server），别写成 server_params
     async with ClientSession(read, write) as session:
         await session.initialize()
         tools = await load_mcp_tools(session)    # MCP 工具 → LangChain @tool 列表

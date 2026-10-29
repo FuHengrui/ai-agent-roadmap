@@ -492,9 +492,9 @@ docker -H tcp://127.0.0.1:1234 ps</div>
 <div class="step idea"><span class="label">核心思路</span>
 <table>
 <tr><th>好处</th><th>说明</th><th>例子</th></tr>
-<tr><td>① 底层一改，全体受益</td><td>基础环境出问题，只需改底层镜像，基于它的所有镜像跟着修复</td><td>底层 JDK 有漏洞，重建基础镜像，所有应用镜像随之更新</td></tr>
+<tr><td>① 底层一改，全体受益</td><td>重建基础镜像后，各派生镜像<strong>要重新 build</strong>（FROM 指向新 digest）才拿到修复</td><td>底层 JDK 有漏洞：重建基础镜像 → 逐个重新 build 派生镜像 → 重新 push；已经推到仓库的旧 tag <strong>不会自动变</strong></td></tr>
 <tr><td>② 资源共享</td><td>相同环境共用同一底层，不用每个镜像重新造一份</td><td>10 个镜像都基于 rockylinux（centos 已 EOL，别再拿它举例），底层只存一份</td></tr>
-<tr><td>③ 复用省空间、构建快</td><td>相同内容只加载一份；改 Dockerfile 后只有变动层重建</td><td>只改 CMD 那层，前面 3 层直接复用缓存</td></tr>
+<tr><td>③ 复用省空间、构建快</td><td>相同内容只加载一份；改 Dockerfile 后只有变动层重建</td><td>只改最后一条 <code>COPY</code>/<code>RUN</code>，前面 3 层直接复用缓存（<code>ENV</code>/<code>CMD</code> 只改配置，不占层）</td></tr>
 </table>
 <p><strong>这解释了第 18 章"合并 RUN"为什么重要</strong>：层数越少，镜像越小、构建越快、传输越省。 也解释了"FROM 选好基础镜像"为什么重要：它是所有层的地基，选小了全家都瘦。</p>
 </div>
