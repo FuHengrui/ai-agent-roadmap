@@ -122,7 +122,7 @@ class ChatMessageRecord(Model):
     content = fields.TextField()
     created_at = fields.DatetimeField(auto_now_add=True)
 ```
-- **`ForeignKeyField("models.User")`**：跨模型引用用字符串 `models.User`（避免循环 import），Tortoise 会在 user 表生成 `user_id` 列。
+- **`ForeignKeyField("models.User")`**：跨模型引用用字符串 `models.User`（避免循环 import），Tortoise 会在 **ChatSession 表**里生成 `user_id` 列（`user` 字段定义在 ChatSession 上，列不会加到 user 表）；User 侧拿到的只是反向访问器 `sessions`。
 - **`related_name="sessions"`**：反向查询语法 `await user.sessions.all()`——从用户拿他所有会话，一行代码。
 - **session_id 不用 UUID 字段而用 CharField**：因为聊天 API 的 session_id 由前端生成（`str(uuid.uuid4())`），存字符串更省事，还能兼容外部系统传入的 ID。
 
@@ -173,7 +173,7 @@ await Case.filter(Q(court__icontains="北京") | Q(case_type="劳动争议"))
 ```
 - `字段__操作符` 双下划线语法：`court__icontains` = 法院名称忽略大小写包含。
 - JSONField 的数组 contains：`laws__contains=[article]` 直接判断数组包含某法条——Postgres JSONB 的 `@>` 操作被 Tortoise 封装成 `contains`。
-- 检索最终落到 `RetrievalAgent.retrieve(query, top_k, filters)`，把 filters 透传给向量库过滤（第 7 章）。
+- 检索最终落到 `RetrievalAgent.retrieve(query, top_k, filters)`（第 8 章）。注意**两套过滤语义不同**：ORM 侧是 Postgres 语法（`court__icontains`、`laws__contains`），向量侧只认 metadata 的**等值/`$in`** 过滤；像「法条包含某条」这种只能在拉回结果后于内存里筛。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

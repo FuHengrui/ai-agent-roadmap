@@ -324,12 +324,13 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 def get_embeddings():
     return HuggingFaceEmbeddings(
-        model_name=settings.EMBEDDING_MODEL,   # &quot;BAAI/bge-small-zh&quot;
+        model_name=str(settings.MODEL_DIR / settings.EMBEDDING_MODEL),   # 指到本地目录，别写 HF 仓库名
+        cache_folder=str(settings.MODEL_DIR),
         model_kwargs={&quot;device&quot;: &quot;cpu&quot;},        # 低配机器 CPU 推理
         encode_kwargs={&quot;normalize_embeddings&quot;: True},  # 归一化=余弦相似度变点积
     )</pre>
 <p>关键点：</p>
-<ul><li>权重<strong>本地缓存</strong>在 <code>models/bge-small-zh/</code>，首次会在 HuggingFace 下载（约 90MB），之后离线可用。</li><li><code>normalize_embeddings=True</code>：向量归一化后，余弦相似度 = 点积，计算更快且数值范围稳定。</li><li><strong>启动时不应触发下载</strong>——第 3 章 <code>init_vector_store()</code> 从本地加载，若日志出现 "HuggingFace download" 说明本地模型缺失，先手动放好权重。</li></ul>
+<ul><li>权重放 <code>models/bge-small-zh/</code>，<code>model_name</code> 直接指这个目录；写 <code>"BAAI/bge-small-zh"</code> 会走 HF 缓存，没网/没缓存时启动就卡在下载。</li><li><code>normalize_embeddings=True</code>：向量归一化后，余弦相似度 = 点积，计算更快且数值范围稳定。</li><li><strong>启动时不应触发下载</strong>——第 3 章 <code>init_vector_store()</code> 从本地加载，若日志出现 "HuggingFace download" 说明本地模型缺失，先手动放好权重。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -358,11 +359,16 @@ class VectorStore:
             collection_name=&quot;legal_cases&quot;,
             embedding_function=self.embeddings,
             persist_directory=str(settings.CHROMA_DIR),   # 落盘目录
+            collection_metadata={&quot;hnsw:space&quot;: &quot;cosine&quot;},   # 默认是 L2，别让阈值口径含糊
         )
 
     def build_index(self, cases: list[dict]) -&gt; None:
         docs = [
-            Document(page_content=c[&quot;content&quot;], metadata={&quot;court&quot;: c[&quot;court&quot;], &quot;type&quot;: c[&quot;type&quot;]})
+            Document(
+                page_content=c[&quot;title&quot;] + &quot;\n&quot; + c[&quot;content&quot;],   # 标题也进正文，检索更容易命中
+                metadata={&quot;case_number&quot;: c[&quot;case_number&quot;], &quot;title&quot;: c[&quot;title&quot;],
+                          &quot;court&quot;: c[&quot;court&quot;], &quot;type&quot;: c[&quot;type&quot;]},   # 去重与展示都要用
+            )
             for c in cases
         ]
         self.db.add_documents(docs)
@@ -396,7 +402,7 @@ async def main():
     # 从 Postgres 拉全部案例
     cases = await Case.all()
     # 已有 index 的 case_number 跳过（幂等）
-    existing = store.get_existing_case_numbers()
+    existing = store.get_existing_case_numbers()   # VectorStore 里要有这个方法（读 metadata 的 case_number 去重）
     new_cases = [c for c in cases if c.case_number not in existing]
 
     print(f&quot;待索引 {len(new_cases)} 条（跳过 {len(cases) - len(new_cases)} 条已索引）&quot;)
@@ -483,7 +489,7 @@ def get_vector_store() -&gt; VectorStore:
 <div class="step idea"><span class="label">核心思路</span>
 <pre># scripts/retrieval_smoke_test.py
 import asyncio
-from app.rag.vector_store import get_vector_store
+from app.rag.vector_store import get_vector_store, init_vector_store
 
 async def main():
     store = await init_vector_store()
@@ -493,7 +499,7 @@ async def main():
         print(f&quot;[{score:.2f}] {doc.metadata[&#x27;title&#x27;]}&quot;)
 
 asyncio.run(main())</pre>
-<p>期望输出：返回离婚相关案例且分数 &gt; 0.7。若返回空/分数低：</p>
+<p>期望输出：返回离婚相关案例，且<strong>距离</strong> &lt; 0.7（<code>similarity_search_with_score</code> 给的是距离，越小越像）。若返回空或距离很大：</p>
 <ol><li>查 build_index 是否真的跑过（向量库 count）。</li><li>查 seed_cases 是否先跑（数据源）。</li><li>换更直白的词测试，定位是"模型问题"还是"链路问题"。</li></ol>
 </div>
 </div></div>

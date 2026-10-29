@@ -306,7 +306,7 @@
   → 写入 t_title_images（title_id + image_type 0/1/2）</pre>
 <p>两个存储边界：</p>
 <ul><li><strong>百炼返回的 URL 是"临时/限时"的</strong>——直接存它的 URL 会过期失效，所以必须"转存"；</li><li><strong>OSS 的 URL 常驻可访问</strong>——这才是入库的 image_url（500 长度的字段就是放它）。</li></ul>
-<p>⚠️ 前端轮询：文生图接口是异步（提交任务 → 轮询结果），后端要对百炼的异步结果做封装，前端只需一次请求。也给了"阻塞等待到底"的直连写法（可跑但慢，生产走异步轮询）。</p>
+<p>⚠️ 文生图在百炼侧是<strong>异步任务</strong>（提交 → 轮询）。本章走「后端阻塞等到结果、对前端只暴露一次请求」的简化写法：实现简单，但单个请求会占住一个 worker 30~60 秒。并发上来后应改成 <code>async_call()</code> 拿 <code>task_id</code>、前端轮询查询接口——本章不展开，先把链路跑通。</p>
 </div>
 </div></div>
 <div class="point" id="p2"><div class="head"><span class="no">2</span>② 提示词工程：把标题翻译成画面</div><div class="body">
@@ -337,19 +337,19 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>import dashscope
-dashscope.base_http_api_url = &quot;...your endpoint...&quot;   # 自定义网关（可空，默认官方）
 
-resp = dashscope.MultiModalConversation.call(
+# 文生图是「文生图」接口，不是多模态理解（MultiModalConversation）——
+# 那个是拿图片做输入做理解的，参数和解析路径都不一样
+resp = dashscope.ImageSynthesis.call(
     model=&quot;qwen-image-2.0-pro&quot;,
-    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: [
-        {&quot;image&quot;: prompt},             # 纯文本提示词
-    ]}],
+    prompt=prompt,                      # 提示词是 prompt 参数，不是 messages 里的 image
     size=&quot;960*1696&quot;,                    # 竖版封面尺寸规格
-    water_mark=False,
+    n=1,
+    watermark=False,
     prompt_extend=True,                 # 提示词扩展
     negative_prompt=&quot;低清,模糊,水印,变形,多余文字&quot;,
 )
-url = resp.output.choices[0].message.content[0].image   # 取生成的图片 URL</pre>
+url = resp.output.results[0].url        # 取生成的图片 URL</pre>
 <ul><li><code>size="960*1696"</code>：小红书竖版封面常见比例（3:5 左右），<strong>尺寸随用途定</strong>（封面/正文/缩略图可不同）；</li><li><strong>返回解析路径很深</strong>：<code>output.choices[0].message.content[0].image</code>——多一层数组就多一个取错的机会；</li><li>超时/失败要重试：图片生成是重活，偶发失败属常态。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -366,7 +366,7 @@ url = resp.output.choices[0].message.content[0].image   # 取生成的图片 URL
 <p>百炼返回临时 URL，需要下载并转存到 OSS。项目用的是<strong>阿里云新版 Python SDK（alibabacloud-oss-v2）</strong>——和网上大量老教程（oss2）API 完全不同，这是最容易"抄错作业"的地方。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>import oss2  # 兼容层/新SDK形态，旧版 SDK 用 v2 形态：
+<pre># 注意：老版 oss2 与下面的 v2 是两套完全不同的 API，本项目不用 oss2
 from alibabacloud_oss_v2 import config as oss_config
 from alibabacloud_oss_v2 import credentials, oss
 

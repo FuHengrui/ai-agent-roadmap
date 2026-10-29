@@ -282,7 +282,7 @@
 <h1>第一章　vLLM：大模型推理引擎的核心原理</h1>
 <div class="subtitle">阶段 24 · 大模型时代的模型运维与部署　|　vLLM入门　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>模型训练好了，怎么"跑起来"、还跑得快？<strong>vLLM</strong> 是目前大模型部署的主流推理引擎，吞吐能做到传统实现的 10 倍以上。它靠的是两项核心技术——<strong>PagedAttention（页式注意力）</strong> 与 <strong>连续批处理（Continuous Batching，含抢占式调度）</strong>。本章解决入门三问：<strong>vLLM 是什么、为什么快、PagedAttention 到底在优化什么</strong>。</p>
+<p>模型训练好了，怎么"跑起来"、还跑得快？<strong>vLLM</strong> 是目前大模型部署的主流推理引擎，吞吐能比 Transformers 默认实现高一个量级（官方博客口径最高 24 倍）；对 FasterTransformer/Orca 这类成熟系统，论文报告的是 2~4 倍。它靠的是两项核心技术——<strong>PagedAttention（页式注意力）</strong> 与 <strong>连续批处理（Continuous Batching，含抢占式调度）</strong>。本章解决入门三问：<strong>vLLM 是什么、为什么快、PagedAttention 到底在优化什么</strong>。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装环境，这章只讲原理；上一阶段的量化与剪枝看完，正好知道为什么要省显存。</p></div></div>
@@ -345,7 +345,7 @@
 允许页在物理内存中不连续（靠页表映射）</pre>
 <p>效果：</p>
 <ol><li><strong>显存只分配给实际需要的长度</strong>，不再预分配整段。</li><li><strong>碎片化消除</strong>：小的洞可以容纳新请求，显存利用率大幅提高。</li><li>接近 0 的 KV 缓存浪费 → 同等显存装下<strong>更多并发请求</strong>。</li></ol>
-<p>这是 vLLM 吞吐"10 倍级"提升的第一功臣，也是它名字的来源——<strong>v</strong>LLM 的 v 取自操作系统<strong>虚拟内存</strong>（virtual memory）的类比。</p>
+<p>这是 vLLM 吞吐量级提升的第一功臣，也是它名字的来源——<strong>v</strong>LLM 的 v 取自操作系统<strong>虚拟内存</strong>（virtual memory）的类比。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -374,14 +374,14 @@
 </table>
 </div>
 </div></div>
-<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 抢占式调度：长请求不饿死短请求</div><div class="body">
+<div class="point" id="p5"><div class="head"><span class="no">5</span>⑤ 抢占式调度：显存不够时先换出谁</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>连续批处理下，一个超长请求会不会霸占 GPU 太久？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>连续批处理引入了<strong>抢占式调度（Preemption）</strong>：</p>
 <ul><li><strong>触发条件是显存不足</strong>，不是"占得久"：KV 块容纳不下新请求时，调度器才抢占部分请求（换出或丢弃 KV、之后重算）来腾地方。</li><li>长请求不会因为"占得久"被踢；默认调度是 FCFS，<strong>不保证短请求优先</strong>。</li><li>被抢占的请求用 KV 缓存恢复（这正是 PagedAttention 分页的另一个好处：<strong>占用的 KV 页可以安全换出/复用</strong>）。</li></ul>
-<p>减少显存不足导致的失败与重排，延迟分布更稳（默认调度是 FCFS，不保证短请求优先）</p>
+<p>减少显存不足导致的失败与重排，延迟分布更稳。<strong>注意它不保证短请求优先</strong>（默认 FCFS）——想优先保短请求的 P99，得换调度策略或按优先级排队，光开抢占解决不了。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -415,7 +415,7 @@
 </div></div>
 <div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ 吞吐提升的量化感受</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>"更快"到底快多少？为什么说 10 倍以上？</p>
+<p>"更快"到底快多少？10 倍和 2~4 倍哪个对？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>vLLM 论文（2023）报告：在相同硬件与模型上，与主流推理系统（FasterTransformer 等）相比：</p>
@@ -455,7 +455,7 @@
 <tr><td>PagedAttention</td><td>KV 缓存分页管理，显存接近零浪费</td></tr>
 <tr><td>连续批处理</td><td>完成即出队、新请求补位，吞吐翻倍</td></tr>
 <tr><td>抢占式调度</td><td>长短请求公平，Tail Latency 更稳定</td></tr>
-<tr><td>收益量级</td><td>高并发吞吐提升 10 倍以上</td></tr>
+<tr><td>收益量级</td><td>高并发吞吐比 HF 默认实现高一个量级；比 FasterTransformer 等成熟系统 2~4 倍</td></tr>
 </table>
 <p>一句话记住本章：<strong>vLLM 是 UC Berkeley 2023 年开源的大模型推理引擎，靠两大绝招成名——PagedAttention 把 KV 缓存像虚拟内存一样分页管理，显存接近零浪费；连续批处理让"谁完成谁走、新请求立即补位"，GPU 永远不空转，配合抢占式调度让长短请求公平共存，最终把高并发吞吐做到传统实现的 10 倍以上，并暴露 OpenAI 兼容 API 实现开箱即用。</strong></p>
 <h4>自测：能不能答上来</h4>
@@ -477,7 +477,7 @@
   <a href="#p2" title="为什么需要 vLLM：传统推理的显存浪费"><span class="n">2</span>为什么需要 vLLM：传统推理的显存浪费</a>
   <a href="#p3" title="PagedAttention：把 KV 缓存&quot;分页&quot;"><span class="n">3</span>PagedAttention：把 KV 缓存"分页"</a>
   <a href="#p4" title="连续批处理：告别&quot;等慢的&quot;"><span class="n">4</span>连续批处理：告别"等慢的"</a>
-  <a href="#p5" title="抢占式调度：长请求不饿死短请求"><span class="n">5</span>抢占式调度：长请求不饿死短请求</a>
+  <a href="#p5" title="抢占式调度：显存不够时先换出谁"><span class="n">5</span>抢占式调度：显存不够时先换出谁</a>
   <a href="#p6" title="vLLM 与其他推理方案的本质差异"><span class="n">6</span>vLLM 与其他推理方案的本质差异</a>
   <a href="#p7" title="吞吐提升的量化感受"><span class="n">7</span>吞吐提升的量化感受</a>
   <a href="#p8" title="本章小结：vLLM 为什么能扛起大模型部署"><span class="n">8</span>本章小结：vLLM 为什么能扛起大模型部署</a>

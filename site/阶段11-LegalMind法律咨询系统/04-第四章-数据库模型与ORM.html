@@ -396,7 +396,7 @@ class ChatMessageRecord(Model):
     role = fields.CharField(max_length=20)       # user / assistant
     content = fields.TextField()
     created_at = fields.DatetimeField(auto_now_add=True)</pre>
-<ul><li><strong><code>ForeignKeyField("models.User")</code></strong>：跨模型引用用字符串 <code>models.User</code>（避免循环 import），Tortoise 会在 user 表生成 <code>user_id</code> 列。</li><li><strong><code>related_name="sessions"</code></strong>：反向查询语法 <code>await user.sessions.all()</code>——从用户拿他所有会话，一行代码。</li><li><strong>session_id 不用 UUID 字段而用 CharField</strong>：因为聊天 API 的 session_id 由前端生成（<code>str(uuid.uuid4())</code>），存字符串更省事，还能兼容外部系统传入的 ID。</li></ul>
+<ul><li><strong><code>ForeignKeyField("models.User")</code></strong>：跨模型引用用字符串 <code>models.User</code>（避免循环 import），Tortoise 会在 <strong>ChatSession 表</strong>里生成 <code>user_id</code> 列（<code>user</code> 字段定义在 ChatSession 上，列不会加到 user 表）；User 侧拿到的只是反向访问器 <code>sessions</code>。</li><li><strong><code>related_name="sessions"</code></strong>：反向查询语法 <code>await user.sessions.all()</code>——从用户拿他所有会话，一行代码。</li><li><strong>session_id 不用 UUID 字段而用 CharField</strong>：因为聊天 API 的 session_id 由前端生成（<code>str(uuid.uuid4())</code>），存字符串更省事，还能兼容外部系统传入的 ID。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -443,7 +443,7 @@ if article:
 # 交替用法：Q 表达式做 OR
 from tortoise.expressions import Q
 await Case.filter(Q(court__icontains=&quot;北京&quot;) | Q(case_type=&quot;劳动争议&quot;))</pre>
-<ul><li><code>字段__操作符</code> 双下划线语法：<code>court__icontains</code> = 法院名称忽略大小写包含。</li><li>JSONField 的数组 contains：<code>laws__contains=[article]</code> 直接判断数组包含某法条——Postgres JSONB 的 <code>@&gt;</code> 操作被 Tortoise 封装成 <code>contains</code>。</li><li>检索最终落到 <code>RetrievalAgent.retrieve(query, top_k, filters)</code>，把 filters 透传给向量库过滤（第 7 章）。</li></ul>
+<ul><li><code>字段__操作符</code> 双下划线语法：<code>court__icontains</code> = 法院名称忽略大小写包含。</li><li>JSONField 的数组 contains：<code>laws__contains=[article]</code> 直接判断数组包含某法条——Postgres JSONB 的 <code>@&gt;</code> 操作被 Tortoise 封装成 <code>contains</code>。</li><li>检索最终落到 <code>RetrievalAgent.retrieve(query, top_k, filters)</code>（第 8 章）。注意<strong>两套过滤语义不同</strong>：ORM 侧是 Postgres 语法（<code>court__icontains</code>、<code>laws__contains</code>），向量侧只认 metadata 的<strong>等值/<code>$in</code></strong> 过滤；像「法条包含某条」这种只能在拉回结果后于内存里筛。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

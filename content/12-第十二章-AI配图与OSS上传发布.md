@@ -33,7 +33,7 @@
 - **百炼返回的 URL 是"临时/限时"的**——直接存它的 URL 会过期失效，所以必须"转存"；
 - **OSS 的 URL 常驻可访问**——这才是入库的 image_url（500 长度的字段就是放它）。
 
-⚠️ 前端轮询：文生图接口是异步（提交任务 → 轮询结果），后端要对百炼的异步结果做封装，前端只需一次请求。也给了"阻塞等待到底"的直连写法（可跑但慢，生产走异步轮询）。
+⚠️ 文生图在百炼侧是**异步任务**（提交 → 轮询）。本章走「后端阻塞等到结果、对前端只暴露一次请求」的简化写法：实现简单，但单个请求会占住一个 worker 30~60 秒。并发上来后应改成 `async_call()` 拿 `task_id`、前端轮询查询接口——本章不展开，先把链路跑通。
 
 @@point ② 提示词工程：把标题翻译成画面
 @@need 要解决什么
@@ -65,19 +65,19 @@ f"{style 风格描述（来自 t_style.fengge）}"
 @@idea 核心思路
 ```python
 import dashscope
-dashscope.base_http_api_url = "...your endpoint..."   # 自定义网关（可空，默认官方）
 
-resp = dashscope.MultiModalConversation.call(
+# 文生图是「文生图」接口，不是多模态理解（MultiModalConversation）——
+# 那个是拿图片做输入做理解的，参数和解析路径都不一样
+resp = dashscope.ImageSynthesis.call(
     model="qwen-image-2.0-pro",
-    messages=[{"role": "user", "content": [
-        {"image": prompt},             # 纯文本提示词
-    ]}],
+    prompt=prompt,                      # 提示词是 prompt 参数，不是 messages 里的 image
     size="960*1696",                    # 竖版封面尺寸规格
-    water_mark=False,
+    n=1,
+    watermark=False,
     prompt_extend=True,                 # 提示词扩展
     negative_prompt="低清,模糊,水印,变形,多余文字",
 )
-url = resp.output.choices[0].message.content[0].image   # 取生成的图片 URL
+url = resp.output.results[0].url        # 取生成的图片 URL
 ```
 - `size="960*1696"`：小红书竖版封面常见比例（3:5 左右），**尺寸随用途定**（封面/正文/缩略图可不同）；
 - **返回解析路径很深**：`output.choices[0].message.content[0].image`——多一层数组就多一个取错的机会；
@@ -96,7 +96,7 @@ url = resp.output.choices[0].message.content[0].image   # 取生成的图片 URL
 
 @@idea 核心思路
 ```python
-import oss2  # 兼容层/新SDK形态，旧版 SDK 用 v2 形态：
+# 注意：老版 oss2 与下面的 v2 是两套完全不同的 API，本项目不用 oss2
 from alibabacloud_oss_v2 import config as oss_config
 from alibabacloud_oss_v2 import credentials, oss
 

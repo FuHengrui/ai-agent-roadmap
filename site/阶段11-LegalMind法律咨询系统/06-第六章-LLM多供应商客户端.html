@@ -315,6 +315,7 @@ def get_llm() -&gt; BaseChatModel:
         return ChatOpenAI(
             model=settings.LLM_MODEL,
             api_key=settings.LLM_API_KEY,
+            base_url=settings.LLM_BASE_URL,   # 少了它会被拼成 api.openai.com，报 Invalid URL / 401
             temperature=0.3,
         )
     if provider == &quot;huggingface&quot;:
@@ -346,7 +347,7 @@ response = await llm.ainvoke(messages)
 # 3. 流式调用（聊天/文书生成接口用）
 async for chunk in llm.astream(messages):
     yield chunk   # chunk.content 是增量文本</pre>
-<p>定义：<strong>invoke= 完整调用</strong>（输入全部消息，返回完整回复）；<strong>astream= 流式调用</strong>（逐 token 产出，配合 SSE 推给前端）。在 FastAPI 的 async 生态里，<code>await</code> 不会阻塞其他请求——这就是为什么整个后端都用 async。</p>
+<p>定义：<strong>invoke= 完整调用</strong>（输入全部消息，返回完整回复）；<strong>astream= 流式调用</strong>（逐 token 产出，配合 SSE 推给前端）。在 FastAPI 的 async 生态里，<code>await</code> 会把控制权交回事件循环——<strong>前提是底层真的是异步 I/O</strong>。如果里面调的是 <code>requests.post</code>、<code>time.sleep</code> 这类同步阻塞调用，照样把整个 worker 卡死；这种要么换 async 客户端（httpx/AsyncOpenAI），要么丢进线程池 <code>run_in_threadpool</code>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
