@@ -506,16 +506,17 @@ health_analyzer = HealthAnalyzer()   # 模块底部实例化单例</pre>
 <p>判据：差 &gt; 0.5 上升，&lt; -0.5 下降，否则稳定；数据少于 3 条直接"数据不足"。</p>
 <p>风险 <code>_assess_risk(values, high_count, low_count)</code>，三级判定：</p>
 <pre>def _assess_risk(self, values, high_count, low_count):
-    avg = statistics.mean(values)
+    # 只吃「按 measure_type 判出来的超高/超低次数」，别再自己拍一个 avg 阈值，
+    # 否则会出现「达标率 100%、风险却是中风险」这种自打脸
     if low_count &gt;= 2 or max(values) &gt; 16.7:
         return &quot;高风险&quot;
-    if high_count &gt;= 3 or avg &gt; 8.5:
+    if high_count &gt;= 3:
         return &quot;中风险&quot;
     return &quot;低风险&quot;</pre>
 <table>
 <tr><th>规则</th><th>结论</th></tr>
 <tr><td>低血糖 ≥2 次 <strong>或</strong> 最高值 &gt;16.7</td><td>高风险</td></tr>
-<tr><td>高血糖 ≥3 次 <strong>或</strong> 平均 &gt;8.5</td><td>中风险</td></tr>
+<tr><td>高血糖 ≥3 次（按各测量类型的上限判）</td><td>中风险</td></tr>
 <tr><td>其余</td><td>低风险</td></tr>
 </table>
 <p><strong>先判高风险再判中风险</strong>——要么短路要么救急，低血糖风险权重最高，优先级不能反。</p>

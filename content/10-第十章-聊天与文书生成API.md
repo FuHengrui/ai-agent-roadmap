@@ -129,7 +129,12 @@ async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
             yield "data: [DONE]\n\n"
 
         except Exception as e:
-            yield f"data: {json.dumps({'content': f'抱歉，处理出错：{e}'}, ensure_ascii=False)}\n\n"
+            # 错误用独立字段，别塞进 content——否则前端会把它当成回答的一部分显示出来
+            yield f"data: {json.dumps({'error': f'处理出错：{e}'}, ensure_ascii=False)}\n\n"
+            # 已经累计的内容要落库并标记失败，否则刷新就丢（与「报错也要有落库兜底」一致）
+            if full_text:
+                await ChatMessageRecord.create(session_id=session_id, role="assistant",
+                                              content=full_text, status="failed")
             yield "data: [DONE]\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")
