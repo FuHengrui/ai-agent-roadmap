@@ -397,7 +397,7 @@ h_t = o_t * tanh(C_t)                        # 把细胞状态压缩后按比例
 <div class="step idea"><span class="label">核心思路</span>
 <p>关键在于<strong>细胞状态更新的"加法直通"</strong>：</p>
 <pre>C_t = C_{t-1} * f_t + i_t * g_t</pre>
-<p>反向传播时，梯度经过 C 链路时不是"连乘"，而是<strong>每一层加一项（i_t*g_t）</strong>——只要遗忘门接近 1：</p>
+<p>反向传播时，沿 C 链路的梯度仍然是<strong>连乘</strong> ∂C_T/∂C_t = ∏f_t；它不指数衰减，是因为 f_t 通常接近 1，而且这条路径不经过 tanh 和矩阵乘法。至于「每一层加一项 i_t*g_t 」，那是<strong>前向</strong>的更新，不是反向的梯度路径：</p>
 <pre>∂C_t / ∂C_{t-1} ≈ f_t ≈ 1（当门全开时）</pre>
 <p>梯度沿传送带<strong>一路畅通</strong>，不再指数衰减，"去年在北京"这种远古信息就能一路传回。这被称为<strong>梯度高速公路</strong>。代价也很明确：遗忘门全开时记忆不衰减，但该忘的忘不掉会信息过载——所以门也是要学的（模型自己学会什么时候开、什么时候关）。</p>
 </div>
@@ -436,7 +436,7 @@ out, (h_n, c_n) = lstm(x)
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>忘了 LSTM 返回 3 个值</td><td>out、(h_n, c_n) 二元组，解包别只写两个变量</td></tr>
+<tr><td>解包写错</td><td><code>nn.LSTM</code> 返回的是 <strong>2 个</strong>：<code>out, (h_n, c_n) = lstm(x)</code>；写成三个变量会 ValueError</td></tr>
 <tr><td>想单步自回归却用 out</td><td>推理生成时通常喂上一步的 out 当本步输入，或手动管理 h、c 状态</td></tr>
 </table>
 </div>

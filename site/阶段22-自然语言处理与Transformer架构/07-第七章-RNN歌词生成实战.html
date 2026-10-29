@@ -472,7 +472,7 @@ print(generate(model, &quot;明月&quot;, 30))</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>关系比想象中大得多——<strong>原理完全同源</strong>：</p>
-<ul><li><strong>任务一致</strong>：都是"给定前文，预测下一个 token"（自回归语言建模），只是 token 从"字符"换成"子词"。</li><li><strong>训练一致</strong>：同样的交叉熵 + 梯度下降，只是数据规模从几万字到几万亿 token。</li><li><strong>生成一致</strong>：同样的 temperature 采样自回归续写。</li><li><strong>差异在规模与架构</strong>：GPT 把 RNN 换成 Transformer（并行 + 长依赖），把几万 commit 变成几 T 参数量级。</li></ul>
+<ul><li><strong>任务一致</strong>：都是"给定前文，预测下一个 token"（自回归语言建模），只是 token 从"字符"换成"子词"。</li><li><strong>训练一致</strong>：同样的交叉熵 + 梯度下降，只是数据规模从几万字到几万亿 token。</li><li><strong>生成一致</strong>：同样的 temperature 采样自回归续写。</li><li><strong>差异在规模与架构</strong>：GPT 把 RNN 换成 Transformer（并行 + 长依赖），把几万字语料换成几万亿 token 的预训练规模。</li></ul>
 <p>所以这一章你亲手写出的 <code>generate()</code> 函数，就是大模型"对话生成"的最小原型——把数据换成全网语料、RNN 换成 96 层 Transformer，就是 GPT 的雏形。理解了这个，后面看 GPT 就完全不会陌生。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
