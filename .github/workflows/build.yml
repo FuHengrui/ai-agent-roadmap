@@ -55,6 +55,11 @@ jobs:
           python tools/check_imports.py --strict --check
           python tools/build_ledger.py --check
           python tools/stats.py --check
+
+      # ---- 1.5 冒烟测试（要装依赖，失败不阻塞：环境问题不该挡内容构建）----
+      - name: 冒烟测试
+        continue-on-error: true
+        run: |
           python -m pip install --quiet fastapi httpx uvicorn tortoise-orm aiosqlite langgraph
           python tools/smoke_test.py --check
 
