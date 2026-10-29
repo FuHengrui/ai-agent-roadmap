@@ -66,7 +66,7 @@ class AgentState(TypedDict, total=False):
 
 三个要点：
 - **TypedDict**：类型声明，IDE 自动补全、写错字段名立刻报错；
-- **total=False**：字段不必全部填充，未赋值的默认 None/空——节点可以只写自己负责的字段；
+- **total=False**：只表示「这些键可以缺」——**不会**给缺省值。节点读 `state['x']` 时若没写过这个键，直接 KeyError；所以要么用 `state.get('x')`，要么在入口把全部字段初始化一遍；
 - **全程累积**：classify 写 input_type，load_context 写 patient_context……到最后 response 组装完成，**每个节点的产物既服务下一节点，也是最终输出的组成部分**。
 
 @@trap 坑在哪
@@ -232,7 +232,7 @@ LLM 说了一堆好话，但患者血糖其实很危险——风险评估怎么�
 ```python
 async def risk_assessment(state: AgentState) -> AgentState:
     bg_data = state.get('blood_sugar_data') or {}   # 键存在但值是 None，所以不能用 .get(k, {})
-    risk_level = bg_data.get('risk_level') or "低风险"
+    risk_level = bg_data.get('risk_level')   # 拿不到就是 None：数据不足 ≠ 低风险，别用 or 兜成「安全」
     state['risk_level'] = risk_level
     warning = ""
     if risk_level == "高风险":

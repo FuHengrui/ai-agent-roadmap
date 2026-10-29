@@ -403,7 +403,7 @@ xAxis: { type: &#x27;category&#x27;, data: data.times },
 yAxis: { type: &#x27;value&#x27;, name: &#x27;mmol/L&#x27;, min: 2, max: 16 },
 dataZoom: [{ type: &#x27;inside&#x27; }],</pre>
 <p>设计解读：</p>
-<ul><li><strong>三条 markLine 就是"医学刻度"可视化的体现</strong>：3.9 低血糖界、7.0 目标上限、10.0 高血糖界——颜色与语义对应（橙/绿/红），折线一触线就能读出问题；</li><li>y 轴固定 2-16：避免自动缩放导致阈值线位置抖动、误导视觉判断；</li><li>smooth + areaStyle：曲线圆滑、面积填充，观感更"健康管理"。</li></ul>
+<ul><li><strong>三条 markLine 只是「参考刻度」，不能当诊断线</strong>：3.9 / 7.0 / 10.0 是<strong>空腹</strong>口径；餐后 2h 正常上限是 7.8、随机是 11.1。图上一律画同一组线，会和后端按 measure_type 算出来的达标率打架（图里绿区的空腹 8.0，后端判高血糖）。要么按类型分色画，要么在图注里写清「此图按空腹口径参考」；</li><li>y 轴固定 2-16：避免自动缩放导致阈值线位置抖动、误导视觉判断；</li><li>smooth + areaStyle：曲线圆滑、面积填充，观感更"健康管理"。</li></ul>
 <p><strong>图表规范的核心是"固定的医学参照系"</strong>，不是默认的自动刻度——这直接关系到使用者对"高不高"的判断。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

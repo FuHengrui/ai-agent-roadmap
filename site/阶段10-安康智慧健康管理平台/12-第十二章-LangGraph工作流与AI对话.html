@@ -333,7 +333,7 @@ class AgentState(TypedDict, total=False):
     risk_level: str          # 风险等级
     response: str            # 最终回复（建议+警告）</pre>
 <p>三个要点：</p>
-<ul><li><strong>TypedDict</strong>：类型声明，IDE 自动补全、写错字段名立刻报错；</li><li><strong>total=False</strong>：字段不必全部填充，未赋值的默认 None/空——节点可以只写自己负责的字段；</li><li><strong>全程累积</strong>：classify 写 input_type，load_context 写 patient_context……到最后 response 组装完成，<strong>每个节点的产物既服务下一节点，也是最终输出的组成部分</strong>。</li></ul>
+<ul><li><strong>TypedDict</strong>：类型声明，IDE 自动补全、写错字段名立刻报错；</li><li><strong>total=False</strong>：只表示「这些键可以缺」——<strong>不会</strong>给缺省值。节点读 <code>state['x']</code> 时若没写过这个键，直接 KeyError；所以要么用 <code>state.get('x')</code>，要么在入口把全部字段初始化一遍；</li><li><strong>全程累积</strong>：classify 写 input_type，load_context 写 patient_context……到最后 response 组装完成，<strong>每个节点的产物既服务下一节点，也是最终输出的组成部分</strong>。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -487,7 +487,7 @@ class AgentState(TypedDict, total=False):
 <div class="step idea"><span class="label">核心思路</span>
 <pre>async def risk_assessment(state: AgentState) -&gt; AgentState:
     bg_data = state.get(&#x27;blood_sugar_data&#x27;) or {}   # 键存在但值是 None，所以不能用 .get(k, {})
-    risk_level = bg_data.get(&#x27;risk_level&#x27;) or &quot;低风险&quot;
+    risk_level = bg_data.get(&#x27;risk_level&#x27;)   # 拿不到就是 None：数据不足 ≠ 低风险，别用 or 兜成「安全」
     state[&#x27;risk_level&#x27;] = risk_level
     warning = &quot;&quot;
     if risk_level == &quot;高风险&quot;:
