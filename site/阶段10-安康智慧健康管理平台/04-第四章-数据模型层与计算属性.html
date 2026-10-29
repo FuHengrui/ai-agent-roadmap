@@ -405,7 +405,9 @@ def bmi_category(self) -&gt; str:
         return &quot;偏瘦&quot;
     if bmi_val &lt; 24:
         return &quot;正常&quot;
-    return &quot;肥胖&quot;</pre>
+    if bmi_val &lt; 28:
+        return &quot;超重&quot;      # 国标：24~27.9 是超重，≥28 才是肥胖
+    return &quot;肥胖&quot;      # ≥28</pre>
 <p>设计要点：</p>
 <ul><li><strong>不占数据库列</strong>：BMI 是"身高、体重的函数"，存两个原始值即可，BMI 随体重变化自动更新——存冗余值反而容易脏；</li><li><strong>防护空值</strong>：height/weight 可能为 null，先判空再计算，否则报 TypeError；</li><li><strong>返回值语义化</strong>：bmi 是数字，bmi_category 是"偏瘦/正常/肥胖"（教学用简化三档；国标还有"超重"一档，需要就自己补）——AI 提示词可以直接拼"患者 BMI 23.4（正常）"。</li></ul>
 <p>这是本阶段模型层的核心模式：<strong>原始数据落库，派生状态用 property 现算</strong>。</p>

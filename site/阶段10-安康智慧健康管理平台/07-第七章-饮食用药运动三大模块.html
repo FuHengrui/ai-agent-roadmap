@@ -413,7 +413,7 @@ async def get_daily_nutrition(patient_id: int, date: Optional[str] = Query(defau
 </table>
 </div>
 </div></div>
-<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 平均 GI：升糖负荷的当日画像</div><div class="body">
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 平均 GI：当天的升糖画像（不是升糖负荷 GL）</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>营养只算热量不够，"升糖快不快"要用 GI 衡量——一天的平均 GI 怎么算？</p>
 </div>
@@ -504,7 +504,7 @@ if not patient:
   <a href="#p3" title="用药记录：is_active 与用药周期"><span class="n">3</span>用药记录：is_active 与用药周期</a>
   <a href="#p4" title="运动记录：bs_change 的价值"><span class="n">4</span>运动记录：bs_change 的价值</a>
   <a href="#p5" title="每日营养统计：diet_advisor 首秀"><span class="n">5</span>每日营养统计：diet_advisor 首秀</a>
-  <a href="#p6" title="平均 GI：升糖负荷的当日画像"><span class="n">6</span>平均 GI：升糖负荷的当日画像</a>
+  <a href="#p6" title="平均 GI：当天的升糖画像（不是升糖负荷 GL）"><span class="n">6</span>平均 GI：当天的升糖画像（不是升糖负荷 GL）</a>
   <a href="#p7" title="创建前先验患者：存在性检查模式复用"><span class="n">7</span>创建前先验患者：存在性检查模式复用</a>
   <a href="#p8" title="三大模块与 AI 引擎的衔接预告"><span class="n">8</span>三大模块与 AI 引擎的衔接预告</a>
 </div>

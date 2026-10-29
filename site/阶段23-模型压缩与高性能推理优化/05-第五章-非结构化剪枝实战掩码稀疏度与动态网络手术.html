@@ -344,7 +344,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>Weight Magnitude（权重幅度）</strong>：用权重的绝对值大小衡量重要性——<strong>|w| 越大越重要</strong>。</p>
 <p>理由：输出 = Σ wᵢ·xᵢ。|wᵢ| 大的项对输出的影响大；把它置0，输出变化明显，所以要保留；|wᵢ| 小的项影响微乎其微，置0损失小。</p>
-<p>实现：对所有权重按 |w| 排序，按稀疏度阈值置0（排在后 x% 的剪掉）。这是最简单、最常用的判据（对应工具如 PyTorch 的 <code>torch.nn.utils.prune</code> 默认行为）。</p>
+<p>实现：<strong>在每个层内部</strong>按 |w| 排序，把该层最小的 x% 置 0（跨层幅值不可比，全网络统一排名会把某一层整层剪光）。这是最简单、最常用的判据（对应工具如 PyTorch 的 <code>prune.l1_unstructured</code>；注意它只是重参数化，要 <code>prune.remove()</code> 才固化）。另外单看 |w| 会漏掉「幅值小但梯度大」的连接——删除代价的一阶近似是 <code>|g·w|</code>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
