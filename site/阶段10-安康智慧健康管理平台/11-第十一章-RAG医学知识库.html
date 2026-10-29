@@ -463,7 +463,7 @@ class VectorStore:
     vector_store.add_documents(documents=documents, metadatas=metadatas, ids=ids)
     print(&quot;知识库初始化完成，文档数量：&quot;, vector_store.count())</pre>
 <p>调用时机回顾（第五章）：main.py 的 lifespan 里 <code>init_knowledge_base()</code>——<strong>服务一启动，知识就绪</strong>。</p>
-<p>幂等三保险：count&gt;0 跳过 + 固定 doc_{i} ID + add_documents 内部按 ID 覆盖——重启多少次都不会重复灌库。</p>
+<p>幂等三保险：count&gt;0 跳过 + 固定 doc_{i} ID + 用 <strong><code>upsert</code></strong>（不是 <code>add</code>）写入。注意 ChromaDB 的 <code>add</code> 遇到已存在的 ID <strong>不会覆盖</strong>（抛 IDAlreadyExists 或跳过），只有 <code>upsert</code> 才是「有则更新」。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -414,7 +414,7 @@ const router = createRouter({
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>直接读 <code>to.meta.requiresAuth</code>，嵌套路由永远 false</td><td>子路由的 meta 不会自动合并父级；用 <code>to.matched.some(r =&gt; r.meta.requiresAuth)</code> 逐级向上找</td></tr>
+<tr><td>直接读 <code>to.meta.requiresAuth</code>，嵌套路由永远 false</td><td><code>to.meta</code> <strong>已经合并了 matched 各级</strong>的 meta（子路由会继承父级）；这里用 <code>to.matched.some(...)</code> 是为了显式、也能兼容老版本。原文说法反了。所以别写成「读到 <code>to.meta.requiresAuth</code>，嵌套路由永远 false」；用 <code>to.matched.some(r =&gt; r.meta.requiresAuth)</code> 逐级向上找</td></tr>
 <tr><td>守卫里用 <code>next()</code> 处理完异步再 next，页面跳转错乱</td><td>现代 Vue Router 推荐直接 <code>return true / { path }</code> 替代 next；至少保证每次导航只调用一次 next</td></tr>
 </table>
 </div>

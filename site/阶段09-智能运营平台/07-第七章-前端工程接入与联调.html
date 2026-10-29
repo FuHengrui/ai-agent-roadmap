@@ -347,7 +347,7 @@ yarn dev          # 启动开发服务器，默认 5173 端口</pre>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>前端请求 404 但后端明明有这路由</td><td>rewrite 没删 /api，后端看到 /api/v1/... 当然 404</td></tr>
-<tr><td>build 后接口全挂</td><td>生产环境没有 vite proxy；需 Nginx 配 location /api { proxy_pass http://127.0.0.1:8000; } 并同样去前缀</td></tr>
+<tr><td>build 后接口全挂</td><td>生产环境没有 vite proxy；需 Nginx 配 <code>location /api { proxy_pass http://127.0.0.1:8000/; }</code>——<strong>结尾那个斜杠不能少</strong>，有它才会把匹配到的 <code>/api</code> 替换掉；写成 <code>...8000;</code> 后端收到的路径会带 <code>/api</code>，全线 404</td></tr>
 <tr><td>不配 proxy 直接 fetch 8000</td><td>跨域被 CORS 拦（第 5 章的 allow_origins 必须含 5173 才能直连）</td></tr>
 </table>
 </div>

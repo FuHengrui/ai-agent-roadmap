@@ -208,7 +208,7 @@ def init_knowledge_base() -> None:
 
 调用时机回顾（第五章）：main.py 的 lifespan 里 `init_knowledge_base()`——**服务一启动，知识就绪**。
 
-幂等三保险：count>0 跳过 + 固定 doc_{i} ID + add_documents 内部按 ID 覆盖——重启多少次都不会重复灌库。
+幂等三保险：count>0 跳过 + 固定 doc_{i} ID + 用 **`upsert`**（不是 `add`）写入。注意 ChromaDB 的 `add` 遇到已存在的 ID **不会覆盖**（抛 IDAlreadyExists 或跳过），只有 `upsert` 才是「有则更新」。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

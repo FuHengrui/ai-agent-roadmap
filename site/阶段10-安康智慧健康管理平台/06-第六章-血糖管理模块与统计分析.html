@@ -442,7 +442,7 @@ async def update_record(record_id: int, data: BloodSugarUpdate):
 <pre>class HealthAnalyzer:
     async def analyze_blood_sugar(self, patient_id: int, days: int = 7):
         &#x27;&#x27;&#x27;统计函数：返回血糖分析结果字典&#x27;&#x27;&#x27;
-        since = datetime.utcnow() - timedelta(days=days)
+        since = datetime.combine(datetime.now().date() - timedelta(days=days - 1), datetime.min.time())   # 与列表接口同一口径：本地 0 点、含今天
         records = await BloodSugar.filter(
             patient_id=patient_id, measured_at__gte=since
         ).order_by(&#x27;measured_at&#x27;)
@@ -484,7 +484,7 @@ health_analyzer = HealthAnalyzer()   # 模块底部实例化单例</pre>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>统计逻辑写在路由里</td><td>报告、对话、仪表盘都要用同一套统计；不封装就只能复制三份</td></tr>
 <tr><td>没有记录时统计崩溃</td><td>引擎必须无数据兜底：records 为空返回 error 字典，绝不抛异常</td></tr>
-<tr><td>阈值代码两处写死</td><td>模型 status 与引擎阈值必须同源；本项目都对齐 3.9/10.0</td></tr>
+<tr><td>阈值代码两处写死</td><td>模型 status 与引擎阈值<strong>必须查同一张表</strong>（且都按 <code>measure_type</code> 分档：空腹 6.1、餐后 7.8、随机 11.1）；单写 3.9/10.0 会让空腹 8.0 一边判正常一边判偏高</td></tr>
 </table>
 </div>
 </div></div>
