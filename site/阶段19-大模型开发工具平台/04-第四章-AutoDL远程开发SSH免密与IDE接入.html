@@ -461,7 +461,7 @@ ssh-keygen -t rsa</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>本地改了代码但云端跑的还是旧版</td><td>忘记同步；PyCharm 手动 Upload，VSCode 看左下角"同步"状态或保存时自动同步</td></tr>
+<tr><td>本地改了代码但云端跑的还是旧版</td><td>PyCharm 要走「手动 Upload」；VSCode 的 Remote-SSH <strong>没有同步这一步</strong>——它直接在云端文件系统上编辑、保存即生效，还跑旧版说明你连的是另一台实例或另一个目录</td></tr>
 <tr><td>运行报错却本地无报错</td><td>云端环境缺包；在云端终端 <code>pip install</code> 或 <code>conda activate</code> 正确环境后再跑</td></tr>
 <tr><td>大文件让同步卡死</td><td>把数据集/模型放到项目目录之外（/root/autodl-tmp/data），代码目录只同步脚本</td></tr>
 </table>

@@ -334,7 +334,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>在控制台「我的实例」菜单下，点击 <strong>「租用新实例」</strong>，进入配置页。核心流程四步：</p>
 <ol><li><strong>选定地区与计费方式</strong>：按提示选择机房区域与按量/包月等方式（新手先按量计费，灵活）；</li><li><strong>选择 GPU 型号</strong>：按下一知识点的方法选（这是最关键的一步）；</li><li><strong>选择镜像</strong>：选预装好的 PyTorch 等深度学习镜像（选系统镜像时优先官方预装 PyTorch 的）；</li><li><strong>确认硬盘与数量</strong>：按任务需要选数据盘扩容，确认提交后等待开机。</li></ol>
-<p>提交后实例状态会从"创建中"变为"运行中"。<strong>从"运行中"开始计费</strong>——这个起始点要记住，很多人以为点击创建那一刻就开始花钱，其实关机状态是不计费的。</p>
+<p>提交后实例状态会从"创建中"变为"运行中"。<strong>从"运行中"开始计费</strong>——这个起始点要记住，很多人以为点击创建那一刻就开始花钱，其实<strong>关机只是停掉算力费</strong>——系统盘/数据盘仍然占着存储，按量计费还在走（金额很小，但别以为关机就零成本）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

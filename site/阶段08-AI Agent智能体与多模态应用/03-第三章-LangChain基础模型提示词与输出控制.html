@@ -302,7 +302,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>LangChain 是一个开源框架，帮你更方便地构建 LLM 应用。它提供的核心能力：</p>
-<ul><li><strong>统一模型接口</strong>：<code>langchain-openai</code> 兼容 OpenAI 协议的模型（通义、智谱、DeepSeek、OpenAI 都能用同一套代码）；<code>langchain-ollama</code> 接本地模型</li><li><strong>提示词模板</strong>：PromptTemplate / ChatPromptTemplate / FewShotPromptTemplate 三类模板</li><li><strong>输出解析器</strong>：强制模型输出 JSON / XML / Pydantic 结构化数据</li><li><strong>链式调用（LCEL）</strong>：把多个组件用 <code>|</code> 管道符连成一条处理流水线</li></ul>
+<ul><li><strong>统一模型接口</strong>：<code>langchain-openai</code> 兼容 OpenAI 协议的模型（通义、智谱、DeepSeek、OpenAI 都能用同一套代码）；<code>langchain-ollama</code> 接本地模型</li><li><strong>提示词模板</strong>：PromptTemplate / ChatPromptTemplate / FewShotPromptTemplate 三类模板</li><li><strong>输出解析器</strong>：<strong>解析并校验</strong>模型输出（不合法就抛 OutputParserException）——它不「强制」模型照格式写，格式要求还得自己写进 prompt（parser.get_format_instructions()）</li><li><strong>链式调用（LCEL）</strong>：把多个组件用 <code>|</code> 管道符连成一条处理流水线</li></ul>
 <p>一句话：<strong>LangChain 让"接模型、写提示、收结果"变成可组合的积木</strong>，把精力留给业务本身。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -471,7 +471,7 @@ resp = parser.parse(&#x27;{&quot;answer&quot;: &quot;42&quot;}&#x27;)
 </div></div>
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ PydanticOutputParser：强类型 + 自动校验</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>JsonOutputParser 只能保证"是 JSON"，不能保证"字段对、类型对"。生产环境里 <code>age</code> 传成字符串"28"就等着崩。需要"模型输出 -&gt; 强类型对象 + 验证"一步到位。</p>
+<p>JsonOutputParser 只能保证"是 JSON"，不能保证"字段对、类型对"。生产环境里 <code>age</code> 传 <code>"28"</code> <strong>不会崩</strong>——Pydantic 默认宽松模式会静默转成 28；真正会失败的是非数字串（<code>"二十八"</code>）、缺字段、嵌套结构不对。要把 <code>"28"</code> 也拒掉，得用 <code>strict=True</code> 或 <code>StrictInt</code>。需要"模型输出 -&gt; 强类型对象 + 验证"一步到位。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>PydanticOutputParser（基于 Pydantic v2）：定义 BaseModel，解析器自动生成格式指令并校验结果。</p>

@@ -29,7 +29,7 @@ LangChain 是一个开源框架，帮你更方便地构建 LLM 应用。它提�
 
 - **统一模型接口**：`langchain-openai` 兼容 OpenAI 协议的模型（通义、智谱、DeepSeek、OpenAI 都能用同一套代码）；`langchain-ollama` 接本地模型
 - **提示词模板**：PromptTemplate / ChatPromptTemplate / FewShotPromptTemplate 三类模板
-- **输出解析器**：强制模型输出 JSON / XML / Pydantic 结构化数据
+- **输出解析器**：**解析并校验**模型输出（不合法就抛 OutputParserException）——它不「强制」模型照格式写，格式要求还得自己写进 prompt（parser.get_format_instructions()）
 - **链式调用（LCEL）**：把多个组件用 `|` 管道符连成一条处理流水线
 
 一句话：**LangChain 让"接模型、写提示、收结果"变成可组合的积木**，把精力留给业务本身。
@@ -219,7 +219,7 @@ resp = parser.parse('{"answer": "42"}')
 
 @@point ⑨ PydanticOutputParser：强类型 + 自动校验
 @@need 要解决什么
-JsonOutputParser 只能保证"是 JSON"，不能保证"字段对、类型对"。生产环境里 `age` 传成字符串"28"就等着崩。需要"模型输出 -> 强类型对象 + 验证"一步到位。
+JsonOutputParser 只能保证"是 JSON"，不能保证"字段对、类型对"。生产环境里 `age` 传 `"28"` **不会崩**——Pydantic 默认宽松模式会静默转成 28；真正会失败的是非数字串（`"二十八"`）、缺字段、嵌套结构不对。要把 `"28"` 也拒掉，得用 `strict=True` 或 `StrictInt`。需要"模型输出 -> 强类型对象 + 验证"一步到位。
 
 @@idea 核心思路
 PydanticOutputParser（基于 Pydantic v2）：定义 BaseModel，解析器自动生成格式指令并校验结果。

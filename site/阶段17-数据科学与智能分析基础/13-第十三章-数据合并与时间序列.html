@@ -435,7 +435,7 @@ df.loc[&#x27;2026-10&#x27;]                    # 取整个 10 月
 idx = pd.date_range(&#x27;2026-10-01&#x27;, periods=7, freq=&#x27;D&#x27;)   # 连续 7 天
 idx2 = pd.date_range(&#x27;2026-01-01&#x27;, &#x27;2026-12-31&#x27;, freq=&#x27;W-MON&#x27;)  # 每周一</pre>
 <p>注意：</p>
-<ul><li>时间索引切片<strong>含首尾</strong>（和 loc 一致）；</li><li><strong>freq</strong> 是频率参数：'D' 天、'W-MON' 每周一、'MS' 月初、'H' 小时；</li><li>时间切片用<strong>字符串直接写</strong>，不必先转对象。</li></ul>
+<ul><li>时间索引切片<strong>含首尾</strong>（和 loc 一致）；</li><li><strong>freq</strong> 是频率参数：'D' 天、'W-SUN' 自然周（周一到周日，标签落周日）、'W-MON' <strong>周一结束</strong>的周（分箱是「上周二~本周一」，别当周一起）、'MS' 月初、'h' 小时；</li><li>时间切片用<strong>字符串直接写</strong>，不必先转对象。</li></ul>
 <p>时间索引是后面 resample 的基础设施。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

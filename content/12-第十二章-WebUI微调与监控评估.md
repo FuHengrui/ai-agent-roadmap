@@ -91,7 +91,7 @@ WebUI 的"训练参数"页字段很多，但**每一个都对应你学过的概�
 
 | WebUI 字段 | 对应概念 | 默认/推荐 |
 |---|---|---|
-| 扇入/扇出（per_device_train_batch_size） | 每卡批次 | 4（显存小→2） |
+| 批处理大小（per_device_train_batch_size） | 每卡批次 | 4（显存小→2） |
 | 梯度累积 | gradient_accumulation_steps | 2~4（等效 batch=乘积） |
 | 学习率 | learning_rate | 2e-4 |
 | 训练轮数 | num_train_epochs | 3 |

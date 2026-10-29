@@ -360,7 +360,7 @@
 <p>对照表（左：WebUI 字段；右：对应概念/推荐值）：</p>
 <table>
 <tr><th>WebUI 字段</th><th>对应概念</th><th>默认/推荐</th></tr>
-<tr><td>扇入/扇出（per_device_train_batch_size）</td><td>每卡批次</td><td>4（显存小→2）</td></tr>
+<tr><td>批处理大小（per_device_train_batch_size）</td><td>每卡批次</td><td>4（显存小→2）</td></tr>
 <tr><td>梯度累积</td><td>gradient_accumulation_steps</td><td>2~4（等效 batch=乘积）</td></tr>
 <tr><td>学习率</td><td>learning_rate</td><td>2e-4</td></tr>
 <tr><td>训练轮数</td><td>num_train_epochs</td><td>3</td></tr>
