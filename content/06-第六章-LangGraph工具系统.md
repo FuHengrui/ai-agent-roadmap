@@ -27,12 +27,12 @@
 @@idea 核心思路
 **Tool Calling 的工作原理**：LLM 不直接执行工具，而是输出"调用指令"（tool_calls，含工具名+参数），由外部代码执行后把结果返回给 LLM 继续处理。
 
-**工具的三大要素**（LangChain 定义）：
+**工具的三大要素**（LangChain 定义）——名称、描述、参数；函数的**实现**不算要素，它只是被调用的那段代码：
 ```python
 @tool
 def search(query: str) -> str:
     """搜索互联网信息"""        # ← 描述：LLM 根据描述决定是否调用
-    return f"搜索结果..."      # ← 执行逻辑
+    return f"搜索结果..."      # 这是实现，不是「要素」
 
 # search.name           → "search"          ← 名称：LLM 用它指定调哪个
 # search.description    → "搜索互联网信息"    ← 描述：LLM 用它理解用途
