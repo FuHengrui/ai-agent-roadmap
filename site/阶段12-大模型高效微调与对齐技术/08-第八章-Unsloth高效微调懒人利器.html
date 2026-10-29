@@ -314,7 +314,7 @@
 <tr><td>模型本身一视同仁</td><td>逐模型定制（llama 系、qwen 系专门优化）</td></tr>
 </table>
 <p>所以：</p>
-<ul><li><strong>模型权重、结构、训练逻辑全不变</strong>——你学的 LoRA 理论照样成立；</li><li>快是因为<strong>算得少、访存少</strong>：内核融合 + 更聪明的内存布局；</li><li>省显存是因为<strong>梯度检查点、内核融合、4bit 量化等细节被优化</strong>（结合 LoRA 只训补丁，整体显存大幅下降）。</li></ul>
+<ul><li><strong>模型权重、结构、训练逻辑全不变</strong>——你学的 LoRA 理论照样成立；</li><li>快是因为<strong>算得少、访存少</strong>：内核融合 + 更聪明的内存布局；</li><li>省显存分两块：<strong>Unsloth 自己的功劳</strong>是内核融合与更省的反向传播；<strong>4bit 量化不是它自动做的</strong>——要自己传 <code>load_in_4bit=True</code>（由 bitsandbytes 完成），梯度检查点也是训练时的开关。三者叠加才有「最高省 70%」这个说法。</li></ul>
 <p>结论：Unsloth = 同一套 LoRA 训练的"换引擎"，不是换车。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

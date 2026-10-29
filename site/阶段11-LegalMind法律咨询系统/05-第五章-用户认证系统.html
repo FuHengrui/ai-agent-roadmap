@@ -358,6 +358,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 <div class="step idea"><span class="label">核心思路</span>
 <p><code>app/api/auth.py</code> 的注册路由：</p>
 <pre>from fastapi import APIRouter, HTTPException
+from starlette.concurrency import run_in_threadpool   # 把同步的 bcrypt 丢进线程池
 from pydantic import BaseModel
 from app.models.user import User
 from app.utils.security import get_password_hash, verify_password, create_access_token
@@ -368,7 +369,7 @@ class RegisterRequest(BaseModel):
     username: str
     email: str
 …（以下省略 16 行，完整代码见仓库对应位置）
-        hashed_password=get_password_hash(req.password),
+        hashed_password=await run_in_threadpool(get_password_hash, req.password),   # bcrypt ~100ms，同步调用会卡事件循环
         nickname=nickname,
     )
 
