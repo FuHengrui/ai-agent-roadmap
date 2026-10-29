@@ -310,7 +310,7 @@
 <tr><td>echarts ^5.5 + vue-echarts ^7</td><td>图表</td></tr>
 </table>
 <p>工程入口流程：<code>main.ts</code> 创建应用 → 注册 router/pinia → 挂载 App.vue；<code>vite.config.ts</code> 配 devServer 代理 <code>/api → http://localhost:8000</code>（解决跨域）；<code>npm run dev</code> 起 5173。</p>
-<p><strong>前后端联调的双保险</strong>：后端 CORS（allow_origins=["*"]）+ 前端 Vite 代理——两层都通才能请求成功。</p>
+<p><strong>前后端联调，二选一就够</strong>：开发期走 Vite 代理时，浏览器只跟 5173 同源，<strong>CORS 不参与</strong>（后端 allow_origins 甚至可以关掉）；只有前端直连 8000 端口时才需要 CORS。别以为「两层都得通」——那是把两套方案叠着理解。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -403,7 +403,7 @@ xAxis: { type: &#x27;category&#x27;, data: data.times },
 yAxis: { type: &#x27;value&#x27;, name: &#x27;mmol/L&#x27;, min: 2, max: 16 },
 dataZoom: [{ type: &#x27;inside&#x27; }],</pre>
 <p>设计解读：</p>
-<ul><li><strong>三条 markLine 只是「参考刻度」，不能当诊断线</strong>：3.9 / 7.0 / 10.0 是<strong>空腹</strong>口径；餐后 2h 正常上限是 7.8、随机是 11.1。图上一律画同一组线，会和后端按 measure_type 算出来的达标率打架（图里绿区的空腹 8.0，后端判高血糖）。要么按类型分色画，要么在图注里写清「此图按空腹口径参考」；</li><li>y 轴固定 2-16：避免自动缩放导致阈值线位置抖动、误导视觉判断；</li><li>smooth + areaStyle：曲线圆滑、面积填充，观感更"健康管理"。</li></ul>
+<ul><li><strong>三条 markLine 只是「参考刻度」，不能当诊断线</strong>：3.9 / 7.0 / 10.0 是<strong>空腹</strong>口径；餐后 2h 正常上限是 7.8、随机是 11.1。图上一律画同一组线，会和后端按 measure_type 算出来的达标率打架（图里绿区的空腹 8.0，后端判高血糖）。要么按类型分色画，要么在图注里写清「此图按空腹口径参考」；</li><li>y 轴固定范围是为了不让阈值线随数据抖动，但<strong>别把关键值裁在框外</strong>：后端判「&gt;16.7 高风险」，y 轴上限却设 16，最高危的点正好看不见；下限 2 也会切掉重度低血糖。建议上限给到 20+，或超出范围的点用箭头标注，并在图注写明裁切规则；</li><li>smooth + areaStyle：曲线圆滑、面积填充，观感更"健康管理"。</li></ul>
 <p><strong>图表规范的核心是"固定的医学参照系"</strong>，不是默认的自动刻度——这直接关系到使用者对"高不高"的判断。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -446,7 +446,8 @@ dataZoom: [{ type: &#x27;inside&#x27; }],</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Dashboard.vue 里的 computed：</p>
 <pre>const healthScore = computed(() =&gt; {
-  if (!bloodStore.stats) return 0
+  // 后端无数据时返回的是 {error: &#x27;暂无血糖数据&#x27;}，stats 为真、tir 却是 undefined
+if (!bloodStore.stats || bloodStore.stats.error || !bloodStore.stats.record_count) return null   // null = 暂无数据，别当成 0 分
   const tir = bloodStore.stats.time_in_range
   if (tir &gt;= 90) return 90
   if (tir &gt;= 70) return 75
