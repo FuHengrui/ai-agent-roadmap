@@ -403,7 +403,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 scaler = StandardScaler(with_mean=True, with_std=True).fit(x_train)
 x_train_scaled = scaler.transform(x_train)   # 用训练集学的 μ、σ
 x_test_scaled  = scaler.transform(x_test)    # 测试集只 transform</pre>
-<ul><li><strong>先 fit 训练集、再 transform 两个集</strong>——绝不直接对测试集 fit_transform（违背同分布假设，泄漏信息）。</li><li>with_mean/with_std 默认都是 True：同时做均值归一化（减均值）和方差归一化（除方差），这就是"标准归一化"的完整含义。</li></ul>
+<ul><li><strong>先 fit 训练集、再 transform 两个集</strong>——绝不直接对测试集 fit_transform（违背同分布假设，泄漏信息）。</li><li>with_mean/with_std 默认都是 True：减均值 + <strong>除以标准差 σ</strong>（不是除以方差；除方差会变成 1/σ² 倍），标准化后均值 0、方差 1。</li></ul>
 <p>这一节是第七章"fit/transform 纪律"的实战落地：<strong>scale 的参数只属于训练集</strong>。写错这一步，测试评估等于作弊。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -455,7 +455,7 @@ np.sqrt(mean_squared_error(y_true=np.log1p(y_train),
 # 测试集 RMSE（log 空间）
 np.sqrt(mean_squared_error(y_true=np.log1p(y_test), y_pred=y_predict))</pre>
 <p>要点：</p>
-<ul><li><strong>RMSE = sqrt(MSE)</strong>：把平方单位还原，与 y 同量纲，直观可比（log 空间下"低 0.1"意味着花销猜测误差缩小约 10%）。</li><li><strong>训练/测试都算</strong>：对比两者差异看是否过拟合（训练远低测试=过拟合信号）。</li><li>若要"元"为单位：<code>np.exp(reg.predict(...))</code> 还原再算 RMSE——两种口径都能用，报告时写清口径即可。</li></ul>
+<ul><li><strong>RMSE = sqrt(MSE)</strong>：把平方单位还原，与 y 同量纲，直观可比（log 空间下"低 0.1"意味着花销猜测误差缩小约 10%）。</li><li><strong>训练/测试都算</strong>：对比两者差异看是否过拟合（训练远低测试=过拟合信号）。</li><li>若要"元"为单位：用 <strong><code>np.expm1(reg.predict(...))</code></strong> 还原（log1p 的逆是 expm1，不是 exp；用 exp 会整体偏高）。注意 log 空间的 RMSE 和元空间的 RMSE <strong>不能混着比</strong>，一份报告里只用一种口径。</li></ul>
 <p>评估铁律再强调：<strong>以测试集 RMSE 为最终成绩</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -473,7 +473,9 @@ np.sqrt(mean_squared_error(y_true=np.log1p(y_test), y_pred=y_predict))</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>进阶版新增三把刀：</p>
 <ol><li><strong>KDE 分布对比（核密度估计）</strong>：用 seaborn 的 <code>sns.kdeplot</code> 按不同组画 charges 分布曲线，直观发现——male/female 曲线几乎重合（<strong>性别与花销无关</strong>）；四个 region 曲线也几乎重合（<strong>地域无关</strong>）；而 smoker 两条曲线分得极开（<strong>吸烟强相关</strong>）；children=0 与 &gt;0 分布明显不同、&gt;0 之间差别不大（<strong>"有孩子"与"没孩子"是质变</strong>）。</li><li><strong>砍特征降维</strong>：既然 region、sex 与 y 相关性极低，直接删：</li></ol>
-<pre>data = data.drop([&#x27;region&#x27;,&#x27;sex&#x27;], axis=1)</pre>
+<pre># 注意：这里必须从原始数据重新开始——上面已经 get_dummies 过了，region/sex 原列早没了，直接 drop 会 KeyError
+data = pd.read_csv(&#x27;data/insurance.csv&#x27;)
+data = data.drop([&#x27;region&#x27;,&#x27;sex&#x27;], axis=1)</pre>
 <ol><li><strong>语义分箱（apply 自定义函数）</strong>：利用医学先验 + 数据探索结论，把连续值变成有业务含义的标签：</li></ol>
 <pre>def greater(df, bmi, num_child):
     df[&#x27;bmi&#x27;] = &#x27;over&#x27; if df[&#x27;bmi&#x27;] &gt;= bmi else &#x27;under&#x27;     # BMI≥30 肥胖，医学阈值
