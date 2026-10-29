@@ -342,7 +342,7 @@ pd.pivot_table(df,
 # 班级
 # A     92   88
 # B     85   76</pre>
-<p>关键参数：<strong>index/columns/values/aggfunc</strong> 四件套——aggfunc 支持 'sum'/'count'/'max' 等；<code>fill_value=0</code> 填空值；<code>margins=True</code> 加小计行。</p>
+<p>关键参数：<strong>index/columns/values/aggfunc</strong> 四件套——aggfunc 支持 'sum'/'count'/'max' 等；<code>fill_value=0</code> 填空值；<code>margins=True</code> 给行列各加一个 All 合计。</p>
 <p>与 groupby 的关系：<strong>pivot_table = 行×列双维度分组</strong>；groupby 做单维聚合，透视做二维交叉。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -378,7 +378,7 @@ pd.crosstab(df[&#x27;性别&#x27;], df[&#x27;是否购买&#x27;], normalize=&#x2
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>crosstab 想算均值</td><td>它不是干这个的；用 pivot_table(values=..., aggfunc='mean')</td></tr>
+<tr><td>crosstab 想算均值</td><td>crosstab 也能 <code>values=</code> + <code>aggfunc=</code> 算均值，只是不如 pivot_table 直观</td></tr>
 <tr><td>行列传反</td><td>crosstab(行, 列)：第一个参数变行索引</td></tr>
 </table>
 </div>

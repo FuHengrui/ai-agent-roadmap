@@ -321,8 +321,9 @@ Kafka(topic: user_events) → Structured Streaming/DStream
    → 窗口聚合（每分钟 PV/UV/地区流量）→ Redis/MySQL 供前端大屏</pre>
 <p><strong>数据库设计（输出目标）</strong>：</p>
 <pre>-- 数仓表
-CREATE TABLE dwd.log_clean (dt STRING, ts STRING, user_id STRING, page STRING, region STRING, ua STRING) PARTITIONED BY (dt);
-CREATE TABLE ads.daily_metric (dt STRING, pv BIGINT, uv BIGINT) PARTITIONED BY (dt);</pre>
+-- 注意：分区列 dt 不能再写进列清单，否则 Hive 报重复列
+CREATE TABLE dwd.log_clean (ts STRING, user_id STRING, page STRING, region STRING, ua STRING) PARTITIONED BY (dt STRING);
+CREATE TABLE ads.daily_metric (pv BIGINT, uv BIGINT) PARTITIONED BY (dt STRING);</pre>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -239,7 +239,7 @@ def query_database(sql: str) -> str:
 ```python
 ToolNode(tools, handle_tool_errors=True)   # 工具抛异常时自动包装为 ToolMessage
 ```
-好处：统一兜底；注意：**create_agent 内部的 ToolNode 默认没有开启 handle_tool_errors**，要显式配置或靠策略 1/3。
+好处：统一兜底；注意：**create_agent 内部的 ToolNode create_agent 没有 handle_tool_errors 这个参数；异常要走 @wrap_tool_call middleware 兜（ToolNode 的 handle_tool_errors 默认就是 True）**，要显式配置或靠策略 1/3。
 
 **策略 3：Agent 自行决策（最终防线）**
 错误信息作为 ToolMessage 返回给 Agent，Agent 根据错误内容自行回复用户、换参数重试或放弃。这是"智能"的体现。

@@ -114,17 +114,23 @@ Command 是"恢复执行"的通用入口：resume 的值就是 interrupt 的返�
 完整链路：
 
 ```python
+from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import Command
 
 # 1. 危险工具内置 interrupt（见第②点 process_refund）
 # 2. 正常的 agent + tools 图
 graph.add_node("agent", agent_node)
-graph.add_node("tools", ToolNode([process_refund, other_tools]))
+graph.add_node("tools", ToolNode([process_refund, *other_tools]))   # 注意 *，不然整个列表会被当成一个工具
 graph.add_conditional_edges("agent", tools_condition, {"tools": "tools", END: END})
 graph.add_edge("tools", "agent")
 
 # 3. 编译时必须带 checkpointer（interrupt 依赖断点恢复）
 memory = MemorySaver()
+
+# config 必须带 thread_id，checkpointer 靠它认「哪一次会话」
+config = {"configurable": {"thread_id": "order-ORD002"}}
 app = graph.compile(checkpointer=memory)
 
 # 4. 首次调用：触达 interrupt，返回"暂停"状态

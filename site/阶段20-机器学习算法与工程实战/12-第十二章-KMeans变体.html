@@ -331,7 +331,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>KMeans++</strong> 的初始化策略（sklearn 默认开启）：</p>
 <ol><li>第一个中心：随机选一个样本。</li><li>之后每个新中心：以<strong>正比于"到最近已有中心的距离"</strong>的概率，从剩余样本中选——<strong>离已有中心越远的点越容易被选中</strong>。</li><li>重复 K 次，得到"互相离得很远"的 K 个初始中心，再走标准 KMeans 迭代。</li></ol>
-<p>效果：初始中心天然分散，收敛更快、更稳，<strong>大幅降低落到局部最优的概率</strong>。实现成本极低（几乎免费），所以 sklearn 的 <code>KMeans(n_init='auto')</code> 默认就用 KMeans++。</p>
+<p>效果：初始中心天然分散，收敛更快、更稳，<strong>大幅降低落到局部最优的概率</strong>。实现成本极低（几乎免费），所以 sklearn 的 <code>KMeans(n_init='auto')</code> 是 sklearn ≥1.4 的默认（用 k-means++ 时只跑 1 次）；示例里的 <code>n_init=10</code> 不是默认值，是显式重启 10 次。</p>
 <pre>from sklearn.cluster import KMeans
 km = KMeans(n_clusters=3, init=&#x27;k-means++&#x27;, n_init=10, random_state=42)</pre>
 <p><code>init</code> 参数：<code>'k-means++'</code>（默认）或 <code>'random'</code>（完全随机，用于对照实验）。</p>
@@ -458,7 +458,7 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 np.random.seed(1)
-# 构造一个&quot;拖尾&quot;数据：初始中心没选好容易陷入坏解
+# 构造三团高斯数据：初始中心没选好容易陷入坏解
 X = np.vstack([np.random.randn(80,2),
                np.random.randn(40,2) + [6, 0],
                np.random.randn(40,2) + [0, 6]])

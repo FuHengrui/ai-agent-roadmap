@@ -208,7 +208,7 @@ Docker 的容器技术属于**操作系统虚拟化**——它不虚拟整台电
 镜像要能"搭建一次、到处运行"，前提是能方便地分发——你做的镜像，别人怎么拿到？
 
 @@idea 核心思路
-**仓库（Repository）就是集中存放镜像的地方**，类似 Maven 的中央仓库（存 jar 包）、代码仓库（存代码）——Docker 只是把"存的东西"换成了镜像。
+**镜像**注册中心**（Registry，如 Docker Hub）是集中存放镜像的地方；它内部按名字分成多个**仓库**（Repository），例如 `library/nginx`**，类似 Maven 的中央仓库（存 jar 包）、代码仓库（存代码）——Docker 只是把"存的东西"换成了镜像。
 最大的公开镜像注册中心是 **Docker Hub**（Registry 里按名字分了很多 Repository），里面有海量现成镜像（centos、openjdk、tomcat、mysql……），下载即用。
 国内也有镜像仓库提供更稳定的访问（如阿里云 ACR，第 20 章细讲）。
 

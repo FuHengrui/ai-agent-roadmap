@@ -379,17 +379,23 @@ result = app.invoke(
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>完整链路：</p>
-<pre>from langgraph.prebuilt import ToolNode, tools_condition
+<pre>from langgraph.graph import END, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import Command
 
 # 1. 危险工具内置 interrupt（见第②点 process_refund）
 # 2. 正常的 agent + tools 图
 graph.add_node(&quot;agent&quot;, agent_node)
-graph.add_node(&quot;tools&quot;, ToolNode([process_refund, other_tools]))
+graph.add_node(&quot;tools&quot;, ToolNode([process_refund, *other_tools]))   # 注意 *，不然整个列表会被当成一个工具
 graph.add_conditional_edges(&quot;agent&quot;, tools_condition, {&quot;tools&quot;: &quot;tools&quot;, END: END})
 graph.add_edge(&quot;tools&quot;, &quot;agent&quot;)
 
 # 3. 编译时必须带 checkpointer（interrupt 依赖断点恢复）
 memory = MemorySaver()
+
+# config 必须带 thread_id，checkpointer 靠它认「哪一次会话」
+config = {&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;order-ORD002&quot;}}
 app = graph.compile(checkpointer=memory)
 
 # 4. 首次调用：触达 interrupt，返回&quot;暂停&quot;状态

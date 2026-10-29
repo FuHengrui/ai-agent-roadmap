@@ -76,7 +76,7 @@ pd.pivot_table(df,
 # B     85   76
 ```
 
-关键参数：**index/columns/values/aggfunc** 四件套——aggfunc 支持 'sum'/'count'/'max' 等；`fill_value=0` 填空值；`margins=True` 加小计行。
+关键参数：**index/columns/values/aggfunc** 四件套——aggfunc 支持 'sum'/'count'/'max' 等；`fill_value=0` 填空值；`margins=True` 给行列各加一个 All 合计。
 
 与 groupby 的关系：**pivot_table = 行×列双维度分组**；groupby 做单维聚合，透视做二维交叉。
 
@@ -119,7 +119,7 @@ pd.crosstab(df['性别'], df['是否购买'], normalize='index')  # 行内占比
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| crosstab 想算均值 | 它不是干这个的；用 pivot_table(values=..., aggfunc='mean') |
+| crosstab 想算均值 | crosstab 也能 `values=` + `aggfunc=` 算均值，只是不如 pivot_table 直观 |
 | 行列传反 | crosstab(行, 列)：第一个参数变行索引 |
 
 @@point ④ df.plot：Pandas 直出图 & 中文设置

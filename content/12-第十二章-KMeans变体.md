@@ -56,7 +56,7 @@
 2. 之后每个新中心：以**正比于"到最近已有中心的距离"**的概率，从剩余样本中选——**离已有中心越远的点越容易被选中**。
 3. 重复 K 次，得到"互相离得很远"的 K 个初始中心，再走标准 KMeans 迭代。
 
-效果：初始中心天然分散，收敛更快、更稳，**大幅降低落到局部最优的概率**。实现成本极低（几乎免费），所以 sklearn 的 `KMeans(n_init='auto')` 默认就用 KMeans++。
+效果：初始中心天然分散，收敛更快、更稳，**大幅降低落到局部最优的概率**。实现成本极低（几乎免费），所以 sklearn 的 `KMeans(n_init='auto')` 是 sklearn ≥1.4 的默认（用 k-means++ 时只跑 1 次）；示例里的 `n_init=10` 不是默认值，是显式重启 10 次。
 
 ```python
 from sklearn.cluster import KMeans
@@ -200,7 +200,7 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 np.random.seed(1)
-# 构造一个"拖尾"数据：初始中心没选好容易陷入坏解
+# 构造三团高斯数据：初始中心没选好容易陷入坏解
 X = np.vstack([np.random.randn(80,2),
                np.random.randn(40,2) + [6, 0],
                np.random.randn(40,2) + [0, 6]])

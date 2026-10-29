@@ -469,7 +469,7 @@ P3: [c,1][b,1]
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>UI 上 Stage 个数和自己预期对不上</td><td>数"shuffle 次数+1"即可（每个宽依赖算子切一刀）。join/reduceByKey/distinct/sortByKey 每个都是一刀</td></tr>
 <tr><td>想减少 Stage 数</td><td>少用宽依赖算子=少 shuffle=少 Stage。能用窄依赖重写的就别宽依赖（如 filter 前置减少 shuffle 数据量）</td></tr>
-<tr><td>一个 Stage 里有 join 却只有一个 Stage</td><td>不会发生——join 就是宽依赖必切。Stage 只含窄依赖链</td></tr>
+<tr><td>一个 Stage 里有 join 却只有一个 Stage</td><td>一般不会——RDD 的 join 默认要 shuffle。但两侧<strong>已按同一 partitioner 分区</strong>（co-partitioned），或走<strong>广播 join</strong> 时，就可以留在同一个 Stage</td></tr>
 <tr><td>Stage 是"串行执行"的误解</td><td>无依赖 Stage 并行。DAG 图上看左右并排的 Stage 同时跑，上下串的才分先后</td></tr>
 </table>
 </div>
