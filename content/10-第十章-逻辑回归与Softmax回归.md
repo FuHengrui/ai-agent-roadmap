@@ -143,7 +143,7 @@ p = 1 / (1 + e^(-w·x))
 举例：三类（猫/狗/鸟）→ 训练"猫 vs 其他"、"狗 vs 其他"、"鸟 vs 其他"三个分类器。
 - 优点：逻辑回归原样复用，K 个模型即可。
 - 变体 **OvO（一对一）**：每两类别训练一个分类器，共 K(K-1)/2 个，投票决定；类别多时成本高，一般不如 OvA。
-- 工程：sklearn `LogisticRegression(multi_class='ovr')` 就是 OvA 实现（新版默认 multinomial，见 Softmax 一节）。
+- 工程：sklearn 1.8 起**移除了 `multi_class` 参数**（默认就是 multinomial）；要做 OvA 得用 `OneVsRestClassifier(LogisticRegression())`。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -188,8 +188,8 @@ p_1 = 1/(1+e^(z2-z1)) = sigmoid(z1-z2)
 - **一个 sigmoid 输出其实编码了两个类的"相对高低"**（z1 比 z2 高多少）。所以二分类的 sigmoid 本质是"二元 softmax"。
 
 工程对应：
-- `LogisticRegression(multi_class='ovr')`：OvA 二分类器组合。
-- `LogisticRegression(multi_class='multinomial', solver='lbfgs')`：真·Softmax 回归（新旧版本默认不同，建议显式指定）。
+- OvA：`OneVsRestClassifier(LogisticRegression())`——把多分类拆成多个二分类器（`multi_class` 参数已在新版移除）。
+- 真·Softmax 回归：直接 `LogisticRegression()`（默认 multinomial，配合 `solver='lbfgs'` 或 `'saga'`），不用再写 `multi_class`。
 - 二分类任务两者等价；多分类直接选 multinomial/softmax 更优。
 
 **至此，线性家族的统一画面**：线性组合 z=w·x → 回归输出 z 本身；二分类套 sigmoid；多分类套 softmax。全部可解释为"GLM + 最大似然 + 梯度下降"。

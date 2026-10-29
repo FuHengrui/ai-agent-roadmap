@@ -400,7 +400,7 @@
 <p><strong>一对多（One-vs-All / One-vs-Rest, OvA）</strong>策略：</p>
 <ul><li>对 K 个类别，训练 <strong>K 个二分类器</strong>：第 k 个分类器把"第 k 类"当正类，其余全部当负类。</li><li>预测：K 个分类器各输出一个"属于 k 类的概率"，<strong>取概率最大的那个类别</strong>作为最终结果。</li></ul>
 <p>举例：三类（猫/狗/鸟）→ 训练"猫 vs 其他"、"狗 vs 其他"、"鸟 vs 其他"三个分类器。</p>
-<ul><li>优点：逻辑回归原样复用，K 个模型即可。</li><li>变体 <strong>OvO（一对一）</strong>：每两类别训练一个分类器，共 K(K-1)/2 个，投票决定；类别多时成本高，一般不如 OvA。</li><li>工程：sklearn <code>LogisticRegression(multi_class='ovr')</code> 就是 OvA 实现（新版默认 multinomial，见 Softmax 一节）。</li></ul>
+<ul><li>优点：逻辑回归原样复用，K 个模型即可。</li><li>变体 <strong>OvO（一对一）</strong>：每两类别训练一个分类器，共 K(K-1)/2 个，投票决定；类别多时成本高，一般不如 OvA。</li><li>工程：sklearn 1.8 起<strong>移除了 <code>multi_class</code> 参数</strong>（默认就是 multinomial）；要做 OvA 得用 <code>OneVsRestClassifier(LogisticRegression())</code>。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -439,7 +439,7 @@
 <pre>p_1 = 1/(1+e^(z2-z1)) = sigmoid(z1-z2)</pre>
 <ul><li><strong>一个 sigmoid 输出其实编码了两个类的"相对高低"</strong>（z1 比 z2 高多少）。所以二分类的 sigmoid 本质是"二元 softmax"。</li></ul>
 <p>工程对应：</p>
-<ul><li><code>LogisticRegression(multi_class='ovr')</code>：OvA 二分类器组合。</li><li><code>LogisticRegression(multi_class='multinomial', solver='lbfgs')</code>：真·Softmax 回归（新旧版本默认不同，建议显式指定）。</li><li>二分类任务两者等价；多分类直接选 multinomial/softmax 更优。</li></ul>
+<ul><li>OvA：<code>OneVsRestClassifier(LogisticRegression())</code>——把多分类拆成多个二分类器（<code>multi_class</code> 参数已在新版移除）。</li><li>真·Softmax 回归：直接 <code>LogisticRegression()</code>（默认 multinomial，配合 <code>solver='lbfgs'</code> 或 <code>'saga'</code>），不用再写 <code>multi_class</code>。</li><li>二分类任务两者等价；多分类直接选 multinomial/softmax 更优。</li></ul>
 <p><strong>至此，线性家族的统一画面</strong>：线性组合 z=w·x → 回归输出 z 本身；二分类套 sigmoid；多分类套 softmax。全部可解释为"GLM + 最大似然 + 梯度下降"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
