@@ -444,7 +444,7 @@ trainer.save_model(peft_model_path)          # 保存 LoRA 模型（补丁）</p
 <tr><td>tokenizer 相关</td><td>tokenizer_config / vocab 文件</td></tr>
 </table>
 <p>关键点：</p>
-<ul><li><strong>没有完整 model 权重</strong>（几个 GB），而是补丁：本章这种 1.5B + 只挂 q/v + r=8 的配置，adapter 只有几万参数（不到 1 MB）；换成 7B 全挂线性层才会到几十 MB 级——这就是 LoRA 最核心的工程价值：<strong>轻、快、可复用</strong>；</li><li><code>adapter_config.json</code> 里记录了 <code>base_model_name_or_path</code>，第 7 章按它找回底座；</li><li>完整模型一份都不落？——要的（合并版）在下一章 merge 时再产生，训练阶段先存补丁即可。</li></ul>
+<ul><li><strong>没有完整 model 权重</strong>（几个 GB），而是补丁：本章这种 1.5B + 只挂 q/v + r=8 的配置，adapter 约 <strong>140 万参数</strong>（fp32≈5.5 MB、bf16≈2.7 MB：每层 q/v 各 1536×8 + 8×1536 ≈ 2.4 万，乘 28 层再乘 2）；换成 7B 全挂线性层才会到几十~几百 MB 级——这就是 LoRA 最核心的工程价值：<strong>轻、快、可复用</strong>；</li><li><code>adapter_config.json</code> 里记录了 <code>base_model_name_or_path</code>，第 7 章按它找回底座；</li><li>完整模型一份都不落？——要的（合并版）在下一章 merge 时再产生，训练阶段先存补丁即可。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

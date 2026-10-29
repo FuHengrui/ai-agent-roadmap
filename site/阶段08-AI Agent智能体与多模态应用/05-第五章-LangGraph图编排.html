@@ -479,7 +479,7 @@ graph.add_edge(&quot;task_a&quot;, &quot;merge&quot;)
 graph.add_edge(&quot;task_b&quot;, &quot;merge&quot;)
 graph.add_edge(&quot;task_c&quot;, &quot;merge&quot;)</pre>
 <p>类比：一个人洗菜的同时，另一个人切菜，第三个人热锅——三件事并行，最后一起上桌。</p>
-<p>注意：并行配 Reducer 才有效——多个节点都往同一字段写，得用 <code>operator.add</code> 之类合并，否则最后到的覆盖前面的。</p>
+<p>注意：并行配 Reducer 才有效——多个节点都往同一字段写，得配 <code>operator.add</code> 之类的 reducer——<strong>不配不会静默覆盖，而是直接抛 <code>InvalidUpdateError</code></strong>（LangGraph 每个 superstep 对同一通道只允许一次写入）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -379,7 +379,7 @@ def bs_change(self):
         return round(self.blood_sugar_after - self.blood_sugar_before, 1)
     return 0.0</pre>
 <p>如果运动后血糖 5.8、运动前 6.9，<code>bs_change = -1.1</code>——前端显示"血糖下降 1.1"，AI 引擎可据此提示"运动有效，注意低血糖"。<strong>差值当负数看：负值 = 降糖成功</strong>。</p>
-<p>接口差异：运动更新用的是 <code>update_from_dict(data.model_dump())</code>，与前面模块的 setattr 循环等价但更简洁——Tortoise 提供的批量赋值外壳。</p>
+<p>接口差异：运动更新用的是 <code>update_from_dict(data.model_dump(exclude_unset=True))</code>——<strong>一定要带 exclude_unset</strong>，否则没传的字段会被 None/默认值一起写回去——Tortoise 提供的批量赋值外壳。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -439,7 +439,7 @@ avg_gi = statistics.mean(gi_vals) if gi_vals else 0.0</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>三个模块创建接口的开头都是同一行：</p>
 <pre>await Patient.get_or_none(id=data.patient_id)</pre>
-<p>含义拆解：<strong>存在性检查</strong>——查一次患者，只为把"这个 patient_id 不存在"尽早暴露出来（下一段就返回 404），返回值不参与业务逻辑（创建出无主记录）。</p>
+<p>含义拆解：<strong>存在性检查</strong>——查一次患者，然后<strong>立刻判空</strong>：<code>get_or_none</code> 查不到只返回 None、不抛异常，不判就是静默放行（创建出无主记录）。</p>
 <p>工程进阶（示例代码没做，值得知道）：正式项目应改成显式判空抛 404：</p>
 <pre>patient = await Patient.get_or_none(id=data.patient_id)
 if not patient:

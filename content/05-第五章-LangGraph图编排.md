@@ -240,7 +240,7 @@ graph.add_edge("task_c", "merge")
 
 类比：一个人洗菜的同时，另一个人切菜，第三个人热锅——三件事并行，最后一起上桌。
 
-注意：并行配 Reducer 才有效——多个节点都往同一字段写，得用 `operator.add` 之类合并，否则最后到的覆盖前面的。
+注意：并行配 Reducer 才有效——多个节点都往同一字段写，得配 `operator.add` 之类的 reducer——**不配不会静默覆盖，而是直接抛 `InvalidUpdateError`**（LangGraph 每个 superstep 对同一通道只允许一次写入）。
 
 @@trap 坑在哪
 | 现象 | 原因 |

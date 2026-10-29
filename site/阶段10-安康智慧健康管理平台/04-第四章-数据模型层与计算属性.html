@@ -442,12 +442,12 @@ def status(self) -&gt; str:
 <tr><td>7.0 &lt; value ≤ 10.0</td><td>偏高</td></tr>
 <tr><td>value &gt; 10.0</td><td>高血糖</td></tr>
 </table>
-<p>注意<strong>边界归属</strong>：3.9 算正常（<code>&lt; 3.9</code> 才是低），7.0 算正常（<code>&lt;= 7.0</code>），10.0 算偏高（<code>&lt;= 10.0</code>）——一句话记：<strong>边界值归前一档</strong>（每档是 <code>(下界, 上界]</code>，只有最低档用 <code>&lt;</code>）。写错一个等号，7.0 就会被误判成偏高。这与 .env 里的 BG_LOW_THRESHOLD / BG_HIGH_THRESHOLD（3.9 / 10.0）遥相呼应。</p>
+<p>注意<strong>边界归属</strong>：3.9 算正常（<code>&lt; 3.9</code> 才是低），7.0 算正常（<code>&lt;= 7.0</code>），10.0 算偏高（<code>&lt;= 10.0</code>）——一句话记：<strong>正常档是闭区间 [3.9, 7.0]，其余左开右闭</strong>——3.9 归正常、7.0 归正常、10.0 归偏高（每档是 <code>(下界, 上界]</code>，只有最低档用 <code>&lt;</code>）。写错一个等号，7.0 就会被误判成偏高。这与 .env 里的 BG_LOW_THRESHOLD / BG_HIGH_THRESHOLD（3.9 / 10.0）遥相呼应。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>边界值误判（7.0 显示偏高）</td><td>记住「边界归前一档」：正常是 <code>&lt;= 7.0</code>、偏高是 <code>&lt;= 10.0</code>、低血糖才是 <code>&lt; 3.9</code></td></tr>
+<tr><td>边界值误判（7.0 显示偏高）</td><td>记住正常档是 <code>3.9 &lt;= v &lt;= 7.0</code>；<code>&gt; 7.0 且 &lt;= 10.0</code> 偏高，<code>&gt; 10.0</code> 很高，<code>&lt; 3.9</code> 低</td></tr>
 <tr><td>阈值写死两处不一样</td><td>.env 与代码里必须同一口径；本项目模型用常量，HealthAnalyzer 用 .env，注意别漂移</td></tr>
 </table>
 </div>
@@ -531,7 +531,7 @@ __all__ = [
     &quot;Medication&quot;, &quot;Exercise&quot;, &quot;HealthReport&quot;, &quot;ChatHistory&quot;,
 ]</pre>
 <p>机制解析：</p>
-<ul><li>TORTOISE_ORM 里配了 <code>"models": ["app.models"]</code>——Tortoise 扫描 app/models 包，<strong>只认 __init__.py 里导出的类</strong>；</li><li>外部代码 <code>from app.models import BloodSugar</code> 一行拿到全部模型；</li><li>新增模块时<strong>必须手动加进 __init__.py</strong>，否则 Tortoise 或路由都找不到它。</li></ul>
+<ul><li>TORTOISE_ORM 里配了 <code>"models": ["app.models"]</code>——Tortoise 会扫描 app/models 包下<strong>所有模块</strong>并按 Model 子类注册；统一在 __init__.py 里导出只是为了外部 import 方便。<strong>不是</strong>「只认 __init__.py 里导出的类**；</li><li>外部代码 <code>from app.models import BloodSugar</code> 一行拿到全部模型；</li><li>新增模块时<strong>必须手动加进 __init__.py</strong>，否则 Tortoise 或路由都找不到它。</li></ul>
 <p>这是极易踩坑的点：写好了 medication.py 但忘在 __init__.py 导出，启动不报错、查询却报"模型不存在"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

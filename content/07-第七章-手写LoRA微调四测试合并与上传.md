@@ -115,7 +115,7 @@ def generate_text(input_text):
     input_ids = tokenizer(prompt, return_tensors="pt").to(model.device)
     # 关闭梯度计算（推理不需要）
     with torch.no_grad():
-        output = model.generate(**input_ids)
+        output = model.generate(**input_ids, max_new_tokens=128, do_sample=True, temperature=0.7)   # 不写就按 max_length=20 截断
     # 解码：跳过特殊标记
     response = tokenizer.decode(output[0], skip_special_tokens=True)
     return response.split("回应:")[1].strip()
