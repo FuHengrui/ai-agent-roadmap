@@ -340,7 +340,7 @@ qwen3-0.6b/
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>vLLM 提供超简启动命令（服务模式）：</p>
-<pre>vllm serve Qwen/Qwen3-0.6B --port 8000</pre>
+<pre>vllm serve ./qwen3-0.6b --port 8000   # 用 §② 下到本地的目录，别写 HF 仓库 ID（会重新走 HuggingFace）</pre>
 <ul><li>参数位置：模型 ID（或本地目录路径）。</li><li>默认暴露 OpenAI 兼容接口 <code>http://localhost:8000/v1</code>。</li><li>也可以直接传本地目录：</li></ul>
 <pre>vllm serve ./qwen3-0.6b --port 8000</pre>
 <p>启动成功后终端会出现服务地址与模型信息，此时即可按 OpenAI 格式调用。</p>
@@ -386,7 +386,7 @@ qwen3-0.6b/
 <p><strong>gpu-memory-utilization（显存利用率）</strong>：vLLM 最多可用多少比例的显存（默认 0.9）。</p>
 <pre>vllm serve qwen-14b --gpu-memory-utilization 0.95</pre>
 <p>使用逻辑：</p>
-<ul><li>单卡放不下 → 张量并行（卡数整除模型头/层配置）。</li><li>留显存给其他进程/更激进缓存 → 调低利用率；反之调高。</li></ul>
+<ul><li>单卡放不下 → 张量并行（卡数整除模型头/层配置）。</li><li>两个方向别搞混：<strong>要给别的进程留显存 → 调低</strong>；<strong>想让 KV 缓存更大、并发更多 → 调高</strong>（0.9~0.95，别设 1.0，否则容易 OOM）。</li></ul>
 <p>调参目标：<strong>在"不 OOM"与"给 KV 缓存最大化空间"之间找平衡</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

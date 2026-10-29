@@ -110,7 +110,7 @@ print(resp.choices[0].message.content)
 配套的 server.py 只有 9 行，它演示了什么？
 
 @@idea 核心思路
-配套的服务器端示例源码语义（9 行演示）：
+配套的客户端脚本 server.py（文件名带 server，实际是**客户端**调用示例；9 行）：
 
 ```
 from openai import OpenAI       # ① 引入官方 SDK
@@ -127,7 +127,7 @@ model="qwen",   # 必须和启动时的 --served-model-name 一致，否则 404
 print(response.choices[0].message.content) # ⑥ 打印生成结果
 ```
 
-核心价值：**完整示范了"客户端 ↔ vLLM 服务"的最小可用代码**——接入 vLLM 的服务调用范式就是这 6 步，看懂它即掌握接入方式。
+核心价值：**完整示范了"客户端 ↔ vLLM 服务"的最小可用代码**——接入 vLLM 的服务调用范式就是这几个动作，看懂它即掌握接入方式。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -137,7 +137,7 @@ print(response.choices[0].message.content) # ⑥ 打印生成结果
 
 @@point ⑤ 流式输出的客户端写法
 @@need 要解决什么
-上一章提过流式输出，客户端代码怎么开？
+第二章讲过流式输出，客户端代码怎么开？
 
 @@idea 核心思路
 OpenAI SDK 加一个参数即可开启流式：
