@@ -306,7 +306,7 @@
 <tr><td>IntentAgent</td><td>用户 query</td><td>qa / document / search</td><td>LLM + 意图 prompt</td></tr>
 <tr><td>RetrievalAgent</td><td>query、filters</td><td>案例列表（已重排）</td><td>HybridRetriever + Reranker</td></tr>
 <tr><td>QAAgent</td><td>案例 + 消息历史</td><td>流式回答文本</td><td>LLM + QA prompt</td></tr>
-<tr><td>DocumentAgent</td><td>文书类型 + 参数</td><td>文书全文</td><td>LLM + 文书模板</td></tr>
+<tr><td>DocumentAgent</td><td>文书类型 + 参数</td><td><strong>dict</strong>：<code>{content, references}</code></td><td>LLM + 文书模板</td></tr>
 </table>
 <p>协作关系一句话：<strong>IntentAgent 决定方向 → RetrievalAgent 找弹药 → QAAgent 组织回答（或 DocumentAgent 生成文书）</strong>。四者互不 import 对方（各自只依赖 rag/llm 层），替换任一 Agent 不影响他人——这就是"单一职责"在 Agent 架构里的落地。</p>
 </div>

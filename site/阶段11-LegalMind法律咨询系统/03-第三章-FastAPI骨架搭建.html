@@ -343,7 +343,7 @@ async def health():
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>启动时 <code>init_db</code> 报连接失败</td><td>Postgres 容器没起来或 .env 的 DATABASE_URL 不对；先 <code>docker compose ps</code> 确认 healthy</td></tr>
-<tr><td>lifespan 里 await 全部塞一起</td><td>三个 init 无依赖可以并行：<code>await asyncio.gather(init_db(), init_vector_store(), init_checkpointer())</code> 加速启动</td></tr>
+<tr><td>lifespan 里 await 全部塞一起</td><td>串行 await，顺序 init_db → 向量库 → checkpointer；关闭时<strong>逆序</strong>。别用 <code>gather</code> 图快——并行就没有确定的初始化顺序，「后建先关」也就不成立了</td></tr>
 <tr><td>关闭时报 "connection already closed"</td><td>close 顺序和 init 顺序不一致；严格逆序关闭</td></tr>
 </table>
 </div>

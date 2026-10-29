@@ -411,15 +411,17 @@ def node_b(state): return {&quot;messages&quot;: [&quot;世界&quot;]}
 <pre>graph.add_conditional_edges(
     &quot;decide&quot;,                # 从哪个节点出发
     route_by_type,           # 路由函数：读 state，返回节点名
+    # path_map 的键 = 路由函数的返回值；值是目标节点名。两层名字别混
     {&quot;content&quot;: &quot;process_content&quot;, &quot;summary&quot;: &quot;process_summary&quot;, &quot;unknown&quot;: &quot;ask_user&quot;}
 )</pre>
 <p>路由函数设计模式：</p>
 <pre>def route_by_type(state):
+    &quot;&quot;&quot;返回的是 path_map 的**键**，不是节点名；配了 path_map 就必须返回键！&quot;&quot;&quot;
     if state[&quot;type&quot;] == &quot;content&quot;:
-        return &quot;process_content&quot;
+        return &quot;content&quot;
     elif state[&quot;type&quot;] == &quot;summary&quot;:
-        return &quot;process_summary&quot;
-    return &quot;ask_user&quot;</pre>
+        return &quot;summary&quot;
+    return &quot;unknown&quot;</pre>
 <p>类比：<strong>条件边 = 分拣传送带</strong>——扫一下快递地址，国内件走左边的带子，国际件走右边的带子。</p>
 <p>条件边还能实现<strong>循环</strong>：路由函数判断"及格了吗？补考次数超了吗？"，没及格就回到"答题"节点再来一轮，超过次数就到"failed"结束。<strong>注意：循环必须有终止条件，否则无限循环。</strong></p>
 </div>

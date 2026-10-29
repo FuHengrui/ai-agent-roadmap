@@ -157,6 +157,7 @@ def node_b(state): return {"messages": ["世界"]}
 graph.add_conditional_edges(
     "decide",                # 从哪个节点出发
     route_by_type,           # 路由函数：读 state，返回节点名
+    # path_map 的键 = 路由函数的返回值；值是目标节点名。两层名字别混
     {"content": "process_content", "summary": "process_summary", "unknown": "ask_user"}
 )
 ```
@@ -164,11 +165,12 @@ graph.add_conditional_edges(
 路由函数设计模式：
 ```python
 def route_by_type(state):
+    """返回的是 path_map 的**键**，不是节点名；配了 path_map 就必须返回键！"""
     if state["type"] == "content":
-        return "process_content"
+        return "content"
     elif state["type"] == "summary":
-        return "process_summary"
-    return "ask_user"
+        return "summary"
+    return "unknown"
 ```
 
 类比：**条件边 = 分拣传送带**——扫一下快递地址，国内件走左边的带子，国际件走右边的带子。

@@ -66,7 +66,7 @@ async def health():
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 启动时 `init_db` 报连接失败 | Postgres 容器没起来或 .env 的 DATABASE_URL 不对；先 `docker compose ps` 确认 healthy |
-| lifespan 里 await 全部塞一起 | 三个 init 无依赖可以并行：`await asyncio.gather(init_db(), init_vector_store(), init_checkpointer())` 加速启动 |
+| lifespan 里 await 全部塞一起 | 串行 await，顺序 init_db → 向量库 → checkpointer；关闭时**逆序**。别用 `gather` 图快——并行就没有确定的初始化顺序，「后建先关」也就不成立了 |
 | 关闭时报 "connection already closed" | close 顺序和 init 顺序不一致；严格逆序关闭 |
 
 @@point ③ Tortoise 配置与 init_db：建表藏在启动里

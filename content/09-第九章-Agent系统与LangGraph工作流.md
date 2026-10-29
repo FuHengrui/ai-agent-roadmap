@@ -28,7 +28,7 @@ LegalMind 的四枚 Agent 与职责：
 | IntentAgent | 用户 query | qa / document / search | LLM + 意图 prompt |
 | RetrievalAgent | query、filters | 案例列表（已重排） | HybridRetriever + Reranker |
 | QAAgent | 案例 + 消息历史 | 流式回答文本 | LLM + QA prompt |
-| DocumentAgent | 文书类型 + 参数 | 文书全文 | LLM + 文书模板 |
+| DocumentAgent | 文书类型 + 参数 | **dict**：`{content, references}` | LLM + 文书模板 |
 协作关系一句话：**IntentAgent 决定方向 → RetrievalAgent 找弹药 → QAAgent 组织回答（或 DocumentAgent 生成文书）**。四者互不 import 对方（各自只依赖 rag/llm 层），替换任一 Agent 不影响他人——这就是"单一职责"在 Agent 架构里的落地。
 
 @@trap 坑在哪
