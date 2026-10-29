@@ -151,12 +151,12 @@ val uv2 = logs.map(_.ip).map((_, 1)).reduceByKey(_ + _).count()
 | distinct | 全量去重后数 | distinct 内部也是一次 shuffle，但只传 IP |
 | reduceByKey | 每个 IP 归并后 count | 同 shuffle，可先在 map 端把同 IP 压成 1 条（**省传输**） |
 
-**进阶优化**（面试亮点）：**map 端预聚合**——同一个 Executor 内相同 IP 只留 1 条，再 shuffle 时数据量骤减：
+**别被「进阶优化」骗了**：上面这个 reduceByKey 写法**本身就是** map 端预聚合——Spark 会先在每个 map task 里做 combine，再只把 (IP, 次数) 发给 reduce 端。所以不存在「先 distinct 再 reduceByKey 更省」这回事（distinct 自己就是一次 shuffle，等于多跑一遍）。真要继续压，只能调并行度、加盐拆热点 key，或者在采样上估算。
 
 ```scala
 val uv3 = logs.map(_.ip)
               .map((_, 1))          // 每个 IP 先记一次
-              .reduceByKey(_ + _)   // map 端预聚合：同一 Executor 内只传 1 条
+              .reduceByKey(_ + _)   // 每个 map task 内先 combine，只传 (IP, 次数)
               .count()
 ```
 

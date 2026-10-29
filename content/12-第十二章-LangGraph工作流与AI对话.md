@@ -103,7 +103,7 @@ async def classify_input(state: AgentState) -> AgentState:
 | medication_query | 用药/药/胰岛素/打针/二甲双胍 | RAG 查"用药管理"分类 |
 | health_query | 兜底 | RAG 全库检索 |
 
-**规则关键词识别**是"轻量意图分类"——本项目刻意不用模型做分类（快、稳定、零成本）；复杂场景才升级为 LLM 分类器。分支的"分岔点"在 retrieve 节点消费 input_type。
+**规则关键词识别**是"轻量意图分类"——本项目刻意不用模型做分类（快、稳定、零成本）；复杂场景才升级为 LLM 分类器。**注意按顺序匹配会短路**：「血糖高能吃什么」先命中"血糖"，就被判成 blood_sugar、丢掉饮食意图。要么把更具体的关键词排前面，要么改成多标签（命中几类就把几个 category 都查）。分支的"分岔点"在 retrieve 节点消费 input_type。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

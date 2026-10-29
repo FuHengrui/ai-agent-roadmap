@@ -368,7 +368,7 @@ class AgentState(TypedDict, total=False):
 <tr><td>medication_query</td><td>用药/药/胰岛素/打针/二甲双胍</td><td>RAG 查"用药管理"分类</td></tr>
 <tr><td>health_query</td><td>兜底</td><td>RAG 全库检索</td></tr>
 </table>
-<p><strong>规则关键词识别</strong>是"轻量意图分类"——本项目刻意不用模型做分类（快、稳定、零成本）；复杂场景才升级为 LLM 分类器。分支的"分岔点"在 retrieve 节点消费 input_type。</p>
+<p><strong>规则关键词识别</strong>是"轻量意图分类"——本项目刻意不用模型做分类（快、稳定、零成本）；复杂场景才升级为 LLM 分类器。<strong>注意按顺序匹配会短路</strong>：「血糖高能吃什么」先命中"血糖"，就被判成 blood_sugar、丢掉饮食意图。要么把更具体的关键词排前面，要么改成多标签（命中几类就把几个 category 都查）。分支的"分岔点"在 retrieve 节点消费 input_type。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
