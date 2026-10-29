@@ -231,7 +231,7 @@ DeepSeek-R1 蒸馏版其实是 Qwen 架构的"马甲"。这引出模型族（mod
 | # | 检查项 | 通过标准 |
 |---|---|---|
 | 1 | 显卡就绪 | `torch.cuda.is_available()` → True |
-| 2 | 显存达标 | `torch.cuda.get_device_name()` 确认 NVIDIA；显存 ≥8GB（低配用 Q4） |
+| 2 | 显存达标 | `torch.cuda.get_device_name()` 只认型号字符串、**读不到显存**；容量要用 `torch.cuda.get_device_properties(0).total_memory/1024**3` 判 ≥8GB（低配用 Q4） |
 | 3 | Unsloth 可导入 | `import unsloth` 无报错，有版本号 |
 | 4 | 模型可加载 | `FastLanguageModel.from_pretrained("unsloth/DeepSeek-R1-Distill-Qwen-1.5B")` 能加载（第 9 章会细讲，这里先试装） |
 | 5 | 环境独立 | 新的 conda 环境，不污染手写 LoRA 环境 |

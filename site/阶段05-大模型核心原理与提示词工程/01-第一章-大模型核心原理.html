@@ -578,9 +578,9 @@ AI:&quot;你好小王&quot;
 <p>大模型推理最吃的是<strong>显存（VRAM）</strong>——模型参数要装进显存才能算。按参数规模，粗略对照：</p>
 <table>
 <tr><th>模型规模</th><th>最低需要</th><th>实际建议</th></tr>
-<tr><td>1.5B（小模型）</td><td>8GB 内存</td><td>RTX 3060（12GB）可流畅</td></tr>
+<tr><td>1.5B（小模型）</td><td><strong>8GB 显存</strong></td><td>RTX 3060（12GB）可流畅</td></tr>
 <tr><td>7B（中等）</td><td>16GB</td><td>RTX 4080（16GB）</td></tr>
-<tr><td>14B</td><td>32GB</td><td>RTX 4090（24GB）勉强到瓶颈</td></tr>
+<tr><td>14B</td><td><strong>32GB 显存</strong>（FP16 权重就 ~28GB；24GB 卡必须 8bit/4bit 量化）</td><td>RTX 4090（24GB）跑 FP16 装不下，量化后可跑</td></tr>
 <tr><td>32B</td><td>64GB</td><td>4×4090（4bit 量化可压到 2×4090）</td></tr>
 <tr><td>70B（Llama3-70B）</td><td>140GB</td><td>4×A100（80GB）</td></tr>
 <tr><td>671B（DeepSeek-V3 满血）</td><td>1TB+</td><td>8×H200，成本千万级</td></tr>

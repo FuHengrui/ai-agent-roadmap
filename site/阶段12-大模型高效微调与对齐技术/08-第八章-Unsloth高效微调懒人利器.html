@@ -486,7 +486,7 @@ print(unsloth.__version__)   # 能 import 不报错 + 有版本号 = 装好</pre
 <table>
 <tr><th>#</th><th>检查项</th><th>通过标准</th></tr>
 <tr><td>1</td><td>显卡就绪</td><td><code>torch.cuda.is_available()</code> → True</td></tr>
-<tr><td>2</td><td>显存达标</td><td><code>torch.cuda.get_device_name()</code> 确认 NVIDIA；显存 ≥8GB（低配用 Q4）</td></tr>
+<tr><td>2</td><td>显存达标</td><td><code>torch.cuda.get_device_name()</code> 只认型号字符串、<strong>读不到显存</strong>；容量要用 <code>torch.cuda.get_device_properties(0).total_memory/1024**3</code> 判 ≥8GB（低配用 Q4）</td></tr>
 <tr><td>3</td><td>Unsloth 可导入</td><td><code>import unsloth</code> 无报错，有版本号</td></tr>
 <tr><td>4</td><td>模型可加载</td><td><code>FastLanguageModel.from_pretrained("unsloth/DeepSeek-R1-Distill-Qwen-1.5B")</code> 能加载（第 9 章会细讲，这里先试装）</td></tr>
 <tr><td>5</td><td>环境独立</td><td>新的 conda 环境，不污染手写 LoRA 环境</td></tr>
