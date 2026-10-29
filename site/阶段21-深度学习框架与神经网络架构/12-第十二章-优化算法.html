@@ -406,10 +406,10 @@ param -= lr * m_hat / (sqrt(v_hat) + eps)</pre>
 <p><strong>选型决策</strong>：</p>
 <table>
 <tr><th>场景</th><th>推荐</th></tr>
-<tr><td>默认/通用（CNN、MLP、Transformer）</td><td><strong>Adam(lr=1e-3)</strong></td></tr>
+<tr><td>默认/通用（CNN、MLP）</td><td><strong>Adam(lr=1e-3)</strong></td></tr>
 <tr><td>数据少、要更低最终 loss</td><td>SGD + momentum(0.9)，配小 lr 精调</td></tr>
 <tr><td>稀疏特征（如词向量/推荐）</td><td>Adagrad / Adam（自带自适应）</td></tr>
-<tr><td>大批量训练/资深调参</td><td>AdamW（带权重衰减解耦，Transformer 标配）</td></tr>
+<tr><td>Transformer / 大模型、需要权重衰减</td><td><strong>AdamW(lr=1e-3, weight_decay=0.01)</strong>——Adam 的 L2 项会被 1/√v 缩放，做正则不干净</td></tr>
 </table>
 <p><strong>学习率调度（Scheduler）</strong>：训练后期用<strong>衰减</strong>让收敛更精细——先大步找到好区域，再小步在谷底精修：</p>
 <pre>optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)

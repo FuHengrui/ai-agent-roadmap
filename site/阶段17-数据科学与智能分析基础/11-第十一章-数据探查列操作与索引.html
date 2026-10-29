@@ -335,7 +335,7 @@ df.rename(columns={&#x27;数学&#x27;: &#x27;math&#x27;}, inplace=True)   # 原�
 df.rename(index={0: &#x27;第一行&#x27;})             # 索引标签改名</pre>
 <p>记忆：</p>
 <ul><li><strong>columns= 改列名，index= 改索引名</strong>；</li><li>默认返回新表，<code>inplace=True</code> 才原地改；</li><li>rename 只改"你点名的"，其他原封不动——适合局部微调。</li></ul>
-<p>批量规范想法：列名系统化（小写下划线风格）用 <code>df.columns = [新名列表]</code> 或 <code>df.columns.str.lower()</code>。</p>
+<p>批量规范想法：列名系统化（小写下划线风格）用 <code>df.columns = [新名列表]</code> 或 <code>df.columns = df.columns.str.lower()</code>（<strong>必须赋值</strong>：str.lower 只返回新 Index，不会原地改）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -543,7 +543,7 @@ s = pd.Series([88, 95, 76], index=[&#x27;数学&#x27;, &#x27;英语&#x27;, &#x27
 
 s.reindex([&#x27;语文&#x27;, &#x27;数学&#x27;, &#x27;英语&#x27;])      # 按指定顺序重排
 s.reindex([&#x27;语文&#x27;, &#x27;数学&#x27;, &#x27;物理&#x27;])      # 缺&#x27;物理&#x27; → NaN（自动补缺失）
-s.reindex(...， fill_value=0)            # 缺失值填默认值</pre>
+s.reindex([&#x27;语文&#x27;, &#x27;数学&#x27;, &#x27;物理&#x27;], fill_value=0)   # 缺失值填默认值</pre>
 <p>特性：</p>
 <ul><li><strong>reindex 按"给定顺序"重排</strong>，不在指定清单里的行会被丢弃；</li><li>指定了但源里没有的标签 → 自动产生 NaN 行（<strong>一次性把"缺失对齐"也干了</strong>）；</li><li>常用于日期补齐（时间索引缺日补空）、统一两表行序对齐。</li></ul>
 <p>与 sort_index 区别：<strong>sort 是自动排序，reindex 是按你给定的顺序</strong>。</p>

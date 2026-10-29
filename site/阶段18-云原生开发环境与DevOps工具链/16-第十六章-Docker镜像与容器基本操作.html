@@ -394,7 +394,7 @@ docker rmi &amp;lt;IMAGE ID&amp;gt;</div>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>rmi 报"image is being used by container"</td><td>有容器正用着这个镜像，先停/删对应容器再删镜像；<code>-f</code> 强删不推荐</td></tr>
-<tr><td>按 TAG 删不掉，镜像还在</td><td>同一镜像可能打了多个 tag；用 IMAGE ID 删能一次清掉</td></tr>
+<tr><td>按 TAG 删不掉，镜像还在</td><td>同一镜像可能打了多个 tag；带多个 tag 时 <code>rmi &lt;IMAGE ID&gt;</code> 会报 conflict（referenced in multiple repositories），要逐个 <code>rmi 仓库:tag</code>，或 <code>-f &lt;ID&gt;</code> 强制（危险，先 <code>docker images</code> 确认）</td></tr>
 <tr><td>search 结果一大堆不知道选谁</td><td>看 OFFICIAL 列 + 星级排序，优先官方</td></tr>
 </table>
 </div>

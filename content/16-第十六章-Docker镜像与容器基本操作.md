@@ -132,7 +132,7 @@ docker rmi <IMAGE ID>
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | rmi 报"image is being used by container" | 有容器正用着这个镜像，先停/删对应容器再删镜像；`-f` 强删不推荐 |
-| 按 TAG 删不掉，镜像还在 | 同一镜像可能打了多个 tag；用 IMAGE ID 删能一次清掉 |
+| 按 TAG 删不掉，镜像还在 | 同一镜像可能打了多个 tag；带多个 tag 时 `rmi <IMAGE ID>` 会报 conflict（referenced in multiple repositories），要逐个 `rmi 仓库:tag`，或 `-f <ID>` 强制（危险，先 `docker images` 确认） |
 | search 结果一大堆不知道选谁 | 看 OFFICIAL 列 + 星级排序，优先官方 |
 
 @@point ⑤ docker run：一行命令走完"拉→建→启→连→跑"

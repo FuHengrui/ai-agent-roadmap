@@ -398,7 +398,7 @@ df.drop_duplicates(keep=False)     # 把所有重复的都删掉</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>看着像重复却没被判重</td><td>可能隐藏空格/大小写差异；先 df['列'].str.strip() 再判</td></tr>
+<tr><td>看着像重复却没被判重</td><td>可能隐藏空格/大小写差异；先 df['列'] = df['列'].str.strip() 赋值回去（strip 返回新 Series，不赋值等于没做），再判重</td></tr>
 <tr><td>去重后索引断档</td><td>reset_index(drop=True) 重编号</td></tr>
 </table>
 </div>
@@ -662,7 +662,7 @@ p = df.pivot_table(index=&#x27;班级&#x27;, columns=&#x27;性别&#x27;, values=
 # B     85   76
 
 p.stack()        # 列 → 索引：变成长表（性别进入行索引）
-p.unstack()      # 索引 → 列：回到宽表（互为反转）</pre>
+p.stack().unstack()      # 对宽表直接 unstack 不是 stack 的逆；要「先压长再摊回」才能验证互逆</pre>
 <p>理解：</p>
 <ul><li><strong>stack：把"最内层列"挪进索引</strong>（宽→长）；</li><li><strong>unstack：把"最内层索引"挪回列</strong>（长→宽）；</li><li>groupby 多列分组结果 <code>unstack()</code> 后就变成"每个组合一列"的透视形态。</li></ul>
 <p>用途：透视分析、画图（每列一条线）、数据供给模型。</p>

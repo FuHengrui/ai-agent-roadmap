@@ -362,7 +362,7 @@ docker run -d --name mytomcat -p 8080:8080 \
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>用相对路径挂载报错</td><td>-v 的宿主机路径必须是绝对路径；容器内路径也建议绝对路径</td></tr>
-<tr><td>挂载后容器内目录变成空的了</td><td>正常：挂载后容器内该目录<strong>完全跟随宿主机</strong>；镜像里原来这个目录的内容会被"盖住"（首次挂载时一次性初始化）</td></tr>
+<tr><td>挂载后容器内目录变成空的了</td><td>分两种：<strong>绑定挂载</strong>（<code>-v /宿主机路径:…</code>）会让目录完全跟随宿主机、镜像里原有内容被遮住且<strong>不复制</strong>；<strong>空的数据卷</strong>首次挂载时会把镜像该目录的内容<strong>复制进卷</strong>（所以卷不是空的）</td></tr>
 <tr><td>复制多行命令时提前回车</td><td>命令报"参数不完整"；多行命令用 <code>\</code> 续行，别提前按回车</td></tr>
 </table>
 </div>
@@ -436,7 +436,7 @@ docker volume prune                    # 5. 删除所有&amp;quot;没被任何�
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>volume rm 报 "volume is in use"</td><td>还有容器挂着它；先停/删那些容器再删卷</td></tr>
-<tr><td>prune 把想留的卷也删了</td><td>prune 只删"无人使用"的卷；确认不再用的容器先停掉，再统一 prune</td></tr>
+<tr><td>prune 把想留的卷也删了</td><td>prune 只删"没有任何容器引用"的卷；<strong>光停容器不行</strong>（已停止的容器仍引用卷），要先把不再用的容器 <code>docker rm</code> 掉，再 prune</td></tr>
 <tr><td>inspect 里的挂载路径在容器里找不到</td><td>那是<strong>宿主机</strong>路径，容器里看不到；在宿主机上用 ls 检查</td></tr>
 </table>
 </div>

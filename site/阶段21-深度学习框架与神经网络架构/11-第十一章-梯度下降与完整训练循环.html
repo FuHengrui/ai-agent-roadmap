@@ -432,7 +432,7 @@ for epoch in range(20):
         loss.backward()                # 反向
         optimizer.step()               # 更新
     if epoch % 5 == 0:
-        print(epoch, loss.item())
+        print(epoch, running_loss / len(loader.dataset))   # 整轮平均，别拿末批 loss 当 epoch 指标
 
 # 5 验证：学到的 w、b 应接近 2 和 1
 print(model.weight.item(), model.bias.item())</pre>
