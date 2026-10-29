@@ -215,19 +215,40 @@
 
   // 先拿轻量索引（一两百 KB，秒到）出标题结果，再在后台补全文那 2 MB。
   // 网慢的时候这能让人立刻看到东西，而不是盯着空页面。
+  // 正文索引按阶段分片：先出标题结果，再一片片把正文补进来。
+  function loadShards() {
+    var list = window.KB_STAGE_MANIFEST || [];
+    var acc = [];
+    var i = 0;
+    function next() {
+      if (i >= list.length) {
+        full = true;
+        if (acc.length) D = { chapters: acc };
+        stat.textContent = '';
+        if (q.value.trim()) run();
+        return;
+      }
+      var item = list[i++];
+      loadScript(item[1], function () {
+        var part = (window.KB_STAGES || {})[item[0]] || [];
+        acc = acc.concat(part);
+        D = { chapters: acc };
+        stat.textContent = '正文已加载 ' + i + '/' + list.length + ' 个阶段';
+        if (q.value.trim()) run();
+        next();
+      }, function () { next(); });
+    }
+    next();
+  }
+
   loadScript('search-index-lite.js', function () {
     activate(window.KB_SEARCH_LITE || { chapters: [] });
-    loadScript('search-index.js', function () {
-      full = true;
-      D = window.KB_SEARCH || D;
-      if (q.value.trim()) run();
-    }, function () {
+    loadScript('search/manifest.js', loadShards, function () {
       stat.textContent = '正文索引没加载出来，先用标题搜着（刷新可重试）';
     });
   }, function () {
-    loadScript('search-index.js', function () {
-      full = true;
-      activate(window.KB_SEARCH || { chapters: [] });
+    loadScript('search/manifest.js', function () {
+      loadShards();
     }, function () {
       stat.textContent = '索引没加载出来：刷新一次试试（断网的话，本地打开 site/index.html 也能用）';
     });

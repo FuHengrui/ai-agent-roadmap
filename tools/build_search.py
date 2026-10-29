@@ -169,10 +169,38 @@ def main() -> int:
     data = build_index()
     chs = data["chapters"]
     npt = sum(len(c[4]) for c in chs)
-    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    # ★ 按阶段分片：不再写 2 MB 的单文件，改成 24 个小文件 + 一份 manifest。
+    #   页面先加载轻量索引（~160 KB）出标题结果，正文分片在后台流式补齐。
+    shard_dir = SITE / "search"
+    shard_dir.mkdir(exist_ok=True)
+    for old in shard_dir.glob("stage-*.js"):
+        old.unlink()
 
-    out = SITE / "search-index.js"
-    out.write_text("window.KB_SEARCH=" + payload + ";\n", encoding="utf-8", newline="\n")
+    stages: list = []
+    for c in chs:
+        if c[1] not in [x[0] for x in stages]:
+            stages.append([c[1], []])
+        stages[[x[0] for x in stages].index(c[1])][1].append(c)
+
+    manifest = []
+    for i, (stage, items) in enumerate(stages, 1):
+        name = "stage-%02d.js" % i
+        (shard_dir / name).write_text(
+            "window.KB_STAGES=window.KB_STAGES||{};window.KB_STAGES[%s]=%s;\n"
+            % (json.dumps(stage, ensure_ascii=False),
+               json.dumps(items, ensure_ascii=False, separators=(",", ":"))),
+            encoding="utf-8", newline="\n")
+        manifest.append([stage, "search/" + name, len(items)])
+
+    (shard_dir / "manifest.js").write_text(
+        "window.KB_STAGE_MANIFEST=%s;\n"
+        % json.dumps(manifest, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8", newline="\n")
+
+    # 旧的大文件删掉，别留在仓库里
+    big = SITE / "search-index.js"
+    if big.exists():
+        big.unlink()
 
     # 轻量索引：只有章节标题、阶段、地址和知识点标题，没有正文 —— 一两百 KB，
     # 秒到。页面先拿它出结果，再在后台把上面那份 2 MB 的正文索引补上。
@@ -191,7 +219,8 @@ def main() -> int:
     (SITE / "search.html").write_text(page, encoding="utf-8", newline="\n")
 
     print("  ✓ 轻量索引（只有标题）%.0f KB" % (lite_out.stat().st_size / 1024.0))
-    print("  ✓ 全文索引 %d 章 / %d 个知识点，%.1f MB" % (len(chs), npt, out.stat().st_size / 1048576.0))
+    shard_kb = sum(f.stat().st_size for f in shard_dir.glob("stage-*.js")) / 1024.0
+    print("  ✓ 正文分片 %d 个阶段，共 %.1f MB（首屏只加载轻量的那 160 KB）" % (len(manifest), shard_kb / 1024.0))
     print("  ✓ 搜索页 site/search.html")
     return 0
 
