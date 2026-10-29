@@ -434,7 +434,7 @@ def embed_texts(texts: list[str]) -&gt; list[list[float]]:
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td><strong>忘了 <code>normalize_embeddings=True</code></strong></td><td>不归一化时，向量<strong>长度</strong>会干扰点积结果——长文本的向量天然更长、分数更高，压过真正语义更近的短文本。用余弦就该显式归一化</td></tr>
+<tr><td><strong>忘了 <code>normalize_embeddings=True</code></strong></td><td>不归一化时，点积会被<strong>向量模长</strong>放大——而不同文本的模长本来就没法比（跟句子长短也没有必然关系），于是分数排序失真，语义更近的反而排不上来。归一化后点积就等于余弦相似度。。用余弦就该显式归一化</td></tr>
 <tr><td>循环逐条 <code>encode</code> 几千块</td><td>慢几十倍。<strong>批量 encode</strong> 是这几行代码里最值钱的优化</td></tr>
 <tr><td>第一次运行以为卡死了</td><td>首次要<strong>下载模型</strong>（约 100MB），慢是正常的；之后走本地缓存</td></tr>
 <tr><td>以为"换个更强的 Embedding 模型"能直接替换</td><td><strong>必须全库重灌</strong>：新旧模型的向量不在同一个空间，混着比毫无意义</td></tr>
