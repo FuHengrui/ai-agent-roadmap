@@ -352,7 +352,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <div class="cmd"><span class="c"># 语法：-v 宿主机目录:容器内目录</span>
 <span class="c"># \ 是命令续行符（Linux 多行命令写法），抄的时候别漏</span>
-docker run -d --name mytomcat -p 8080:8080 \
+docker rm -f mytomcat 2&amp;gt;/dev/null; docker run -d --name mytomcat -p 9090:8080 \   # 先清同名（上一章留下的）
   -v /opt/webapps:/usr/local/tomcat/webapps docker.io/tomee
 <span class="c">#       └ 宿主机目录     └ 容器内目录</span></div>
 <p>三条规矩（直接决定成败）：</p>
@@ -430,7 +430,7 @@ docker volume ls                       # 2. 列出所有卷
 docker volume inspect edc-tomcat-vol   # 3. 看某个卷的详情（挂载点等）
 docker volume rm edc-tomcat-vol        # 4. 删除指定卷
 docker volume prune                    # 5. 删除所有&amp;quot;没被任何容器使用&amp;quot;的卷</div>
-<p>其中 <code>inspect</code> 输出的 <strong>Mountpoint</strong> 字段最有价值——它告诉你这个卷在宿主机上的真实路径（<code>/var/lib/docker/volumes/edc-tomcat-vol/_data</code>），想手动进去看数据就靠它。 <strong>注意：有容器正在用的卷，rm/prune 会拦着不让删</strong>（这是保护机制，别用 -f 硬刚，先停容器）。</p>
+<p>其中 <code>inspect</code> 输出的 <strong>Mountpoint</strong> 字段最有价值——它告诉你这个卷在宿主机上的真实路径（<code>/var/lib/docker/volumes/edc-tomcat-vol/_data</code>），想手动进去看数据就靠它。 <strong>注意：有容器在用的卷删不掉</strong>（这是保护机制）。而且<strong>光 <code>stop</code> 不行</strong>——已停止的容器仍然引用着卷，要先 <code>docker rm</code> 掉那个容器，卷才释放；别用 <code>-f</code> 硬刚。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -447,8 +447,8 @@ docker volume prune                    # 5. 删除所有&amp;quot;没被任何�
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <div class="cmd"><span class="c"># 1. 搜索并拉取 MySQL 5.7 镜像</span>
-docker search mysql:5.7
-docker pull mysql:5.7
+docker search mysql          # search 只按名字模糊搜，不接受 tag
+docker pull mysql:5.7        # tag 在 pull 时指定
 
 <span class="c"># 2. 运行 MySQL：-e 设置 root 密码（这里用占位符，别用真密码），</span>
 <span class="c">#    同时挂两个卷：配置目录 + 数据目录</span>
