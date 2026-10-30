@@ -284,7 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p><strong>Codex 作为一个能在你电脑上"动手"的 Agent，最核心的两个问题是：①它会干什么；②它乱来怎么办。</strong> 这一章正面回答这两问：前半讲<strong>功能模块</strong>（搜索、重命名、归档、Steer 方向控制、计划模式、批注模式、外接 VSCode、上下文压缩），后半讲<strong>权限沙箱</strong>（三层权限限制模型，Codex 自我防护的底座）。</p>
 <p><strong>这一章是全阶段的最难点，也是 Codex 相对 Trae/Cursor 最独特的一部分</strong>——它把"AI 能不能动某类操作"做成了可视化的三层许可模型。理解它，你就理解"为什么 Agent 时代需要新的安全范式"。</p>
-<p>学完这一章，你能回答：<strong>Codex 六个核心功能模块分别干什么、Steer 怎么给 AI 纠方向、计划模式与批注模式的区别、外接 VSCode 如何使用、上下文压缩解决了什么、三层权限沙箱（watch/plan/auto）每一层放行什么、越界操作如何拒绝与上报</strong>。</p>
+<p>学完这一章，你能回答：<strong>Codex 六个核心功能模块分别干什么、Steer 怎么给 AI 纠方向、计划模式与批注模式的区别、外接 VSCode 如何使用、上下文压缩解决了什么、沙箱三档与审批三档怎么组合</strong>，这章就算过了。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>用上一章装好的 Codex，不用装新东西；外接 VSCode 那节要用到已经装上的 VSCode。</p></div></div>
@@ -297,7 +297,7 @@
 <span class="node"><strong>阶段终点</strong>：三款 Vibe Coding 工具的能力与安全模型全部掌握</span>
 </div>
 <div class="note info"><span class="t">学习提示</span>
-<p>本章分两半记忆：<strong>上半"功能"</strong>按"找（搜索）、改（重命名）、整（归档）、控（Steer）、算（计划）、批（批注）"串；<strong>下半"沙箱"</strong>是重中之重——把三层权限（watch/plan/auto）与"越界怎么办"背成条件反射。</p></div>
+<p>本章分两半记忆：<strong>上半"功能"</strong>按"找（搜索）、改（重命名）、整（归档）、控（Steer）、算（计划）、批（批注）"串；<strong>下半"沙箱"</strong>是重中之重——把「沙箱三档 × 审批三档」这两维记住（沙箱管「能碰什么」，审批管「什么时候问你」）。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 功能模块总览：Codex 的六只手</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>Codex 具体会做哪些操作？先看清功能全景，避免"只会对话不会用功能"。</p>
