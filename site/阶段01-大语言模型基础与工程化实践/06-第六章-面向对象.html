@@ -817,7 +817,7 @@ class D(B, C):
 
 D().f()               # B     ← 先找 B，B 有就不找了
 print(D.__mro__)      # (D, B, C, A, object)</pre>
-<p><strong>规则叫「C3 线性化」</strong>，实际记忆用<strong>"从左到右、深度优先、但不重复"</strong>基本够用。</p>
+<p><strong>规则叫「C3 线性化」</strong>。别用「深度优先」记——上面的 <code>D(B, C)</code> 菱形就会记错（深度优先会得 D,B,A,C，而实际是 D,B,C,A,object）。<strong>准确说法</strong>：按父类列表顺序合并，且<strong>子类永远排在它的父类之前</strong>；想验证就直接打印 <code>D.__mro__</code>。</p>
 <p><strong>怎么查？</strong> <code>类名.__mro__</code> 或 <code>类名.mro()</code>。<strong>遇到"这个方法到底是谁的"时，打一下 MRO 就清楚了。</strong></p>
 </div>
 <div class="step trap"><span class="label">多重继承的"钻石问题"</span>

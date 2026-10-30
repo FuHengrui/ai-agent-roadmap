@@ -409,7 +409,7 @@ result = get_min_max([3, 1, 4])    # 也可以整个元组接住 → (1, 4)</pre
 <pre>def log(msg):
     print(msg)          # 没有 return
 x = log(&quot;hi&quot;)           # x 是 None</pre>
-<p><strong>"就地修改"的函数也返回 <code>None</code></strong>——这个规律在第三章见过（<code>sort()</code>），这里再次出现：</p>
+<p><strong>多数「就地修改」的方法返回 <code>None</code></strong>——第三章的 <code>sort()</code>、<code>append()</code>、<code>update()</code> 都这样，这里再次出现。<strong>但 <code>pop()</code> 是例外</strong>：它同样就地修改，却返回被删掉的那个元素（第三章就用它取过值）。</p>
 <pre>a.sort()        # 返回 None，但 a 被改了
 sorted(a)       # 返回新列表，a 不变</pre>
 <p><strong>这是 Python 的一个设计约定</strong>：</p>

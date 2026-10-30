@@ -551,7 +551,8 @@ spark.conf.set(...)      // 运行时改配置</pre>
                ❌ 同一文件不同批次推断结果可能不一致
 
 显式（StructType 手写）：
-  ✅ 类型铁定、读得快（免推断扫描） ✅ 字段缺失/类型不符直接报错
+  ✅ 类型铁定、读得快（免推断扫描）
+  ⚠️ 但**不会**因此就报错：默认仍是 PERMISSIVE，类型不符会被**填成 null**；要报错得显式 `.option(&quot;mode&quot;, &quot;FAILFAST&quot;)`
   ❌ 代码多几行（但一次写好，长期受益）</pre>
 <p><strong>写法（生产标准）</strong>：</p>
 <pre>val schema = StructType(Seq(

@@ -97,7 +97,8 @@ val schema = StructType(Seq(
 ))
 spark.read.schema(schema).json("path")
 
-// 方式 B：先小样本 `sample(0.01).json` 探 Schema，再固化手动修正类型
+// 方式 B：先抽样探 Schema —— DataFrameReader 没有 sample()，用 samplingRatio 让推断只扫一部分
+// spark.read.option("samplingRatio", "0.05").json("data/events/")   # 仅在没显式给 schema 时生效
 ```
 
 @@trap 坑在哪
@@ -308,7 +309,7 @@ df.write.mode("overwrite").saveAsTable("dwd.sale_clean")
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 连不上 metastore 报 `Unable to connect to Hive Metastore` | ① enableHiveSupport 没开 ② metastore 地址没配/地址错 ③ 网络不通。检查这条链路三要素 |
-| 本地写 saveAsTable 落哪了 | 没开 enableHiveSupport → 默认是 **Derby 本地元数据**（一进程一份，不共享！）。要共享必须连真正的 Hive Metastore |
+| 本地写 saveAsTable 落哪了 | 分两种：**没开 `enableHiveSupport`** → 用的是内存 catalog，进程一退表就没了；**开了但没配 `hive.metastore.uris`** → 落到本地 **Derby**（一进程一份、不共享）。要共享必须连真正的 Hive Metastore |
 | metastore 里没有的表却报"找不到" | 大小写/库名不对：`USE db` 后 `SHOW TABLES` 确认。ODS/DWD 库名也常需要权限 |
 | 权限：无写权限报错 | Hive 表写入走 HDFS 权限。检查执行用户对目标路径的写权限（ranger 权限中心也可能拦） |
 
