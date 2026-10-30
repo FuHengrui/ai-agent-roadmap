@@ -334,7 +334,7 @@
 <p><strong>理论加速比（Theoretical Speedup）</strong> 的定义：</p>
 <pre>速度 = 总FLOPS / 非0 FLOPS</pre>
 <ul><li><strong>总FLOPS</strong>：原始网络全部浮点运算量。</li><li><strong>非0 FLOPS</strong>：优化后网络中非 0 参数对应的运算量。</li></ul>
-<p>FLOPS（每秒浮点运算次数）在这里代表"完成一次推理要算多少次乘加"——运算量越低，理论上越快。把被剪掉的参数计算量从分母里去掉，比值就是"快了 X 倍"的<strong>理论上限</strong>。</p>
+<p><strong>FLOPs（注意小写 s：单次推理的浮点运算总量，不是每秒）</strong>——这里比的是运算量，不是速率；两个模型的总 FLOPs 相除，得到的是无量纲的「理论加速比」，不是 FLOPS。把被剪掉的参数计算量从分母里去掉，比值就是"快了 X 倍"的<strong>理论上限</strong>。</p>
 <p>要强调"理论"二字：实际加速还取决于硬件、稀疏算子是否优化、内存带宽等，理论值只是方向性判断。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

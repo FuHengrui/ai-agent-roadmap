@@ -403,7 +403,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>能。微积分给出标准套路：<strong>可导函数取极值处，导数为 0。</strong></p>
-<p>把 MSE 写成矩阵形式（m 个样本、n 个特征）：</p>
+<p>把 MSE 写成矩阵形式（m 个样本、n 个特征）。<strong>注意 X 是增广矩阵</strong>：第一列全补 1，这样 w 里的 w0 就是截距；不补 1 的话解出来只有权重、没有截距（下一章代码里的 <code>np.c_[np.ones(...), X]</code> 就是干这个的）：</p>
 <pre>J(w) = 1/m · (X·w - y)ᵀ(X·w - y)</pre>
 <p>对 w 求导并令导数为 0，经过矩阵求导运算得到<strong>正规方程（Normal Equation）</strong>：</p>
 <pre>w* = (XᵀX)⁻¹ Xᵀ y</pre>
@@ -432,7 +432,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>把"凸函数"和"凹函数"记反</td><td>中文"凸"=碗形（convex）；简单记法：<strong>凸函数有且只有一个最低点</strong></td></tr>
+<tr><td>把"凸函数"和"凹函数"记反</td><td>中文"凸"=碗形（convex）；简单记法：<strong>凸函数：局部极小就是全局最小；但</strong>最低点可能不唯一<strong>（比如 XᵀX 不满秩时是一整片平坦的最优解，取哪个都等价）</strong></td></tr>
 <tr><td>以为非凸就没法优化</td><td>非凸用迭代法（梯度下降）也能"尽可能接近"最优；只是不保证全局——深度学习时代这是常态</td></tr>
 </table>
 </div>
