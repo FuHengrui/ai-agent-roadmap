@@ -382,7 +382,7 @@ qwen3-0.6b/
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>tensor-parallel-size（张量并行度）</strong>：把模型切到几张卡上跑。</p>
-<pre>vllm serve qwen-14b --tensor-parallel-size 2   # 2卡并行</pre>
+<pre>vllm serve Qwen/Qwen2.5-14B-Instruct --tensor-parallel-size 2   # 双卡机器；0.6B 那个例子不用 tp   # 2卡并行</pre>
 <p><strong>gpu-memory-utilization（显存利用率）</strong>：vLLM 最多可用多少比例的显存（默认 0.9）。</p>
 <pre>vllm serve qwen-14b --gpu-memory-utilization 0.95</pre>
 <p>使用逻辑：</p>

@@ -428,12 +428,15 @@ def bmi_category(self) -&gt; str:
 <p>放在模型层的 status property 里，阈值一目了然：</p>
 <pre>@property
 def status(self) -&gt; str:
-    &quot;&quot;&quot;根据血糖值判断健康状态&quot;&quot;&quot;
+    &quot;&quot;&quot;根据血糖值判断健康状态（阈值按测量类型分）&quot;&quot;&quot;
+    # 空腹 3.9~6.1、餐后 2h &lt;7.8、随机 3.9~11.1
+    # 用一套 3.9/7.0/10.0 套所有记录，会把「餐后 8.0」误判成偏高
+    high = {&quot;fasting&quot;: 6.1, &quot;postprandial&quot;: 7.8, &quot;random&quot;: 11.1}.get(self.measure_type, 7.0)
     if self.value &lt; 3.9:
         return &quot;低血糖&quot;
-    if self.value &lt;= 7.0:
+    if self.value &lt;= high:
         return &quot;正常&quot;
-    if self.value &lt;= 10.0:
+    if self.value &lt;= high + 3:
         return &quot;偏高&quot;
     return &quot;高血糖&quot;</pre>
 <p>阈值表（本项目的核心医学常量）：</p>
@@ -450,7 +453,7 @@ def status(self) -&gt; str:
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>边界值误判（7.0 显示偏高）</td><td>记住正常档是 <code>3.9 &lt;= v &lt;= 7.0</code>；<code>&gt; 7.0 且 &lt;= 10.0</code> 偏高，<code>&gt; 10.0</code> 很高，<code>&lt; 3.9</code> 低</td></tr>
-<tr><td>阈值写死两处不一样</td><td>.env 与代码里必须同一口径；本项目模型用常量，HealthAnalyzer 用 .env，注意别漂移</td></tr>
+<tr><td>阈值写死两处不一样</td><td>.env 与代码里必须同一口径（<strong>建议把阈值收进 settings，模型和引擎都从那里读</strong>，别一边写常量一边读 .env——同一个 8.0 会出现「一边偏高、一边正常」）；本项目模型用常量，HealthAnalyzer 用 .env，注意别漂移</td></tr>
 </table>
 </div>
 </div></div>

@@ -160,7 +160,7 @@ for chunk in resp:        # 逐块读取
 - 逐段输出，用户体感接近 ChatGPT。
 - 配合 vLLM 前缀缓存与连续批处理，高并发下体验更好。
 
-**教学要点**：流式与普通模式的唯一差别就是 `stream=True` + 迭代响应。
+**教学要点**：流式和普通模式**不止差一个 `stream=True`**——返回类型从 `ChatCompletion` 变成 `Stream`、`usage` 默认不再返回（要开 `stream_options={"include_usage": True}`）、报错也会在流的中途才抛。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

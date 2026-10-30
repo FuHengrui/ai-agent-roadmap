@@ -362,6 +362,8 @@ from starlette.concurrency import run_in_threadpool   # 把同步的 bcrypt 丢�
 from pydantic import BaseModel
 from app.models.user import User
 from app.utils.security import get_password_hash, verify_password, create_access_token
+# 注意：get_current_user 本章返回的是 User 对象（不是 dict）；后面章节取 user.id，
+# 别写成 user_info[&quot;user_id&quot;]——那是另一种契约，混用会 AttributeError/KeyError
 
 router = APIRouter()
 

@@ -410,7 +410,7 @@ for chunk in resp:        # 逐块读取
         print(delta, end=&quot;&quot;)</pre>
 <p>优势：</p>
 <ul><li>首 token 更快到达（不用等全部生成完）。</li><li>逐段输出，用户体感接近 ChatGPT。</li><li>配合 vLLM 前缀缓存与连续批处理，高并发下体验更好。</li></ul>
-<p><strong>教学要点</strong>：流式与普通模式的唯一差别就是 <code>stream=True</code> + 迭代响应。</p>
+<p><strong>教学要点</strong>：流式和普通模式<strong>不止差一个 <code>stream=True</code></strong>——返回类型从 <code>ChatCompletion</code> 变成 <code>Stream</code>、<code>usage</code> 默认不再返回（要开 <code>stream_options={"include_usage": True}</code>）、报错也会在流的中途才抛。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
