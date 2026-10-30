@@ -350,11 +350,13 @@
 <p>知道了卷的用处，上手第一步：怎么在创建容器时把目录绑起来？绑定有哪些讲究？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<div class="cmd"><span class="c"># 语法：-v 宿主机目录:容器内目录</span>
-<span class="c"># \ 是命令续行符（Linux 多行命令写法），抄的时候别漏</span>
-docker rm -f mytomcat 2&amp;gt;/dev/null; docker run -d --name mytomcat -p 9090:8080 \   # 先清同名（上一章留下的）
+<pre># 语法：-v 宿主机目录:容器内目录
+# \ 是命令续行符（Linux 多行命令写法），抄的时候别漏
+docker rm -f mytomcat 2&gt;/dev/null   # 先清掉上一章留下的同名容器
+# 外部 9090（与第 16 章一致），容器内 8080；续行符 \ 必须是该行最后一个字符
+docker run -d --name mytomcat -p 9090:8080 \
   -v /opt/webapps:/usr/local/tomcat/webapps docker.io/tomee
-<span class="c">#       └ 宿主机目录     └ 容器内目录</span></div>
+#       └ 宿主机目录                          └ 容器内目录</pre>
 <p>三条规矩（直接决定成败）：</p>
 <ol><li><strong>目录必须写绝对路径</strong>（如 <code>/opt/webapps</code>），相对路径不认；</li><li><strong>宿主机那边目录不存在会自动创建</strong>，你不用先 mkdir；</li><li><strong>一个容器可以挂多个卷</strong>：多写几个 <code>-v</code> 即可，如 <code>-v A:B -v C:D</code>。</li></ol>
 </div>
