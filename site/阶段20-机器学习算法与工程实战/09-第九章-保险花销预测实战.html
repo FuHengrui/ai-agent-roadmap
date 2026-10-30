@@ -474,7 +474,9 @@ np.sqrt(mean_squared_error(y_true=np.log1p(y_test), y_pred=y_predict))</pre>
 <p>进阶版新增三把刀：</p>
 <ol><li><strong>KDE 分布对比（核密度估计）</strong>：用 seaborn 的 <code>sns.kdeplot</code> 按不同组画 charges 分布曲线，直观发现——male/female 曲线几乎重合（<strong>性别与花销无关</strong>）；四个 region 曲线也几乎重合（<strong>地域无关</strong>）；而 smoker 两条曲线分得极开（<strong>吸烟强相关</strong>）；children=0 与 &gt;0 分布明显不同、&gt;0 之间差别不大（<strong>"有孩子"与"没孩子"是质变</strong>）。</li><li><strong>砍特征降维</strong>：既然 region、sex 与 y 相关性极低，直接删：</li></ol>
 <pre># 注意：这里必须从原始数据重新开始——上面已经 get_dummies 过了，region/sex 原列早没了，直接 drop 会 KeyError
-data = pd.read_csv(&#x27;data/insurance.csv&#x27;)
+data = pd.read_csv(&#x27;./data/insurance.csv&#x27;)
+x = data.drop(&#x27;charges&#x27;, axis=1)   # 重开之后必须重新切 x/y，否则下面喂进模型的是基础版的数据
+y = data[&#x27;charges&#x27;]
 data = data.drop([&#x27;region&#x27;,&#x27;sex&#x27;], axis=1)</pre>
 <ol><li><strong>语义分箱（apply 自定义函数）</strong>：利用医学先验 + 数据探索结论，把连续值变成有业务含义的标签：</li></ol>
 <pre>def greater(df, bmi, num_child):
@@ -505,7 +507,7 @@ data = data.apply(greater, axis=1, args=(30, 0,))</pre>
 <tr><th>维度</th><th>基础版</th><th>进阶版</th></tr>
 <tr><td>特征处理</td><td>get_dummies 全保留</td><td>砍 region/sex，bmi/children 语义分箱</td></tr>
 <tr><td>数据量</td><td>特征更多</td><td>特征更少更精</td></tr>
-<tr><td>评估结果</td><td>达标基线</td><td><strong>更优</strong>（测试 RMSE 更低）</td></tr>
+<tr><td>评估结果</td><td>达标基线</td><td>更优（<strong>示意</strong>：测试 RMSE 略低；具体数字以你自己跑出来的为准，别照抄）</td></tr>
 <tr><td>模型复杂度</td><td>需要 alpha=10 压住过拟合</td><td>更轻松，天然简洁</td></tr>
 </table>
 <p>结论的三层教训：</p>

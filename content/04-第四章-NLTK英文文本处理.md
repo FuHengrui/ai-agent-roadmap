@@ -137,7 +137,8 @@ from nltk.tokenize import word_tokenize
 
 sentence = "The quick fox jumps over the lazy dog."
 tokens = word_tokenize(sentence)
-nltk.download('averaged_perceptron_tagger_eng')   # 词性标注器要单独下\ntagged = pos_tag(tokens)   # 先做词性标注
+nltk.download('averaged_perceptron_tagger_eng')   # 词性标注器要单独下
+tagged = pos_tag(tokens)   # 先做词性标注
 
 # 规则：名词短语 = 可选冠词/形容词 + 名词
 grammar = "NP: {<DT>?<JJ>*<NN.*>}"
@@ -249,7 +250,7 @@ print(Counter(clean_text(text)))
 # Counter({'cat': 1, 'run': 1, 'park': 1, ...})
 ```
 
-链路：**小写化 → 分词 → 停用词过滤 → 词性标注 → 按词性还原 → 统计**。每一步都有对应 NLTK 组件，这套模板可直接应用到分类、主题、相似度等任务的特征构建上。
+链路：**小写化 → 分词 → 词性标注 → 停用词过滤 → 按词性还原 → 统计**（注意标注在过滤之前——人是代词、the 是限定词，这些判断得靠词性；先过滤掉它们，词性标注反而更不准）。每一步都有对应 NLTK 组件，这套模板可直接应用到分类、主题、相似度等任务的特征构建上。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

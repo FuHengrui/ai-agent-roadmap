@@ -384,7 +384,9 @@ print(ce)</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>二分类的交叉熵叫<strong>二元交叉熵（BCE）</strong>。PyTorch 两个接口：</p>
-<pre>probs = torch.sigmoid(logits)                # 先转概率
+<pre>logits = torch.tensor([[1.2], [-0.8]])        # 每个样本一个 logit（二分类）
+targets = torch.tensor([[1.0], [0.0]])
+probs = torch.sigmoid(logits)                # 先转概率
 loss1 = nn.BCELoss()(probs, targets)          # 需要手动先 sigmoid
 
 logits = torch.tensor([[1.2], [-0.8]])       # 没 sigmoid 的原始输出

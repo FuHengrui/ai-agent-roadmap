@@ -398,7 +398,8 @@ from nltk.tokenize import word_tokenize
 
 sentence = &quot;The quick fox jumps over the lazy dog.&quot;
 tokens = word_tokenize(sentence)
-nltk.download(&#x27;averaged_perceptron_tagger_eng&#x27;)   # 词性标注器要单独下\ntagged = pos_tag(tokens)   # 先做词性标注
+nltk.download(&#x27;averaged_perceptron_tagger_eng&#x27;)   # 词性标注器要单独下
+tagged = pos_tag(tokens)   # 先做词性标注
 
 # 规则：名词短语 = 可选冠词/形容词 + 名词
 grammar = &quot;NP: {&lt;DT&gt;?&lt;JJ&gt;*&lt;NN.*&gt;}&quot;
@@ -499,7 +500,7 @@ def clean_text(text):
 text = &quot;The cats are running quickly in the park.&quot;
 print(Counter(clean_text(text)))
 # Counter({&#x27;cat&#x27;: 1, &#x27;run&#x27;: 1, &#x27;park&#x27;: 1, ...})</pre>
-<p>链路：<strong>小写化 → 分词 → 停用词过滤 → 词性标注 → 按词性还原 → 统计</strong>。每一步都有对应 NLTK 组件，这套模板可直接应用到分类、主题、相似度等任务的特征构建上。</p>
+<p>链路：<strong>小写化 → 分词 → 词性标注 → 停用词过滤 → 按词性还原 → 统计</strong>（注意标注在过滤之前——人是代词、the 是限定词，这些判断得靠词性；先过滤掉它们，词性标注反而更不准）。每一步都有对应 NLTK 组件，这套模板可直接应用到分类、主题、相似度等任务的特征构建上。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

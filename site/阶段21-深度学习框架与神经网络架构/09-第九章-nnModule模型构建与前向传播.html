@@ -414,7 +414,7 @@ print(&quot;总参数量:&quot;, total)   # 4*8+8 + 8*3+3 = 67</pre>
 model.apply(init_weights)</pre>
 <p>两种主流初始化：</p>
 <ul><li><strong>Xavier（Glorot）</strong>：按输入输出维度均衡放缩，配合 Tanh/Sigmoid 效果好。</li><li><strong>Kaiming（He）</strong>：考虑 ReLU 负半轴砍半的影响，配 ReLU 效果好。</li></ul>
-<p><strong>原则：激活类型决定初始化方案</strong>；最终层和 bias 常初始化为 0。</p>
+<p><strong>原则：激活类型决定初始化方案</strong>；<code>bias</code> 常初始化为 0，但<strong>最后一层的权重不要整体置零</strong>——全零会破坏对称性、让梯度恒为 0（前面「全零初始化」那节刚说过）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
