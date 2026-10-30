@@ -422,7 +422,7 @@ chmod g+w,o-x install.log # 逗号分隔，一次改多组</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>用了 a=rwx 后原来别人的权限丢了</td><td><code>=</code> 是整体覆盖不是追加；想追加用 <code>a+rwx</code></td></tr>
+<tr><td>用了 <code>a=rw</code> 后发现执行位没了</td><td><code>=</code> 是整体覆盖不是追加：<code>a=rw</code> 会把三个身份的 x 一起抹掉；想追加用 <code>a+rw</code></td></tr>
 <tr><td>chmod 后没变化</td><td>检查命令里的身份字母和当前身份对不对得上：只有属主/root 才改得动属主位</td></tr>
 <tr><td>一条命令改了 w 又改 x，结果乱套</td><td>多组操作用逗号分隔一次写完，别分两条覆盖</td></tr>
 </table>

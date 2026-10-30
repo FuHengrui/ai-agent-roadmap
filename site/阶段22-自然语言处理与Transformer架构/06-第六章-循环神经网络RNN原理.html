@@ -392,7 +392,7 @@ t=4: x=习 → h4 = f(h3, 习)     → 记得&quot;我爱学&quot; + 看到&quot
 <p>与梯度消失对称：如果连乘的因子都<strong>大于 1</strong>，梯度会<strong>指数级暴涨</strong>——<strong>梯度爆炸（Exploding Gradient）</strong>：</p>
 <ul><li>参数一步更新巨大，损失跳到 NaN/Inf。</li><li>训练直接崩掉。</li></ul>
 <p>应对手段：</p>
-<ul><li><strong>梯度裁剪（Gradient Clipping）</strong>：限制梯度范数上限（如 max_norm=5.0，PyTorch 的 <code>clip_grad_norm_</code>），是标准操作。</li><li><strong>合理的参数初始化</strong>：让权重不过大。</li><li><strong>激活选择</strong>：tanh/ReLU 控制值域。</li></ul>
+<ul><li><strong>梯度裁剪（Gradient Clipping）</strong>：限制梯度范数上限（如 max_norm=5.0，PyTorch 的 <code>clip_grad_norm_</code>），是标准操作。</li><li><strong>合理的参数初始化</strong>：让权重不过大。</li><li><strong>激活选择</strong>：用 tanh 这类<strong>饱和</strong>激活限制状态幅度；<strong>ReLU 无上界</strong>，在 RNN 里只帮着缓解梯度消失，对爆炸没用甚至更糟（它不控上界）。</li></ul>
 <p>工程口诀：<strong>消失用结构救（LSTM/GRU），爆炸用裁剪救（clip）</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
