@@ -468,7 +468,8 @@ df[df[&#x27;姓名&#x27;].isin([&#x27;张&#x27;, &#x27;王&#x27;])]             
 
 df.query(&#x27;成绩 &gt; 80&#x27;)                          # 单条件
 df.query(&#x27;成绩 &gt; 70 and 性别 == &quot;男&quot;&#x27;)          # and/or 可以直接用！
-df.query(&#x27;成绩 &gt; @lower&#x27;)                      # @局部变量</pre>
+lower = 70                                       # 必须先定义，query 里的 @名字 才会去取它
+df.query(&#x27;成绩 &gt; @lower&#x27;)                        # 没定义就报 UndefinedVariableError</pre>
 <p>与布尔索引对比：</p>
 <ul><li><strong>query 里 and/or 直接写</strong>（字符串层面解析，无语法陷阱）；</li><li><strong>@变量名</strong> 引用外部 Python 变量（不加 @ 会被当列名）；</li><li>列名含空格时用反引号括：query('<code>my col</code> &gt; 5')。</li></ul>
 <p>选择建议：个人脚本两者皆可；<strong>维护性优先时 query 更清晰，性能两者接近</strong>。</p>

@@ -411,7 +411,7 @@ y = gamma * x_hat + beta</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>用错维度接口</td><td>全连接用 BatchNorm1d（N,特征）；图像用 BatchNorm2d（N,C,H,W）；用错直接维度报错</td></tr>
-<tr><td>忘记切 eval</td><td>batch 很小（如 batch=1）时测试结果剧烈波动——eval 就该用 running 统计</td></tr>
+<tr><td>忘记切 eval</td><td>batch=1 时直接报错（BatchNorm 在训练模式下算不出方差：<code>Expected more than 1 value per channel</code>）；batch 2~8 才是「统计噪声大、结果抖动」——eval 就该用 running 统计</td></tr>
 <tr><td>归一化后却"学不到"</td><td>gamma/beta 是可学习的，通常 auto；别把这两参数冻结</td></tr>
 <tr><td>BatchNorm 放 ReLU 前还是后</td><td>主流取向：BN → ReLU；两种都有，团队统一即可</td></tr>
 </table>

@@ -382,7 +382,7 @@ k = len(scales) * len(ratios)         # = 9</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>正负样本规则（anchor 打标签）</strong>：</p>
-<ul><li><strong>正样本</strong>：与某个真实框 IoU 最大的 anchor；或 IoU &gt; <strong>0.7</strong>。</li><li><strong>负样本</strong>：与所有真实框 IoU &lt; <strong>0.3</strong>。</li><li>0.3~0.7 之间的不参与训练（"灰色地带"）。</li></ul>
+<ul><li><strong>正样本</strong>（先判，两条<strong>或</strong>关系）：(i) 每个真实框取 IoU 最大的那个 anchor——<strong>这条不看阈值</strong>，保证每个 GT 都有正样本；(ii) IoU &gt; <strong>0.7</strong> 的 anchor。<strong>负样本</strong>（后判）：在剩下的、还没标正的 anchor 里，IoU &lt; 0.3 才算负；0.3~0.7 的不参与训练。</li><li><strong>负样本</strong>：与所有真实框 IoU &lt; <strong>0.3</strong>。</li><li>0.3~0.7 之间的不参与训练（"灰色地带"）。</li></ul>
 <p><strong>损失函数 = 两项双头</strong>：</p>
 <pre>L = 分类损失（是物体/不是物体）+ 回归损失（框偏移 4 量）</pre>
 <p><strong>训练细节</strong>（工程精髓）：</p>

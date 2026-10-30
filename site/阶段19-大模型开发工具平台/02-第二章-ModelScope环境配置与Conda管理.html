@@ -304,7 +304,7 @@
 <tr><td>工作区</td><td>中间</td><td>打开笔记本/代码文件，写代码看结果的主要区域</td></tr>
 <tr><td>顶部工具栏</td><td>上方</td><td>新建文件、保存、切换 Kernel、打开终端</td></tr>
 </table>
-<p>启动后如果左侧没有文件树，点左上角"文件/资源管理器"图标展开即可。记住一个原则：<strong>你在界面看到的一切，最终都落在 <code>/mnt/workspace/</code> 这个持久化目录里</strong>——所以放文件时跟着文件树走，别乱建路径。</p>
+<p>启动后如果左侧没有文件树，点左上角"文件/资源管理器"图标展开即可。记住一个原则：<strong>**只有 <code>/mnt/workspace/</code> 是持久化的</strong>（文件树的默认根目录就在这儿）。<code>$HOME</code>、<code>~/.bashrc</code>、<code>/root</code> 那些都不在——实例一重建就回到初始状态，这也正是后面「conda init 失效」的根因**——所以放文件时跟着文件树走，别乱建路径。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

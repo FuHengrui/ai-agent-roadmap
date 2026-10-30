@@ -419,7 +419,7 @@ df[&#x27;备注&#x27;] = df.apply(lambda r: f&quot;{r[&#x27;成绩&#x27;]}分&qu
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>apply(axis=1) 遍历的是行还是列</td><td>axis=1 遍历行，函数接收一行 Series</td></tr>
 <tr><td>大表 apply 卡死</td><td>先看能否改向量化表达式（df['a']+df['b']）；apply 是最后手段</td></tr>
-<tr><td>map 用于 DataFrame 报错</td><td>map 是 Series 方法；DataFrame 用 <code>map</code>（2.1 起 applymap 已废弃、3.0 移除）；Series 用 <code>apply</code></td></tr>
+<tr><td>用了 applymap 报 AttributeError</td><td>pandas 2.1 起 <code>applymap</code> 被移除：<strong>DataFrame 逐元素用 <code>df.map</code></strong>，Series 用 <code>s.map</code>，按行/列用 <code>apply</code>；DataFrame 用 <code>map</code>（2.1 起 applymap 已废弃、3.0 移除）；Series 用 <code>apply</code></td></tr>
 </table>
 </div>
 </div></div>
