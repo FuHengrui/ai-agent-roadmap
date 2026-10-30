@@ -106,7 +106,9 @@ val kafkaParams = Map[String, Object](
   "bootstrap.servers" -> "kafka01:9092,kafka02:9092",
   "group.id" -> "spark-analytics",
   "auto.offset.reset" -> "earliest",
-  "enable.auto.commit" -> (false: java.lang.Boolean))  // offset 由我们管
+  "enable.auto.commit" -> (false: java.lang.Boolean),
+  "key.deserializer" -> classOf[org.apache.kafka.common.serialization.StringDeserializer],
+  "value.deserializer" -> classOf[org.apache.kafka.common.serialization.StringDeserializer])   // 少了这两个，KafkaConsumer 一构造就 ConfigException  // offset 由我们管
 
 // ② Direct 模式：直接创建 DStream
 val stream = KafkaUtils.createDirectStream[String, String](

@@ -549,7 +549,8 @@ python-dotenv==1.0.1</div>
 <div class="step trap"><span class="label">最容易被忽略的两件事</span>
 <p><strong>① <code>.gitignore</code> 一定要早写</strong></p>
 <div class="cmd"><span class="c"># .gitignore</span>
-.env                ← 密钥！绝对不能提交
+<span class="c"># 密钥！绝对不能提交（注释必须另起一行，写在后面这行就会被当成 pattern）</span>
+.env
 .venv/
 __pycache__/
 output/
@@ -942,7 +943,7 @@ class NovelPipeline:
 
     def _build_characters(self, novel, idea):
         text = self.llm.chat(
-            prompts.CHARACTER_PROMPT.format(**idea),   # 模板与 OUTLINE_PROMPT 同构，见下方定义
+            prompts.CHARACTER_PROMPT.format(genre=idea[&quot;genre&quot;], synopsis=idea[&quot;synopsis&quot;])   # 模板里是 {genre}/{synopsis}，没有 idea 这个键,   # 模板与 OUTLINE_PROMPT 同构，见下方定义
             system=prompts.SYSTEM_WRITER,
         )
         novel.characters = parse_characters(text)      # 解析成 Character 列表

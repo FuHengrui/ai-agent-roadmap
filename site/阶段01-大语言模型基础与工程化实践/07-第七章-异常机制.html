@@ -534,7 +534,7 @@ print(bad())     # 没事   ← 异常无声无息地消失了</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong><code>raise</code> 主动抛出异常</strong>：</p>
-<pre>def set_salary(self, v):   # 方法第一个参数是 self，漏了后面 self.salary 就 NameError
+<pre>def set_salary(v):   # 这里演示主动抛异常，故意写成普通函数   # 方法第一个参数是 self，漏了后面 self.salary 就 NameError
     if v &lt; 0:
         raise ValueError(f&quot;薪资不能为负：{v}&quot;)
     self.salary = v</pre>
