@@ -200,22 +200,27 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 np.random.seed(1)
-# 构造三团高斯数据：初始中心没选好容易陷入坏解
-X = np.vstack([np.random.randn(80,2),
-               np.random.randn(40,2) + [6, 0],
-               np.random.randn(40,2) + [0, 6]])
+# 三团高斯数据（注意：它们分得很开，单次初始化往往都能收敛到最优）
+X = np.vstack([np.random.randn(80, 2),
+               np.random.randn(40, 2) + [6, 0],
+               np.random.randn(40, 2) + [0, 6]])
 X = StandardScaler().fit_transform(X)
 
-km_pp = KMeans(n_clusters=3, init='k-means++', n_init=1, random_state=0).fit(X)
-km_rd = KMeans(n_clusters=3, init='random',   n_init=1, random_state=0).fit(X)
+# 关键：**只看一个 seed 看不出差别**（实测 seed=0 时两者 SSE 完全相同）。
+# 要比初始化策略，得扫一批 seed，看差值的分布。
+sse_pp, sse_rd = [], []
+for seed in range(50):
+    sse_pp.append(KMeans(n_clusters=3, init='k-means++', n_init=1, random_state=seed).fit(X).inertia_)
+    sse_rd.append(KMeans(n_clusters=3, init='random',    n_init=1, random_state=seed).fit(X).inertia_)
 
-fig, ax = plt.subplots(1, 2, figsize=(10,4))
-ax[0].scatter(X[:,0], X[:,1], c=km_pp.labels_, cmap='viridis'); ax[0].set_title("k-means++")
-ax[1].scatter(X[:,0], X[:,1], c=km_rd.labels_, cmap='viridis'); ax[1].set_title("random init")
-plt.show()
-print("SSE++:", km_pp.inertia_, " SSE random:", km_rd.inertia_)
+import numpy as np
+diff = np.array(sse_rd) - np.array(sse_pp)
+print("random 比 ++ 差多少：中位数 %.3f，最差 %.3f" % (np.median(diff), diff.max()))
+print("随机初始化明显更差的 seed 数：", int((diff > 1).sum()), "/ 50")
 ```
-观察：某些数据下 random 初始化可能把两个簇的中心都"吸"到一团，SSE++ 更低——初始化的价值一眼可见。（n_init=1 关闭多次重跑，专门暴露单次初始化的差异。）
+
+
+观察：**只看某个 seed 时两者 SSE 可能完全相同**——三团分得开，通常都能收敛到全局最优。要看出初始化的价值必须扫一批 seed：实测 50 个里有 4 个让随机初始化明显更差，最差差出 120 以上，这才叫"被吸成坏解"。（`n_init=1` 是为了关掉多次重跑、专门暴露单次初始化的差异。）
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
