@@ -43,7 +43,7 @@ lora_config = LoraConfig(
 
 | 参数 | 作用 | 常用值 |
 |---|---|---|
-| r | 秩：A(d×r)、B(r×k) 的宽度 | 8/16/32 |
+| r | 秩：PEFT 里 A 是 **(r×d)**、B 是 **(d×r)**，ΔW=(α/r)·B·A | 8/16/32 |
 | lora_alpha | 强度缩放，看 α/r 这个比值 | 常见 1~4×r；示例 r=8、α=32 即 4×r |
 | target_modules | 挂在哪 | `["q_proj","v_proj"]` 起步 |
 | lora_dropout | 防过拟合 | 0.05~0.1 |

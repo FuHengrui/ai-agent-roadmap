@@ -315,7 +315,7 @@ lora_config = LoraConfig(
 <p>参数速记表：</p>
 <table>
 <tr><th>参数</th><th>作用</th><th>常用值</th></tr>
-<tr><td>r</td><td>秩：A(d×r)、B(r×k) 的宽度</td><td>8/16/32</td></tr>
+<tr><td>r</td><td>秩：PEFT 里 A 是 <strong>(r×d)</strong>、B 是 <strong>(d×r)</strong>，ΔW=(α/r)·B·A</td><td>8/16/32</td></tr>
 <tr><td>lora_alpha</td><td>强度缩放，看 α/r 这个比值</td><td>常见 1~4×r；示例 r=8、α=32 即 4×r</td></tr>
 <tr><td>target_modules</td><td>挂在哪</td><td><code>["q_proj","v_proj"]</code> 起步</td></tr>
 <tr><td>lora_dropout</td><td>防过拟合</td><td>0.05~0.1</td></tr>

@@ -47,7 +47,7 @@ RDD 很好，但用久了你会烦：**没有字段名**（`_._1`、`_._2` 全�
 |---|---|
 | 有了 SparkSQL 还坚持手动 RDD 优化 | 20 行 RDD 优化代码，SparkSQL 两行 SQL 自动优化完。**能用 DataFrame/SQL 就别手搓 RDD**（官方也这么建议） |
 | 以为 SparkSQL 是完全不同的引擎 | 不是！SparkSQL 底层**仍然是 RDD/Task 在跑**，只是加了一层"表模型+优化器"。学好前面的内核依然有用 |
-| Schema 和真数据不一致 | 读文件时指定的 Schema 和实际列对不上，会在转换期抛错（这是特性不是 bug）——用 `.printSchema()` 先看再算 |
+| Schema 和真数据不一致 | 默认是 **PERMISSIVE**：类型对不上的值会被**静默填成 null**（更危险，因为不报错）；要它报错得显式 `.option("mode", "FAILFAST")`。`nullable=false` 只是给优化器的假设，**不做校验**。用 `.printSchema()` 先看再算 |
 | 混淆"SparkSQL 模块"和"SQL 语法" | SparkSQL = 模块（含 DataFrame/SQL/Catalyst）；SQL 只是它的一种表达方式，还有 DSL（`select`/`filter` 方法链）。都要学 |
 
 @@point ② 家族关系一张图：RDD / DataFrame / Dataset / SparkSession
@@ -340,7 +340,7 @@ spark.read.schema(schema).json("...")   // 指定 schema 即跳过推断
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 推断出来类型不对（如日期成字符串） | 推断策略保守，很多情况猜不出 Timestamp/Decimal。显式 schema 一步到位 |
-| 指定 schema 后 null 字段报错 | nullable 写错：允许为空的列必须 `nullable=true`，否则运行时抛错。对照数据真实情况修 |
+| 指定 schema 后字段全是 null | 默认 PERMISSIVE 把类型不符的值填成了 null；要定位就开 `mode=FAILFAST` 让它报错。`nullable` 不负责校验 |
 | 推断模式读大文件特别慢 | 推断要预扫描文件。显式 schema 免扫描，大文件用后者能省一大段 |
 | schema 字段顺序和文件不一致 | 显式 schema 按**名称**匹配（部分来源按位置）。先 `printSchema()` 看真实结构再写 |
 

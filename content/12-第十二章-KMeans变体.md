@@ -15,7 +15,7 @@
 学完这一章，你对"算法发展史"会有深刻体会：**没有完美的算法，每个变体都是在时间、空间、稳定性、精度之间做一选择**。这也是机器学习工程化的常态——不是"哪个最好"，而是"现在卡在哪，选哪个解"。
 
 @@prep 开始之前
-上一章的 KMeans 流程和局限清楚就能开始，除 KMedoids 要额外 `pip install scikit-learn-extra` 外，其余变体都在 sklearn 主库。
+上一章的 KMeans 流程和局限清楚就能开始。**注意 KMedoids 依赖的 `scikit-learn-extra` 已基本停更，在新版 Python/numpy 上常常编译失败**——装不上就直接用官方 `KMeans`/`BisectingKMeans`，或手写 PAM 十行代码，别卡在装包上。其余变体都在 sklearn 主库。
 
 @@goal 学到这儿就够了
 能说清 KMeans++、二分、KMedoids、Mini-Batch 各补哪个短板，能按数据选对变体，这章就算过了。
