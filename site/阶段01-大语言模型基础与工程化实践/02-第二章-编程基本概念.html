@@ -515,9 +515,10 @@ time.sleep(1.5)                     # 睡 1.5 秒（做限速、等页面加载�
 <tr><td><strong>位运算符</strong></td><td><code>&amp;</code> `\</td><td><code> </code>^<code> </code>~<code> </code>&lt;&lt;<code> </code>&gt;&gt;`</td><td>按二进制位操作</td></tr>
 </table>
 <p><strong>别把 <code>and</code> 和 <code>&amp;</code> 搞混</strong>——这是新手最常见的错误之一：</p>
-<pre>x = 5
-print(x &gt; 0 and x &lt; 10)   # True   ← 逻辑与，正确写法
-print(x &gt; 0 &amp; x &lt; 10)     # x=15 时也打 True；正确写法 x &gt; 0 and x &lt; 10 才是 False</pre>
+<pre>x = 15
+print(x &gt; 0 and x &lt; 10)   # False  ← 逻辑与，正确写法
+print(x &gt; 0 &amp; x &lt; 10)     # True   ← 按位与的优先级比比较运算符高，实际算的是 x &gt; (0 &amp; x) &lt; 10
+# 所以要用 and/or，不要用 &amp;/| 做逻辑判断（x=5 时两行都是 True，看不出区别，这里故意用 15）</pre>
 <p><strong>短路运算</strong>（很重要，也是常考的）：</p>
 <pre># and：左边为假，右边【根本不会执行】
 result = (0 and 1/0)      # 返回 0，不会报除零错误

@@ -168,7 +168,7 @@ val uv3 = logs.map(_.ip)
 | UV 比 PV 大（不可能） | 肯定写错了：可能把 count 用在未去重 RDD 上，或用 map 错位。UV ≤ PV 恒成立，拿这个做自检 |
 | distinct 后还想保留"每个 IP 访问次数" | distinct 只剩 IP，丢信息了。要频次用 reduceByKey（不 distinct） |
 | 重复计算 IP 数量（IP 同时出现在脏行） | 清洗先行。UV 统计前 logs 必须已过滤脏行，否则把"坏 IP"也算进访客 |
-| 大日志 UV 巨慢 | 去重必 shuffle，正常。优化空间：map 端先 distinct 再 reduceByKey（预聚合），或采样估计（不要求精确时） |
+| 大日志 UV 巨慢 | 去重必 shuffle，正常。能做的：调并行度、给热点 IP 加盐打散、或用采样估算（不要求精确时）。**「先 distinct 再 reduceByKey」不是优化**——distinct 内部就是 map+reduceByKey，等于多做一次 shuffle |
 
 @@point ⑤ 热门页面 Top5：聚合 + 排序 + 取前 N
 @@need 要解决什么
@@ -269,8 +269,8 @@ rdd.map(x => ((-x.count, x.name), x))
 // 方式二：自定义 Ordering（最通用，任意对象/任意规则）
 implicit val ord: Ordering[Item] = Ordering.by(i => (-i.count, i.name))
 val sorted = rdd.sortBy(identity)        // 用隐式排序
-// 或
-val sorted2 = rdd.sortBy(i => i)(Ordering.by(i => (-i.count, i.name)))
+// 也可以自己传 Ordering（注意 sortBy 有隐式参数表，得连 ClassTag 一起给，一般不用这么写）
+// val sorted2 = rdd.sortBy(i => i)(Ordering.by(i => (-i.count, i.name)), scala.reflect.ClassTag(classOf[Item]))
 ```
 
 **两种方式的选用**：

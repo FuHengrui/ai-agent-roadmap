@@ -397,7 +397,7 @@ pairs.reduce((x, y) =&gt; (x._1 + y._1, x._2 + y._2))  // (&quot;ab&quot;, 3)</p
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>fold 结果和自己手算的 zero+sum 对不上</td><td>初始值参与了<strong>每个分区内</strong>和<strong>最终合并</strong>，结果 = 元素和 + zero×分区数（本例 45+40=85 才对，不是 45+10=55）。数字诡异时先想分区</td></tr>
+<tr><td>fold 结果和自己手算的 zero+sum 对不上</td><td>初始值参与了<strong>每个分区内</strong>和<strong>最终合并</strong>，结果 = 元素和 + zero×(分区数+1)（本例 45+40=85 才对，不是 45+10=55）。数字诡异时先想分区</td></tr>
 <tr><td>reduce 的 func 不满足结合律</td><td>reduce 要求 func 有<strong>结合律</strong>（如求和/乘）。<code>(a-b)</code> 这种不可结合的会因分区边界算出不同结果</td></tr>
 <tr><td>初始值类型和 RDD 元素类型不一致</td><td>fold 要求 zero 与元素同一类型（Int RDD → zero 也 Int）。异构聚合（求总和+最大值）用 <code>aggregate</code>，下一章实战见</td></tr>
 <tr><td>空 RDD 上调 reduce</td><td>空 RDD reduce 抛异常（无可归并）。先 <code>rdd.isEmpty()</code> 或给 reduce 兜底（用 fold 带 zero）</td></tr>
