@@ -56,6 +56,7 @@ from langgraph.graph.message import add_messages
 
 class AgentState(TypedDict):
     query: str                       # 用户问题
+    filters: dict                    # 可选：按法院/案件类型过滤（案例搜索页要传，别丢）
     intent: str                      # 意图（qa/document/search）
     retrieved_cases: list            # 检索结果
     document_type: str               # 文书类型
@@ -130,7 +131,7 @@ async def _intent_node(self, state: AgentState) -> dict:
 
 # 检索节点：只写 retrieved_cases
 async def _retrieval_node(self, state: AgentState) -> dict:
-    cases = await self.retrieval_agent.retrieve(query=state.get("query"), top_k=5)
+    cases = await self.retrieval_agent.retrieve(query=state.get("query"), top_k=5, filters=state.get("filters"))
     return {"retrieved_cases": cases}
 
 …（以下省略 14 行，完整代码见仓库对应位置）

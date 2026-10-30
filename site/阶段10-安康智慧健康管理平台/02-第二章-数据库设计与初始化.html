@@ -437,7 +437,7 @@
 <tr><th>字段</th><th>为什么这么设计</th></tr>
 <tr><td>calories / carbs / protein / fat</td><td>热量、碳水、蛋白质、脂肪——每日营养统计就靠聚合这四列</td></tr>
 <tr><td>gi_value FLOAT</td><td>升糖指数（Glycemic Index）：低 GI≤55、中 GI≤70、高 GI&gt;70，AI 推荐食谱的排序依据</td></tr>
-<tr><td>portion FLOAT DEFAULT 1.0</td><td>份数/重量系数，同一食物吃 2 份时营养翻倍</td></tr>
+<tr><td>portion FLOAT DEFAULT 1.0</td><td><strong>份数系数</strong>：表中 calories/carbs 等存的是「一份」的量，实际摄入 = 字段值 × portion。所以汇总统计必须乘上它，录入端不要提前乘（否则改份数就没法回溯）</td></tr>
 <tr><td>meal_type</td><td>餐次：早餐/午餐/晚餐/加餐——食谱推荐按餐次筛选</td></tr>
 <tr><td>eaten_at</td><td>进食时间——"当日营养统计"按 eaten_at 落在哪天来过滤</td></tr>
 </table>

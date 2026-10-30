@@ -415,6 +415,9 @@ class ChatMessageRecord(Model):
 class GeneratedDocument(Model):
     id = fields.UUIDField(pk=True)
     user = fields.ForeignKeyField(&quot;models.User&quot;, related_name=&quot;documents&quot;)
+# 注意：建表 SQL 里写 ON DELETE RESTRICT 并不够——Tortoise 的 ForeignKeyField
+# 默认是 CASCADE，ORM 删父记录时会先连坐删子表。要让「有子记录就删不掉」真的生效，
+# 必须在模型里显式写：patient = fields.ForeignKeyField(..., on_delete=fields.RESTRICT)
     type = fields.CharField(max_length=50)        # 起诉状/答辩状/合同...
     title = fields.CharField(max_length=200, default=&quot;&quot;)
     content = fields.TextField()

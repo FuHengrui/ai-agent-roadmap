@@ -362,16 +362,34 @@ class VectorStore:
             collection_metadata={&quot;hnsw:space&quot;: &quot;cosine&quot;},   # 默认是 L2，别让阈值口径含糊
         )
 
+    @staticmethod
+    def _split_chunks(text: str, size: int = 400) -&gt; list[str]:
+        &quot;&quot;&quot;按段落粗切，句子太长就硬切；保证每块不超过 size 字。&quot;&quot;&quot;
+        import re
+        parts = [s for s in re.split(r&quot;\n+|(?&lt;=。)&quot;, text) if s.strip()]
+        chunks, buf = [], &quot;&quot;
+        for s in parts:
+            if len(buf) + len(s) &gt; size and buf:
+                chunks.append(buf)
+                buf = s
+            else:
+                buf += s
+        if buf:
+            chunks.append(buf)
+        return chunks
+
     def build_index(self, cases: list[dict]) -&gt; None:
         docs = [
             Document(
-                page_content=c[&quot;title&quot;] + &quot;\n&quot; + c[&quot;content&quot;],   # 标题也进正文，检索更容易命中
+                page_content=_chunk,   # 每个块一个 Document；标题已拼进正文，检索更容易命中
                 metadata={&quot;case_number&quot;: c[&quot;case_number&quot;], &quot;title&quot;: c[&quot;title&quot;],
                           &quot;court&quot;: c[&quot;court&quot;], &quot;type&quot;: c[&quot;type&quot;]},   # 去重与展示都要用
             )
+            # 裁判文书动辄几千字，整篇 embed 会稀释语义（本章 trap 也提醒了）
+            # 所以先按段落切块：每块 300~500 字，块内保留标题做上下文
             for c in cases
+            for _chunk in self._split_chunks(c[&quot;title&quot;] + &quot;\n&quot; + c[&quot;content&quot;])
         ]
-        self.db.add_documents(docs)
 
     async def similarity_search(self, query: str, top_k: int = 5, filters: dict | None = None):
         return self.db.similarity_search_with_score(
