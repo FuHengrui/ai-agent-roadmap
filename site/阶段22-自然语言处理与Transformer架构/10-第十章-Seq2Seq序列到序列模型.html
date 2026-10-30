@@ -447,7 +447,7 @@ step4: 输入 you(真实) → 目标 &lt;eos&gt;</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>最小可跑的实现清单：</p>
-<ol><li><strong>词表</strong>：源/目标各建一份，分别预留 <code>pad/sos/eos/unk</code>。</li><li><strong>编码器</strong>：双向 LSTM 读源句，取最后 h（/c）作为 z。</li><li><strong>解码器</strong>:单向 LSTM，初始状态=z，每步输入=上一步输出。</li><li><strong>损失</strong>：目标序列右移一位、pad 位置 <code>ignore_index</code> 忽略。</li><li><strong>Teacher Forcing</strong>：训练时喂真实词，推理时喂预测词。</li><li><strong>推理</strong>：argmax 或 beam search + max_len 兜底。</li><li><strong>批次</strong>：源/目标分别 pad 到本批最长并附 <code>lengths</code> 排序处理。</li></ol>
+<ol><li><strong>词表</strong>：源/目标各建一份，分别预留 <code>pad/sos/eos/unk</code>。</li><li><strong>编码器</strong>：双向 LSTM 读源句，<strong>前向最后 h 与后向最后 h 拼起来</strong>（<code>torch.cat([h_fwd, h_bwd], -1)</code>）才形状对得上——双向的 h 是 <code>[2, batch, hidden]</code>，直接取会被当成 <code>[1, batch, hidden]</code> 喂给解码器而 shape 报错；拼接后是 <code>[1, batch, 2*hidden]</code>，所以<strong>解码器的 hidden_size 要设成 2*hidden</strong>（c 同理）。</li><li><strong>解码器</strong>:单向 LSTM，初始状态=z，每步输入=上一步输出。</li><li><strong>损失</strong>：目标序列右移一位、pad 位置 <code>ignore_index</code> 忽略。</li><li><strong>Teacher Forcing</strong>：训练时喂真实词，推理时喂预测词。</li><li><strong>推理</strong>：argmax 或 beam search + max_len 兜底。</li><li><strong>批次</strong>：源/目标分别 pad 到本批最长并附 <code>lengths</code> 排序处理。</li></ol>
 <pre>criterion = nn.CrossEntropyLoss(ignore_index=PAD_ID)</pre>
 <p>这套骨架与 Hugging Face 翻译示例、fairseq 等框架的核心逻辑一致——理解了它，读任何 NMT/生成框架源码都不再陌生。</p>
 </div>

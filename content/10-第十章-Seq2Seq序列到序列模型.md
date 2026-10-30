@@ -192,7 +192,7 @@ def translate(model, src_tokens, max_len=50):
 最小可跑的实现清单：
 
 1. **词表**：源/目标各建一份，分别预留 `pad/sos/eos/unk`。
-2. **编码器**：双向 LSTM 读源句，取最后 h（/c）作为 z。
+2. **编码器**：双向 LSTM 读源句，**前向最后 h 与后向最后 h 拼起来**（`torch.cat([h_fwd, h_bwd], -1)`）才形状对得上——双向的 h 是 `[2, batch, hidden]`，直接取会被当成 `[1, batch, hidden]` 喂给解码器而 shape 报错；拼接后是 `[1, batch, 2*hidden]`，所以**解码器的 hidden_size 要设成 2*hidden**（c 同理）。
 3. **解码器**:单向 LSTM，初始状态=z，每步输入=上一步输出。
 4. **损失**：目标序列右移一位、pad 位置 `ignore_index` 忽略。
 5. **Teacher Forcing**：训练时喂真实词，推理时喂预测词。

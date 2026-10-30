@@ -493,7 +493,8 @@ plt.legend(); plt.show()</pre>
 <p>关键参数速查（sklearn DecisionTree*）：</p>
 <table>
 <tr><th>参数</th><th>作用</th><th>常见值</th></tr>
-<tr><td>criterion</td><td>分裂准则 gini/entropy/mse</td><td>gini（默认）</td></tr>
+<tr><td>criterion</td><td><strong>分类树</strong>：gini / entropy / log_loss；<strong>回归树</strong>另见下</td><td>gini（默认）</td></tr>
+<tr><td>criterion（回归）</td><td>squared_error / absolute_error / friedman_mse / poisson；旧的 <code>'mse'</code> 已删除，写它会报错</td><td>squared_error</td></tr>
 <tr><td>max_depth</td><td>预剪枝：最大深度</td><td>3~10 起步</td></tr>
 <tr><td>min_samples_leaf</td><td>叶子最少样本数</td><td>1~20</td></tr>
 <tr><td>min_samples_split</td><td>内部分裂最少样本</td><td>2~20</td></tr>

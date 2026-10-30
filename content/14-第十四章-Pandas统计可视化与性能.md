@@ -237,10 +237,11 @@ df = pd.DataFrame({'部门': ['研发', '销售', '行政'], '人数': [80, 50, 
 df.set_index('部门')['人数'].plot(kind='pie', autopct='%.1f%%')   # 饼图
 
 data = pd.DataFrame({'成绩': np.random.normal(70, 10, 100),
+                     '出勤率': np.random.uniform(0.7, 1.0, 100),   # 散点图要用，得有这一列
                      '班级': np.random.choice(['A', 'B'], 100)})
 data.boxplot(by='班级')      # 按班级分组箱线
 
-data.plot(kind='scatter', x='成绩', y='出勤率')   # x/y 都必须是数值列；分类列想区分就用 hue/着色   # 散点（x,y 都传数值列）
+data.plot(kind='scatter', x='成绩', y='出勤率')   # x/y 都必须是数值列；要按分类着色得用 seaborn 的 hue，df.plot 没有这个参数
 ```
 
 提示：**scatter 要 x/y 两个数值列**；boxplot 是 DataFrame 方法（不是 plot(kind)）——一个月错一次没关系，记住"箱线是 df.boxplot"。
@@ -251,7 +252,7 @@ data.plot(kind='scatter', x='成绩', y='出勤率')   # x/y 都必须是数值�
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | scatter 报错 missing x/y | 传明确的两列：plot(kind='scatter', x='列1', y='列2') |
-| 分组箱线用 df.boxplot(by=...);df.plot(kind='box') 其实也合法（你自己在 178 行也列了 box） | 箱线用 df.boxplot() 独立方法 |
+| 想按分组画箱线 | 用 `df.boxplot(by='列')`；单列箱线可以 `df.plot(kind='box')`，但**分组**要靠 `by=`，两者不是一回事 |
 
 @@point ⑧ 性能认知：数据量级与计时
 @@need 要解决什么
