@@ -6,7 +6,7 @@
 
 **Git 是回滚的底气**：AI 放手干，错了 `git checkout` 一条命令回到解放前——没有 Git 兜底的 Vibe Coding 是裸奔。**AGENTS.md 是记忆的载体**：把项目规则写进去，Codex 每次开工自动读取，你就不用重复交代。
 
-学完这一章，你能回答：**Codex 怎么初始化 Git、代码回滚的三种姿势（checkout/reset/分叉）、工作树 worktree 与回滚的关系、AGENTS.md 是什么怎么用、插件能扩什么、Skills 与 MCP 分别是什么**。
+学完这一章，你能回答：**Codex 怎么初始化 Git、代码回滚的三种姿势（checkout / reset --soft / reset --hard；分叉属于下面「平行实验」那一节）、工作树 worktree 与回滚的关系、AGENTS.md 是什么怎么用、插件能扩什么、Skills 与 MCP 分别是什么**。
 
 @@prep 开始之前
 Git 得装好（上一章已列）；这章在已有项目里动手，先 git init 提个基线再让 AI 改。

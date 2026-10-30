@@ -30,7 +30,7 @@
 
 ```sql
 -- 写法 1：指定列（推荐，列顺序可打乱，自增/默认列自动填）
-INSERT INTO student (name, age, gender) VALUES ('张三', 20, '男');
+INSERT INTO student (name, gender, score) VALUES ('张三', '男', 88.5);   # 列名以第 16 章的建表为准，别用表里没有的 age
 
 -- 写法 2：全列（必须按表结构顺序，一列不少）
 INSERT INTO student VALUES (1, '李四', 21, '女');

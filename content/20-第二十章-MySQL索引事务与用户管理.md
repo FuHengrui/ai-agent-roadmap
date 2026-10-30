@@ -132,7 +132,7 @@ DROP INDEX idx_name ON t;
 -- 索引 idx_a_b_c ON t (a, b, c)
 WHERE a = 1               -- ✅ 走索引（前缀 a）
 WHERE a = 1 AND b = 2     -- ✅ 走索引（前缀 a,b）
-WHERE a = 1 AND c = 3     -- ✅ 走索引（a 命中，c 的索引部分只过滤 a 后的行）
+WHERE a = 1 AND c = 3     -- ⚠️ 只用到 a 段：b 断了链，c 无法在索引里定位，只能回表后过滤（ICP 可少回表）
 WHERE b = 2               -- ❌ 不走（没从 a 开始）
 WHERE b = 2 AND c = 3     -- ❌ 不走（缺 a）
 ```
@@ -377,7 +377,7 @@ mysql> source /path/demo.sql;
 - 导入前目标库存在与否看情况（`CREATE TABLE` 在文件里，库要自己先建好）；
 - 备份策略三句话：**定期、异地（另一台机器/云）、先验证能恢复**——不能恢复的备份等于没有备份。
 
-对照第 13-14 章：Pandas `read_sql/to_sql` 与 mysqldump 互为补充——分析数据用 Pandas 拉，**库的整体迁移用 mysqldump**。
+对照第 10 章：Pandas `read_sql/to_sql` 与 mysqldump 互为补充——分析数据用 Pandas 拉，**库的整体迁移用 mysqldump**。
 
 **给新手的第一个备份脚本**：每天一条 mysqldump 追加日期（`demo_$(date +%F).sql`），配个定时任务——第 17 阶段收官之作。
 
