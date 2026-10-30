@@ -232,6 +232,13 @@ FROM student
 GROUP BY gender;
 
 -- 多列分组：班 × 性别
+> 下面几节为了演示「按班级分组」，用到 `class_id` 这一列。第 16 章建的 `student` 表里**没有**它——
+> 先把列补上再照抄：
+>
+> ```sql
+> ALTER TABLE student ADD COLUMN class_id TINYINT;
+> ```
+
 SELECT class_id, gender, COUNT(*)
 FROM student
 GROUP BY class_id, gender;
