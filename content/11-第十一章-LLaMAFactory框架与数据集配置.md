@@ -106,6 +106,7 @@ pip install llamafactory   # PyPI 上叫 llamafactory，带连字符的装不到
 
 ```python
 import llamafactory
+import llamafactory as llama_factory   # 包名是 llamafactory（没有下划线），别名随意
 print(llama_factory.__version__)
 ```
 
@@ -282,7 +283,7 @@ print("原始:", len(data), "清洗后:", len(clean))
 | # | 检查项 | 方法 | 标准 |
 |---|---|---|---|
 | 1 | 环境版本合规 | 对照第 ③ 节清单 pip show | transformers/peft/trl 与框架绑定版本一致 |
-| 2 | llama_factory 可导入 | import 验证 | 无错有版本号 |
+| 2 | `llamafactory` 可导入（注意包名没有下划线） | import 验证 | 无错有版本号 |
 | 3 | 数据集已注册 | WebUI 数据集下拉框 | 出现你的数据集且能预览前几条 |
 | 4 | 数据已清洗 | 清洗脚本跑过 + 条目数对比 | 空/重复/超常长度已剔除 |
 | 5 | 格式统一 | json.tool 校验 + 抽查字段 | 合法 JSON、字段映射正确 |

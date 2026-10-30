@@ -318,7 +318,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>拿 safetensors 直接塞给 Ollama，报错不认识</td><td>Ollama 只认 GGUF。<strong>先转格式再部署</strong>，格式是部署的"语言"，说错语言人家听不懂</td></tr>
+<tr><td>Ollama 现在<strong>能读 safetensors 目录</strong>（<code>FROM ./模型目录</code>），但它不会量化——所以想拿 q4 的体积收益，还是得先转 GGUF</td><td>Ollama 只认 GGUF。<strong>先转格式再部署</strong>，格式是部署的"语言"，说错语言人家听不懂</td></tr>
 <tr><td>看到 .bin 就在"是不是旧模型"上纠结</td><td>bin 只是序列化方式，模型能力看架构与权重。<strong>优先用 safetensors 版</strong>（安全+快），除非必须兼容</td></tr>
 <tr><td>四种格式全要学全用</td><td>主线只需掌握 safetensors（训练/交付）+ GGUF（部署）；ONNX/bin 了解即可。<strong>抓两头、放中间</strong></td></tr>
 </table>
@@ -528,7 +528,7 @@ Ollama 服务（localhost:11434）
 <tr><td>5</td><td>业务接入就绪</td><td>Python requests 再跑一遍</td><td>脚本拿到结果</td></tr>
 </table>
 <p>再加一条加分项：把推理脚本封装成一个 <code>chat_once(prompt)</code> 函数（第 7 章 generate 思路，换 HTTP 实现）——以后所有"调用微调模型"的场景都复用它。</p>
-<p>全过 → 阶段 12 的部署线竣工：从微调到服务只差一次 HTTP 请求。剩下的三章转到"更省事的框架"：LLaMA-Factory 把微调变成填表。</p>
+<p>全过 → 阶段 12 的部署线竣工：从微调到服务只差一次 HTTP 请求。剩下两章转到"更省事的框架"：LLaMA-Factory 把微调变成填表。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -370,6 +370,7 @@ pip install llamafactory   # PyPI 上叫 llamafactory，带连字符的装不到
 # 或源码开发版：git clone https://github.com/hiyouga/LLaMA-Factory.git</pre>
 <p>验证：</p>
 <pre>import llamafactory
+import llamafactory as llama_factory   # 包名是 llamafactory（没有下划线），别名随意
 print(llama_factory.__version__)</pre>
 <p>版本纪律（再次强调）：<strong>transformers/peft/trl 版本和 LLaMA-Factory 强绑定</strong>——它只测过特定组合。乱升版本 = 把已验证的链路炸掉。</p>
 </div>
@@ -526,7 +527,7 @@ print(&quot;原始:&quot;, len(data), &quot;清洗后:&quot;, len(clean))</pre>
 <table>
 <tr><th>#</th><th>检查项</th><th>方法</th><th>标准</th></tr>
 <tr><td>1</td><td>环境版本合规</td><td>对照第 ③ 节清单 pip show</td><td>transformers/peft/trl 与框架绑定版本一致</td></tr>
-<tr><td>2</td><td>llama_factory 可导入</td><td>import 验证</td><td>无错有版本号</td></tr>
+<tr><td>2</td><td><code>llamafactory</code> 可导入（注意包名没有下划线）</td><td>import 验证</td><td>无错有版本号</td></tr>
 <tr><td>3</td><td>数据集已注册</td><td>WebUI 数据集下拉框</td><td>出现你的数据集且能预览前几条</td></tr>
 <tr><td>4</td><td>数据已清洗</td><td>清洗脚本跑过 + 条目数对比</td><td>空/重复/超常长度已剔除</td></tr>
 <tr><td>5</td><td>格式统一</td><td>json.tool 校验 + 抽查字段</td><td>合法 JSON、字段映射正确</td></tr>

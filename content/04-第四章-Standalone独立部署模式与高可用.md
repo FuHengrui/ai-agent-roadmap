@@ -96,7 +96,7 @@ ssh-copy-id node3
 Standalone 启动前，Spark 需要知道"Master 在哪、Worker 有哪些"。这些写在 `conf/` 目录的配置里——**改错一行，集群起不来或互相找不到**。本点带你逐行看透两个关键配置文件。
 
 @@idea 核心思路
-在 `%SPARK_HOME%/conf/` 下，模板文件去掉 `.template` 后缀即可编辑：
+在 `$SPARK_HOME/conf/` 下（本章是 Linux/CentOS，用 `$VAR` 不是 Windows 的 `%VAR%`），模板文件去掉 `.template` 后缀即可编辑：
 
 **① spark-env.sh**（定义各角色环境）：
 

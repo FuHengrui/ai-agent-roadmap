@@ -364,7 +364,7 @@ ssh-copy-id node3</div>
 <p>Standalone 启动前，Spark 需要知道"Master 在哪、Worker 有哪些"。这些写在 <code>conf/</code> 目录的配置里——<strong>改错一行，集群起不来或互相找不到</strong>。本点带你逐行看透两个关键配置文件。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>在 <code>%SPARK_HOME%/conf/</code> 下，模板文件去掉 <code>.template</code> 后缀即可编辑：</p>
+<p>在 <code>$SPARK_HOME/conf/</code> 下（本章是 Linux/CentOS，用 <code>$VAR</code> 不是 Windows 的 <code>%VAR%</code>），模板文件去掉 <code>.template</code> 后缀即可编辑：</p>
 <p><strong>① spark-env.sh</strong>（定义各角色环境）：</p>
 <pre># 每台机器都要写，或只在 Master 写后同步
 export JAVA_HOME=/usr/java/jdk1.8.0_x

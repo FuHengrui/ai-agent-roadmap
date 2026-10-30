@@ -372,7 +372,7 @@ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@...</div>
 <p>映射到 Spark 算子：</p>
 <table>
 <tr><th>步骤</th><th>算子</th><th>类型</th></tr>
-<tr><td>读行</td><td><code>sc.textFile("data/word.txt")</code></td><td>创建 RDD</td></tr>
+<tr><td>读行</td><td><code>sc.textFile("data/word.txt")</code></td><td>创建 RDD（<strong>先自己建好这个文件</strong>，见下）</td></tr>
 <tr><td>拆词</td><td><code>.flatMap(_.split(" "))</code></td><td>转换算子</td></tr>
 <tr><td>记数</td><td><code>.map(word =&gt; (word, 1))</code></td><td>转换算子</td></tr>
 <tr><td>求和</td><td><code>.reduceByKey(_ + _)</code></td><td>转换算子（shuffle）</td></tr>
@@ -396,6 +396,7 @@ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@...</div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Scala 版（spark-shell 里可直接粘贴）：</p>
 <pre>// 1. 读取本地文件，得到 RDD[String]，每一行是一条数据
+# 先准备输入文件（Spark 发行包不带它）：mkdir -p data &amp;&amp; printf &#x27;hello spark\nhello world\n&#x27; &gt; data/word.txt
 val lines = sc.textFile(&quot;data/word.txt&quot;)
 
 // 2. flatMap：把每行按空格拆成单词，并压平成单词流
