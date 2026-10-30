@@ -285,7 +285,7 @@
 <p>选型定了 vLLM，接下来就是<strong>环境</strong>：跑大模型服务器不是随便一台机器都行——GPU 型号、显存大小、CUDA 版本都有硬门槛；装库也有讲究（venv 隔离、pip 安装）。本章给出<strong>可照抄的部署环境清单与安装步骤</strong>，让环境这一步不踩坑。</p>
 </div>
 <div class="chapter-meta">
-<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>要有 NVIDIA 显卡、24GB 显存、CUDA 12.1 以上，Windows 建议走 WSL2 或云 GPU。</p></div></div>
+<div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>要有 NVIDIA 显卡、24GB 显存，驱动支持的 <strong>CUDA ≥ 所装 wheel 的 cuXXX</strong>（当前默认 cu128，见下面的表），Windows 建议走 WSL2 或云 GPU。</p></div></div>
 <div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能用 nvidia-smi 判断机器够不够、能建好虚拟环境并装通 vLLM，这一章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">上一章→本章→下一章</span>
@@ -344,7 +344,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>CUDA 是 NVIDIA GPU 的编程接口</strong>，vLLM 的高性能内核（PagedAttention 等）依赖它编译/运行：</p>
 <ul><li><strong>版本太低</strong>：无法调用新算子/新指令，甚至编译失败。</li><li><strong>版本匹配</strong>：驱动<strong>支持的最高 CUDA 版本</strong> ≥ 运行库 CUDA 版本 ≥ 框架编译版本（驱动版本号是 5xx.xx，和 CUDA 版本号不是一个量纲，别直接比大小）（驱动向下兼容，运行库要求写在 vLLM 文档里）。</li></ul>
-<p>官方预编译 wheel 现在默认配 cu128（较老的版本是 cu124 / cu121，11.8 只存在于更老的版本）。所以核对时按 <strong>≥12.1</strong> 看，驱动比运行库新一点没关系——越新对新一代 GPU 与算子的支持越好。注意分清三层：<strong>驱动（driver）≥ 运行库（runtime）≥ PyTorch/vLLM 编译版本</strong>。</p>
+<p>官方预编译 wheel 现在默认配 cu128（较老的版本是 cu124 / cu121，11.8 只存在于更老的版本）。所以核对时按 <strong>≥ 你装的那个 cuXXX</strong> 看，驱动比运行库新一点没关系——越新对新一代 GPU 与算子的支持越好。注意分清三层：<strong>驱动（driver）≥ 运行库（runtime）≥ PyTorch/vLLM 编译版本</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -439,7 +439,7 @@ source vllm_env/bin/activate   # 激活（Windows PowerShell: .\vllm_env\Scripts
 <div class="step idea"><span class="label">核心思路</span>
 <p>环境三步走：</p>
 <pre>① 硬件核对
-   nvidia-smi → GPU型号 / 显存≥24GB / CUDA≥12.1
+   nvidia-smi → GPU型号 / 显存≥24GB / CUDA≥所装 wheel 的 cuXXX（默认 cu128）
 ② 环境隔离
    python -m venv vllm_env → activate
 ③ 安装验证
@@ -451,14 +451,14 @@ source vllm_env/bin/activate   # 激活（Windows PowerShell: .\vllm_env\Scripts
 <p>这一章把部署环境讲成了可照抄的清单：</p>
 <table>
 <tr><th>步骤</th><th>动作</th><th>达标线</th></tr>
-<tr><td>硬件核对</td><td>nvidia-smi</td><td>NVIDIA GPU、显存≥24GB、CUDA≥12.1</td></tr>
+<tr><td>硬件核对</td><td>nvidia-smi</td><td>NVIDIA GPU、显存≥24GB、CUDA≥所装 wheel 的 cuXXX</td></tr>
 <tr><td>环境隔离</td><td>python -m venv + activate</td><td>独立环境</td></tr>
 <tr><td>安装</td><td>pip install vllm</td><td>import vllm 成功</td></tr>
 </table>
 <p>平台提醒：Linux/云 GPU 首选；Windows 建议 WSL2 或容器。</p>
 <p>一句话记住本章：<strong>部署环境三步走：①nvidia-smi 核对硬件——NVIDIA GPU、显存≥24GB（7B FP16 权重就占 14GB 再加 KV 缓存）、CUDA≥12.1（记住驱动&gt;运行库&gt;框架的版本金字塔）；②建 Python 虚拟环境隔离依赖（python -m venv + activate）；③pip install vllm 后 import 验证；Windows 用户建议走 WSL2/容器，Linux/云 GPU 直装最顺——环境对了，后面部署才谈得上。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>vLLM 部署的硬件底线是什么？24GB 显存能跑多大的模型、再大要怎么办？</li><li>预估模型部署显存占用的大致公式是什么？7B 模型 FP16 权重约占多少？</li><li>nvidia-smi 输出中要核对哪三个信息？</li><li>CUDA 版本为什么要 ≥12.1？"驱动、运行库、框架"三者的版本关系是什么？</li><li>为什么要建 Python 虚拟环境？创建与激活的命令分别是什么？</li><li>安装 vLLM 的核心命令是什么？遇到网络慢怎么处理？</li><li>Windows 上装 vLLM 的正确姿势是什么？为什么？</li></ol>
+<ol><li>vLLM 部署的硬件底线是什么？24GB 显存能跑多大的模型、再大要怎么办？</li><li>预估模型部署显存占用的大致公式是什么？7B 模型 FP16 权重约占多少？</li><li>nvidia-smi 输出中要核对哪三个信息？</li><li>CUDA 版本门槛到底看什么？"驱动、运行库、框架"三者的关系是什么？</li><li>为什么要建 Python 虚拟环境？创建与激活的命令分别是什么？</li><li>安装 vLLM 的核心命令是什么？遇到网络慢怎么处理？</li><li>Windows 上装 vLLM 的正确姿势是什么？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://docs.vllm.ai/en/latest/getting_started/installation.html" target="_blank" rel="noopener"><span class="k">站点</span>vLLM 官方安装文档</a>
 <div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">参考</span>部署（章节1-2）</span></div>
