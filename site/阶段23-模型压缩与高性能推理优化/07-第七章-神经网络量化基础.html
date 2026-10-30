@@ -282,7 +282,7 @@
 <h1>第七章　神经网络量化基础</h1>
 <div class="subtitle">阶段 23 · 模型压缩与高性能推理优化　|　量化入门　|　难度 ★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>如果说剪枝是"删掉不需要的参数"，<strong>量化</strong>就是"把参数换一种更省的表示"：把 FP32 浮点换成 INT8、INT4 或 FP16，模型体积、显存、带宽、运算量全面下降——这在工业界是大模型部署的第一主力。本章解决量化入门三问：<strong>量化是什么、为什么能带来这么多收益、K-means 聚类量化的原理是什么</strong>。</p>
+<p>如果说剪枝是"删掉不需要的参数"，<strong>量化</strong>就是"把参数换一种更省的表示"：把 FP32 浮点换成 INT8、INT4 或 FP16，模型体积、显存、带宽、<strong>单次运算成本</strong>全面下降（FLOPs 本身不变，便宜在每次运算更省）。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用准备什么，也不用装环境；上一章的剪枝路线看完，正好接着看量化。</p></div></div>

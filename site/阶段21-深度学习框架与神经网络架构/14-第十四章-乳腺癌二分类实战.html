@@ -458,8 +458,8 @@ for epoch in range(100):
 <pre>model.eval()
 with torch.no_grad():
     logits = model(X_test)
-    preds = (torch.sigmoid(logits) &gt; 0.5).int()      # 概率 &gt;0.5 → 恶性
-    acc = (preds.view(-1) == y_test.int()).float().mean().item()
+    preds = (torch.sigmoid(logits) &gt; 0.5).int()   # 注意：sklearn 这个数据集 0=恶性、1=良性，别把正类搞反
+    acc = (preds.view(-1) == y_test.view(-1).int()).float().mean().item()   # 两边都压成 (N,)，否则广播成 (N,N)
     print(&quot;Test Acc:&quot;, acc)</pre>
 <p>再配<strong>混淆矩阵</strong>（2×2，看错误类型）：</p>
 <table>

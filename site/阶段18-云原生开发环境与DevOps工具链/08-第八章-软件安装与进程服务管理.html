@@ -292,7 +292,7 @@
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章</strong>：环境变量与磁盘挂载管理——环境变量和磁盘都就绪了</span>
 <span class="node"><span class="here">本章 ← 你在这里：装软件（rpm/yum + 三件套）+ 管进程 + 管服务 + 定时任务</span></span>
-<span class="node"><strong>下一章</strong>：进入阶段 18 后续的容器化与更多运维工具，把这一章的"手工装服务"升级为"镜像一键部署"</span>
+<span class="node"><strong>下一章</strong>：Git 概述与版本控制思想（第九章）——先把代码管起来，容器化在阶段后半（第十五章起）</span>
 <span class="node"><strong>阶段终点</strong>：云原生开发环境与 DevOps 工具链，装服务管进程就是 DevOps 的日常工作</span>
 </div>
 <div class="note info"><span class="t">学习提示</span>
@@ -386,7 +386,7 @@ tar -zxvf jdk-17_linux-x64_bin.tar.gz -C /usr/local
 
 # 2. 配置环境变量（追加进系统级 profile）
 vim /etc/profile</pre>
-<p>文件里加三行：</p>
+<p>文件里加两行：</p>
 <pre>export JAVA_HOME=/usr/local/jdk-17.0.10
 export PATH=$PATH:$JAVA_HOME/bin</pre>
 <p>然后激活并验证：</p>
@@ -507,8 +507,8 @@ firewall-cmd --reload</pre>
 systemctl stop mysqld
 
 # 2. 用 rpm 反查并删除所有 mysql 相关包
-rpm -qa \| grep mysql
-rpm -ev --nodeps 上面查到的每个包名
+rpm -qa | grep mysql
+rpm -ev --nodeps $(rpm -qa | grep mysql)   # 先肉眼确认列出来的确实是 mysql 的包，再执行
 
 # 3. 删残留目录和配置文件
 rm -rf /var/lib/mysql /etc/my.cnf
