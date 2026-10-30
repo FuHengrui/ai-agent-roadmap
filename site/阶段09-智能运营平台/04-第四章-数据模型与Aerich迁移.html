@@ -282,7 +282,7 @@
 <h1>第四章　数据模型与 Aerich 迁移</h1>
 <div class="subtitle">阶段 9 · 智能运营平台　|　实践　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>上一章我们有了配置好的工程与数据库 URL，但 Tortoise-ORM 还不认识数据库里那 8 张表。本章解决两件事：<strong>一是把 8 张表翻译成 Python 模型类</strong>（定义字段、类型、约束、表名），<strong>二是用 Aerich 完成初始化迁移</strong>，让迁移框架能持续追踪表结构变化。</p>
+<p>上一章我们有了配置好的工程与数据库 URL，但 Tortoise-ORM 还不认识数据库里那 8 张表。本章解决两件事：<strong>一是把其中 7 张表翻译成 Python 模型类</strong>（<code>t_models</code> 暂时不建模，它要到后面的「模型管理」才用得上，只由建表 SQL 维护）（定义字段、类型、约束、表名），<strong>二是用 Aerich 完成初始化迁移</strong>，让迁移框架能持续追踪表结构变化。</p>
 <p>关键认知：<strong>模型定义必须与建库 SQL 完全一致</strong>——字段名、类型、表名、默认值一处对不上，启动即崩或查询即错。这也是这类示例工程最容易翻车的地方：建库 SQL 与代码里的 models.py 偶有细节出入，必须以 models.py 为准。</p>
 </div>
 <div class="chapter-meta">
@@ -291,7 +291,7 @@
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node">上一章：后端工程搭建——uv 工程 + config.py 数据源配置就绪</span>
-<span class="node"><span class="here">本章 ← 你在这里：数据模型与迁移——8 张表的 Python 化身 + Aerich 迁移启动</span></span>
+<span class="node"><span class="here">本章 ← 你在这里：数据模型与迁移——7 张表的 Python 化身（<code>t_models</code> 暂不建模）+ Aerich 迁移启动</span></span>
 <span class="node">下一章：应用启动与测试——main.py、生命周期、CORS、跑起服务</span>
 <span class="node">再往后：JWT → 前端 → Coze → 配图 OSS</span>
 </div>
@@ -512,7 +512,7 @@ aerich upgrade                              # 应用迁移到数据库</pre>
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 迁移文件长什么样（读懂不慌）</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>看到 migrations/ 里生成的一堆 json/sql 文件别慌——它们就是"建表/改表的 SQL 历史记录"。</p>
+<p>看到 migrations/ 里的文件别慌：每个版本是<strong>一个 <code>xxx.py</code>（里面是 <code>upgrade()</code> / <code>downgrade()</code> 两个函数）+ 同名的 <code>.json</code> 模型快照</strong>，<strong>没有 .sql</strong>——真正的 SQL 是 Aerich 按这两个函数在运行时执行出来的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>一个典型迁移目录：</p>
@@ -526,7 +526,7 @@ aerich upgrade                              # 应用迁移到数据库</pre>
 </div>
 </div></div>
 <h2>本章小结</h2>
-<ul><li>模型放 app/models/ 包，__init__.py 必须导出全部类，Tortoise 按模块路径扫描</li><li>SQL ↔ Tortoise 类型对照：IntField/CharField(max_length)/TextField/SmallIntField/DatetimeField(auto_now_add)</li><li>Meta.table 显式对齐建库 SQL 表名，"user" ≠ "t_users"</li><li>8 张表模型的逐类写法与字段约束（unique、null、default、auto_now）</li><li>Section/Title 用普通 IntField 存外键 id 而非 ForeignKeyField：批量插入快但无级联，靠业务保证一致性</li><li>两套 image_type 码值（title 0/1/2, publish 1/2/3），转换必须按表区分</li><li>Aerich 命令链：init -t config → init-db（空库）/ migrate+upgrade（已有库）</li><li>迁移文件结构：upgrade/downgrade 成对出现，排查表结构不一致看这里</li></ul>
+<ul><li>模型放 app/models/ 包，__init__.py 必须导出全部类，Tortoise 按模块路径扫描</li><li>SQL ↔ Tortoise 类型对照：IntField/CharField(max_length)/TextField/SmallIntField/DatetimeField(auto_now_add)</li><li>Meta.table 显式对齐建库 SQL 表名，"user" ≠ "t_users"</li><li>7 张表的模型逐类写法与字段约束（unique、null、default、auto_now）；<code>t_models</code> 说明为何暂不建模</li><li>Section/Title 用普通 IntField 存外键 id 而非 ForeignKeyField：批量插入快但无级联，靠业务保证一致性</li><li>两套 image_type 码值（title 0/1/2, publish 1/2/3），转换必须按表区分</li><li>Aerich 命令链：init -t config → init-db（空库）/ migrate+upgrade（已有库）</li><li>迁移文件结构：upgrade/downgrade 成对出现，排查表结构不一致看这里</li></ul>
 <h4>自测：能不能答上来</h4>
 <ol><li>模型放在 app/models/ 下还必须满足什么才能被 Tortoise 发现？</li></ol>
 <p>A. 文件名必须大写　　B. __init__.py 中导出类　　C. 文件名要与类名一致　　D. 必须写 Meta.table</p>

@@ -79,13 +79,13 @@ if __name__ == "__main__":
 | allow_methods | 允许的 HTTP 方法 | ["*"] 即 GET/POST/PUT/DELETE/OPTIONS |
 | allow_headers | 允许的请求头 | ["*"] 含自定义头如 Authorization |
 
-⚠️ 金牌规则：**allow_origins=["*"] 与 allow_credentials=True 别一起用**。Starlette 遇到这种组合会把请求的真实 Origin 回显，所以技术上能跑通；但生产环境务必把 "*" 换成真实域名，别依赖这个回显。前端走后端代理时后端其实收不到跨域问题（同源），但若直连 8000，CORS 配置必须精确。生产环境务必把 "*" 换成真实域名。
+⚠️ 金牌规则：**`allow_origins=["*"]` 和 `allow_credentials=True` 别一起用**。Starlette 遇到这种组合会**把真实 Origin 回显**，所以本地能跑通——但浏览器规范禁止、生产会被中间层或新版本拒。统一口径：**要么精确域名 + `True`，要么 `*` + `False`**。前端走后端代理时是同源，CORS 根本不参与；只有直连 8000 才需要精确配。
 
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
 | 前端直连 8000 报 CORS error | 后端没配这个来源；联调期把 127.0.0.1:5173 加进 allow_origins |
-| 配了 "*" 且 credentials=True 仍报错 | 通配源与凭据互斥；要么精确源 + True，要么 "*" + False |
+| 配了 `*` 且 `credentials=True` | 规范禁止（浏览器会拒）；本地能看到“回显 Origin 能通”是 Starlette 的实现细节，别当方案——改成精确域名 + `True`，或 `*` + `False` |
 | 预检 405 Method Not Allowed | OPTIONS 没被放行——allow_methods 别忘了 OPTIONS |
 
 @@point ③ database.py：连接生命周期的正确挂法
@@ -259,7 +259,7 @@ python -c "from main import app"                      # 应用层
 1. 以下哪项不属于 main.py 的职责？
    A. 注册 CORS 中间件　　B. include_router 挂路由　　C. 写业务 SQL　　D. 注册数据库生命周期
 2. allow_origins=["*"] 与 allow_credentials=True 同时配置会？
-   A. 正常工作　　B. 浏览器拒绝通配源带凭据　　C. 后端崩溃　　D. 数据库断开
+   A. 正常情况下能通（Starlette 会回显 Origin）　B. 浏览器一律拒绝　C. 后端崩溃　　D. 数据库断开
 3. RegisterTortoise 中 generate_schemas=False 表示？
    A. 关闭建表，只连接　　B. 自动建表　　C. 生成迁移文件　　D. 生成表结构文档
 4. 异步 ORM 查询 Style.all() 必须？

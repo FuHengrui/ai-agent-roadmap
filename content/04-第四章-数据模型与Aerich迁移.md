@@ -2,7 +2,7 @@
 @@sub 阶段 9 · 智能运营平台　|　实践　|　难度 ★★★★
 
 @@why 这一章在解决什么问题
-上一章我们有了配置好的工程与数据库 URL，但 Tortoise-ORM 还不认识数据库里那 8 张表。本章解决两件事：**一是把 8 张表翻译成 Python 模型类**（定义字段、类型、约束、表名），**二是用 Aerich 完成初始化迁移**，让迁移框架能持续追踪表结构变化。
+上一章我们有了配置好的工程与数据库 URL，但 Tortoise-ORM 还不认识数据库里那 8 张表。本章解决两件事：**一是把其中 7 张表翻译成 Python 模型类**（`t_models` 暂时不建模，它要到后面的「模型管理」才用得上，只由建表 SQL 维护）（定义字段、类型、约束、表名），**二是用 Aerich 完成初始化迁移**，让迁移框架能持续追踪表结构变化。
 
 关键认知：**模型定义必须与建库 SQL 完全一致**——字段名、类型、表名、默认值一处对不上，启动即崩或查询即错。这也是这类示例工程最容易翻车的地方：建库 SQL 与代码里的 models.py 偶有细节出入，必须以 models.py 为准。
 
@@ -14,7 +14,7 @@
 
 @@map 这一章在整个知识库里的位置
 上一章：后端工程搭建——uv 工程 + config.py 数据源配置就绪
-**本章** ← 你在这里：数据模型与迁移——8 张表的 Python 化身 + Aerich 迁移启动
+**本章** ← 你在这里：数据模型与迁移——7 张表的 Python 化身（`t_models` 暂不建模）+ Aerich 迁移启动
 下一章：应用启动与测试——main.py、生命周期、CORS、跑起服务
 再往后：JWT → 前端 → Coze → 配图 OSS
 
@@ -253,7 +253,7 @@ aerich upgrade                              # 应用迁移到数据库
 
 @@point ⑧ 迁移文件长什么样（读懂不慌）
 @@need 要解决什么
-看到 migrations/ 里生成的一堆 json/sql 文件别慌——它们就是"建表/改表的 SQL 历史记录"。
+看到 migrations/ 里的文件别慌：每个版本是**一个 `xxx.py`（里面是 `upgrade()` / `downgrade()` 两个函数）+ 同名的 `.json` 模型快照**，**没有 .sql**——真正的 SQL 是 Aerich 按这两个函数在运行时执行出来的。
 
 @@idea 核心思路
 一个典型迁移目录：
@@ -273,7 +273,7 @@ migrations/models/
 - 模型放 app/models/ 包，__init__.py 必须导出全部类，Tortoise 按模块路径扫描
 - SQL ↔ Tortoise 类型对照：IntField/CharField(max_length)/TextField/SmallIntField/DatetimeField(auto_now_add)
 - Meta.table 显式对齐建库 SQL 表名，"user" ≠ "t_users"
-- 8 张表模型的逐类写法与字段约束（unique、null、default、auto_now）
+- 7 张表的模型逐类写法与字段约束（unique、null、default、auto_now）；`t_models` 说明为何暂不建模
 - Section/Title 用普通 IntField 存外键 id 而非 ForeignKeyField：批量插入快但无级联，靠业务保证一致性
 - 两套 image_type 码值（title 0/1/2, publish 1/2/3），转换必须按表区分
 - Aerich 命令链：init -t config → init-db（空库）/ migrate+upgrade（已有库）
