@@ -6,7 +6,7 @@
 
 这一章解决两件事：**① 精准上下文**——用 @ 方式把"文档、网页、代码文件"钉进对话，让 AI 在正确的资料上回答；**② 规则体系（Cursor Rules）**——把"你希望 AI 怎么干活"写进规则文件，让它每次自动遵守，不用重复交代。
 
-学完这一章，你能回答：**@Docs 和 @Web 分别解决什么问题、Cursor Rules 的本质和优先级、四种规则类型（Team/Project/User 及 .cursor/rules 下的项目规则文件）分别在哪生效、规则仓库有哪些可用的提示词资源**。这些是 Cursor 从"会用"到"用精"的分水岭。
+学完这一章，你能回答：**@Docs 和 @Web 分别解决什么问题、Cursor Rules 的本质和优先级、四种规则类型（Team / Project / User / System 四级，外加 .cursor/rules 下的 .mdc 规则文件）分别在哪生效、规则仓库有哪些可用的提示词资源**。这些是 Cursor 从"会用"到"用精"的分水岭。
 
 @@prep 开始之前
 不用装新东西，用之前的 Cursor；上一章的模式先分清，这章讲怎么问得准。
@@ -147,7 +147,7 @@ Rules 有四种，各自管哪一层？放哪个文件？什么时候生效？
 | **Team Rules（团队规则）** | Team / Enterprise 套餐，在 Dashboard 配置 | 全团队共享 | 团队统一规范，优先级最高 |
 | **System Rules（系统规则）** | 系统内置/兜底 | Cursor 内部 | 厂商预设，优先级最低，一般不感知 |
 
-**Team > Project > User**：记住越"贴近你"的规则优先级越高——你的习惯 > 项目的约定 > 笔记场景 > 系统兜底。
+**Team > Project > User**：越"团队/项目"的越优先——团队规范 > 项目约定 > 个人习惯。口诀别记反：「越公共的越优先」（个人习惯优先级最低，这样才不会一个人的偏好覆盖整个团队）。
 
 **在 `.cursor/rules` 下用 `.mdc` 文件**：Cursor 的规则文件支持 **.mdc（带 YAML frontmatter 的 Markdown 规则文件）**，frontmatter 支持 `description` / `globs` / `alwaysApply` 三个字段——**只是 Markdown 加 YAML 头，没有"函数"能力**——比纯 md 多一层"结构化约束"。规则文件通常会在对话中被自动加载，无需每次手动引用。
 
