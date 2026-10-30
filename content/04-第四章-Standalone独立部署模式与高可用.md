@@ -247,7 +247,7 @@ export SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER \
 export SPARK_MASTER_HOST=node1
 ```
 
-然后在 **node2（备胎）** 上也解压一份 Spark、配同样的 spark-env.sh，但 Master 启动方式改：备胎 Master 不主动抢权，等 ZK 通知。
+然后在 **node2（备胎）** 上也解压一份 Spark：ZooKeeper 那三行照抄没错，**但 `SPARK_MASTER_HOST` 必须写 node2**（或用 `start-master.sh --host node2` 显式指定）——整份拷贝会让备胎顶着 node1 的地址去注册，ZK 里两个 Master 撞车、客户端也连不到它。Master 启动方式也改：备胎不主动抢权，等 ZK 通知。
 
 启动顺序（关键）：
 
