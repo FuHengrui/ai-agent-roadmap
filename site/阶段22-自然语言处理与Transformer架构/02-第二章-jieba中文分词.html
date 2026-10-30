@@ -425,13 +425,13 @@ print(jieba.lcut(text))
 <p>用 <code>add_word()</code> / <code>del_word()</code> 在运行时动态调整：</p>
 <pre>import jieba
 
-text = &quot;特朗普今天发表演讲&quot;
+text = &quot;大模型今天发布新版本&quot;
 words = jieba.lcut(text)
-print(words)  # 可能被切散
+print(words)  # 实测：[&#x27;大&#x27;, &#x27;模型&#x27;, &#x27;今天&#x27;, &#x27;发布&#x27;, &#x27;新&#x27;, &#x27;版本&#x27;]
 
-jieba.add_word(&quot;特朗普&quot;)
+jieba.add_word(&quot;大模型&quot;)   # 默认会被切成「大/模型」，加了才合成一个词
 words = jieba.lcut(text)
-print(words)  # 特朗普 被完整保留</pre>
+print(words)  # 加之前：[&quot;大&quot;, &quot;模型&quot;, &quot;今天&quot;, ...]；加之后：[&quot;大模型&quot;, &quot;今天&quot;, ...]</pre>
 <p><code>add_word</code> 适合轻量、临时的修词；如果要长期、大规模生效，还是建自定义词典文件更规范。<code>del_word</code> 则用于让某个不该成词的组合拆开。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

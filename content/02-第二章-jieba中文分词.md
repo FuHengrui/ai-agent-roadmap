@@ -162,13 +162,13 @@ print(jieba.lcut(text))
 ```python
 import jieba
 
-text = "特朗普今天发表演讲"
+text = "大模型今天发布新版本"
 words = jieba.lcut(text)
-print(words)  # 可能被切散
+print(words)  # 实测：['大', '模型', '今天', '发布', '新', '版本']
 
-jieba.add_word("特朗普")
+jieba.add_word("大模型")   # 默认会被切成「大/模型」，加了才合成一个词
 words = jieba.lcut(text)
-print(words)  # 特朗普 被完整保留
+print(words)  # 加之前：["大", "模型", "今天", ...]；加之后：["大模型", "今天", ...]
 ```
 
 `add_word` 适合轻量、临时的修词；如果要长期、大规模生效，还是建自定义词典文件更规范。`del_word` 则用于让某个不该成词的组合拆开。
