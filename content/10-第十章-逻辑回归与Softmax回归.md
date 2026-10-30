@@ -197,7 +197,7 @@ p_1 = 1/(1+e^(z2-z1)) = sigmoid(z1-z2)
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| sklearn 不同版本默认 multi_class 不同导致结果"漂移" | 显式指定 multi_class 与 solver，保证复现 |
+| 不同版本结果有细微漂移 | 固定 `solver` 与 `random_state` 保证复现；`multi_class` 在 1.8 已被移除，不用再写（写了会 TypeError） |
 | 以为 sigmoid 和 softmax 是两个独立家族 | 记住"K=2 的 softmax = sigmoid"，一条线贯通 |
 
 @@point ⑨ 代码实战一：鸢尾花二分类与多分类
@@ -225,9 +225,9 @@ model = LogisticRegression()            # 二分类默认即 sigmoid 逻辑回�
 model.fit(X_train_s, y_train)
 print(model.score(X_test_s, y_test))    # 分类准确率
 
-# 多分类：显式 Softmax
-model_multi = LogisticRegression(max_iter=1000   # sklearn 1.8 起移除了 multi_class，默认就是 multinomial)
-model_multi.fit(X_train_s, y_train)
+# 多分类：sklearn 1.8 起移除了 multi_class 参数，默认就是 multinomial
+model_multi = LogisticRegression(max_iter=1000)
+model_multi.fit(X_train_s, y_train)   # 真正做多分类时换成 K 类的 y（本节末尾鸢尾花例子就是三分类）
 print(model_multi.score(X_test_s, y_test))
 ```
 要点：**分类任务评分用准确率 accuracy（预测对的比例），不是 RMSE**。若 max_iter 默认 100 报警告，调大到 1000 或先标准化（这里已做）。
@@ -275,7 +275,7 @@ print(model_multi.score(X_test_s, y_test))
 | 怎么求解 | 梯度下降家族原样复用（章节4-6） |
 | 多分类 OvA | K 个二分类器并联，取概率最大者 |
 | 多分类 Softmax | 一个模型输出 K 个保和 1 的概率，K=2 时退化为 sigmoid |
-| sklearn 关键参数 | multi_class('ovr'/'multinomial')、max_iter、solver |
+| sklearn 关键参数 | `max_iter`、`solver`、`random_state`（`multi_class` 已移除；OvA 用 `OneVsRestClassifier` 包一层） |
 | 评估 | 准确率 + 混淆矩阵 |
 | 通用纪律 | 先切分→标准化只 fit 训练集→路径用占位符 |
 

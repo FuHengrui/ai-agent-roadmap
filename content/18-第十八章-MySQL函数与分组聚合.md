@@ -226,10 +226,10 @@ SELECT COUNT(*), MAX(score), AVG(score) FROM student;
 @@idea 核心思路
 
 ```sql
--- 按班级分组，每组统计
-SELECT class_id, COUNT(*), AVG(score)
+-- 按性别分组，每组统计（student 表里真有 gender，照抄就能跑）
+SELECT gender, COUNT(*), AVG(score)
 FROM student
-GROUP BY gender;   # 用 student 表已有的列演示（建表里没有 class_id）
+GROUP BY gender;
 
 -- 多列分组：班 × 性别
 SELECT class_id, gender, COUNT(*)

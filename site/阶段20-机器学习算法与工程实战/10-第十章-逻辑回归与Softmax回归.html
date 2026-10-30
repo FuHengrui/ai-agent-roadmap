@@ -445,7 +445,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>sklearn 不同版本默认 multi_class 不同导致结果"漂移"</td><td>显式指定 multi_class 与 solver，保证复现</td></tr>
+<tr><td>不同版本结果有细微漂移</td><td>固定 <code>solver</code> 与 <code>random_state</code> 保证复现；<code>multi_class</code> 在 1.8 已被移除，不用再写（写了会 TypeError）</td></tr>
 <tr><td>以为 sigmoid 和 softmax 是两个独立家族</td><td>记住"K=2 的 softmax = sigmoid"，一条线贯通</td></tr>
 </table>
 </div>
@@ -474,9 +474,9 @@ model = LogisticRegression()            # 二分类默认即 sigmoid 逻辑回�
 model.fit(X_train_s, y_train)
 print(model.score(X_test_s, y_test))    # 分类准确率
 
-# 多分类：显式 Softmax
-model_multi = LogisticRegression(max_iter=1000   # sklearn 1.8 起移除了 multi_class，默认就是 multinomial)
-model_multi.fit(X_train_s, y_train)
+# 多分类：sklearn 1.8 起移除了 multi_class 参数，默认就是 multinomial
+model_multi = LogisticRegression(max_iter=1000)
+model_multi.fit(X_train_s, y_train)   # 真正做多分类时换成 K 类的 y（本节末尾鸢尾花例子就是三分类）
 print(model_multi.score(X_test_s, y_test))</pre>
 <p>要点：<strong>分类任务评分用准确率 accuracy（预测对的比例），不是 RMSE</strong>。若 max_iter 默认 100 报警告，调大到 1000 或先标准化（这里已做）。</p>
 </div>
@@ -519,7 +519,7 @@ print(model_multi.score(X_test_s, y_test))</pre>
 <tr><td>怎么求解</td><td>梯度下降家族原样复用（章节4-6）</td></tr>
 <tr><td>多分类 OvA</td><td>K 个二分类器并联，取概率最大者</td></tr>
 <tr><td>多分类 Softmax</td><td>一个模型输出 K 个保和 1 的概率，K=2 时退化为 sigmoid</td></tr>
-<tr><td>sklearn 关键参数</td><td>multi_class('ovr'/'multinomial')、max_iter、solver</td></tr>
+<tr><td>sklearn 关键参数</td><td><code>max_iter</code>、<code>solver</code>、<code>random_state</code>（<code>multi_class</code> 已移除；OvA 用 <code>OneVsRestClassifier</code> 包一层）</td></tr>
 <tr><td>评估</td><td>准确率 + 混淆矩阵</td></tr>
 <tr><td>通用纪律</td><td>先切分→标准化只 fit 训练集→路径用占位符</td></tr>
 </table>

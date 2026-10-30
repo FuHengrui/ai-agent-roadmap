@@ -467,10 +467,10 @@ SELECT COUNT(*), MAX(score), AVG(score) FROM student;</pre>
 <p><strong>"每个班的平均分""每个部门多少人"</strong>——GROUP BY 按列分组，每组各算一次聚合。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>-- 按班级分组，每组统计
-SELECT class_id, COUNT(*), AVG(score)
+<pre>-- 按性别分组，每组统计（student 表里真有 gender，照抄就能跑）
+SELECT gender, COUNT(*), AVG(score)
 FROM student
-GROUP BY gender;   # 用 student 表已有的列演示（建表里没有 class_id）
+GROUP BY gender;
 
 -- 多列分组：班 × 性别
 SELECT class_id, gender, COUNT(*)
