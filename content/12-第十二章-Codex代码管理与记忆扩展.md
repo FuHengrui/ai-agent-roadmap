@@ -66,7 +66,7 @@ Git 回滚的**三种常用姿势**：
 
 | 姿势 | 命令（概念） | 用途 |
 |---|---|---|
-| **丢弃工作区改动** | `git checkout -- <file>` 或 `git restore <file>` | 只清「未暂存」的改动（已 `git add` 的要先 `restore --staged`，或 `reset --hard` 才真丢） | |
+| **丢弃工作区改动** | `git checkout -- <file>` 或 `git restore <file>` | 只清「未暂存」的改动（已 `git add` 的要先 `restore --staged`，或 `reset --hard` 才真丢） |
 | **软回退指针** | `git reset --soft HEAD~1` | 回退提交记录但**保留改动**在暂存区（改主意了想重做） |
 | **硬回退** | `git reset --hard <commit>` | 彻底回到某提交，之后改动**全部丢弃**（慎用） |
 

@@ -333,7 +333,7 @@ AI 要动大手术前 → 再提交一次（保平安）</pre>
 <p>Git 回滚的<strong>三种常用姿势</strong>：</p>
 <table>
 <tr><th>姿势</th><th>命令（概念）</th><th>用途</th></tr>
-<tr><td><strong>丢弃工作区改动</strong></td><td><code>git checkout -- &lt;file&gt;</code> 或 <code>git restore &lt;file&gt;</code></td><td>只清「未暂存」的改动（已 <code>git add</code> 的要先 <code>restore --staged</code>，或 <code>reset --hard</code> 才真丢）</td><td></td></tr>
+<tr><td><strong>丢弃工作区改动</strong></td><td><code>git checkout -- &lt;file&gt;</code> 或 <code>git restore &lt;file&gt;</code></td><td>只清「未暂存」的改动（已 <code>git add</code> 的要先 <code>restore --staged</code>，或 <code>reset --hard</code> 才真丢）</td></tr>
 <tr><td><strong>软回退指针</strong></td><td><code>git reset --soft HEAD~1</code></td><td>回退提交记录但<strong>保留改动</strong>在暂存区（改主意了想重做）</td></tr>
 <tr><td><strong>硬回退</strong></td><td><code>git reset --hard &lt;commit&gt;</code></td><td>彻底回到某提交，之后改动<strong>全部丢弃</strong>（慎用）</td></tr>
 </table>
