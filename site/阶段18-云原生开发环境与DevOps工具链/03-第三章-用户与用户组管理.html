@@ -397,7 +397,8 @@ useradd -d /home/dev2 dev      # 指定家目录
 useradd -u 2000 dev            # 指定 UID
 useradd -s /sbin/nologin dev   # 指定 shell：不能登录（服务账号专用）
 useradd -g bigdata dev         # 指定基本组
-useradd -G docker,bigdata dev  # 指定扩展组（可多个，逗号分隔）</pre>
+groupadd docker &amp;&amp; groupadd bigdata   # 扩展组必须先存在，否则报 group does not exist
+useradd -G docker,bigdata dev         # 指定扩展组（可多个，逗号分隔）</pre>
 <p>重点：<strong>加了 <code>/sbin/nologin</code> 的用户叫服务账号</strong>——程序以它身份跑（比如 mysqld），但人不能登录它，防提权。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -481,17 +482,18 @@ passwd                  # 不带用户名：改自己的密码（普通用户只
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>三个命令对应组的增、改、删：</p>
-<pre>groupadd bigdata              # 新建组
-groupadd -g 1600 bigdata      # 指定 GID
-groupmod -n bigdata2 bigdata  # 改组名（new 前 old 后）
-groupmod -g 1600 bigdata      # 改 GID
-groupdel bigdata              # 删除组</pre>
+<pre># 下面四条是**并列示例**，别连着敲（连着敲第二条就会报「组已存在」）
+groupadd bigdata              # 1. 新建组（GID 自动分配）
+groupadd -g 1600 bigdata      # 2. 新建时直接指定 GID（组已存在会失败，从头建请先 groupdel）
+groupmod -n bigdata2 bigdata  # 3. 改组名：new 在前、old 在后；改完后面要用 bigdata2
+groupmod -g 1600 bigdata2     # 4. 改 GID（注意名字要换成改后的）
+groupdel bigdata2             # 5. 删除组（用改后的名字）</pre>
 <p>配合验证：<code>grep bigdata /etc/group</code> 或 <code>groups 用户名</code> 看用户归属。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>groupdel 报错拒绝删除</td><td>该组还有用户引用（比如是某用户的基本组）或还有文件属这个组；先 <code>usermod -g</code> 把用户移走，或 chgrp 掉文件再删</td></tr>
+<tr><td>groupdel 报错拒绝删除</td><td>该组还有用户引用（比如是某用户的基本组）（注意：文件仍属该组不会阻止删除，只是会留下一个没有名字的数字 GID，需要时事后 chgrp）；先 <code>usermod -g</code> 把用户移走，或 chgrp 掉文件再删</td></tr>
 <tr><td>改组名后，之前按组授权的文件权限还有效吗</td><td>文件属组记录的是 GID；改名只是改名字，授权依然挂在 GID 上，一般不受影响</td></tr>
 </table>
 </div>
