@@ -521,7 +521,7 @@ print(torch.exp(a))    # 指数结果</pre>
 </table>
 <p>一句话记住本章：<strong>逐元素用 +-*/，矩阵相乘用 @，形状不同靠广播（从后往前比，相同或含 1），统计按 dim 定向，数学函数随手取——神经网络的计算积木就齐了。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>写出五类元素级运算的函数式与运算符写法，并说明加 _ 的意义。</li><li>* 与 @ 的区别是什么？"点乘"和"矩阵乘法"在形状要求、结果形状上各有什么不同？</li><li>torch.mm 与 torch.matmul 的区别是什么？为什么推荐 matmul？</li><li>广播机制有哪两条规则？判断 (2,3) 与 (3,) 能否相加并说明理由。</li><li>为什么说"全连接层的偏置项依赖广播机制"？</li><li>对张量 a = [[1,2],[3,4]]，sum(dim=0) 和 mean(dim=1) 的结果分别是什么？</li><li>广播会不会产生真实的数据副本？它的内存优势从何而来？</li></ol>
+<ol><li>写出五类元素级运算的函数式与运算符写法，并说明加 _ 的意义。</li><li>* 与 @ 的区别是什么？"点乘"和"矩阵乘法"在形状要求、结果形状上各有什么不同？</li><li>torch.mm 与 torch.matmul 的区别是什么？为什么推荐 matmul？</li><li>广播机制有哪两条规则？判断 (2,3) 与 (3,) 能否相加并说明理由。</li><li>为什么说"全连接层的偏置项依赖广播机制"？</li><li>对张量 a = [[1.,2.],[3.,4.]]，sum(dim=0) 和 mean(dim=1) 的结果分别是什么？（注意写成浮点：整型张量求 mean 会报错，见前面那节）</li><li>广播会不会产生真实的数据副本？它的内存优势从何而来？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://pytorch.org/docs/stable/notes/broadcasting.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 广播机制官方说明</a>
 <a href="https://pytorch.org/docs/stable/torch.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch 张量运算总览</a>

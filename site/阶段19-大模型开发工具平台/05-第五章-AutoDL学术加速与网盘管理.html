@@ -354,7 +354,7 @@ for line in output.splitlines():
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>执行后 env 里没有新变量</td><td>先确认实例是官方镜像；或直接在终端手动 source 一次再回 Notebook</td></tr>
+<tr><td>执行后 env 里没有新变量</td><td>先确认实例是官方镜像；<strong>然后重启内核、重跑这个单元格</strong>（终端里 source 只影响终端自己，进不了 Notebook 内核），排查时在单元格里 <code>print(os.environ.get('http_proxy'))</code></td></tr>
 <tr><td>单元格报 subprocess 相关错误</td><td>环境缺依赖概率低；检查是否在 Notebook 内核而非普通 python 脚本中执行</td></tr>
 <tr><td>只在当前内核生效</td><td>重启内核需重跑该单元格；这是进程级注入的正常行为</td></tr>
 </table>

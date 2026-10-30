@@ -89,6 +89,7 @@ x = torch.tensor([50.0])                     # 输入：不要梯度
 **`loss.backward()`** 一行完成对整个计算图的反向传播。之后梯度会**自动填充到参数张量的 .grad 属性**里：
 
 ```python
+house_size, real_price = 50.0, 100.0    # 本块自带数据，别依赖下文才定义的变量
 predicted = house_size * w + b          # 前向
 loss = torch.nn.MSELoss()(predicted, torch.tensor([real_price]))  # 损失：target 必须是张量
 loss.backward()                          # 反向，自动算梯度

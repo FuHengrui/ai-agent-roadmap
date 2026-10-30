@@ -95,7 +95,7 @@ for line in output.splitlines():
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 执行后 env 里没有新变量 | 先确认实例是官方镜像；或直接在终端手动 source 一次再回 Notebook |
+| 执行后 env 里没有新变量 | 先确认实例是官方镜像；**然后重启内核、重跑这个单元格**（终端里 source 只影响终端自己，进不了 Notebook 内核），排查时在单元格里 `print(os.environ.get('http_proxy'))` |
 | 单元格报 subprocess 相关错误 | 环境缺依赖概率低；检查是否在 Notebook 内核而非普通 python 脚本中执行 |
 | 只在当前内核生效 | 重启内核需重跑该单元格；这是进程级注入的正常行为 |
 

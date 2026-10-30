@@ -296,7 +296,7 @@
 <p>剪枝可以在训练的哪个阶段进行？各有什么特点？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>剪枝有两个概念性时机维度，归纳起来分三类：</p>
+<p>剪枝按「什么时候剪」这<strong>一个</strong>维度，可以分成三类：</p>
 <ul><li><strong>训练前剪枝（Pre-training）</strong>：初始化后就剪，训一个稀疏模型（如 Lottery Ticket Hypothesis、随机稀疏初始化）。省了整轮训练成本，但稀疏结构难找。</li><li><strong>训练中剪枝（Dynamic / During training）</strong>：训练过程中边学边剪，动态调整掩码（如 dynamic network surgery）。结构与权重共同优化，效果通常更好，但实现复杂。</li><li><strong>训练后剪枝（Post-training）</strong>：先把基准模型训到收敛，再剪枝（必要时微调）。<strong>流程最简单、工业界主流</strong>。</li></ul>
 <p>工业现实：LLM 时代"训练后剪枝 + 轻量微调"最常用——因为基础模型很贵，不想为剪枝重训一遍。</p>
 </div>
@@ -398,7 +398,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>微调（Fine-tuning）</strong> 是剪枝后的标准补偿手段：</p>
-<ul><li>用训练数据（或代表性子集）继续训练被剪模型若干轮。</li><li>让剩余参数"重新适应"被剪掉的结构，重新分配表达。</li><li>如果用了掩码锁定，则掩码之外的剩余权重参与更新。</li></ul>
+<ul><li>用训练数据（或代表性子集）继续训练被剪模型若干轮。</li><li>让剩余参数"重新适应"被剪掉的结构，重新分配表达。</li><li>如果用了掩码锁定，只有<strong>掩码内（mask=1）</strong>的保留权重参与更新，mask=0 的位置锁死在 0、不更新。</li></ul>
 <p>要点：</p>
 <ul><li>学习率通常比原始训练更小（防破坏已有知识）。</li><li>数据量不必巨大，但要有代表性。</li><li>高稀疏度时，必要时重复"剪枝→微调"多轮（iterative pruning）效果更好。</li></ul>
 </div>
