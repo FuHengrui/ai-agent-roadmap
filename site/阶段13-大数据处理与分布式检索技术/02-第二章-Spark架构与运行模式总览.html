@@ -348,7 +348,7 @@ rdd = sc.textFile(&quot;data/hello.txt&quot;)          # sc 是唯一的&quot;�
 <p>Executor 是工人，但工人干活要有"工作台"和"仓库"。Spark 的 Executor 有<strong>两种内存区域</strong>，分不清会导致：缓存了数据后代码反而 OOM、或明明内存够却喷 <code>java.lang.OutOfMemoryError</code>。你需要知道 Executor 的内存怎么划分的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>每个 Executor 是一台机器上的一个 JVM 进程，内存大致分两片（Spark 3.x 起用统一内存模型，但理解上仍可分）：</p>
+<p>每个 Executor 是一台机器上的一个 JVM 进程，内存大致分两片（<strong>统一内存管理从 Spark 1.6 就有</strong>，不是 3.x 新增；两片只是理解用的近似）：</p>
 <table>
 <tr><th>区域</th><th>干什么</th><th>满了会怎样</th></tr>
 <tr><td><strong>Storage（存储）</strong></td><td>放缓存（cache/persist）的数据块</td><td>会自动逐出旧缓存，不会立刻崩</td></tr>
@@ -454,7 +454,7 @@ rdd3 = rdd.coalesce(2)      # 减小分区（少 shuffle，尽量用这个）</p
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>调大分区就一定变快</td><td>机器学习里常见误解。分区超过总核数后，增加的是调度开销；数据倾斜时调大分区反而有用（把大 key 拆细）</td></tr>
 <tr><td><code>repartition</code> 和 <code>coalesce</code> 傻傻分不清</td><td><code>repartition</code> 增/减都会发生 shuffle；<code>coalesce</code> 只能减、尽量不 shuffle（合并相邻分区）。<strong>减分区用 coalesce，要 shuffle 再算才用 repartition</strong></td></tr>
-<tr><td>以为自己设的分区数就是最终数</td><td>行动算子（如 <code>groupByKey</code>）可能自己重新分区。最终看日志里实际 Task 数，别只用"我以为"</td></tr>
+<tr><td>以为自己设的分区数就是最终数</td><td>带 shuffle 的<strong>转换算子</strong>（<code>groupByKey</code>/<code>reduceByKey</code>/<code>join</code>）会按 partitioner 重新分区（它们仍是惰性的，不是行动算子）。最终看日志里实际 Task 数，别只用"我以为"</td></tr>
 </table>
 </div>
 </div></div>

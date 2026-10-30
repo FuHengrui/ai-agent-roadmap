@@ -78,7 +78,7 @@ rdd = sc.textFile("data/hello.txt")          # sc 是唯一的"入口"
 Executor 是工人，但工人干活要有"工作台"和"仓库"。Spark 的 Executor 有**两种内存区域**，分不清会导致：缓存了数据后代码反而 OOM、或明明内存够却喷 `java.lang.OutOfMemoryError`。你需要知道 Executor 的内存怎么划分的。
 
 @@idea 核心思路
-每个 Executor 是一台机器上的一个 JVM 进程，内存大致分两片（Spark 3.x 起用统一内存模型，但理解上仍可分）：
+每个 Executor 是一台机器上的一个 JVM 进程，内存大致分两片（**统一内存管理从 Spark 1.6 就有**，不是 3.x 新增；两片只是理解用的近似）：
 
 | 区域 | 干什么 | 满了会怎样 |
 |---|---|---|
@@ -196,7 +196,7 @@ rdd3 = rdd.coalesce(2)      # 减小分区（少 shuffle，尽量用这个）
 |---|---|
 | 调大分区就一定变快 | 机器学习里常见误解。分区超过总核数后，增加的是调度开销；数据倾斜时调大分区反而有用（把大 key 拆细） |
 | `repartition` 和 `coalesce` 傻傻分不清 | `repartition` 增/减都会发生 shuffle；`coalesce` 只能减、尽量不 shuffle（合并相邻分区）。**减分区用 coalesce，要 shuffle 再算才用 repartition** |
-| 以为自己设的分区数就是最终数 | 行动算子（如 `groupByKey`）可能自己重新分区。最终看日志里实际 Task 数，别只用"我以为" |
+| 以为自己设的分区数就是最终数 | 带 shuffle 的**转换算子**（`groupByKey`/`reduceByKey`/`join`）会按 partitioner 重新分区（它们仍是惰性的，不是行动算子）。最终看日志里实际 Task 数，别只用"我以为" |
 
 @@point ⑧ 日志是照妖镜：从日志读架构
 @@need 要解决什么

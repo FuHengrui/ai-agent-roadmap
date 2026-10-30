@@ -15,7 +15,7 @@ LegalMind 的所有智能都来自大模型：意图识别、法律问答、文�
 上一章（第五章 用户认证）：JWT 已可用，认证不再是问题
 **本章** 你在这里：搭 LLM 层——多供应商客户端 + Prompt 模板管理，给 Agent 提供"会说话的大脑"
 下一章：文本向量化与向量库——给 RAG 提供"会搜索的耳朵"
-再往后：第 8 章 IntentAgent/QAAgent/DocumentAgent 全部 new 一个 get_llm() 就用
+再往后：第 9 章 IntentAgent/QAAgent/DocumentAgent 全部 new 一个 get_llm() 就用
 阶段终点：同一个代码库，DeepSeek/OpenAI 无缝切换，prompt 改文案不碰代码
 
 @@point ① LangChain 抽象：为什么不能直接用 openai SDK
