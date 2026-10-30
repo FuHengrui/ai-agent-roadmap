@@ -160,12 +160,14 @@ class TinyTranslator(nn.Module):
             num_encoder_layers=num_layers,
             num_decoder_layers=num_layers,
             batch_first=True)
+        # 正弦位置编码：nn.Transformer 不带 PE，得自己造（可学习版本换成 nn.Embedding）
+        self.pos_enc = PositionalEncoding(d_model, max_len=512)
         self.fc_out = nn.Linear(d_model, tgt_vocab)
 
     def forward(self, src, tgt):
         # src: [batch, src_len], tgt: [batch, tgt_len]
-        src = self.src_embed(src)
-        tgt = self.tgt_embed(tgt)
+        src = self.src_embed(src) + self.pos_enc(src)   # 位置编码必须自己加
+        tgt = self.tgt_embed(tgt) + self.pos_enc(tgt)
         # ⚠️ nn.Transformer 不会自动给你因果掩码，必须自己传，否则解码器能看见未来 token
         tgt_mask = nn.Transformer.generate_square_subsequent_mask(tgt.size(1)).to(tgt.device)
         out = self.transformer(src, tgt, tgt_mask=tgt_mask)
@@ -194,7 +196,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 for batch in dataloader:
     src, tgt_in, tgt_out = batch      # tgt_in 右移一位，tgt_out 是标签
     logits = model(src, tgt_in)       # [B, T, vocab]
-    loss = criterion(logits.reshape(-1, vocab), tgt_out.reshape(-1))
+    loss = criterion(logits.reshape(-1, logits.size(-1)), tgt_out.reshape(-1))
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
@@ -207,10 +209,14 @@ def translate(model, src, max_len=50):
     model.eval()
     with torch.no_grad():
         # TinyTranslator 本身没写 encode/decode，直接取内部的 encoder，并自己加位置编码
-        src_pad = model.encoder(model.src_embed(src) + model.pos_enc(src))   # 编码一次
+        memory = model.transformer.encoder(model.src_embed(src) + model.pos_enc(src))   # 编码一次
         tgt = torch.tensor([[SOS_ID]])     # 从 <sos> 起
         for _ in range(max_len):
-            logits = model.decode(tgt, out)
+            logits = model.transformer.decoder(
+                model.tgt_embed(tgt) + model.pos_enc(tgt), memory,
+                tgt_mask=nn.Transformer.generate_square_subsequent_mask(tgt.size(1)).to(src.device),
+            )   # 解码器每步都要重建因果掩码
+            logits = model.fc_out(logits)
             word = logits[:, -1].argmax(-1)
             if word.item() == EOS_ID:
                 break
