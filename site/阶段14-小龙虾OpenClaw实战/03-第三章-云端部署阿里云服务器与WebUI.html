@@ -364,7 +364,7 @@
 </table>
 </div>
 </div></div>
-<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 安装并配置 OpenClaw：三步流程第②步</div><div class="body">
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ 安装并启动 OpenClaw：三步流程第②步</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>门开好了，下一步"住人"——把 OpenClaw 装进服务器。卡住的人大多是两处：一是登录命令怎么敲，二是"装完之后呢"？这一节讲清楚安装环节的定位与动作。</p>
 </div>
@@ -392,7 +392,7 @@
 <p>OpenClaw 启动后，用浏览器直接访问 Web 管理界面，地址格式如下：</p>
 <pre>http://服务器公网IP:18789/</pre>
 <p>只有两部分：<strong>公网 IP</strong>（服务器地址）和 <strong>:18789</strong> 端口。打开后界面会让你填<strong>访问令牌（token）</strong>——在服务器上跑 <code>openclaw config get gateway.auth.token</code> 取到，粘进面板就行。<strong>token 不要拼进 URL</strong>，更别把带 token 的地址发群里。</p>
-<p>token 就是"钥匙"：任何人拿到这个完整 URL，就能打开你的管理面板、改动你的配置——所以它<strong>绝不能外传</strong>，发截图、发群里都要把 token 打码。</p>
+<p>token 才是"钥匙"：<strong>拿到 URL 只能打开登录页</strong>，还得再填 token 才能进面板。所以 URL 泄露风险低于 token，但两个都别外发——发截图、发群里都要打码。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -495,7 +495,7 @@
 <table>
 <tr><th>步骤</th><th>动作</th><th>解决什么问题</th></tr>
 <tr><td>① 放通服务器端口</td><td>控制台防火墙放行 22 / 18789</td><td>让外部"进得来"</td></tr>
-<tr><td>② 安装并配置 OpenClaw</td><td>SSH 登录后按官网文档安装</td><td>让程序"住进去"</td></tr>
+<tr><td>② 安装并启动 OpenClaw</td><td>SSH 登录后按官网文档安装，装完先能跑起来</td><td>让程序"住进去"（配置是下一章的事）</td></tr>
 <tr><td>③ 访问 WebUI 管理面板</td><td>浏览器打开 URL + token</td><td>让人"管得着"</td></tr>
 </table>
 <p>串起来就是完整链路：<strong>买机器 → 重置密码 → Xshell 登录 → 放端口 → 装 OpenClaw → 浏览器开 WebUI</strong>。今后部署出问题，就沿这条链一段段排查：IP 对吗 → 22 通吗 → 登录成了吗 → 18789 放了吗 → URL 抄对了吗 → token 对了吗。</p>
@@ -538,7 +538,7 @@
   <a href="#p1" title="为什么部署在云服务器：本地优先，不等于只能本地"><span class="n">1</span>为什么部署在云服务器：本地优先，不等于只能本地</a>
   <a href="#p2" title="第一步：创建阿里云轻量应用服务器"><span class="n">2</span>第一步：创建阿里云轻量应用服务器</a>
   <a href="#p3" title="放通服务器端口：三步流程第①步"><span class="n">3</span>放通服务器端口：三步流程第①步</a>
-  <a href="#p4" title="安装并配置 OpenClaw：三步流程第②步"><span class="n">4</span>安装并配置 OpenClaw：三步流程第②步</a>
+  <a href="#p4" title="安装并启动 OpenClaw：三步流程第②步"><span class="n">4</span>安装并启动 OpenClaw：三步流程第②步</a>
   <a href="#p5" title="访问 OpenClaw WebUI：URL 与 token"><span class="n">5</span>访问 OpenClaw WebUI：URL 与 token</a>
   <a href="#p6" title="SSH 远程连接工具选型"><span class="n">6</span>SSH 远程连接工具选型</a>
   <a href="#p7" title="重置服务器实例密码"><span class="n">7</span>重置服务器实例密码</a>
