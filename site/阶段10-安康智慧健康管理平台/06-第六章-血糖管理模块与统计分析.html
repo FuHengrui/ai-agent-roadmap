@@ -306,7 +306,7 @@
 <p>Schema 三件套：Create 比患者版多带 <code>patient_id</code>，因为"创建记录必须指明属于哪个患者"：</p>
 <pre>class BloodSugarBase(BaseModel):
     value: float
-    measure_type: str
+    measure_type: Literal[&quot;fasting&quot;, &quot;postprandial&quot;, &quot;random&quot;]   # 必须是这三个英文值（中文只做展示）
     measured_at: datetime
     note: Optional[str] = None
 
@@ -456,7 +456,7 @@ async def update_record(record_id: int, data: BloodSugarUpdate):
         LOW = {&#x27;fasting&#x27;: 3.9, &#x27;postprandial&#x27;: 3.9, &#x27;random&#x27;: 3.9}
 
         def _normal(r):
-            hi = HIGH.get(r.measure_type, BG_HIGH_THRESHOLD)
+            hi = HIGH.get(r.measure_type, 7.0)   # 兜底也要和模型层一致（7.0），别用 10.0 造成两套口径
             lo = LOW.get(r.measure_type, BG_LOW_THRESHOLD)
             return lo &lt;= r.value &lt;= hi
 

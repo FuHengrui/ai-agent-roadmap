@@ -304,7 +304,9 @@
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from app.routers import auth, test, create
+# auth 在第 6 章、create 在第 10 章才写。**本章先只 import test**，
+# 或者先把这两个文件建出来当空壳（各自一行 router = APIRouter()），否则现在跑必 ModuleNotFoundError
+from app.routers import test
 from app.database import register_db
 
 app = FastAPI(title=&quot;智能运营平台&quot;, version=&quot;1.0.0&quot;)
@@ -320,8 +322,9 @@ app.add_middleware(
 
 # 2) 路由注册
 app.include_router(test.router, prefix=&quot;/v1/test&quot;, tags=[&quot;测试&quot;])
-app.include_router(auth.router, prefix=&quot;/v1/auth&quot;, tags=[&quot;认证&quot;])
-app.include_router(create.router, prefix=&quot;/v1/create&quot;, tags=[&quot;内容生成&quot;])
+# 第 6 章写完 auth 再把这两行放开
+# app.include_router(auth.router, prefix=&quot;/v1/auth&quot;, tags=[&quot;认证&quot;])
+# app.include_router(create.router, prefix=&quot;/v1/create&quot;, tags=[&quot;内容生成&quot;])
 
 # 3) 数据库生命周期
 register_db(app)   # 挂载 startup/shutdown 钩子
@@ -368,16 +371,23 @@ if __name__ == &quot;__main__&quot;:
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>from fastapi import FastAPI
-from tortoise.contrib.fastapi import RegisterTortoise
+from contextlib import asynccontextmanager
+from tortoise.contrib.fastapi import RegisterTortoise   # 注意是大写 R 的那个
 from app.config import TORTOISE_ORM
 
-def register_db(app: FastAPI):
-    register_tortoise(   # 用函数式调用；RegisterTortoise 是异步上下文管理器，不能这样裸调
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # RegisterTortoise 是**异步上下文管理器**：进入 with 时连库、退出时关库
+    # 别写成「import RegisterTortoise，却调 register_tortoise()」——那是两个不同的东西
+    async with RegisterTortoise(
         app,
         config=TORTOISE_ORM,
-        add_exception_handlers=True,
-        generate_schemas=False,
-    )</pre>
+        add_exception_handlers=True,   # 数据库异常自动转成友好的 HTTP 错误
+        generate_schemas=False,        # 不自动建表：表交给 SQL / Aerich 管
+    ):
+        yield
+
+app = FastAPI(title=&quot;智能运营平台&quot;, lifespan=lifespan)</pre>
 <ul><li>RegisterTortoise 自动注册 startup（连库）与 shutdown（关库）事件。</li><li><code>generate_schemas=False</code>：<strong>不自动建表</strong>——表由 SQL/Aerich 管理，这里只连接不建表，避免"自动建的表和设计不一致"。</li><li><code>add_exception_handlers=True</code>：数据库异常自动转成友好 HTTP 错误。</li></ul>
 <p>启动时若报"ConnectionError: Can't connect to MySQL"，先查：MySQL 启动没？密码对不对？quote_plus 处理了没？host/port 通不通？</p>
 </div>

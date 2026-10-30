@@ -28,7 +28,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from app.routers import auth, test, create
+# auth 在第 6 章、create 在第 10 章才写。**本章先只 import test**，
+# 或者先把这两个文件建出来当空壳（各自一行 router = APIRouter()），否则现在跑必 ModuleNotFoundError
+from app.routers import test
 from app.database import register_db
 
 app = FastAPI(title="智能运营平台", version="1.0.0")
@@ -44,8 +46,9 @@ app.add_middleware(
 
 # 2) 路由注册
 app.include_router(test.router, prefix="/v1/test", tags=["测试"])
-app.include_router(auth.router, prefix="/v1/auth", tags=["认证"])
-app.include_router(create.router, prefix="/v1/create", tags=["内容生成"])
+# 第 6 章写完 auth 再把这两行放开
+# app.include_router(auth.router, prefix="/v1/auth", tags=["认证"])
+# app.include_router(create.router, prefix="/v1/create", tags=["内容生成"])
 
 # 3) 数据库生命周期
 register_db(app)   # 挂载 startup/shutdown 钩子
@@ -92,16 +95,23 @@ Tortoise 的连接要在**应用启动时建立、关闭时销毁**，否则每�
 @@idea 核心思路
 ```python
 from fastapi import FastAPI
-from tortoise.contrib.fastapi import RegisterTortoise
+from contextlib import asynccontextmanager
+from tortoise.contrib.fastapi import RegisterTortoise   # 注意是大写 R 的那个
 from app.config import TORTOISE_ORM
 
-def register_db(app: FastAPI):
-    register_tortoise(   # 用函数式调用；RegisterTortoise 是异步上下文管理器，不能这样裸调
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # RegisterTortoise 是**异步上下文管理器**：进入 with 时连库、退出时关库
+    # 别写成「import RegisterTortoise，却调 register_tortoise()」——那是两个不同的东西
+    async with RegisterTortoise(
         app,
         config=TORTOISE_ORM,
-        add_exception_handlers=True,
-        generate_schemas=False,
-    )
+        add_exception_handlers=True,   # 数据库异常自动转成友好的 HTTP 错误
+        generate_schemas=False,        # 不自动建表：表交给 SQL / Aerich 管
+    ):
+        yield
+
+app = FastAPI(title="智能运营平台", lifespan=lifespan)
 ```
 
 - RegisterTortoise 自动注册 startup（连库）与 shutdown（关库）事件。

@@ -327,7 +327,7 @@ from fastapi import APIRouter, Body, HTTPException
 from app.config import JWT_ALGORITHM, JWT_ACCESS_EXPIRE_SECONDS, JWT_SECRET
 from app.models import User
 
-router = APIRouter(prefix=&quot;/v1/auth&quot;)   # 第 7 章前端就是按 /v1/auth/login 调的
+router = APIRouter()   # prefix 由第 5 章 include 时给（/v1/auth）；这里再写一次会拼成 /v1/auth/v1/auth/login
 
 def _make_token(user_id: int) -&gt; str:
     payload = {
