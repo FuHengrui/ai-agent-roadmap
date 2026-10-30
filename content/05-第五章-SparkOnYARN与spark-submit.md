@@ -232,7 +232,7 @@ spark-submit \
 ① 本机 spark-submit 把 jar 传给 RM
 ② RM 分配一个 Container，启动 ApplicationMaster（AM）
 ③ AM 内部启动 Driver（跑你的 main）
-④ Driver 通过 AM 向 RM 再申请 executors 的 Container
+④ Driver 就在 AM 进程内（cluster 模式），它直接用 AM 的 AMRMClient 向 RM 申请 executors 的 Container
 ⑤ RM 在 NodeManager 上启动 Executor 容器并回注册
 ⑥ Driver 把 DAG 切成 Task 调度到 Executor 执行
 ⑦ 任务完成，Driver 向 AM 汇报，AM 让 RM 释放所有 Container

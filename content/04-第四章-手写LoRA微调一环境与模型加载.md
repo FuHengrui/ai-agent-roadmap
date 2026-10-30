@@ -33,7 +33,7 @@
 | 量化支持 | `pip install bitsandbytes accelerate` | 4bit 微调（QLoRA）与大模型加速 |
 | 深度学习框架 | `pip install torch torchvision torchaudio --index-url .../cu126` | CUDA 版 PyTorch，GPU 训练的核心 |
 
-**顺序很重要**：先建环境 → 再装库 → 最后装 torch。为什么 torch 单独装？因为它必须匹配你的**显卡驱动/CUDA 版本**，官网自动装的往往不带 GPU 支持，星前装完后一跑就报 "CUDA not available"。
+**顺序很重要**：先建环境 → **先装 torch 并验证 cuda 可用** → 再装其余库。（torch 是地基，地基错了上面全白搭：反过来先装库，pip 会顺手拉一个 CPU 版 torch 进来，后面 CUDA 全废）为什么 torch 单独装？因为它必须匹配你的**显卡驱动/CUDA 版本**，官网自动装的往往不带 GPU 支持，星前装完后一跑就报 "CUDA not available"。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

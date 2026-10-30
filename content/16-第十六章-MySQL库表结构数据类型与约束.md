@@ -75,7 +75,8 @@ USE demo;
 ALTER DATABASE demo CHARACTER SET gbk;
 
 -- 删除（练习库随意，生产库三思）
-DROP DATABASE demo;
+-- 别在这一步就 DROP 掉：下面还要接着建表
+-- DROP DATABASE demo;
 -- 或：DROP DATABASE IF EXISTS demo;
 ```
 

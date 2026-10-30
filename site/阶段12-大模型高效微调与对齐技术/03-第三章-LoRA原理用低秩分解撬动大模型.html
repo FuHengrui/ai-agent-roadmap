@@ -377,7 +377,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>忘记 α 的存在，以为 LoRA 只能靠 r 控制强度</td><td>r 控制"低秩宽度"，α 控制"补丁缩放"。<strong>实际生效强度 ≈ α/r</strong>：r=r、α 越大越用力。调参时两个一起看，别只盯 r</td></tr>
+<tr><td>忘记 α 的存在，以为 LoRA 只能靠 r 控制强度</td><td>r 控制"低秩宽度"，α 控制"补丁缩放"。<strong>实际生效强度 ≈ α/r</strong>：r 不变时 α 越大越用力。调参时两个一起看，别只盯 r</td></tr>
 <tr><td>以为"合并后还能继续微调"</td><td>merge 后 LoRA 痕迹消失，想再微调得重新挂 PEFT（或保留未合并副本）。所以<strong>训练产物要保留 lora 权重文件</strong>（小），合并产物（大）用于部署，两条线别混</td></tr>
 </table>
 </div>

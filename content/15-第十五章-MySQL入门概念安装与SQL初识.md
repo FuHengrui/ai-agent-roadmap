@@ -246,7 +246,7 @@ SELECT * FROM student;
 DROP DATABASE demo;
 ```
 
-跑通这个闭环，等于把 DDL（建库建表）+ DML（INSERT）+ DQL（SELECT）+ DDL（DROP）四类 SQL 全部亲历一遍。后面章节就是给每个环节加细节（类型、约束、条件、函数）。
+跑通这个闭环，等于把 DDL（建库建表 / DROP）+ DML（INSERT）+ DQL（SELECT）**三类** SQL 全部亲历一遍（DDL 出现两次，别数成四类）。后面章节就是给每个环节加细节（类型、约束、条件、函数）。
 
 **练习心态**：数据库删了不心疼，练习库随便造，生产库才需要敬畏。
 
