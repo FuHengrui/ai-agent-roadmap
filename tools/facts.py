@@ -301,7 +301,7 @@ FACTS = [
  'right': '1.5 弃用、1.8 已移除；现在默认就是 multinomial，要 OvA 用 OneVsRestClassifier。',
  'wrong': "写 LogisticRegression(multi_class='ovr')",
  'chapters': '阶段 20 逻辑回归章',
- 'bad': ["multi_class\\s*=\\s*'"]},
+     'bad': ["multi_class\\s*=\\s*'", "multi_class\\(", "显式指定\\s*multi_class"]},
 {'id': 'sklearn-sgd-loss',
  'fact': 'SGDClassifier 的 loss 合法值',
  'right': "是 `'log_loss'`；写 `'log'` 在新版本会 ValueError。",
