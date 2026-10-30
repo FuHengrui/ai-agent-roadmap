@@ -309,7 +309,7 @@ CREATE DATABASE demo CHARACTER SET utf8mb4;
 SHOW VARIABLES LIKE &#x27;character%&#x27;;
 
 -- 建表时也可单独指定列/表字符集（默认继承库）
-CREATE TABLE t (
+CREATE TABLE t_int (
     name VARCHAR(20) CHARACTER SET utf8mb4
 );</pre>
 <p>必须知道的真相：</p>
@@ -370,7 +370,7 @@ ALTER DATABASE demo CHARACTER SET gbk;
 <tr><td>INT</td><td>4</td><td>±21 亿</td><td><strong>默认主力</strong>（id、数量）</td></tr>
 <tr><td>BIGINT</td><td>8</td><td>超大</td><td>雪花 ID、计数</td></tr>
 </table>
-<pre>CREATE TABLE t (
+<pre>CREATE TABLE t_dec (
     age TINYINT,          -- 年龄够用
     id INT,               -- 主键常用 INT
     big BIGINT            -- 超大量
@@ -399,7 +399,7 @@ ALTER DATABASE demo CHARACTER SET gbk;
 <tr><td>DOUBLE</td><td>8 字节，精度约 15 位</td><td>默认小数（近似）</td></tr>
 <tr><td>DECIMAL(M,D)</td><td>定点，精确十进制</td><td><strong>金额、精确结算</strong></td></tr>
 </table>
-<pre>CREATE TABLE t (
+<pre>CREATE TABLE t_time (
     price DECIMAL(10, 2),   -- 总共 10 位，小数 2 位：最多 99999999.99
     score FLOAT
 );
@@ -430,7 +430,7 @@ INSERT INTO t VALUES (99999999.99, 88.5);</pre>
 <tr><td>TIMESTAMP</td><td>2026-10-15 14:30:00</td><td>1970-2038（4 字节）</td><td>更新/记录（自动时区）</td></tr>
 <tr><td>YEAR</td><td>2026</td><td>1901-2155</td><td>年份</td></tr>
 </table>
-<pre>CREATE TABLE t (
+<pre>CREATE TABLE t_str (
     birthday DATE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 插入自动记当前时间
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -460,7 +460,7 @@ INSERT INTO t VALUES (99999999.99, 88.5);</pre>
 <tr><td>TEXT</td><td>最大 64KB</td><td>长文</td><td>文章正文、备注</td></tr>
 <tr><td>其他</td><td>——</td><td>BLOB（二进制）、ENUM（枚举）</td><td>文件、固定选项</td></tr>
 </table>
-<pre>CREATE TABLE t (
+<pre>CREATE TABLE t_enum (
     phone CHAR(11),           -- 手机号定长
     name VARCHAR(20),         -- 姓名变长
     remark TEXT               -- 长文本
@@ -527,7 +527,7 @@ DROP TABLE IF EXISTS student;    -- 删除表</pre>
 <tr><td>默认</td><td>DEFAULT 值</td><td>不写时自动填充</td></tr>
 <tr><td>自增</td><td>AUTO_INCREMENT</td><td>数字自动 +1（通常配主键）</td></tr>
 </table>
-<pre>CREATE TABLE student (
+<pre>CREATE TABLE student_default (
     id INT PRIMARY KEY AUTO_INCREMENT,   -- 主键+自增（最常用组合）
     name VARCHAR(20) NOT NULL,           -- 非空
     email VARCHAR(50) UNIQUE,            -- 唯一
@@ -585,7 +585,7 @@ CREATE TABLE orders (
 <p><strong>"成绩必须在 0~100""性别只能是男/女"这类业务规则</strong>——CHECK 与 ENUM 半自动守护。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>CREATE TABLE student (
+<pre>CREATE TABLE student_check (
     id INT PRIMARY KEY AUTO_INCREMENT,
     score DECIMAL(5,2) CHECK (score &gt;= 0 AND score &lt;= 100),  -- 检查约束
     gender ENUM(&#x27;男&#x27;, &#x27;女&#x27;)                                  -- 枚举类型

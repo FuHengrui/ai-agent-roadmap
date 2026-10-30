@@ -35,7 +35,7 @@ CREATE DATABASE demo CHARACTER SET utf8mb4;
 SHOW VARIABLES LIKE 'character%';
 
 -- 建表时也可单独指定列/表字符集（默认继承库）
-CREATE TABLE t (
+CREATE TABLE t_int (
     name VARCHAR(20) CHARACTER SET utf8mb4
 );
 ```
@@ -104,7 +104,7 @@ ALTER DATABASE demo CHARACTER SET gbk;
 | BIGINT | 8 | 超大 | 雪花 ID、计数 |
 
 ```sql
-CREATE TABLE t (
+CREATE TABLE t_dec (
     age TINYINT,          -- 年龄够用
     id INT,               -- 主键常用 INT
     big BIGINT            -- 超大量
@@ -139,7 +139,7 @@ CREATE TABLE t (
 | DECIMAL(M,D) | 定点，精确十进制 | **金额、精确结算** |
 
 ```sql
-CREATE TABLE t (
+CREATE TABLE t_time (
     price DECIMAL(10, 2),   -- 总共 10 位，小数 2 位：最多 99999999.99
     score FLOAT
 );
@@ -173,7 +173,7 @@ DECIMAL(M,D)：M 总位数（含小数），D 小数位，D 必须 ≤ M。超�
 | YEAR | 2026 | 1901-2155 | 年份 |
 
 ```sql
-CREATE TABLE t (
+CREATE TABLE t_str (
     birthday DATE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 插入自动记当前时间
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -210,7 +210,7 @@ CREATE TABLE t (
 | 其他 | —— | BLOB（二进制）、ENUM（枚举） | 文件、固定选项 |
 
 ```sql
-CREATE TABLE t (
+CREATE TABLE t_enum (
     phone CHAR(11),           -- 手机号定长
     name VARCHAR(20),         -- 姓名变长
     remark TEXT               -- 长文本
@@ -288,7 +288,7 @@ DROP TABLE IF EXISTS student;    -- 删除表
 | 自增 | AUTO_INCREMENT | 数字自动 +1（通常配主键） |
 
 ```sql
-CREATE TABLE student (
+CREATE TABLE student_default (
     id INT PRIMARY KEY AUTO_INCREMENT,   -- 主键+自增（最常用组合）
     name VARCHAR(20) NOT NULL,           -- 非空
     email VARCHAR(50) UNIQUE,            -- 唯一
@@ -360,7 +360,7 @@ INSERT 一条 cid=99 的订单会**报错**（customer 无 99）→ 外键在守
 @@idea 核心思路
 
 ```sql
-CREATE TABLE student (
+CREATE TABLE student_check (
     id INT PRIMARY KEY AUTO_INCREMENT,
     score DECIMAL(5,2) CHECK (score >= 0 AND score <= 100),  -- 检查约束
     gender ENUM('男', '女')                                  -- 枚举类型
