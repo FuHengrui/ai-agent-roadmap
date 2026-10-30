@@ -150,7 +150,7 @@ Chrome 插件的一切都从 manifest.json 开始。它的核心结构长什么�
 | **options（设置页）** | 右键"选项"/插件详情打开 | 用户配置：默认语言、开关项、账号等 |
 | **content（内容脚本）** | 注入到网页中执行 | 操作页面 DOM：改样式、抓数据、加按钮 |
 
-每个页面 = 一个 HTML 文件（+ 关联 CSS/JS），结构与普通网页一致，例如 popup.html：
+**popup / options 各是一个 HTML 文件**（+ 关联 CSS/JS），结构与普通网页一致，例如 popup.html。注意 **content script 不是 HTML 页**——它是靠 manifest 里 `content_scripts` 注册、注入到别人页面里跑的 JS，没有独立页面；要往页面里塞 UI 才自己造 DOM：
 
 ```html
 <!DOCTYPE html>

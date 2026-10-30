@@ -389,7 +389,9 @@ export const useBloodSugarStore = defineStore(&#x27;bloodSugar&#x27;, {
 <div class="step idea"><span class="label">核心思路</span>
 <p>utils/charts.ts 的 <code>getBloodSugarChartOption</code>：</p>
 <pre>series: [{
-  type: &#x27;line&#x27;, data: data.values, smooth: true,
+  // 注意入参形状：store 里存的是记录数组 [{measured_at, value}]，
+  // 图表要的是两条平行数组，必须先映射（少了这一步图表是空的）
+  type: &#x27;line&#x27;, data: toSeries(bloodStore.records).values, smooth: true,
   markLine: {   // 关键！阈值辅助线
     data: [
       { yAxis: 3.9,  lineStyle: { color: &#x27;#E6A23C&#x27; }, label: { formatter: &#x27;低血糖 3.9&#x27; } },

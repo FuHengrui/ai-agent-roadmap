@@ -400,7 +400,7 @@
 <tr><td><strong>options（设置页）</strong></td><td>右键"选项"/插件详情打开</td><td>用户配置：默认语言、开关项、账号等</td></tr>
 <tr><td><strong>content（内容脚本）</strong></td><td>注入到网页中执行</td><td>操作页面 DOM：改样式、抓数据、加按钮</td></tr>
 </table>
-<p>每个页面 = 一个 HTML 文件（+ 关联 CSS/JS），结构与普通网页一致，例如 popup.html：</p>
+<p><strong>popup / options 各是一个 HTML 文件</strong>（+ 关联 CSS/JS），结构与普通网页一致，例如 popup.html。注意 <strong>content script 不是 HTML 页</strong>——它是靠 manifest 里 <code>content_scripts</code> 注册、注入到别人页面里跑的 JS，没有独立页面；要往页面里塞 UI 才自己造 DOM：</p>
 <pre>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;zh-CN&quot;&gt;
 &lt;head&gt;
