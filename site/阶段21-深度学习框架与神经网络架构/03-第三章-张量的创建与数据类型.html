@@ -404,15 +404,15 @@ print(scalar.dim(), vector.dim(), matrix.dim(), tensor_3d.dim())</pre>
 <p>张量默认在 CPU 上，怎么用到 GPU？放到 GPU 上会自动加速吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p><strong>关键认知：张量存储在哪里，并不会因为可用 CUDA 就自动切换到 GPU</strong>。必须显式指定！三种方式：</p>
+<p><strong>关键认知：张量存储在哪里，并不会因为可用 CUDA 就自动切换到 GPU</strong>。必须显式指定！两种方式：</p>
 <pre>device = &#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;
 
-# 1. .to(device)：最推荐
-gpu_tensor = cpu_tensor.to(device)
 
+cpu_tensor = torch.randn(2, 3)          # 先在 CPU 上造一个，下面两种方式把它挪过去
+t1 = cpu_tensor.to(device)              # 1. .to(device)：最推荐，设备可切换
 # 2. .cuda()：快捷方式
-gpu_tensor3 = cpu_tensor.cuda()</pre>
-<p>如果电脑没 GPU，<code>.to('cuda')</code> 也不会报错加速——PyTorch 会默默用 CPU 计算，别指望它自动变快。</p>
+t2 = cpu_tensor.cuda()                  # 2. .cuda()：快捷写法，等价于 .to(&#x27;cuda&#x27;)</pre>
+<p>如果电脑没 GPU（或装的是 CPU 版 torch），<code>.to('cuda')</code> 会<strong>直接报错</strong>——<code>RuntimeError: Torch not compiled with CUDA enabled</code> / <code>No CUDA GPUs are available</code>。它<strong>不会</strong>默默回退到 CPU，别指望它自动降级。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
