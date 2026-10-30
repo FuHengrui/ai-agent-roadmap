@@ -309,7 +309,7 @@
 <tr><td><strong>SOUL.md</strong></td><td>人格定义</td><td>决定 AI 的性格、说话风格、核心原则——它"是谁"</td></tr>
 <tr><td><strong>USER.md</strong></td><td>服务对象画像</td><td>告诉 AI"自己正在为谁工作"：你的背景、偏好、常用工具</td></tr>
 </table>
-<p>三份文件都放在工作空间顶层，OpenClaw 启动时自动读取。记住这个顺序：<strong>先有规矩（AGENTS），再有人格（SOUL），最后知道为谁服务（USER）</strong>。</p>
+<p>三份文件都放在<strong>工作空间顶层</strong>，OpenClaw 启动时自动读取。具体位置取决于你的部署用户，典型路径是： <code>/home/admin/.openclaw/workspace/AGENTS.md</code>（<code>SOUL.md</code>、<code>USER.md</code> 同目录）——把 <code>admin</code> 换成你自己的用户即可；文件名<strong>大小写必须完全一致</strong>，全大写就是全大写。记住这个顺序：<strong>先有规矩（AGENTS），再有人格（SOUL），最后知道为谁服务（USER）</strong>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

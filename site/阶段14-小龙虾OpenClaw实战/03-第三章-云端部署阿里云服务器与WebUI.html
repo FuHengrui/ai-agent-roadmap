@@ -370,7 +370,8 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>先通过 SSH 登进服务器，再按官网安装文档执行安装，流程高度统一：</p>
-<pre>ssh root@服务器公网IP     # 登进服务器（前提：密码已重置、22 端口已放行）
+<pre>ssh root@&lt;服务器公网IP&gt;     # 登进服务器（前提：密码已重置、22 端口已放行）
+# 注意：本章用 root 演示；如果第 5、6 章用的是 /home/&lt;用户&gt;/.openclaw/…，就把下面的路径换成你的部署用户，别混着抄
 # 登录后在命令行里按 OpenClaw 官网安装说明执行安装</pre>
 <p>安装完成后注意两件事：</p>
 <ul><li>OpenClaw 会启动服务，并<strong>生成 WebUI 访问地址和 token</strong>——这是 point ⑤ 要用到的素材，记下来</li><li>"配置"的重心是 AGENTS / SOUL / USER 三份文件，那是下一章的正式内容；<strong>本章把服务装起来、能启动、能打开面板就算完成</strong></li></ul>

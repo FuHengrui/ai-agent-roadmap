@@ -437,7 +437,7 @@ plot_tree(clf, feature_names=feature_names,
 plt.show()</pre>
 <p>验收三看：</p>
 <ol><li><strong>准确率</strong>：测试集 score（老规矩，测试集成绩说话）。</li><li><strong>树图</strong>：看分支有没有"明显违背常识"的提问（树是黑盒的天敌：能看出模型逻辑）。</li><li><strong>特征重要性</strong> <code>clf.feature_importances_</code>：哪些特征被用在靠近根的位置 → 重要度高。这也是树的隐藏福利——<strong>免费的特征筛选器</strong>。</li></ol>
-<p>回归树同理 <code>DecisionTreeRegressor(criterion='mse')</code>，评价用 RMSE，不展开。</p>
+<p>回归树同理 <code>DecisionTreeRegressor(criterion='squared_error')</code>（sklearn 1.0 起取代了旧的 <code>'mse'</code>，新版本写 <code>mse</code> 会报错），评价用 RMSE，不展开。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
