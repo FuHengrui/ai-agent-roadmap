@@ -323,7 +323,7 @@ Kafka(topic: user_events) → Structured Streaming/DStream
 <pre>-- 数仓表
 -- 注意：分区列 dt 不能再写进列清单，否则 Hive 报重复列
 CREATE TABLE dwd.log_clean (ts STRING, user_id STRING, page STRING, region STRING, ua STRING) PARTITIONED BY (dt STRING);
-CREATE TABLE ads.daily_metric (pv BIGINT, uv BIGINT) PARTITIONED BY (dt STRING);</pre>
+CREATE TABLE ads.daily_metric (pv BIGINT, uv BIGINT, page_uv BIGINT) PARTITIONED BY (dt STRING);</pre>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -347,9 +347,10 @@ val raw = spark.read.option(&quot;sep&quot;, &quot;	&quot;).schema(schema)
 // 清洗：解析时间、过滤坏行、去查询串
 val clean = raw
   .filter(col(&quot;ts_str&quot;).isNotNull &amp;&amp; col(&quot;user_id&quot;).isNotNull)
-  .withColumn(&quot;dt&quot;, to_date(col(&quot;ts_str&quot;), &quot;yyyy-MM-dd HH:mm:ss&quot;))
+    .withColumn(&quot;dt&quot;, to_date(col(&quot;ts_str&quot;), &quot;yyyy-MM-dd HH:mm:ss&quot;))
+    .withColumn(&quot;ts&quot;, to_timestamp(col(&quot;ts_str&quot;), &quot;yyyy-MM-dd HH:mm:ss&quot;))   # 分钟粒度要靠它，别只留 dt
   .withColumn(&quot;page&quot;, regexp_replace(col(&quot;page&quot;), &quot;\?.*$&quot;, &quot;&quot;))
-  .drop(&quot;ts_str&quot;).filter(col(&quot;dt&quot;).isNotNull)   # 注意：DWD 还要留 ts（timestamp），批流按分钟对账时要用；只留 dt 就只能按天对
+  .drop(&quot;ts_str&quot;).filter(col(&quot;dt&quot;).isNotNull)
 
 // 写 DWD 分区表（按 dt 分区）
 clean.write.mode(&quot;overwrite&quot;).partitionBy(&quot;dt&quot;).saveAsTable(&quot;dwd.log_clean&quot;)</pre>
@@ -431,7 +432,7 @@ metric.writeStream.outputMode(&quot;update&quot;)
 <p><strong>批流对账（口径一致性验证）</strong>：</p>
 <pre>实时口径：t+1 分钟窗口 PV = 批口径：该分钟在 dwd 里 count(*) PV
 对不上 → 查口径差异（时区！过滤规则！）再调</pre>
-<p><strong>DStream 版思路</strong>（如果要沿用）： <code>KafkaUtils.createDirectStream → map(_.value) → updateStateByKey/窗口（见第 17 章第③④⑥点）</code>，输出 foreachRDD 写 Redis。</p>
+<p><strong>DStream 版思路</strong>（如果要沿用）： <code>KafkaUtils.createDirectStream → map(_.value) → updateStateByKey/窗口（见第 16 章第⑤⑥点）</code>，输出 foreachRDD 写 Redis。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

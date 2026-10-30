@@ -57,7 +57,7 @@ conda 于 2012 年随 Anaconda 一同发布，定位是**跨语言的包管理�
 ```bash
 conda create -n myenv python=3.9   # 创建环境
 conda install numpy                # 装包
-conda uninstall numpy              # 卸包（注意是 uninstall，不是 remove）
+conda remove numpy                 # 卸包：conda 用 remove（uninstall 是 pip 的写法）
 ```
 
 @@trap 坑在哪
