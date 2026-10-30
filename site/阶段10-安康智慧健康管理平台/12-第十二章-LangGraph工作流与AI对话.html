@@ -434,7 +434,7 @@ class AgentState(TypedDict, total=False):
             query=state[&#x27;user_message&#x27;], category=category)
     return state</pre>
 <p>分流逻辑：</p>
-<ul><li><strong>health_query（兜底类）</strong>：不限定分类，全库语义检索——如"糖尿病并发症有哪些"跨 3 个分类，全库才能覆盖；</li><li><strong>三类明确意图</strong>：映射到对应分类，只在"饮食管理"里找，精准且快；</li><li>输出 <code>rag_context</code>（带编号引用的文本）给 generate 节点。</li></ul>
+<ul><li><strong>health_query（兜底类）</strong>：不限定分类，全库语义检索——注意 <code>category</code> 传空值时会<strong>退化成全库检索</strong>（不是“查不到”，而是召回变杂），所以要靠关键词兜底把落单的问题接住——如"糖尿病并发症有哪些"跨 3 个分类，全库才能覆盖；</li><li><strong>三类明确意图</strong>：映射到对应分类，只在"饮食管理"里找，精准且快；</li><li>输出 <code>rag_context</code>（带编号引用的文本）给 generate 节点。</li></ul>
 <p><strong>这是第十一章 category 设计的直接消费点</strong>——分类结构服务意图分流，环环相扣。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

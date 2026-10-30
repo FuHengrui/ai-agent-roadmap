@@ -353,6 +353,8 @@ async def get_records(patient_id: int, active_only: bool = True):
     query = Medication.filter(patient_id=patient_id)
     if active_only:                      # 前端可传 active_only=false 看全部
         query = query.filter(is_active=True)
+        # 光看 is_active 不够：停药只填了 end_date 的记录会一直被当成「正在吃」
+        query = query.filter(Q(end_date__isnull=True) | Q(end_date__gte=date.today()))
     records = await query.order_by(&quot;-start_date&quot;).all()
     return [...]</pre>
 <p>模式拆解：</p>

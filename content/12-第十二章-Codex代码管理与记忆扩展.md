@@ -66,7 +66,7 @@ Git 回滚的**三种常用姿势**：
 
 | 姿势 | 命令（概念） | 用途 |
 |---|---|---|
-| **丢弃工作区改动** | `git checkout -- <file>` 或 `git restore <file>` | 放弃未提交的修改，回到最后一次提交 |
+| **丢弃工作区改动** | `git checkout -- <file>` 或 `git restore <file>` | 只清「未暂存」的改动（已 `git add` 的要先 `restore --staged`，或 `reset --hard` 才真丢） | |
 | **软回退指针** | `git reset --soft HEAD~1` | 回退提交记录但**保留改动**在暂存区（改主意了想重做） |
 | **硬回退** | `git reset --hard <commit>` | 彻底回到某提交，之后改动**全部丢弃**（慎用） |
 
@@ -119,7 +119,7 @@ git worktree add ../proj-exp experiment/refactor-v2
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 分支切来切去丢了现场 | 切分支前 **commit 或 stash**；未提交改动会跟着你走，容易乱 |
-| 多个 worktree 改同一个依赖 | 各自独立工作树但**依赖（node_modules）可能共享/冲突**；按项目实际处理 |
+| 多个 worktree 装依赖 | worktree 只共享 `.git` 元数据，**node_modules 各装各的**、不会互相冲突；代价是重复安装、占磁盘 |
 | 实验分支永不合并也不清理 | 实验完要么 merge、要么删分支，**别让分支长杂草** |
 
 @@point ④ AGENTS.md：Codex 的长期记忆

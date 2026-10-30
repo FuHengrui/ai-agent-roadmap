@@ -138,7 +138,7 @@ for epoch in range(100):
 模型学完了，怎么从概率里"续写"出一整段歌词？
 
 @@idea 核心思路
-推理时模型只吃"当前字符"，靠自回归一步步生成（temperature 控制随机性）：
+推理时理论上每步只喂一个字符（然后把新输出接上去，靠自回归一步步生成）。**但本章下面的代码为了省事，每步都喂最近 20 个字重算一遍**——效果差不多、实现更简单，代价是慢。temperature 控制随机性：
 
 ```python
 def generate(model, start, length=50, temperature=0.8):
