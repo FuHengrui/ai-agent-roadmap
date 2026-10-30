@@ -467,19 +467,13 @@ SELECT COUNT(*), MAX(score), AVG(score) FROM student;</pre>
 <p><strong>"每个班的平均分""每个部门多少人"</strong>——GROUP BY 按列分组，每组各算一次聚合。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
+<p>&gt; 下面几节为了演示「按班级分组」，用到 <code>class_id</code> 这一列。第 16 章建的 <code>student</code> 表里<strong>没有</strong>它—— &gt; 先把列补上再照抄： &gt; &gt; ``<code>sql &gt; ALTER TABLE student ADD COLUMN class_id TINYINT; &gt; </code>``</p>
 <pre>-- 按性别分组，每组统计（student 表里真有 gender，照抄就能跑）
 SELECT gender, COUNT(*), AVG(score)
 FROM student
 GROUP BY gender;
 
 -- 多列分组：班 × 性别
-&gt; 下面几节为了演示「按班级分组」，用到 `class_id` 这一列。第 16 章建的 `student` 表里**没有**它——
-&gt; 先把列补上再照抄：
-&gt;
-&gt; ```sql
-&gt; ALTER TABLE student ADD COLUMN class_id TINYINT;
-&gt; ```
-
 SELECT class_id, gender, COUNT(*)
 FROM student
 GROUP BY class_id, gender;</pre>

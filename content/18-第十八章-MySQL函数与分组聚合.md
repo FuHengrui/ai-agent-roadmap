@@ -225,13 +225,6 @@ SELECT COUNT(*), MAX(score), AVG(score) FROM student;
 
 @@idea 核心思路
 
-```sql
--- 按性别分组，每组统计（student 表里真有 gender，照抄就能跑）
-SELECT gender, COUNT(*), AVG(score)
-FROM student
-GROUP BY gender;
-
--- 多列分组：班 × 性别
 > 下面几节为了演示「按班级分组」，用到 `class_id` 这一列。第 16 章建的 `student` 表里**没有**它——
 > 先把列补上再照抄：
 >
@@ -239,6 +232,13 @@ GROUP BY gender;
 > ALTER TABLE student ADD COLUMN class_id TINYINT;
 > ```
 
+```sql
+-- 按性别分组，每组统计（student 表里真有 gender，照抄就能跑）
+SELECT gender, COUNT(*), AVG(score)
+FROM student
+GROUP BY gender;
+
+-- 多列分组：班 × 性别
 SELECT class_id, gender, COUNT(*)
 FROM student
 GROUP BY class_id, gender;
