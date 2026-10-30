@@ -373,7 +373,7 @@ centers = kmeans.cluster_centers_   # 质心坐标</pre>
 <pre>cos(x, y) = (x·y) / (|x|·|y|)，距离 = 1 - cos</pre>
 <p>常用于文本（词频向量方向代表话题）。</p>
 <ol><li><strong>曼哈顿距离</strong>：各维度绝对差之和（城市街区式走路距离），对噪声相对鲁棒。</li></ol>
-<p>选型要点：<strong>连续数值特征、量纲已归一 → 欧氏；稀疏高维（文本/画像）→ 余弦</strong>。注意：特征提前做标准化后，余弦与欧氏的行为趋于一致（方向与大小都受控）。</p>
+<p>选型要点：<strong>连续数值特征、量纲已归一 → 欧氏；稀疏高维（文本/画像）→ 余弦</strong>。注意：<strong>标准化（StandardScaler）只统一特征量纲，不会让余弦和欧氏等价</strong>；要让两者排序接近，得对<strong>样本</strong>做 L2 归一化——那时 ‖x−y‖² = 2−2cos(x,y)，两者单调对应。这俩别混。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

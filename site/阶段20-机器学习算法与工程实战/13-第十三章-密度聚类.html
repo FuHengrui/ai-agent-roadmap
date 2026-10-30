@@ -436,7 +436,7 @@ ms.labels_</pre>
 <tr><td>MeanShift</td><td>点向密度峰值漂移</td><td>bandwidth</td><td>不需要</td><td>弱（默认并入簇）</td><td>簇数自动；慢，不适合大数据</td></tr>
 </table>
 <p><strong>选型一句话</strong>：密度均匀 → DBSCAN；密度不均 → OPTICS；想"簇数全自动 + 少调参"且数据不大 → MeanShift。</p>
-<p>三者共同点：<strong>无需指定 K、可处理任意形状、对离群点天然耐受</strong>——这就是它们替代 KMeans 家族的价值所在。</p>
+<p>三者共同点：<strong>无需指定 K、可处理任意形状</strong>。离群点这块要分开说：<strong>DBSCAN / OPTICS 天然耐受</strong>（标成噪声、不强行入簇）；<strong>MeanShift 默认 <code>cluster_all=True</code>，会把离群点并进最近的簇</strong>——要用它识别噪声得显式关掉。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -494,7 +494,7 @@ plt.show()</pre>
 <tr><td>小而美、簇数全自动</td><td>MeanShift</td><td>数据不大时推荐</td></tr>
 <tr><td>无从下手</td><td>先可视化 + StandardScaler</td><td>形状决定派系</td></tr>
 </table>
-<p>通用前置流程（所有聚类项目）：<strong>标准化 → 可视化初判形状 → 选主算法 → 跑参 → 可视化验收 + 指标（SSE/轮廓系数）→ 给簇起业务名字</strong>。</p>
+<p>通用流程：<strong>预处理 → 可视化初判形状 → 选主算法 → 跑参 → 验收 → 给簇起业务名字</strong>。其中两处要按算法换：<strong>预处理</strong>——数值特征才 StandardScaler，非数值/已经是距离矩阵的别硬套；<strong>验收指标</strong>——KMeans 用 SSE + 轮廓系数；DBSCAN/OPTICS/MeanShift 没有质心，SSE 不适用，看轮廓系数（噪声标 -1 要先剔除）+ 噪声占比 / DBCV。</p>
 <p>到这里，聚类这座山翻完，下一章回到监督学习主战场，学"树"：决策树与集成学习。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

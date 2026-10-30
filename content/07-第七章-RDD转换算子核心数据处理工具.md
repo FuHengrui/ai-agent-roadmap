@@ -209,7 +209,7 @@ reduceByKey: shuffle 前先在每个分区内"预聚合"（combine），
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | `reduceByKey(_ + _)` 的 `_` 数量 | 函数是二元 `(x,y) => x+y`，所以写两个 `_`。写错成单 `_` 会类型不匹配 |
-| 聚合逻辑不是加法（找最大/拼接字符串） | func 可以任意：`reduceByKey(math.max)`、`reduceByKey(_ + _)   # 要拼分隔符写成 (a, b) => a + "," + b` 拼字符串。但**两次函数返回类型必须都是 V**（value 类型不变） |
+| 聚合逻辑不是加法（找最大/拼接字符串） | func 可以任意：`reduceByKey(math.max)`、`reduceByKey(_ + _)`；要拼分隔符写成 `reduceByKey((a, b) => a + "," + b)`。但**两次函数返回类型必须都是 V**（value 类型不变） |
 | 以为 reduceByKey 和 groupByKey 结果一样 | 前者已聚合（value 是标量/合并结果），后者是集合（Iterable）。需求"只要统计值"用 reduceByKey |
 
 @@point ⑦ distinct / union / 交集差集：集合操作家族

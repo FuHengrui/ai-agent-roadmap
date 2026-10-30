@@ -446,7 +446,7 @@ reduceByKey: shuffle 前先在每个分区内&quot;预聚合&quot;（combine）�
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td><code>reduceByKey(_ + _)</code> 的 <code>_</code> 数量</td><td>函数是二元 <code>(x,y) =&gt; x+y</code>，所以写两个 <code>_</code>。写错成单 <code>_</code> 会类型不匹配</td></tr>
-<tr><td>聚合逻辑不是加法（找最大/拼接字符串）</td><td>func 可以任意：<code>reduceByKey(math.max)</code>、<code>reduceByKey(_ + _)   # 要拼分隔符写成 (a, b) =&gt; a + "," + b</code> 拼字符串。但<strong>两次函数返回类型必须都是 V</strong>（value 类型不变）</td></tr>
+<tr><td>聚合逻辑不是加法（找最大/拼接字符串）</td><td>func 可以任意：<code>reduceByKey(math.max)</code>、<code>reduceByKey(_ + _)</code>；要拼分隔符写成 <code>reduceByKey((a, b) =&gt; a + "," + b)</code>。但<strong>两次函数返回类型必须都是 V</strong>（value 类型不变）</td></tr>
 <tr><td>以为 reduceByKey 和 groupByKey 结果一样</td><td>前者已聚合（value 是标量/合并结果），后者是集合（Iterable）。需求"只要统计值"用 reduceByKey</td></tr>
 </table>
 </div>
