@@ -404,9 +404,9 @@ print(out.shape)  # [8, 20, 192] = 96*2，双向拼接</pre>
 </table>
 </div>
 </div></div>
-<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 双向歌词生成案例：它能"押韵"的玄机</div><div class="body">
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 双向 RNN 的两个正确用法（以及为什么不能用来生成）</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>歌词要押韵、对仗，往往"下一句定上一句"——双向 RNN 在这里的特殊玩法是什么？</p>
+<p>读句子时"后面的词能反过来帮前面"——双向 RNN 吃的是整句；但这也决定了它<strong>不能</strong>用于逐词生成。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>一个经典案例：<strong>用双向 RNN 辅助生成</strong>。办法是"先生成后一半，再回头生成前一半"：</p>
@@ -438,8 +438,9 @@ self.rnn = nn.LSTM(
 )
 # 2) 输出维度对齐：hidden*2
 self.fc = nn.Linear(hidden_dim * 2, vocab_size)</pre>
-<p>其余（数据准备、训练循环、采样）完全复用。注意 <code>bidirectional=True</code> 后 LSTM 返回的 <code>out</code> 维度是 <code>[batch, seq, hidden*2]</code>，所以 <strong>Linear 输入要写 hidden*2</strong>。h_n/c_n 形状也会变成 <code>[num_layers*2, batch, hidden]</code>（前向+后向各一组）。</p>
-<p>改完后在"情感分类/序列标注"类任务上通常有明确提升；歌词生成类任务提升取决于数据（对仗型歌词更受益）。</p>
+<p>注意 <code>bidirectional=True</code> 后 LSTM 返回的 <code>out</code> 维度是 <code>[batch, seq, hidden*2]</code>，所以 <strong>Linear 输入要写 hidden*2</strong>；h_n/c_n 形状变成 <code>[num_layers*2, batch, hidden]</code>（前向+后向各一组）。</p>
+<p><strong>但别拿它做歌词生成</strong>：双向的 <code>out[t]</code> 里混进了 <code>x[t+1]</code> 以后的信息，而那正是要预测的目标——训练 loss 会假性趋零，推理时又拿不到未来，分布完全对不上。<strong>双向只用于「整句已知」的任务</strong>：分类、序列标注、给候选句打分/排序。</p>
+<p>所以正确用法是这两类：<strong>情感分类/序列标注</strong>（整句已知，要每个位置都有上下文），以及<strong>候选打分</strong>（先生成若干句，再用双向模型给它们排序）。生成模型本身保持单向。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -499,7 +500,7 @@ self.fc = nn.Linear(hidden_dim * 2, vocab_size)</pre>
   <a href="#p3" title="GRU vs LSTM：一张表选型"><span class="n">3</span>GRU vs LSTM：一张表选型</a>
   <a href="#p4" title="双向 RNN 的动机：只看前文不够"><span class="n">4</span>双向 RNN 的动机：只看前文不够</a>
   <a href="#p5" title="双向 RNN 的结构细节"><span class="n">5</span>双向 RNN 的结构细节</a>
-  <a href="#p6" title="双向歌词生成案例：它能&quot;押韵&quot;的玄机"><span class="n">6</span>双向歌词生成案例：它能"押韵"的玄机</a>
+  <a href="#p6" title="双向 RNN 的两个正确用法（以及为什么不能用来生成）"><span class="n">6</span>双向 RNN 的两个正确用法（以及为什么不能用来生成）</a>
   <a href="#p7" title="实战：把 RNN 歌词生成升级成双向"><span class="n">7</span>实战：把 RNN 歌词生成升级成双向</a>
   <a href="#p8" title="从 RNN 到注意力：这一条线的终点"><span class="n">8</span>从 RNN 到注意力：这一条线的终点</a>
 </div>

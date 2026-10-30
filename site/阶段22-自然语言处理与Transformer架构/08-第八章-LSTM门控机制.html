@@ -471,7 +471,7 @@ out, (h_n, c_n) = lstm(x)
 </table>
 <p>一句话记住本章：<strong>LSTM 靠"传送带式细胞状态 + 遗忘/输入/输出三个 sigmoid 门"给信息修了条直通公路，梯度不再连乘消失，长句记忆大幅增强；它用自己的"加法"换来了“写得更久、记得更远”，代价是不能并行、参数多——这也为 GRU 和注意力机制埋下了伏笔。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>LSTM 的细胞状态和隐藏状态分别承担什么职责？</li><li>遗忘门、输入门、输出门各自"作用于谁"？三个门用什么激活函数？为什么？</li><li>写出 LSTM 单步计算的完整公式顺序。</li><li>从梯度传播角度解释：为什么 LSTM 能缓解梯度消失？</li><li>i_t 和 g_t 的分工是什么？（"写多少" vs "写什么"）</li><li>在 PyTorch 中 nn.LSTM 返回的三样东西分别是什么形状？</li><li>LSTM 相比 RNN 的代价是什么？它还有什么局限？</li></ol>
+<ol><li>LSTM 的细胞状态和隐藏状态分别承担什么职责？</li><li>遗忘门、输入门、输出门各自"作用于谁"？三个门用什么激活函数？为什么？</li><li>写出 LSTM 单步计算的完整公式顺序。</li><li>从梯度传播角度解释：为什么 LSTM 能缓解梯度消失？</li><li>i_t 和 g_t 的分工是什么？（"写多少" vs "写什么"）</li><li>在 PyTorch 中 <code>nn.LSTM</code> 返回的 <code>out</code>、<code>h_n</code>、<code>c_n</code> 分别是什么形状？（注意它是<strong>返回两个值</strong>：<code>out</code> 和 <code>(h_n, c_n)</code> 元组）</li><li>LSTM 相比 RNN 的代价是什么？它还有什么局限？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/" target="_blank" rel="noopener"><span class="k">文档</span>Colah 图解 LSTM（必读经典）</a>
 <a href="https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html" target="_blank" rel="noopener"><span class="k">文档</span>PyTorch nn.LSTM API</a>
