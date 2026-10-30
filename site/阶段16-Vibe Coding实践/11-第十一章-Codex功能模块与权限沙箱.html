@@ -288,7 +288,7 @@
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>用上一章装好的 Codex，不用装新东西；外接 VSCode 那节要用到已经装上的 VSCode。</p></div></div>
-<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清六个功能模块各干什么，以及 watch/plan/auto 三层各放行什么、越界了怎么拒，这章就算过了。</p></div></div>
+<div class="meta-row"><span class="meta-k">学到这儿就够了</span><div class="meta-v"><p>能说清六个功能模块各干什么，以及沙箱三档（Read Only / Auto / Full Access）各放行什么、审批三档什么时候问、越界了怎么拒，这章就算过了。</p></div></div>
 </div>
 <div class="map"><span class="tag">这一章在整个知识库里的位置</span>
 <span class="node"><strong>上一章</strong>：你完成 Codex 安装，有了工作空间概念——"桌子"摆好了。</span>
@@ -471,16 +471,16 @@ Codex：计划如下——
 <tr><td><code>danger-full-access</code>（面板：Full Access）</td><td>不受沙箱限制，<strong>最高风险</strong></td><td>明确的受控环境，别在真实项目随手开</td></tr>
 </table>
 <p>&gt; 注意：面板上的 <strong>Auto 是「工作区可写」的常用档，不是最严格的那档</strong>——想最保守要选 Read Only。</p>
-<p><strong>审批三档</strong>（决定"什么时候问你"）：<code>untrusted</code>（每个动作都问）、<code>on-request</code>（模型自己判断何时请示）、<code>never</code>（不问，直接执行）。两两组合就是你在 <code>/permissions</code> 里选的方案。</p>
-<p><strong>设计思想</strong>：<strong>最小权限原则</strong>——AI 默认只能"看"（Watch），要"改"先问你（Plan），要"干危险事"基本不放行（Auto 严格管控）。</p>
+<p><strong>审批三档</strong>（决定"什么时候问你"）：<code>untrusted</code>（每个动作都问）、<code>on-request</code>（模型判断何时请示）、<code>never</code>（不问，直接执行）。两维组合共有 9 种，但面板只给几个<strong>常用预设</strong>（如 Read Only / Auto / Full Access），背后就是某个「沙箱档 × 审批档」组合——想自定义就改配置文件里的 <code>sandbox_mode</code> 与 <code>approval_policy</code>。</p>
+<p><strong>设计思想</strong>：<strong>最小权限原则</strong>——默认给它最小的沙箱（只读）、最频繁的审批（untrusted：动一次问一次）；等你确认它靠谱了，再逐步放宽到 <code>workspace-write</code> + <code>on-request</code>。<strong>注意别把面板上的 Auto 当保守档</strong>：Auto = 工作区可写，日常最常用，但它不是最严格的那个。</p>
 <p><strong>你与沙箱的协作</strong>：每次 Codex 请求权限，<strong>看清楚再点</strong>；不确定的操作先问"这会执行什么、影响哪些文件"。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>沙箱弹窗一路"允许"</td><td>沙箱防的就是"手滑全允许"；<strong>每条请求先读一遍</strong>再决定</td></tr>
-<tr><td>以为 Watch=无权限</td><td>Watch 是<strong>自动放行的只读权限</strong>，不是没有权限；读写分离是它的意义</td></tr>
-<tr><td>把 Plan 执行当"AI 自己想干就干"</td><td>Plan 层每次修改都有<strong>授权点</strong>；授权前你可以改主意</td></tr>
+<tr><td>以为 Read Only = 没权限</td><td>Read Only 是<strong>能读、不能写</strong>，不是没权限；读写分离正是它的意义</td></tr>
+<tr><td>以为 <code>on-request</code> 就没人管了</td><td>它只是让模型自己判断何时请示；每个写操作仍有沙箱兜底，越界一律拦</td></tr>
 </table>
 </div>
 </div></div>
@@ -515,12 +515,12 @@ Codex：需要删除文件 cache/tmp.db（超出当前权限）
 <tr><td><strong>计划模式 vs 批注模式</strong></td><td>一个管"整体计划层"、一个管"逐处代码层"，先可见后执行</td></tr>
 <tr><td><strong>外接 VSCode</strong></td><td>Agent 执行 + 编辑器精修的双人协作</td></tr>
 <tr><td><strong>上下文压缩</strong></td><td>长对话不断线，但重要信息要落文件</td></tr>
-<tr><td><strong>三层权限沙箱</strong>：Watch/Plan/Auto</td><td>低危自动、中危授权、高危确认——Codex 的安全底座</td></tr>
+<tr><td><strong>权限两维</strong>：沙箱三档 × 审批三档</td><td>沙箱决定「能碰什么」、审批决定「什么时候问你」；面板的 Read Only / Auto / Full Access 是常用预设</td></tr>
 <tr><td><strong>越界机制</strong>：拒绝/上报/用户接管</td><td>危险操作停下请示，绝不偷偷干、绝不让 AI 绕过</td></tr>
 </table>
-<p>一句话记住本章：<strong>Codex 会搜索、重命名、归档、Steer 纠偏，先计划后动手（计划/批注模式），还能外接 VSCode；但它的一切动作都跑在 Watch/Plan/Auto 三层沙箱里——该看的自动放行、该问的必须你点头、危险的决不放行。</strong></p>
+<p>一句话记住本章：<strong>Codex 会搜索、重命名、归档、Steer 纠偏，先计划后动手（计划/批注模式），还能外接 VSCode；但它的一切动作都受「沙箱三档 × 审批三档」约束——沙箱决定能碰什么（越界一律拦），审批决定什么时候问你（动一次问一次 / 按需问 / 从不问）。</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>Codex 的核心功能模块有哪些？分别类比成什么？</li><li>搜索和重命名怎么配合使用？重命名时要注意什么（引用联动方面）？</li><li>归档（Archive）与删除的本质区别是什么？</li><li>Steer 是什么？它和"重新描述需求"的区别是什么？举例两条 Steer 指令。</li><li>计划模式（Plan Mode）与批注模式（Annotate Mode）的区别是什么？</li><li>外接 VSCode 的使用流程是什么？打开的是 Codex 的什么？</li><li>三层权限沙箱（Watch/Plan/Auto）分别控制什么层级的操作？越界操作会怎样处理？</li></ol>
+<ol><li>Codex 的核心功能模块有哪些？分别类比成什么？</li><li>搜索和重命名怎么配合使用？重命名时要注意什么（引用联动方面）？</li><li>归档（Archive）与删除的本质区别是什么？</li><li>Steer 是什么？它和"重新描述需求"的区别是什么？举例两条 Steer 指令。</li><li>计划模式（Plan Mode）与批注模式（Annotate Mode）的区别是什么？</li><li>外接 VSCode 的使用流程是什么？打开的是 Codex 的什么？</li><li>沙箱三档（Read Only / Auto / Full Access）各放行什么？审批三档（untrusted / on-request / never）分别在什么时候问？的操作？越界操作会怎样处理？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://developers.openai.com/codex/" target="_blank" rel="noopener"><span class="k">参考</span>OpenAI Codex 官方文档</a>
 <a href="10-第十章-Codex简介与安装准备.html"><span class="k">上一章</span>Codex 简介与安装</a>
