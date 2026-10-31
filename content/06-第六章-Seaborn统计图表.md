@@ -312,7 +312,7 @@ sns.heatmap(corr,
 ```python
 import seaborn as sns
 
-sns.kdeplot(x='total_bill', data=tips, shade=True)      # 填充
+sns.kdeplot(x='total_bill', data=tips, fill=True)      # 填充
 sns.kdeplot(x='total_bill', data=tips, hue='sex', multiple='stack')  # 按组堆叠
 ```
 

@@ -72,6 +72,18 @@ PERSONAL: list[str] = [
 STRICT = '--no-strict' not in sys.argv   # 两条结构规则已全库清零，默认就拦；临时放行用 --no-strict
 
 
+# ---- ★ 已废弃 / 会报错的写法（命中就说明读者照抄会遇警告或异常）----
+DEPRECATED = [
+    (r"\bapplymap\(", "applymap 已移除，用 df.map"),
+    (r"\bnp\.row_stack\b", "row_stack 已废弃，用 vstack"),
+    (r"\bshade\s*=", "shade 已废弃，用 fill"),
+    (r"criterion\s*=\s*['\"]mse['\"]", "criterion='mse' 已删除，用 'squared_error'"),
+    (r"\bmulti_class\s*=", "multi_class 已移除，用 OneVsRestClassifier"),
+    (r"datetime\.utcnow\(\)", "utcnow 已废弃，用 datetime.now(timezone.utc)"),
+    (r"\.iteritems\(", "iteritems 已移除，用 .items()"),
+]
+
+
 def main() -> int:
     want = set(sys.argv[1:])
     files = sorted(CONTENT.glob("*.md"))
@@ -166,6 +178,11 @@ def main() -> int:
                     flags.append("★表格列数不符(L%d)" % (i + 1))
             else:
                 n_head = None
+
+        for pat, msg in DEPRECATED:
+            for m in re.finditer(pat, t):
+                ln = t[:m.start()].count("\n") + 1
+                flags.append("★废弃写法[%s](L%d)" % (msg.split("，")[0], ln))
 
         if flags:
             problems.append((f.name, flags))
