@@ -414,8 +414,16 @@
 import jieba
 
 # 1. 准备语料：每句话分词成词列表
-corpus = [&quot;人工智能改变教育&quot;, &quot;大模型赋能千行百业&quot;]
-sentences = [list(jieba.cut(s)) for s in corpus]
+# 这里用一小撮句子演示流程；语料越小，向量越没有语义意义（只验证 API 通不通）
+corpus = [
+    &quot;国王 是 男人 的 君主&quot;, &quot;女王 是 女人 的 君主&quot;,
+    &quot;国王 和 女王 都 住在 王宫&quot;, &quot;男人 和 女人 都 是 人&quot;,
+    &quot;北京 是 中国 的 首都&quot;, &quot;上海 是 中国 的 城市&quot;,
+    &quot;广州 也 是 中国 的 城市&quot;, &quot;猫 和 狗 都 是 宠物&quot;,
+    &quot;我 喜欢 猫&quot;, &quot;他 养 了 狗&quot;,
+    &quot;人工智能 改变 教育&quot;, &quot;大模型 赋能 千行百业&quot;,
+]
+sentences = [s.split() for s in corpus]
 
 # 2. 训练模型
 model = Word2Vec(
@@ -451,13 +459,23 @@ print(v[:3], sim)</pre>
 <p>经典评估手段：<strong>词向量类比（Word Analogies）</strong>。利用向量的可加性：</p>
 <pre>vec(&quot;国王&quot;) - vec(&quot;男人&quot;) + vec(&quot;女人&quot;) ≈ vec(&quot;女王&quot;)</pre>
 <p>代码验证：</p>
-<pre>result = model.wv.most_similar(
-    positive=[&quot;女人&quot;, &quot;国王&quot;], negative=[&quot;男人&quot;], topn=1   # 国王 - 男人 + 女人 ≈ 女王
-)
+<pre>words = [&quot;女人&quot;, &quot;国王&quot;, &quot;男人&quot;]
+if all(w in model.wv for w in words):
+    result = model.wv.most_similar(
+        positive=[&quot;女人&quot;, &quot;国王&quot;], negative=[&quot;男人&quot;], topn=1   # 国王 - 男人 + 女人 ≈ 女王
+    )
+    print(result)
+else:
+    print(&quot;词表里没有这些词，先确认语料覆盖到了——语料太小是查不出类比的&quot;)
 # = vec(男人-&gt;女人 方向) + 关系 检索</pre>
 <p>另一种简单评估是 <strong>most_similar / similarity 直觉检查</strong>：</p>
-<pre>print(model.wv.most_similar(&quot;北京&quot;))  # 应出现:上海、广州...
-print(model.wv.similarity(&quot;猫&quot;, &quot;狗&quot;))  # 应高于 猫 vs 汽车</pre>
+<pre>for w in (&quot;北京&quot;, &quot;猫&quot;, &quot;狗&quot;):
+    if w in model.wv:
+        print(w, &quot;最相近：&quot;, [x[0] for x in model.wv.most_similar(w, topn=3)])
+    else:
+        print(w, &quot;不在词表里&quot;)
+if all(w in model.wv for w in (&quot;猫&quot;, &quot;狗&quot;)):
+    print(&quot;猫-狗 相似度： %.3f&quot; % model.wv.similarity(&quot;猫&quot;, &quot;狗&quot;))</pre>
 <p>质量判断标准：<strong>同义词/同类词近，反义词/无关词远；类比关系成立</strong>。正式评测用 Google Analogy 数据集、词相似度数据集打分。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

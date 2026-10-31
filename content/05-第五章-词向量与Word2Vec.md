@@ -161,8 +161,16 @@ from gensim.models import Word2Vec
 import jieba
 
 # 1. 准备语料：每句话分词成词列表
-corpus = ["人工智能改变教育", "大模型赋能千行百业"]
-sentences = [list(jieba.cut(s)) for s in corpus]
+# 这里用一小撮句子演示流程；语料越小，向量越没有语义意义（只验证 API 通不通）
+corpus = [
+    "国王 是 男人 的 君主", "女王 是 女人 的 君主",
+    "国王 和 女王 都 住在 王宫", "男人 和 女人 都 是 人",
+    "北京 是 中国 的 首都", "上海 是 中国 的 城市",
+    "广州 也 是 中国 的 城市", "猫 和 狗 都 是 宠物",
+    "我 喜欢 猫", "他 养 了 狗",
+    "人工智能 改变 教育", "大模型 赋能 千行百业",
+]
+sentences = [s.split() for s in corpus]
 
 # 2. 训练模型
 model = Word2Vec(
@@ -204,17 +212,27 @@ vec("国王") - vec("男人") + vec("女人") ≈ vec("女王")
 代码验证：
 
 ```python
-result = model.wv.most_similar(
-    positive=["女人", "国王"], negative=["男人"], topn=1   # 国王 - 男人 + 女人 ≈ 女王
-)
+words = ["女人", "国王", "男人"]
+if all(w in model.wv for w in words):
+    result = model.wv.most_similar(
+        positive=["女人", "国王"], negative=["男人"], topn=1   # 国王 - 男人 + 女人 ≈ 女王
+    )
+    print(result)
+else:
+    print("词表里没有这些词，先确认语料覆盖到了——语料太小是查不出类比的")
 # = vec(男人->女人 方向) + 关系 检索
 ```
 
 另一种简单评估是 **most_similar / similarity 直觉检查**：
 
 ```python
-print(model.wv.most_similar("北京"))  # 应出现:上海、广州...
-print(model.wv.similarity("猫", "狗"))  # 应高于 猫 vs 汽车
+for w in ("北京", "猫", "狗"):
+    if w in model.wv:
+        print(w, "最相近：", [x[0] for x in model.wv.most_similar(w, topn=3)])
+    else:
+        print(w, "不在词表里")
+if all(w in model.wv for w in ("猫", "狗")):
+    print("猫-狗 相似度： %.3f" % model.wv.similarity("猫", "狗"))
 ```
 
 质量判断标准：**同义词/同类词近，反义词/无关词远；类比关系成立**。正式评测用 Google Analogy 数据集、词相似度数据集打分。
