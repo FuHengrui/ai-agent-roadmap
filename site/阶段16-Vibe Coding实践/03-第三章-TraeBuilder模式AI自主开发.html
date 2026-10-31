@@ -301,7 +301,7 @@
 <p>Builder 模式的核心是一条<strong>闭环工作流</strong>：读取上下文 → 拆解任务 → 创建/修改文件 → 运行命令 → 分析结果 → 预览 → （不满意）回退。学的时候盯住这条闭环，每一步的按钮操作遇到时再对照即可。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① Builder 模式是什么：主动干活的 AI</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>先分清 Builder 和 Chat 的本质区别——这是 Trae 三种工作面里最重要的概念分界。</p>
+<p>先分清 Builder 和 Chat 的本质区别——这是 Trae 两种工作面（Chat / Builder）之间最重要的概念分界。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Builder 模式下，AI 助手会<strong>主动读取当前项目中的文件内容，拆解任务并逐步执行</strong>，包括：</p>

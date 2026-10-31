@@ -327,7 +327,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>背下这个模板，一个字母都不要放错位置：</p>
-<pre>cd /opt &amp;&amp; tar -zcvf ~/app.tar.gz app   # 用绝对路径打包，GNU tar 会警告并剥掉开头的 /，包内变成 opt/app</pre>
+<pre>cd /opt &amp;&amp; tar -zcvf ~/app.tar.gz app   # 先 cd 到父目录、用相对路径打包：包内顶层是 app/，不会触发「绝对路径」警告，包内变成 opt/app</pre>
 <table>
 <tr><th>选项</th><th>含义</th></tr>
 <tr><td>-c</td><td>create，创建包</td></tr>
@@ -336,7 +336,7 @@
 <tr><td>-f</td><td>file，后跟打包出来的文件名</td></tr>
 </table>
 <p>⚠️ <strong>-f 后面必须</strong>紧跟文件名<strong>，不能和其他选项堆成 <code>-zcfv</code>；位置本身不必在最后</strong>，这是 tar 最经典的语法约束，顺序反了必报错。</p>
-<p>变体：不压缩只打包 <code>tar -cvf app.tar /opt/app</code>（.-z 就去掉压缩）。</p>
+<p>变体：不压缩只打包 <code>tar -cvf app.tar /opt/app</code>（去掉 -z 就是只打包、不压缩）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

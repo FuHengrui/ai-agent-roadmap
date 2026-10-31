@@ -26,7 +26,7 @@ Builder 模式的核心是一条**闭环工作流**：读取上下文 → 拆解
 
 @@point ① Builder 模式是什么：主动干活的 AI
 @@need 要解决什么
-先分清 Builder 和 Chat 的本质区别——这是 Trae 三种工作面里最重要的概念分界。
+先分清 Builder 和 Chat 的本质区别——这是 Trae 两种工作面（Chat / Builder）之间最重要的概念分界。
 
 @@idea 核心思路
 Builder 模式下，AI 助手会**主动读取当前项目中的文件内容，拆解任务并逐步执行**，包括：
