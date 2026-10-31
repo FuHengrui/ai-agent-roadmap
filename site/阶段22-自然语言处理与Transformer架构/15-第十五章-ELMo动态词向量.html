@@ -317,7 +317,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>ELMo 的回答：<strong>用一个语言模型（Language Model, LM）来产出词向量</strong>。语言模型天生"精于预测下一个词"，这意味着它被迫理解上下文：</p>
-<ul><li>前向 LM：给定前文预测下一个词 → 学到"前文"信息。</li><li>后向 LM：给定后文预测上一个词 → 学到"后文"信息。</li><li>双向结合：每个词同时吃到"它之前"和"它之后"的信息。</li></ul>
+<ul><li>前向 LM：给定前文预测下一个词 → 学到"前文"信息。</li><li>后向 LM：给定后文预测上一个词 → 学到"后文"信息。</li><li>双向结合：<strong>拼接后的 ELMo 表示</strong>同时含前后信息（单方向的第 k 层只含一侧，两层拼起来才完整）。</li></ul>
 <p>ELMo 结构 = <strong>双向 LSTM 语言模型</strong>（前向/后向各一组 LSTM 层）：</p>
 <pre>输入词嵌入 → 前向LSTM↑(h1^f..hn^f) + 后向LSTM↓(hn^b..h1^b)</pre>
 <p>每个词在第 k 层得到两个方向表示，ELMo 输出由<strong>各层双向表示加权组合</strong>。词义由"预训练时学会的语言规律"按当前句子即时计算——这就是"动态"。</p>

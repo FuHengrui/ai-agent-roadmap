@@ -462,7 +462,7 @@
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 拼接与背景音乐：流水线最后一公里</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>所有素材都齐了：N 段带字幕的视频（旁白已经在每段里合好）+ 1 段背景音乐。最后要把它们合成<strong>一条完整成片</strong>——手工剪辑是不可能的。</p>
+<p>所有素材都齐了：N 段带字幕的视频 + 1 份旁白音轨 + 1 段背景音乐。<strong>注意：旁白要先和分段视频合并（video_audio_merge），再整体拼接</strong>——漏了这步，成片会只有 BGM 没人声。最后要把它们合成<strong>一条完整成片</strong>——手工剪辑是不可能的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>收尾四个节点：</p>
