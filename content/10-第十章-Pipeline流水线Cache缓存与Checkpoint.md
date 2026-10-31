@@ -286,7 +286,7 @@ val trainData = raw.filter(...).cache()   // ① 每轮复用的数据缓存
 trainData.count()                          // ② 触发缓存真正落内存
 
 for (i <- 1 to 100) {
-  val result = trainData.map(...).reduceByKey(...)   # reduce 返回单个值、没有 .checkpoint()/.count()，要返回 RDD 用 reduceByKey  // 每轮复用缓存数据
+  val result = trainData.map(...).reduceByKey(...)   // reduce 返回单个值、没有 .checkpoint()/.count()，要返回 RDD 用 reduceByKey  // 每轮复用缓存数据
   if (i % 10 == 0) {
     result.checkpoint()                      // ③ 每 10 轮断一次血缘
     result.count()                           // ④ 触发 checkpoint 真正落盘

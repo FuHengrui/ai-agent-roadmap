@@ -135,6 +135,23 @@ def main() -> int:
         if STRICT and i_sum != -1 and i_pt != -1 and i_sum < i_pt:
             flags.append("★小结在知识点前")
 
+        # ★ 代码块：语言用错了注释符 / 中文尖括号占位符（bash 会当重定向）
+        HASH_LANGS = {"scala", "java", "json", "jsonc", "xml"}   # gitignore/ini 用 # 注释，不算
+        fence = None
+        for i, ln in enumerate(t.split("\n")):
+            s = ln.strip()
+            if s.startswith("```"):
+                if fence is None:
+                    fence = s[3:].strip().lower().split()[0] if s[3:].strip() else ""
+                else:
+                    fence = None
+                continue
+            if fence in HASH_LANGS and re.search(r"(^|\s)#\s", ln) and '"#' not in ln:
+                flags.append("★%s块里用了#注释(L%d)" % (fence, i + 1))
+            if fence in ("bash", "sh") and re.search(r"<[^<>]*[\u4e00-\u9fff][^<>]*>", ln):
+                m = re.search(r"<[^<>]*[\u4e00-\u9fff][^<>]*>", ln)
+                flags.append("★bash里的中文尖括号占位符(L%d):%s" % (i + 1, m.group(0)[:16]))
+
         # ★ 表格：同一张表里，每行的单元格数应与表头一致（转义的 \| 不算分隔）
         tl = t.split("\n")
         n_head = None

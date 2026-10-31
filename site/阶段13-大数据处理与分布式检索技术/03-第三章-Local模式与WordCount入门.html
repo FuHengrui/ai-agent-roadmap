@@ -396,7 +396,7 @@ res0: org.apache.spark.SparkContext = org.apache.spark.SparkContext@...</div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Scala 版（spark-shell 里可直接粘贴）：</p>
 <pre>// 1. 读取本地文件，得到 RDD[String]，每一行是一条数据
-# 先准备输入文件（Spark 发行包不带它）：mkdir -p data &amp;&amp; printf &#x27;hello spark\nhello world\n&#x27; &gt; data/word.txt
+// 先在 shell 里准备输入文件（Spark 发行包不带它）：mkdir -p data &amp;&amp; printf &#x27;hello spark\nhello world\n&#x27; &gt; data/word.txt
 val lines = sc.textFile(&quot;data/word.txt&quot;)
 
 // 2. flatMap：把每行按空格拆成单词，并压平成单词流

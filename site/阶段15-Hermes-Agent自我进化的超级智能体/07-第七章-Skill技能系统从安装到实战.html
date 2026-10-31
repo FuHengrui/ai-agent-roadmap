@@ -423,8 +423,8 @@ description: 什么时候用、能做什么、怎么用（给 Agent 看的一段
 <div class="step idea"><span class="label">核心思路</span>
 <p>三组核心命令：</p>
 <pre>hermes skills list              # 列出已安装的技能
-hermes skills install &lt;名字&gt;    # 通过网络安装技能
-hermes skills remove &lt;名字&gt;     # 移除已安装的技能</pre>
+hermes skills install 名字    # 通过网络安装技能
+hermes skills remove 名字     # 移除已安装的技能</pre>
 <table>
 <tr><th>命令</th><th>用途</th><th>备注</th></tr>
 <tr><td><code>hermes skills list</code></td><td>查看技能库现状</td><td>确认装了啥、漏了啥</td></tr>
@@ -473,7 +473,7 @@ hermes skills remove &lt;名字&gt;     # 移除已安装的技能</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>两条路径殊途同归——都进技能库然后启用：</p>
 <p><strong>路径 A：网络安装</strong></p>
-<pre>hermes skills install &lt;技能名&gt;   # 自动下载到 ~/.hermes/skills/</pre>
+<pre>hermes skills install 技能名   # 自动下载到 ~/.hermes/skills/</pre>
 <p><strong>路径 B：本地创建</strong></p>
 <pre>1. 在 ~/.hermes/skills/ 下新建目录，如 taiyuan-weather/
 2. 目录内创建 SKILL.md（frontmatter + 正文）

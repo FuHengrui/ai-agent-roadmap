@@ -154,8 +154,8 @@ frontmatter 是门牌，正文才是内容。正文写什么风格、什么结�
 
 ```bash
 hermes skills list              # 列出已安装的技能
-hermes skills install <名字>    # 通过网络安装技能
-hermes skills remove <名字>     # 移除已安装的技能
+hermes skills install 名字    # 通过网络安装技能
+hermes skills remove 名字     # 移除已安装的技能
 ```
 
 | 命令 | 用途 | 备注 |
@@ -206,7 +206,7 @@ hermes skills remove <名字>     # 移除已安装的技能
 
 **路径 A：网络安装**
 ```bash
-hermes skills install <技能名>   # 自动下载到 ~/.hermes/skills/
+hermes skills install 技能名   # 自动下载到 ~/.hermes/skills/
 ```
 
 **路径 B：本地创建**

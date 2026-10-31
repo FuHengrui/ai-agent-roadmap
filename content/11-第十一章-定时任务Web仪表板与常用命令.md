@@ -206,14 +206,14 @@ hermes tools              # 工具/工具集查看与配置
 
 **② 技能与记忆类**
 ```bash
-hermes skills list / install <名> / remove <名>   # 技能管理
+hermes skills list / install 名 / remove 名   # 技能管理
 hermes journey            # 记忆/技能的时间线（没有 memory list；要看内容直接读 ~/.hermes/MEMORY.md）
 ```
 
 **③ 网关与集成类**
 ```bash
 hermes gateway setup      # 接入消息平台（第 3 章）
-hermes pairing approve <平台> <配对码>   # 微信/飞书配对
+hermes pairing approve 平台 配对码   # 微信/飞书配对
 hermes mcp list           # MCP 服务器状态（第 10 章）
 ```
 

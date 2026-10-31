@@ -98,7 +98,7 @@ val schema = StructType(Seq(
 spark.read.schema(schema).json("path")
 
 // 方式 B：先抽样探 Schema —— DataFrameReader 没有 sample()，用 samplingRatio 让推断只扫一部分
-// spark.read.option("samplingRatio", "0.05").json("data/events/")   # 仅在没显式给 schema 时生效
+// spark.read.option("samplingRatio", "0.05").json("data/events/")   // 仅在没显式给 schema 时生效
 ```
 
 @@trap 坑在哪

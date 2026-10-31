@@ -456,7 +456,7 @@ ssc.stop(stopSparkContext = false, stopGracefully = true)
 // stopGracefully=true 才是优雅：等当前批处理完再停
 
 // 方案 B：自定义监听（Spark 2.3 起，StreamingListener 或主线程轮询标志）
-// 被保护：StreamingQueryListener / check 全局 flag → ssc.stop(false, true)   # 只停流，别把 SparkContext 一起停</pre>
+// 被保护：StreamingQueryListener / check 全局 flag → ssc.stop(false, true)   // 只停流，别把 SparkContext 一起停</pre>
 <p><strong>生产常见的"优雅停止"套路</strong>：</p>
 <pre>用调度系统（如 YARN 的 preempt / K8s 的 SIGTERM）→ 程序捕获信号
 → 设置&quot;停止标志&quot;（或直接调 stopGracefully）

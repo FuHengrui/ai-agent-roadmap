@@ -396,9 +396,9 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>微信接入 = <strong>扫码 + 授权策略配置 + 设备配对</strong>。步骤骨架：</p>
 <ol><li><code>hermes gateway setup</code> → 选择微信 → 扫码；</li><li>选 DM 授权策略（推荐 DM 配对审批）+ 群聊策略（推荐禁用群聊）；</li><li><strong>设备配对</strong>：在 WSL 下执行配对命令完成配对（和 QQ 不同，微信需要先做设备配对）：</li></ol>
-<pre>hermes pairing approve &lt;平台&gt; &lt;配对码&gt;
+<pre>hermes pairing approve 平台 配对码
 # 示例结构：hermes pairing approve weixin ZV5J582F
-# 实际使用时用你扫码后得到的真实配对码替换 &lt;配对码&gt;</pre>
+# 实际使用时用你扫码后得到的真实配对码替换 配对码</pre>
 <p>配对完成后，Agent 才正式与你的微信账号绑定，消息才能正常收发。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
