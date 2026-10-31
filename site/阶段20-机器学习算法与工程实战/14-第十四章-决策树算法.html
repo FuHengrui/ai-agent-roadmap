@@ -344,8 +344,15 @@
 <pre>IG = H(父) - Σ (n_child/n_parent) · H(子)</pre>
 <ul><li><strong>IG 越大 = 这次分裂让"不确定性"减少得越多 = 越值得分</strong>。</li></ul>
 <p>Gini vs 熵的工程现实：两者选出的分裂<strong>高度相似</strong>，sklearn 默认 gini（计算更快）；教学上信息熵更能解释"信息增益"的概念来源。<strong>记住它们都是"越纯越好"的度量器即可</strong>。</p>
-<p><strong>代码速览</strong>：</p>
-<pre>from sklearn.tree import DecisionTreeClassifier
+<p><strong>代码速览</strong>： &gt; 下面的代码块已自带示例数据，可直接运行；换成你自己的数据时替换前 4 行即可。</p>
+<pre># 本章用的示例数据：鸢尾花（承接前文的读者可以跳过这 4 行）
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+x_train_s, y_train_s = X_train, y_train   # 回归示例沿用同一份数据（换成保险数据即可）
+
+from sklearn.tree import DecisionTreeClassifier
 clf = DecisionTreeClassifier(criterion=&#x27;entropy&#x27;, max_depth=3)  # 或 &#x27;gini&#x27;
 clf.fit(X_train, y_train)</pre>
 </div>
