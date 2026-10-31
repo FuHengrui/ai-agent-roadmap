@@ -28,7 +28,8 @@ FastAPI 应用不是"一个文件"，而是"一堆部件的组合"——入口�
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import main_router
-from app.database import register_db
+from app.database import register_db   # 这个函数要在 database.py 里自己写（见下）
+import uvicorn                         # 下面 uvicorn.run 要用
 from app.core.knowledge_base import init_knowledge_base
 from contextlib import asynccontextmanager
 
@@ -51,6 +52,11 @@ app.add_middleware(
 
 app.include_router(main_router)   # 挂载全部 API 路由（前缀 /api）
 register_db(app)                  # 注册 Tortoise ORM 生命周期
+
+# database.py 里对应实现（本章开头没给，照抄 import 会 ImportError）：
+# def register_db(app):
+#     register_tortoise(app, config=TORTOISE_ORM,
+#                       add_exception_handlers=True, generate_schemas=False)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

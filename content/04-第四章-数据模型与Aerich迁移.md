@@ -205,7 +205,7 @@ class PublishRecord(models.Model):
 class PublishImage(models.Model):
     id = fields.IntField(pk=True)
     publish_id = fields.IntField()
-    image_id = fields.IntField()
+    image_id = fields.BigIntField()   # 指向 TitleImage.id（BIGINT），用 IntField 会在 ID 变大后截断
     image_type = fields.SmallIntField(default=1)  # 1正文图 2封面图 3详情图（注意码值！）
     sort_order = fields.IntField(default=1)
     created_at = fields.DatetimeField(auto_now_add=True)

@@ -183,7 +183,7 @@ ChatResponse {
 
 ```python
 @app.post("/api/document")
-async def upload_document(file: UploadFile,
+async def upload_document(file: UploadFile = File(...),   # 少了 = File(...) 就不是 multipart，接口直接不可用
                           collection_name: str | None = None,   # 可选：入库到哪个库；不传 = 只解析
                           store: DocumentStore = Depends(get_document_store)):
     if collection_name is not None:          # 传了库名 → 解析 + 入库

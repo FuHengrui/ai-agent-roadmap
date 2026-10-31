@@ -89,7 +89,9 @@ class RetrievalConfig:
 ```python
 candidates = self.store.search(query_vec, top_k=config.top_k*2,
                                metadata_filter=...)
-results = [r for r in candidates if r.score >= config.min_score][:config.top_k]
+# 注意：Chroma 的 collection.query 返回的是 **distance**（余弦距离，越小越近），不是相似度。
+# 直接拿 distance 去比 >= 阈值 就全反了；先换算：score = 1 - distance
+results = [r for r in candidates if (1 - r.distance) >= config.min_score][:config.top_k]
 ```
 
 注意实现细节：**先取 2 倍候选，再按分数过滤，最后截 top_k**——只取 top_k 个再过滤，剩下的可能不够数。这道"底线"的价值在第5章兜底逻辑处体现：检索为空时直接兜底返回"根据现有资料无法确定"，**比硬答强一万倍**。
