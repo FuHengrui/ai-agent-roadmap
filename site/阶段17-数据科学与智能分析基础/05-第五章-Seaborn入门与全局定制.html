@@ -368,10 +368,14 @@ df = sns.load_dataset(&#x27;iris&#x27;)      # 鸢尾花：三种花 150 行样�
 <p>Seaborn 的全局外观由四个维度控制：</p>
 <pre>import seaborn as sns
 
-sns.set_style(&#x27;whitegrid&#x27;)      # 背景风格：white/dark/whitegrid/darkgrid/ticks
-sns.set_context(&#x27;notebook&#x27;)     # 上下文（字号/线宽）：paper/notebook/talk/poster
-sns.set_palette(&#x27;deep&#x27;)         # 调色板：deep/muted/bright/dark/colorblind 等
-sns.set(font=&#x27;SimHei&#x27;)          # 全局字体（中文字体名）</pre>
+# 四件套一次设完：set_theme 会把 style/context/palette/font 一起写进 rcParams
+sns.set_theme(style=&#x27;whitegrid&#x27;,      # 背景风格：white/dark/whitegrid/darkgrid/ticks
+              context=&#x27;notebook&#x27;,     # 上下文（字号/线宽）：paper/notebook/talk/poster
+              palette=&#x27;deep&#x27;,         # 调色板：deep/muted/bright/dark/colorblind 等
+              font=&#x27;SimHei&#x27;)          # 全局字体（中文字体名）
+
+# ⚠️ 别在设置完上面三行后再调 sns.set(font=...)：sns.set() 是整主题调用，
+# 会把 style/context/palette 全部重置回默认（darkgrid/notebook/deep）。</pre>
 <p>记忆锚点：<strong>style 管背景、context 管字号线宽、palette 管配色、font 管字体</strong>。set() 是"一次性全设"的快捷方式（可传任意上述参数）。</p>
 <p>字号场景选择：<strong>paper</strong> 适合打印发表（小）、<strong>notebook</strong> 默认（屏幕笔记）、<strong>talk</strong> 演讲（大）、<strong>poster</strong> 海报（最大）。</p>
 </div>

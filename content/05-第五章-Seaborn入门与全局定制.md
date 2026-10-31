@@ -105,10 +105,14 @@ Seaborn 的全局外观由四个维度控制：
 ```python
 import seaborn as sns
 
-sns.set_style('whitegrid')      # 背景风格：white/dark/whitegrid/darkgrid/ticks
-sns.set_context('notebook')     # 上下文（字号/线宽）：paper/notebook/talk/poster
-sns.set_palette('deep')         # 调色板：deep/muted/bright/dark/colorblind 等
-sns.set(font='SimHei')          # 全局字体（中文字体名）
+# 四件套一次设完：set_theme 会把 style/context/palette/font 一起写进 rcParams
+sns.set_theme(style='whitegrid',      # 背景风格：white/dark/whitegrid/darkgrid/ticks
+              context='notebook',     # 上下文（字号/线宽）：paper/notebook/talk/poster
+              palette='deep',         # 调色板：deep/muted/bright/dark/colorblind 等
+              font='SimHei')          # 全局字体（中文字体名）
+
+# ⚠️ 别在设置完上面三行后再调 sns.set(font=...)：sns.set() 是整主题调用，
+# 会把 style/context/palette 全部重置回默认（darkgrid/notebook/deep）。
 ```
 
 记忆锚点：**style 管背景、context 管字号线宽、palette 管配色、font 管字体**。set() 是"一次性全设"的快捷方式（可传任意上述参数）。

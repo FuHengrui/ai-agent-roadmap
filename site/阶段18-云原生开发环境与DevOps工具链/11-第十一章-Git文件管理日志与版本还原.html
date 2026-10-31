@@ -479,14 +479,25 @@ git checkout .          # 把当前目录下所有被删/被改的文件恢复�
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>在项目根目录创建<strong>固定文件名</strong> <code>.gitignore</code>，把要忽略的模式写进去：</p>
-<pre># 忽略规则示例
-target/          # 忽略名为 target 的整个目录（斜杠结尾 = 目录）
-*.class（* 通配任意多个字符）
-index.class      # 忽略指定文件
-[ab].class       # 忽略 a.class 和 b.class（[] 匹配列表中的单个字符）
-?.log            # 忽略 a.log、b.log 这类单个字符开头 + .log（? 通配单个字符）
-/public/*        # 忽略 public 目录下的所有内容
-!/public/assets  # 但 public/assets 特例放行（! 表示不忽略）</pre>
+<pre># 注意：.gitignore 只认【行首】的 # 为注释。
+# 把说明写在规则后面，整行都会被当成模式——target/ 就永远忽略不掉了。
+target/
+*.class
+index.class
+[ab].class
+?.log
+/public/*
+!/public/assets</pre>
+<p>上面每条的含义（注释不能写在 .gitignore 里，所以放这儿）：</p>
+<table>
+<tr><th>规则</th><th>含义</th></tr>
+<tr><td><code>target/</code></td><td>忽略名为 target 的整个目录（结尾 <code>/</code> = 目录）</td></tr>
+<tr><td><code>*.class</code></td><td><code>*</code> 通配任意多个字符</td></tr>
+<tr><td><code>[ab].class</code></td><td>忽略 a.class 和 b.class（<code>[]</code> 匹配列表中的单个字符）</td></tr>
+<tr><td><code>?.log</code></td><td>忽略 a.log、b.log 这类（<code>?</code> 通配单个字符）</td></tr>
+<tr><td><code>/public/*</code></td><td>忽略 public 目录下的所有内容</td></tr>
+<tr><td><code>!/public/assets</code></td><td>但 public/assets 放行（<code>!</code> 表示不忽略）</td></tr>
+</table>
 <p>规则速记：<code>*</code> 通配多个字符、<code>?</code> 通配单个、<code>[]</code> 匹配字符列表、<code>!</code> 取反放行、结尾 <code>/</code> 表示目录、开头 <code>/</code> 表示相对当前目录。至于 <code>.gitignore</code> 本身要不要提交？——<strong>要</strong>！它是团队共用的"物业公约"，应该进版本库。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -504,15 +515,15 @@ index.class      # 忽略指定文件
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>Git 的规矩：<strong>已被跟踪（tracked）的文件，.gitignore 管不了它</strong>。要"解除跟踪但保留文件"，需要先把它从 Git 管理里移除：</p>
-<pre>git rm -r --cached   # 目录要 -r target/   # 把 target/ 从 Git 跟踪里移除（文件还在磁盘上）
+<pre>git rm -r --cached target/   # 目录要加 -r；路径别被注释挤掉，否则报 No pathspec was given
 git commit -m &quot;移除 target 目录的跟踪&quot;   # 提交这次移除</pre>
 <p>之后 <code>.gitignore</code> 里的规则才对它生效，新克隆的人也不会再拉到它。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>写了 .gitignore，但已提交的文件还是出现在提交里</td><td>已跟踪文件不受忽略规则影响；先 <code>git rm -r --cached   # 目录要 -r</code> 解除跟踪再提交</td></tr>
-<tr><td>执行 <code>git rm -r --cached   # 目录要 -r</code> 后以为文件被删了</td><td>文件<strong>还在本地磁盘</strong>，只是不再被 Git 跟踪；"文件不见了"是常见误解</td></tr>
+<tr><td>写了 .gitignore，但已提交的文件还是出现在提交里</td><td>已跟踪文件不受忽略规则影响；先 <code>git rm -r --cached target/</code> 解除跟踪再提交</td></tr>
+<tr><td>执行 <code>git rm -r --cached target/</code> 后以为文件被删了</td><td>文件<strong>还在本地磁盘</strong>，只是不再被 Git 跟踪；"文件不见了"是常见误解</td></tr>
 </table>
 </div>
 </div></div>
@@ -526,7 +537,7 @@ git commit -m &quot;移除 target 目录的跟踪&quot;   # 提交这次移除</
 <tr><td>add 了没 commit 怎么还原</td><td><code>git reset HEAD</code>（取消暂存） + <code>git checkout -- 文件</code></td></tr>
 <tr><td>commit 了怎么回退</td><td><code>git reset HEAD^</code>（<code>^</code> 越多往前越多）</td></tr>
 <tr><td>reset 三模式</td><td><code>--soft</code> 只动指针；<code>--mixed</code> 默认、清暂存留工作区；<code>--hard</code> 全还原、丢未提交改动</td></tr>
-<tr><td>怎么忽略文件</td><td><code>.gitignore</code> 写规则；已跟踪文件要先 <code>git rm -r --cached   # 目录要 -r</code></td></tr>
+<tr><td>怎么忽略文件</td><td><code>.gitignore</code> 写规则；已跟踪文件要先 <code>git rm -r --cached &lt;路径&gt;</code></td></tr>
 </table>
 <p>一句话记住本章：<strong>log 查历史、diff 看差异、checkout 还原工作区、reset 回退版本（--hard 是核弹）、.gitignore 挡新文件但管不了已跟踪的旧文件——两条后悔线：没 commit 的用 checkout，commit 了的用 reset，再不行 reflog 兜底。</strong></p>
 <h4>自测：能不能答上来</h4>

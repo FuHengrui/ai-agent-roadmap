@@ -413,7 +413,7 @@ grep -E &quot;error|fail&quot; app.log # -E 支持正则 | 或关系</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>想搜目录却报错"是目录"</td><td>grep 默认不递归目录；加 -r 或在文件上搜</td></tr>
-<tr><td>grep 搜不到明明"肉眼可见"的词</td><td>看大小写（加 -i 试试）或特殊字符（\</td><td>、. 在任何模式下都是正则元字符、都要转义（<code>\.</code>）；竖线只在 -E 下才是元字符）</td></tr>
+<tr><td>grep 搜不到明明「肉眼可见」的词</td><td>先看大小写（加 <code>-i</code>）；再看特殊字符：<code>.</code> 在任何模式下都是正则元字符、要写 <code>\.</code>，而 `</td><td><code> 只有 </code>-E`（或 egrep）下才是元字符，基本模式下它是普通字符</td></tr>
 <tr><td>grep 出来的"进程"里总有 grep 自己</td><td>经典现象：`ps aux \</td><td>grep xxx<code> 会匹配到自己；排除技巧 </code>grep -v grep`</td></tr>
 </table>
 </div>
