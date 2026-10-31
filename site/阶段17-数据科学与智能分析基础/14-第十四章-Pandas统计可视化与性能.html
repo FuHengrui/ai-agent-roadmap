@@ -588,7 +588,7 @@ df[&#x27;成绩x2&#x27;] = df[&#x27;成绩&#x27;] * 2
 
 # ✅ 条件逻辑也向量化：np.where / 掩码
 df[&#x27;等级&#x27;] = np.where(df[&#x27;成绩&#x27;] &gt;= 60, &#x27;及格&#x27;, &#x27;不及格&#x27;)</pre>
-<p>速度对比经验：<strong>向量化 ≈ 100 倍于 apply ≈ 1000 倍于 for 循环</strong>。</p>
+<p>速度对比（本机实测，30 万行、<code>a*2+b</code> 这种简单算式）：<strong>apply 2.78 秒，向量化 0.011 秒，差约 250 倍</strong>。倍数随数据量、算式复杂度浮动，但「一两个数量级」是稳的；<code>for</code> 循环再加一倍左右的差距。<strong>结论不变：能向量化就别用 apply，更别用 for。</strong></p>
 <p>三条铁律：</p>
 <ol><li><strong>加减乘除/比较/逻辑 → 直接列运算</strong>（最淳朴最快）；</li><li><strong>条件分支 → np.where / 掩码赋值</strong>（loc[条件] = 值）；</li><li><strong>apply 只留给"确无向量化写法"的自定义函数</strong>（如复杂字符串处理）。</li></ol>
 <p>附加技巧：<code>df.eval('新列 = a + b', inplace=True)   # 不加 inplace=True 原表不会变</code> 与 <code>pd.eval</code> 可进一步提速表达式。</p>
