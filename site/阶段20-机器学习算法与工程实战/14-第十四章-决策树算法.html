@@ -307,7 +307,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>决策树输出是类别，就用分类准确率以外的"距离"评估</td><td>分类树看准确率/混淆矩阵；回归树看 MSE/RMSE——先分清任务再选指标</td></tr>
+<tr><td>决策树输出是类别，别用「距离」类指标评估</td><td>分类树看准确率/混淆矩阵；回归树看 MSE/RMSE——先分清任务再选指标</td></tr>
 <tr><td>认为树"不用预处理"就啥都不做</td><td>归一化确实可省，但缺失值、类别编码仍要处理；别把"免归一化"夸大成"免全部预处理"</td></tr>
 </table>
 </div>
@@ -388,7 +388,7 @@ clf.fit(X_train, y_train)</pre>
 <p><strong>无限生长的后果（fully grown tree）</strong>：</p>
 <ul><li>每个叶子都能分到"最纯"（甚至单样本），训练误差趋近 0。</li><li>但模型<strong>背下了训练集</strong>——测试集严重过拟合（训练好、测试差）。</li></ul>
 <p><strong>剪枝（Pruning）</strong>：给树"减肥"，是治理决策树过拟合的有效方法。两大策略：</p>
-<ol><li><strong>前剪枝/预剪枝（pre-pruning）</strong>：构建过程<strong>提前停止</strong>——把切分条件设严（限制最大深度 max_depth、最小样本数 min_samples_split、最小不纯度下降），树还没长茂就收住。<strong>代价小、策略即可，sklearn 直接给参数</strong>。</li><li><strong>后剪枝/后剪枝（post-pruning）</strong>：树<strong>先长满再修剪</strong>——从底层剪掉对验证集没有提升的分支。常见三种：REP（错误率降低）、PEP（悲观剪枝，C4.5）、CCP（代价复杂度剪枝，CART）。</li></ol>
+<ol><li><strong>前剪枝/预剪枝（pre-pruning）</strong>：构建过程<strong>提前停止</strong>——把切分条件设严（限制最大深度 max_depth、最小样本数 min_samples_split、最小不纯度下降），树还没长茂就收住。<strong>代价小、最常用，sklearn 直接给参数</strong>。</li><li><strong>后剪枝（post-pruning）</strong>：树<strong>先长满再修剪</strong>——从底层剪掉对验证集没有提升的分支。常见三种：REP（错误率降低）、PEP（悲观剪枝，C4.5）、CCP（代价复杂度剪枝，CART）。</li></ol>
 <p><strong>CCP 一句话图解</strong>：为每棵子树定义"代价（被剪掉而增加的错分样本）与复杂度（剪掉减少的叶子数）"，用 α 权衡；对每个非叶节点算 α，循环剪掉最小 α 的子树，得到一串候选树，再用验证误差挑最好的。（sklearn 的 <code>ccp_alpha</code> 参数对应。）</p>
 <p><strong>工程结论</strong>：预剪枝（调 max_depth 等）是日常首选；后剪枝更精细但复杂，Alpha 由 <code>DecisionTreeClassifier(ccp_alpha=...)</code> 暴露。</p>
 </div>
@@ -442,7 +442,7 @@ plt.show()</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>樹图太大画成"一团黑"</td><td>max_depth 限制 3~5 再画；或只画部分分支展示</td></tr>
+<tr><td>树图太大画成「一团黑」</td><td>max_depth 限制 3~5 再画；或只画部分分支展示</td></tr>
 <tr><td>只看准确率不看树图</td><td>树的核心价值是解释性；画图审查"模型在想什么"才算完整验收</td></tr>
 </table>
 </div>

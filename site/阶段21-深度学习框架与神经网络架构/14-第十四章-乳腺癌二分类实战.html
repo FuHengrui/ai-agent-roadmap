@@ -434,7 +434,7 @@ for epoch in range(100):
         val_loss = loss_fn(model(X_val), y_val.reshape(-1,1)).item()
     if val_loss &lt; best_val:
         best_val = val_loss
-        torch.save(model.state_dict(), &quot;best_model.pt&quot;)   # 后面测试前记得 load 回来：model.load_state_dict(torch.load(&quot;best_model.pt&quot;))   # 只存参数
+        torch.save(model.state_dict(), &quot;best_model.pt&quot;)   # 只存参数；加载方法见下面「验证」那一段
     if epoch % 10 == 0:
         print(epoch, loss.item(), val_loss)</pre>
 <ul><li><code>model.eval()</code> + <code>torch.no_grad()</code>：评估时关 Dropout、不建计算图。</li><li>用<strong>验证 loss 而非训练 loss</strong> 选模型（防止过拟合版本被保存）。</li><li><code>state_dict()</code> 只存参数，加载：<code>model.load_state_dict(torch.load(...))</code>。</li></ul>

@@ -68,7 +68,7 @@ sns.countplot(x='day', data=tips, hue='sex')
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 把 y 传了数值列给 countplot | 它不认；countplot 只要 x（或 y）一个分类列，另一轴是计数 |
-| 计数上万时 y 轴太挤 | 改对数值：记不清参数名就查文档的 stat 参数 |
+| 计数上万时 y 轴太挤 | 改对数轴（log scale）：记不清参数名就查文档的 stat 参数 |
 
 @@point ③ histplot：直方图与密度并取
 @@need 要解决什么
@@ -316,7 +316,7 @@ sns.kdeplot(x='total_bill', data=tips, fill=True)      # 填充
 sns.kdeplot(x='total_bill', data=tips, hue='sex', multiple='stack')  # 按组堆叠
 ```
 
-- **shade**：曲线下方填充（老参数 fill=True 新写法）；
+- **shade 是旧参数**（自 0.11.2 起弃用），新写法是 `fill=True`；下面示例里用 fill。
 - **multiple**：多组 draw 方式——'layer' 叠加、'stack' 堆叠（面积不重叠）、'fill'：每组按占比归一到 1，堆满到 1（看构成比例，不是镜像填充）。
 
 对比 histplot：**kde 平滑、无桶数选择问题，但小样本失真**；直方忠实原始分桶但依赖 bins。常用 combo：histplot(kde=True)。

@@ -437,7 +437,7 @@ print(v[:3], sim)</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>用少量句话训练就指望有效果</td><td>词向量靠统计共现，语料至少几十万句级别才有语义；玩具语料只能跑通流程</td></tr>
+<tr><td>用几千句话（少量语料）训练就指望有效果</td><td>词向量靠统计共现，语料至少几十万句级别才有语义；玩具语料只能跑通流程</td></tr>
 <tr><td>不设 min_count</td><td>只出现一两次的词学不到稳定向量，纯噪声，过滤掉更干净</td></tr>
 <tr><td>训练完不保存</td><td>训练耗时，<code>model.save()</code> 后直接加载推理，别反复重训</td></tr>
 </table>
@@ -472,7 +472,7 @@ print(model.wv.similarity(&quot;猫&quot;, &quot;狗&quot;))  # 应高于 猫 vs
 <p>本章把词向量从概念到实践讲透了：</p>
 <table>
 <tr><th>问题</th><th>答案</th></tr>
-<tr><td>one-hot 缺陷</td><td>维度爆炸、无语义、距离开不了</td></tr>
+<tr><td>one-hot 缺陷</td><td>维度爆炸、无语义、算不出相似度</td></tr>
 <tr><td>分布式表示</td><td>稠密低维向量，语义相似则向量相近</td></tr>
 <tr><td>Word2Vec 变体</td><td>CBOW（上下文猜中心词）、Skip-gram（中心词猜上下文）</td></tr>
 <tr><td>负采样</td><td>二分类加速，每次只算 k 个负样本</td></tr>
