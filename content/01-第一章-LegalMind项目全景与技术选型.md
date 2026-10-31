@@ -177,7 +177,7 @@ LLM 检索增强生成(Retrieval-Augmented Generation)实现法律咨询时，�
 | chat_messages | id、chat_session(外键)、role、content、created_at | 对话里的每条消息（user/assistant） |
 | generated_documents | id、user(外键)、type、content、created_at | 生成过的法律文书存档 |
 
-注意两个设计细节：**主键用 UUID 字符串**（不用自增 int，防撞库+前后端字符串一致）；**laws 用 Postgres 数组（JSON 字段）**存法条列表，避免为每条法条建一张关联表。实际代码里这四张表是 Tortoise 的 Model 类，第 4 章细讲。
+注意两个设计细节：**主键用 UUID 字符串**（不用自增 int，防撞库+前后端字符串一致）；**laws 用 Postgres 数组（JSON 字段）**存法条列表，避免为每条法条建一张关联表。实际代码里这五张表是 Tortoise 的 Model 类，第 4 章细讲。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

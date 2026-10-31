@@ -2,7 +2,7 @@
 @@sub 阶段 11 · LegalMind 法律咨询系统　|　难度 ★★☆
 
 @@why 这一章在解决什么问题
-上一章骨架跑起来了，Postgres 里却一张表都没有。没有表，用户注册没地方存、案例没地方放、聊天记录没地方写。本章用 **Tortoise ORM**（Python 原生 async ORM）把第一章蓝图里的四张核心表落成代码：`User`（用户）、`Case`（案例）、`ChatSession/ChatMessage`（会话与消息）、`GeneratedDocument`（文书）。
+上一章骨架跑起来了，Postgres 里却一张表都没有。没有表，用户注册没地方存、案例没地方放、聊天记录没地方写。本章用 **Tortoise ORM**（Python 原生 async ORM）把第一章蓝图里的五张核心表落成代码：`User`（用户）、`Case`（案例）、`ChatSession/ChatMessage`（会话与消息）、`GeneratedDocument`（文书）。
 重点是搞懂三件事：**UUID 主键怎么选**、**Postgres 数组（法条列表）在 ORM 里怎么表达**、**外键关系怎么挂**。学完本章，数据库里会有完整表结构，第 9 章的聊天接口和第 3 章的建表逻辑全部打通。
 
 @@prep 开始之前

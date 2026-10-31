@@ -282,7 +282,7 @@
 <h1>第四章　数据库模型与 ORM 层</h1>
 <div class="subtitle">阶段 11 · LegalMind 法律咨询系统　|　难度 ★★☆</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
-<p>上一章骨架跑起来了，Postgres 里却一张表都没有。没有表，用户注册没地方存、案例没地方放、聊天记录没地方写。本章用 <strong>Tortoise ORM</strong>（Python 原生 async ORM）把第一章蓝图里的四张核心表落成代码：<code>User</code>（用户）、<code>Case</code>（案例）、<code>ChatSession/ChatMessage</code>（会话与消息）、<code>GeneratedDocument</code>（文书）。 重点是搞懂三件事：<strong>UUID 主键怎么选</strong>、<strong>Postgres 数组（法条列表）在 ORM 里怎么表达</strong>、<strong>外键关系怎么挂</strong>。学完本章，数据库里会有完整表结构，第 9 章的聊天接口和第 3 章的建表逻辑全部打通。</p>
+<p>上一章骨架跑起来了，Postgres 里却一张表都没有。没有表，用户注册没地方存、案例没地方放、聊天记录没地方写。本章用 <strong>Tortoise ORM</strong>（Python 原生 async ORM）把第一章蓝图里的五张核心表落成代码：<code>User</code>（用户）、<code>Case</code>（案例）、<code>ChatSession/ChatMessage</code>（会话与消息）、<code>GeneratedDocument</code>（文书）。 重点是搞懂三件事：<strong>UUID 主键怎么选</strong>、<strong>Postgres 数组（法条列表）在 ORM 里怎么表达</strong>、<strong>外键关系怎么挂</strong>。学完本章，数据库里会有完整表结构，第 9 章的聊天接口和第 3 章的建表逻辑全部打通。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>第 3 章的骨架能启动就能开始，这章不用装新东西，写的是四个模型类。</p></div></div>
