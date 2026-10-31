@@ -315,7 +315,7 @@ sns.barplot(x=&#x27;day&#x27;, y=&#x27;total_bill&#x27;, data=tips, hue=&#x27;se
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>看到的"高度"和自己算的平均对不上</td><td>它画的就是均值 + 误差线；误差线不是数据范围</td></tr>
-<tr><td>每一类只有一个值时柱子很矮</td><td>正常，单样本均值就是它本身；这种场景用 pointplot/scatter 更合适</td></tr>
+<tr><td>每一类只有一个值时柱子几乎一样高、看不到误差线</td><td>正常：<strong>柱高仍是该值</strong>（单样本均值就是它本身），只是误差线长度为 0 看不出来；想看原始点用 stripplot / swarmplot</td></tr>
 </table>
 </div>
 </div></div>
