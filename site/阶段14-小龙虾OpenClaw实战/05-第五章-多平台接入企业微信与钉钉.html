@@ -356,7 +356,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>在"应用管理 / 自建应用"里找机器人，找不到</td><td>企业微信智能机器人归属在 安全与管理 &gt; 管理工具 下，是管理类工具，不是业务应用，别按应用管理的思路找</td></tr>
+<tr><td>在"应用管理 / 自建应用"里找机器人，找不到</td><td>企业微信智能机器人属于<strong>管理类工具</strong>、不是业务应用，别按「应用管理」的思路找；<strong>具体菜单路径以你后台当前版本为准</strong>（写作时在「安全与管理 &gt; 管理工具」下），最快的办法是后台搜索框直接搜「智能机器人」</td></tr>
 <tr><td>点了"创建机器人"没有弹窗</td><td>浏览器弹窗被拦截（尤其 Chrome/Edge）；允许企业微信官网弹窗后刷新页面重试</td></tr>
 </table>
 </div>
@@ -540,7 +540,8 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>接下来为已经完成部署的 OpenClaw 配置<strong>模型</strong>和<strong>通道</strong>（即 <strong>OpenClaw channel</strong>，如钉钉）：</p>
 <ol><li><strong>模型</strong>：确认 OpenClaw 已配置一个可用模型（模型是大脑，没有模型机器人只会"嗯嗯"不回话）</li><li><strong>通道</strong>：在配置/CLI 中把钉钉 channel 加上，填入第 ⑫ 步的 Client ID 与 Client Secret；企微 channel 已在第 ⑧ 步的 openclaw.json 里配好</li></ol>
-<pre>openclaw channels add dingtalk --client-id &lt;你的ClientId&gt; --client-secret &lt;你的ClientSecret&gt;</pre>
+<pre>openclaw channels add dingtalk --client-id 你的ClientId --client-secret 你的ClientSecret</pre>
+<p>&gt; <strong>参数名以 <code>openclaw channels add --help</code> 的输出为准</strong>——CLI 升级后参数可能改名（本章写作时是 <code>--client-id</code> / <code>--client-secret</code>）。敲之前先 <code>--help</code> 看一眼，比照抄更稳。</p>
 <p>配完后重启 OpenClaw，在钉钉/企业微信里 @ 机器人发一句话验证：能收到回复 = 全链路打通。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

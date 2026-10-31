@@ -421,8 +421,11 @@
 <table>
 <tr><th>维度</th><th>PAI-DSW</th><th>EAIS</th></tr>
 <tr><td>CPU 环境</td><td>8核/32G，长期使用</td><td>8核/32G，长期使用</td></tr>
-<tr><td>GPU 环境</td><td>8核/32G 显存24G，免费限额 36 小时</td><td>8核/32G 显存16G，免费限额 64 小时</td></tr>
-<tr><td>持久化存储</td><td>/mnt/workspace/ 目录</td><td>暂无</td></tr>
+<tr><td>GPU 环境</td><td>8核/32G，显存 24G，写作时免费限额 36 小时</td><td>8核/32G，显存 16G，写作时免费限额 64 小时</td></tr>
+</table>
+<p>&gt; <strong>额度和档位会随平台活动调整</strong>：上表的数字是写作时的参考，实际以 ModelScope 官网当前活动页 / 控制台显示为准（差额、赠送、限时翻倍都可能变）。</p>
+<table>
+<tr><th>持久化存储</th><th>/mnt/workspace/ 目录</th><th>暂无</th></tr>
 <tr><td>适用场景</td><td>需要持续保留实验数据</td><td>短期培训、临时算力补充</td></tr>
 </table>
 <p><strong>决策口诀</strong>：要存数据、要长期项目 → <strong>PAI-DSW</strong>；只想临时跑个验证、看重 GPU 时长 → <strong>EAIS</strong>。两个都免费，互不冲突，可以都领。</p>
