@@ -298,7 +298,14 @@ df = pd.DataFrame({'a': np.random.randn(1_000_000),
 @@idea 核心思路
 
 ```python
-import pandas as pd
+import pandas as pd, numpy as np, pathlib
+
+# 先造一份「大」文件（真实项目里换成你的日志/订单导出）
+n = 200_000
+pathlib.Path('big.csv').write_text(
+    '日期,销售额,性别\n' + '\n'.join(
+        f'2026-10-{i%28+1:02d},{np.random.randint(10,500)},{"男" if i%2 else "女"}'
+        for i in range(n)), encoding='utf-8')
 
 # 第 1 招：只读需要的列
 df = pd.read_csv('big.csv', usecols=['日期', '销售额'])

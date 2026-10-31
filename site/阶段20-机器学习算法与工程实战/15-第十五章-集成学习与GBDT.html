@@ -509,7 +509,8 @@ for name, model in models.items():
 <div class="step idea"><span class="label">核心思路</span>
 <ul><li>特征重要性 ≈ 该特征在树分裂中被选中的<strong>频次 × 带来的不纯度下降</strong>（按树/森林平均）。</li><li>sklearn 一行出：<code>model.feature_importances_</code>，值归一化成和为 1。</li><li>用法一：直接写报告（"吸烟、BMI 是花销最强预测因子"——与第九章 EDA 结论互证）。</li><li>用法二：<strong>递归消除/阈值筛选</strong>——把重要性低的列删掉重训，精简模型。</li></ul>
 <pre>import matplotlib.pyplot as plt
-imp = gbr.feature_importances_
+imp = gbr.feature_importances_          # gbr 来自上面拟合好的 GradientBoostingRegressor
+feature_names = [f&#x27;特征{i}&#x27; for i in range(len(imp))]   # diabetes 的列没有中文名，用编号代替
 plt.barh(range(len(imp)), imp)
 plt.yticks(range(len(imp)), feature_names)
 plt.show()</pre>

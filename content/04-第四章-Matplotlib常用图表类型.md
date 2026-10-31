@@ -127,7 +127,8 @@ data = [np.random.normal(60, 10, 100),
         np.random.normal(65, 5, 100)]
 
 plt.boxplot(data,
-            labels=['A 班', 'B 班', 'C 班'],
+            tick_labels=['A 班', 'B 班', 'C 班'],   # matplotlib 3.9+ 把 labels 改名成 tick_labels
+
             patch_artist=True,          # 给箱子填色
             vert=True)                  # 竖向；False 就横向
 plt.ylabel('成绩')

@@ -388,7 +388,8 @@ plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False   # 解决负号显示为�
 
 for f in font_manager.fontManager.ttflist:      # 查看系统可用中文字体
     print(f.name)
-font_manager.fontManager.addfont(&#x27;./你的字体.ttf&#x27;)  # 临时加载额外字体文件</pre>
+# 想临时加载某个字体文件（换成你自己的路径，别照抄这个占位名）
+# font_manager.fontManager.addfont(&#x27;./SimHei.ttf&#x27;)</pre>
 <p>局部指定字体：<code>plt.title("标题", fontdict={'fontname': 'SimHei'})</code>，或对单个文本对象用 <code>FontProperties</code>。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -551,7 +552,7 @@ data = [29, 30, 31, 32, 28, 27, 30]
 plt.xticks(x, [&#x27;第{}天&#x27;.format(i) for i in range(1, 8)])   # 位置 + 标签一一对应
 plt.yticks(range(0, 35, 5))                               # 0 到 35，步长 5</pre>
 <p>坐标系对象的写法（子图场景更常用）：</p>
-<pre>ax.set_xticks(x)                    # 设置位置
+<pre>ax.set_xticks(x[:3])                 # 位置数和标签数必须一样多（这里只标前 3 个）
 ax.set_xticklabels([&#x27;周一&#x27;, &#x27;周二&#x27;, &#x27;周三&#x27;])  # 设置标签</pre>
 <p>双轴场景下，左轴右轴各自 set_yticks 互不影响。</p>
 </div>
@@ -630,6 +631,8 @@ plt.annotate(&#x27;最小值&#x27;,                    # 注释文字
 
 plt.plot([1, 2, 3], [4, 5, 6])
 
+import pathlib
+pathlib.Path(&#x27;./img&#x27;).mkdir(exist_ok=True)   # 目录不存在会报 FileNotFoundError
 plt.savefig(&#x27;./img/line1.png&#x27;,     # 路径 + 文件名（支持 png/svg/jpeg/pdf）
             dpi=300,               # 清晰度（报告用 300，屏幕用 100-150）
             facecolor=&#x27;white&#x27;,     # 背景色（保存时默认透明背景可改）

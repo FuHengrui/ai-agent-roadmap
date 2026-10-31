@@ -537,7 +537,14 @@ df = pd.DataFrame({&#x27;a&#x27;: np.random.randn(1_000_000),
 <p><strong>几个 G 的 CSV 一读就内存爆</strong>——三招：只读需要的列、指定类型省内存、按块分批处理。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>import pandas as pd
+<pre>import pandas as pd, numpy as np, pathlib
+
+# 先造一份「大」文件（真实项目里换成你的日志/订单导出）
+n = 200_000
+pathlib.Path(&#x27;big.csv&#x27;).write_text(
+    &#x27;日期,销售额,性别\n&#x27; + &#x27;\n&#x27;.join(
+        f&#x27;2026-10-{i%28+1:02d},{np.random.randint(10,500)},{&quot;男&quot; if i%2 else &quot;女&quot;}&#x27;
+        for i in range(n)), encoding=&#x27;utf-8&#x27;)
 
 # 第 1 招：只读需要的列
 df = pd.read_csv(&#x27;big.csv&#x27;, usecols=[&#x27;日期&#x27;, &#x27;销售额&#x27;])

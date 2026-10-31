@@ -438,6 +438,10 @@ import matplotlib.pyplot as plt
 clf = DecisionTreeClassifier(max_depth=3, random_state=42).fit(X_train, y_train)
 print(clf.score(X_test, y_test))            # 测试集准确率
 
+# 画树要给特征名和类别名（接着上面的鸢尾花数据）
+feature_names = [&#x27;花萼长&#x27;, &#x27;花萼宽&#x27;, &#x27;花瓣长&#x27;, &#x27;花瓣宽&#x27;]
+class_names = [&#x27;山鸢尾&#x27;, &#x27;变色鸢尾&#x27;, &#x27;维吉尼亚鸢尾&#x27;]
+
 plt.figure(figsize=(14, 6))
 plot_tree(clf, feature_names=feature_names,
           class_names=class_names, filled=True)   # 彩色树图

@@ -268,7 +268,8 @@ for name, model in models.items():
 
 ```python
 import matplotlib.pyplot as plt
-imp = gbr.feature_importances_
+imp = gbr.feature_importances_          # gbr 来自上面拟合好的 GradientBoostingRegressor
+feature_names = [f'特征{i}' for i in range(len(imp))]   # diabetes 的列没有中文名，用编号代替
 plt.barh(range(len(imp)), imp)
 plt.yticks(range(len(imp)), feature_names)
 plt.show()

@@ -132,7 +132,8 @@ from matplotlib import font_manager
 
 for f in font_manager.fontManager.ttflist:      # 查看系统可用中文字体
     print(f.name)
-font_manager.fontManager.addfont('./你的字体.ttf')  # 临时加载额外字体文件
+# 想临时加载某个字体文件（换成你自己的路径，别照抄这个占位名）
+# font_manager.fontManager.addfont('./SimHei.ttf')
 ```
 
 局部指定字体：`plt.title("标题", fontdict={'fontname': 'SimHei'})`，或对单个文本对象用 `FontProperties`。
@@ -317,7 +318,7 @@ plt.yticks(range(0, 35, 5))                               # 0 到 35，步长 5
 坐标系对象的写法（子图场景更常用）：
 
 ```python
-ax.set_xticks(x)                    # 设置位置
+ax.set_xticks(x[:3])                 # 位置数和标签数必须一样多（这里只标前 3 个）
 ax.set_xticklabels(['周一', '周二', '周三'])  # 设置标签
 ```
 
@@ -406,6 +407,8 @@ import matplotlib.pyplot as plt
 
 plt.plot([1, 2, 3], [4, 5, 6])
 
+import pathlib
+pathlib.Path('./img').mkdir(exist_ok=True)   # 目录不存在会报 FileNotFoundError
 plt.savefig('./img/line1.png',     # 路径 + 文件名（支持 png/svg/jpeg/pdf）
             dpi=300,               # 清晰度（报告用 300，屏幕用 100-150）
             facecolor='white',     # 背景色（保存时默认透明背景可改）
