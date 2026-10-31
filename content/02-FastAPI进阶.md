@@ -572,6 +572,9 @@ class RegisterUserHandler:
 **③ 查询 + 处理器**（`queries/get_orders.py`）——读操作同样走"查询对象 → 处理器"：
 
 ```python
+from dataclasses import dataclass
+from typing import List, Optional
+
 @dataclass
 class GetOrdersQuery:
     """获取用户订单查询"""

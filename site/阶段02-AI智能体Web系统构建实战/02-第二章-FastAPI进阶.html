@@ -784,7 +784,10 @@ class RegisterUserHandler:
             username=saved_user.username,
         )</pre>
 <p><strong>③ 查询 + 处理器</strong>（<code>queries/get_orders.py</code>）——读操作同样走"查询对象 → 处理器"：</p>
-<pre>@dataclass
+<pre>from dataclasses import dataclass
+from typing import List, Optional
+
+@dataclass
 class GetOrdersQuery:
     &quot;&quot;&quot;获取用户订单查询&quot;&quot;&quot;
     user_id: int

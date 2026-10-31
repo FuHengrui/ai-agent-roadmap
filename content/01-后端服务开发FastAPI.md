@@ -164,9 +164,14 @@ async def create_item(item: Item):
 @@trap 路由定义的先后就是匹配顺序
 同路径下多个路由，**先定义的先匹配**。想用 `/users/me` 表示"当前用户"，又用 `/users/{id}` 查具体用户，**必须把 `me` 写前面**，否则 `users/me` 会被当成 `id=me` 去解析（然后类型校验失败）。
 ```python
-# 正确顺序：
-@app.get("/users/me")      # 先：特殊性优先
-@app.get("/users/{id}")    # 后：通配兜底
+# 正确顺序：特殊路径先注册，通配兜底后注册
+@app.get("/users/me")        # 先
+def get_me():
+    return {"user": "current"}
+
+@app.get("/users/{id}")      # 后：通配兜底
+def get_user(id: int):
+    return {"id": id}
 ```
 
 @@point ④ 参数验证：Query / Path / Field
@@ -476,6 +481,8 @@ class User(Model):
 | 迁移文件冲突 | 多人同时改模型。和 git 里解决冲突一样：先 `history` 看基线，再合并迁移 |
 
 @@point ⑨ Tortoise 的 CRUD：增删改查怎么写
+
+> **注意**：下面这些 `await` 语句都要写在 **`async def` 函数体内**（比如某个接口函数里）。直接粘进普通 `.py` 文件顶层会报 `SyntaxError: 'await' outside function`。
 @@need 要解决什么
 模型定义好了，接下来是**每天写最多的四类操作**：加一行、查几行、改一行、删一行。Tortoise 的 API 是异步的（`await` 前缀），和 FastAPI 的 async 天生一对。
 @@idea 核心思路

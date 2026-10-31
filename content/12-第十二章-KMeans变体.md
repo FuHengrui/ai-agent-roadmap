@@ -59,8 +59,19 @@
 效果：初始中心天然分散，收敛更快、更稳，**大幅降低落到局部最优的概率**。实现成本极低（几乎免费），所以 sklearn 的 `KMeans(n_init='auto')` 是 sklearn ≥1.4 的默认（用 k-means++ 时只跑 1 次）；示例里的 `n_init=10` 不是默认值，是显式重启 10 次。
 
 ```python
+import numpy as np
 from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# 后面所有示例都用这份数据，先造出来（三团高斯，分得很开）
+np.random.seed(1)
+X = np.vstack([np.random.randn(80, 2),
+               np.random.randn(40, 2) + [6, 0],
+               np.random.randn(40, 2) + [0, 6]])
+X = StandardScaler().fit_transform(X)
+
 km = KMeans(n_clusters=3, init='k-means++', n_init=10, random_state=42)
+km.fit(X)
 ```
 `init` 参数：`'k-means++'`（默认）或 `'random'`（完全随机，用于对照实验）。
 
@@ -105,6 +116,8 @@ KMeans 迭代只保证"局部最优"。有没有办法逼近全局最优？—�
 
 流程差异只有一步：第 3 步"更新中心"从"取平均"改为"在簇内选距离和最小的样本"。
 ```python
+# 注意：sklearn-extra 已基本停更，新版 Python 上常常装不上（见本章陷阱表）。
+# 装不上就跳过这块，或手写 PAM（十行左右）；官方替代是 sklearn.cluster 里的 KMeans/BisectingKMeans。
 from sklearn_extra.cluster import KMedoids   # 需要 sklearn-extra 包
 kmd = KMedoids(n_clusters=3, metric='euclidean', random_state=42)
 kmd.fit(X)
@@ -194,17 +207,7 @@ mbk.fit(X)
 
 @@idea 核心思路
 ```python
-import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
-
-np.random.seed(1)
-# 三团高斯数据（注意：它们分得很开，单次初始化往往都能收敛到最优）
-X = np.vstack([np.random.randn(80, 2),
-               np.random.randn(40, 2) + [6, 0],
-               np.random.randn(40, 2) + [0, 6]])
-X = StandardScaler().fit_transform(X)
+# X 用第一节构造的那份（三团高斯、已标准化），这里不再重复造
 
 # 关键：**只看一个 seed 看不出差别**（实测 seed=0 时两者 SSE 完全相同）。
 # 要比初始化策略，得扫一批 seed，看差值的分布。

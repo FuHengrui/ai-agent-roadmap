@@ -397,12 +397,12 @@ print(words)
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>jieba 内置词典不全覆盖垂直领域，通过 <code>load_userdict()</code> 加载自定义词典，<strong>强制保留指定词</strong>、指定词性和词频：</p>
-<pre>import jieba
+<pre>import jieba, pathlib
 
-jieba.load_userdict(&quot;my_dict.txt&quot;)
-# my_dict.txt 每行格式：词 词频 词性
-# 自然语言处理 100 n
-# 大模型 100 n
+# 先建一个小词典（真实项目里这是你自己维护的词表，一行一个词）
+pathlib.Path(&quot;my_dict.txt&quot;).write_text(
+    &quot;自然语言处理 100 n\n大模型 100 n\n&quot;, encoding=&quot;utf-8&quot;)
+jieba.load_userdict(&quot;my_dict.txt&quot;)   # 每行格式：词 词频 词性
 
 text = &quot;我们研究自然语言处理与大模型&quot;
 print(jieba.lcut(text))

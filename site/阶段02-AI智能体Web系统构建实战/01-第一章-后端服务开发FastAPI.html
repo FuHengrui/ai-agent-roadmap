@@ -403,9 +403,14 @@ async def create_item(item: Item):
 </div>
 <div class="step trap"><span class="label">路由定义的先后就是匹配顺序</span>
 <p>同路径下多个路由，<strong>先定义的先匹配</strong>。想用 <code>/users/me</code> 表示"当前用户"，又用 <code>/users/{id}</code> 查具体用户，<strong>必须把 <code>me</code> 写前面</strong>，否则 <code>users/me</code> 会被当成 <code>id=me</code> 去解析（然后类型校验失败）。</p>
-<pre># 正确顺序：
-@app.get(&quot;/users/me&quot;)      # 先：特殊性优先
-@app.get(&quot;/users/{id}&quot;)    # 后：通配兜底</pre>
+<pre># 正确顺序：特殊路径先注册，通配兜底后注册
+@app.get(&quot;/users/me&quot;)        # 先
+def get_me():
+    return {&quot;user&quot;: &quot;current&quot;}
+
+@app.get(&quot;/users/{id}&quot;)      # 后：通配兜底
+def get_user(id: int):
+    return {&quot;id&quot;: id}</pre>
 </div>
 </div></div>
 <div class="point" id="p4"><div class="head"><span class="no">4</span>④ 参数验证：Query / Path / Field</div><div class="body">

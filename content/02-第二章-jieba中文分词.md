@@ -132,12 +132,12 @@ print(words)
 jieba 内置词典不全覆盖垂直领域，通过 `load_userdict()` 加载自定义词典，**强制保留指定词**、指定词性和词频：
 
 ```python
-import jieba
+import jieba, pathlib
 
-jieba.load_userdict("my_dict.txt")
-# my_dict.txt 每行格式：词 词频 词性
-# 自然语言处理 100 n
-# 大模型 100 n
+# 先建一个小词典（真实项目里这是你自己维护的词表，一行一个词）
+pathlib.Path("my_dict.txt").write_text(
+    "自然语言处理 100 n\n大模型 100 n\n", encoding="utf-8")
+jieba.load_userdict("my_dict.txt")   # 每行格式：词 词频 词性
 
 text = "我们研究自然语言处理与大模型"
 print(jieba.lcut(text))
