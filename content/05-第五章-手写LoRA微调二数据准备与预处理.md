@@ -100,13 +100,22 @@ def preprocess_function(examples):
     responses = examples["response"]
     # 构造模型输入提示："指令: xxx\n回应:"
     prompt = [f"指令: {instruction}\n回应:" for instruction in instructions]
-    # 分别编码：输入侧截断到 512
+    # 关键：prompt 和 response 必须拼成一条，一次性编码。
+    # 若分开编码再当 labels（旧写法），response 根本不在输入里，labels 只是"长度凑巧相同"，
+    # 逐位错位 → 训练等价于学噪声。
+    full = [p + r for p, r in zip(prompt, responses)]
     model_inputs = tokenizer(
-        prompt, max_length=512, truncation=True, padding="max_length")
-    labels = tokenizer(
-        responses, max_length=512, truncation=True, padding="max_length")
-    # 把回应 token 作为标签
-    model_inputs["labels"] = labels["input_ids"]
+        full, max_length=512, truncation=True, padding="max_length")
+    # labels 复制 input_ids，再把「回应:」之前的部分和 padding 位置置 -100（不参与 loss）
+    labels = [list(ids) for ids in model_inputs["input_ids"]]
+    for i, p in enumerate(prompt):
+        prompt_len = len(tokenizer(p, add_special_tokens=False)["input_ids"])
+        for j in range(min(prompt_len, len(labels[i]))):
+            labels[i][j] = -100
+        for j, tok in enumerate(model_inputs["input_ids"][i]):
+            if tok == tokenizer.pad_token_id:
+                labels[i][j] = -100
+    model_inputs["labels"] = labels
     return model_inputs
 
 # 批量处理训练集 / 验证集
@@ -128,7 +137,7 @@ eval_dataset = eval_dataset_raw.map(
 |---|---|
 | 直接传汉字给模型 `model.generate("你好")` | 必须走 tokenizer：`tokenizer("你好", return_tensors="pt").to(device)`；不编码模型根本不知道你在说什么 |
 | truncation 忘了写，长样本全模型一次性塞爆 | 不截断 → 输入超出模型上下文会自动报错或内存爆炸。**max_length + truncation=True 成对出现** |
-| padding 方式理解错 | `padding="max_length"` 是"本 batch 最长对齐"，不是固定 512；还可 `padding=True`（动态）。理解差异，别混用 |
+| padding 方式理解错 | `padding="max_length"` 是**补齐到固定 512**（每条都补满，不看 batch）；`padding=True` 或 `"longest"` 才是"本 batch 最长对齐"（动态、省显存）。两者别混 |
 
 @@point ④ labels 之谜：为什么"回应"当标签，指令不当
 @@need 要解决什么

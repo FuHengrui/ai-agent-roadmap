@@ -451,7 +451,7 @@ config.js: 忽略当前路径的 config.js 文件
 <p>自己写规则费劲，网上有没有现成的"神级提示词"库可以直接抄？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>有一个值得推荐的提示词资源站：<strong>CursorRulesCN</strong>（神级提示词网站）：https://www.cursorrulescn.cn/</p>
+<p><strong>关于规则资源站</strong>：网上流传的「CursorRulesCN」一类聚合站大多已失效（本站实测打不开/跳推广页），别照抄老教程里的链接；要现成规则，直接用官方文档里的示例，或自己写 <code>.cursor/rules/*.mdc</code>。（神级提示词网站）：https://www.cursorrulescn.cn/</p>
 <p>该站收集了大量针对不同技术栈（React、Vue、Node、Python 等）的优质规则提示词，可以：</p>
 <ul><li><strong>直接参考</strong>：找到匹配你技术栈的规则模板，改改就能用；</li><li><strong>学习写法</strong>：看别人怎么把"角色+规范+约束"组织成清晰结构；</li><li><strong>覆盖常见组合</strong>：Chakra UI、Tailwind、Next.js 等热门组合都有现成配方。</li></ul>
 <p>注意它虽然叫 CursorRules，规则写法在 Trae、Cursor 等 AI 编程工具间是通用的（都是给 AI 立规矩）。</p>
@@ -506,7 +506,7 @@ config.js: 忽略当前路径的 config.js 文件
 <p>基于实际应用场景的模型能力参考：</p>
 <table>
 <tr><th>名次</th><th>模型</th><th>上下文能力</th><th>适合场景</th></tr>
-<tr><td>🏆</td><td>Gemini 2.5 Pro</td><td>200 万 token</td><td>处理整部小说/技术文档、分析多个竞品完整产品文档、大型数据集综合分析</td></tr>
+<tr><td>🏆</td><td>Gemini 2.5 Pro</td><td>100 万 token（1,048,576）</td><td>处理整部小说/技术文档、分析多个竞品完整产品文档、大型数据集综合分析</td></tr>
 <tr><td>🥈</td><td>GPT-4.1</td><td>100 万 token</td><td>分析完整代码库、长篇研究报告、多轮复杂对话保持上下文</td></tr>
 <tr><td>🥉</td><td>Claude 4</td><td>20 万 token</td><td>单个大型文档分析、复杂代码项目理解、深度技术文档生成</td></tr>
 </table>
@@ -515,7 +515,7 @@ config.js: 忽略当前路径的 config.js 文件
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>迷信 200 万 token 就一直用</td><td>token 大有代价（更贵/更慢）；小任务用轻量模型更快更省</td></tr>
+<tr><td>迷信「上下文窗口大」就一直用</td><td>token 大有代价（更贵/更慢）；小任务用轻量模型更快更省</td></tr>
 <tr><td>忽略场景匹配</td><td>排行榜是"参考"不是"军规"；写个小脚本用大模型纯属浪费</td></tr>
 <tr><td>上下文数字记混</td><td>复习表内三个梯度：Gemini 200 万、GPT-4.1 100 万、Claude 4 20 万</td></tr>
 </table>
