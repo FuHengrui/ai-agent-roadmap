@@ -59,7 +59,7 @@ print(float_tensor.dtype)   # torch.float32
 | `tensor.type_as(other)` | `t.type_as(ref)` | 把类型改成与另一张量一致 |
 
 ```python
-f = torch.tensor([1.0, 2.0, 3.0])     # float32
+f = torch.tensor([1.7, 2.3, 3.9])     # float32，故意的带小数——整数演示看不出截断
 i = f.to(torch.int32)                 # → int32（小数被截断）
 d = i.type(torch.double)              # → float64
 back = d.type_as(i)                   # → 跟随 i 变回 int32
@@ -119,10 +119,10 @@ back = d.type_as(i)                   # → 跟随 i 变回 int32
 张量怎么变成 NumPy 数组？转换后两边是独立的吗？
 
 @@idea 核心思路
-**`tensor.numpy()`** 一行搞定，但两个前提要注意：
+**`tensor.numpy()`** 一行搞定，但**三个**前提要注意：
 1. **张量必须在 CPU 上**：GPU 上的张量先 `.cpu()` 再转。
-2. **共享内存**：转换后的 NumPy 数组与原张量**共享底层内存，改一个另一个同步变**；不想共享就 `.numpy().copy()`。
-
+2. **不能带梯度**：`requires_grad=True` 时要先 `.detach()`，否则报 `Can't call numpy() on Tensor that requires grad`——所以完整写法是 `t.detach().cpu().numpy()`。
+3. **共享内存**：转换后的 NumPy 数组与原张量**共享底层内存，改一个另一个同步变**；不想共享就 `.numpy().copy()`。
 ```python
 tensor_cpu = tensor.cpu()               # GPU 先回 CPU
 numpy_array = tensor_cpu.numpy().copy() # 拷贝隔离，互不影响
@@ -177,7 +177,7 @@ import cv2  # NumPy 生态的图像库
 img = cv2.imread('photo.jpg')            # 得到 NumPy 数组
 tensor = torch.from_numpy(img).to(device)  # 转张量进模型
 result = model(tensor)                    # 模型推理
-result_np = result.cpu().numpy()          # 结果回 NumPy 可视化
+result_np = result.detach().cpu().numpy()          # 结果回 NumPy 可视化
 ```
 
 **套路固定**：读入（NumPy）→ 入模（张量+GPU）→ 出模（回 CPU/NumPy），中间靠 .to/.cpu()/.numpy()/from_numpy 衔接。

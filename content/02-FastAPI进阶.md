@@ -80,7 +80,7 @@ async def check_user_permission(token: str = Header(...)):
 @app.get("/users/")
 async def get_users(user: dict = Depends(check_user_permission)):
     # 能走到这 = 已通过权限校验，路由里再也不用写权限判断
-    return {"users": [...], "current_user": user}
+    return {"users": ["admin", "user1"], "current_user": user}   # 别写 [...]，省略号不是数据、无法 JSON 序列化
 ```
 
 **"装饰器能做的事，Depends 也能做但更干净"**：`Depends` 把校验结果**作为参数传进函数**，而不是像中间件那样笼统拦截——路由能直接拿到"是谁在调用"。

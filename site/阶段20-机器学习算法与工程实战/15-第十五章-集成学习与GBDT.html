@@ -452,7 +452,7 @@ gbr.fit(X_train, y_train)</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>GBDT 树的深度拉到 10+</td><td>深树+串行 = 狂过拟合；<strong>默认 3 起步</strong>，浅树多位接力才显功力</td></tr>
-<tr><td>分类/回归类搞混</td><td>GradientBoosting<strong>Classifier</strong> vs <strong>Regressor</strong> 字段独立；别把回归评估(accuracy)用到回归上</td></tr>
+<tr><td>分类/回归类搞混</td><td>GradientBoosting<strong>Classifier</strong> vs <strong>Regressor</strong> 字段独立；别把分类评估（accuracy）用到回归任务上</td></tr>
 <tr><td>学了 GBDT 就忘 sklearn 的相对慢</td><td>大数据换 XGBoost/LightGBM；概念已在手，换库是 API 迁移不是重学</td></tr>
 </table>
 </div>
@@ -508,7 +508,7 @@ plt.show()</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>只看重要性不看方向</td><td>重要性只有"量级"没有正负（树不输出方向）；要"正负影响"请回看线性模型的 coef_</td></tr>
-<tr><td>把重要性当全局真理</td><td>单次划分的噪声也会进重要性；多跑几次/用足球证据交叉验证才稳</td></tr>
+<tr><td>把重要性当全局真理</td><td>单次划分的噪声也会进重要性；多跑几次、用交叉验证或置换重要性复核才稳</td></tr>
 </table>
 </div>
 </div></div>
