@@ -358,7 +358,7 @@ uv run uvicorn src.api.main:app --reload</pre>
 DASHSCOPE_API_KEY=sk-xxxx            # 通义千问（这里必须写你自己的）
 ZHIPU_API_KEY=xxxx.xxxx              # 智谱 GLM（也必须是你自己的）
 LLM_PROVIDER=zhipu                   # 默认用哪家</pre>
-<p>代码里一律用 <code>os.getenv()</code> 读，绝不硬编码：</p>
+<p>代码里一律从环境变量读，绝不硬编码。<strong>必填项用 <code>os.environ["KEY"]</code></strong>（没配就 KeyError，报错在启动时而不是运行到一半）；<strong>可选配置才用 <code>os.getenv("KEY", 默认值)</code></strong>（没配返回 None/默认值，静默降级）：</p>
 <pre>import os
 from dotenv import load_dotenv
 
@@ -506,13 +506,13 @@ def parse_document(file_path: str) -&gt; str:
 </div></div>
 <h2>本章小结</h2>
 <p>这一章你搭好了工程的骨架，也攻下了入库的第一关：</p>
-<ul><li>目录按"能力"分包，一个改动只动一个包</li><li>uv 一条命令还原全部依赖，告别"手动装环境"</li><li>密钥只进 <code>.env</code>，代码一律 <code>os.getenv()</code>，示例 Key 全部替换为占位符</li><li>理解了 <code>BaseParser</code> 抽象——一种格式一个实现、一个接口统一对外</li><li>能说清四种格式各自的解析方案：PDF 用 Docling（版面、表格都能还原；扫描件要开 OCR）、Word 用 python-docx、MD/HTML 剥标记</li><li>知道了跨页表格必须合并、解析器用注册表工厂一行接入新格式</li></ul>
+<ul><li>目录按"能力"分包，一个改动只动一个包</li><li>uv 一条命令还原全部依赖，告别"手动装环境"</li><li>密钥只进 <code>.env</code>，代码从环境变量读（必填项用 <code>os.environ["KEY"]</code>，可选配置才 <code>os.getenv(k, 默认)</code>），示例 Key 全部替换为占位符</li><li>理解了 <code>BaseParser</code> 抽象——一种格式一个实现、一个接口统一对外</li><li>能说清四种格式各自的解析方案：PDF 用 Docling（版面、表格都能还原；扫描件要开 OCR）、Word 用 python-docx、MD/HTML 剥标记</li><li>知道了跨页表格必须合并、解析器用注册表工厂一行接入新格式</li></ul>
 <p>但是——<strong>解析出来的文本还很"脏"</strong>：页眉页脚、页码、空行、乱空白都混在里面。下一章把这些文本清洗成规整的小块。</p>
 <h4>自测：能不能答上来</h4>
 <ol><li>项目为什么按"能力"而不是按"文件类型"组织目录？</li></ol>
 <p>A. 看起来整齐　　B. 功能内聚，改动只动一个包，加/换能力不影响其它层　　C. Python 要求　　D. 方便找文件</p>
 <ol><li>关于 API Key 的正确做法是？</li></ol>
-<p>A. 写进代码常量，方便　　B. 放进 .env，代码用 os.getenv() 读取，.env 不进 git　　C. 写在 README 里　　D. 用示例里的 Key 就行</p>
+<p>A. 写进代码常量，方便　　B. 放进 .env，代码从环境变量读取，.env 不进 git　　C. 写在 README 里　　D. 用示例里的 Key 就行</p>
 <ol><li>项目选 Docling 而不选 PyMuPDF 的原因是？</li></ol>
 <p>A. Docling 更快　　B. 复杂版面/表格/扫描件的结构化解析能力强　　C. PyMuPDF 收费　　D. 只是个人偏好</p>
 <ol><li>跨页表格不合并直接入库会导致？</li></ol>

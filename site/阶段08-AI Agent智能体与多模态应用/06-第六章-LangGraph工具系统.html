@@ -482,7 +482,7 @@ def query_database(sql: str) -&gt; str:
 <p>好处：错误不抛出，Agent 流程继续；问题：错误包装后模型可能"自作聪明"。</p>
 <p><strong>策略 2：ToolNode 自动捕获（第二道防线）</strong></p>
 <pre>ToolNode(tools, handle_tool_errors=True)   # 工具抛异常时自动包装为 ToolMessage</pre>
-<p>好处：统一兜底；注意：<strong>create_agent 内部的 ToolNode create_agent 没有 handle_tool_errors 这个参数；异常要走 @wrap_tool_call middleware 兜（ToolNode 的 handle_tool_errors 默认就是 True）</strong>，要显式配置或靠策略 1/3。</p>
+<p>好处：统一兜底。注意两点：<strong>① <code>ToolNode</code> 的 <code>handle_tool_errors</code> 默认就是 <code>True</code></strong>（异常会被自动包成 ToolMessage），上面写 <code>=True</code> 只是把它显式化；<strong>② <code>create_agent</code> 没有这个参数</strong>，它的兜底由内置 ToolNode/中间件完成，想自定义就走 <code>@wrap_tool_call</code> 中间件。</p>
 <p><strong>策略 3：Agent 自行决策（最终防线）</strong> 错误信息作为 ToolMessage 返回给 Agent，Agent 根据错误内容自行回复用户、换参数重试或放弃。这是"智能"的体现。</p>
 <p><strong>生产环境组合用法</strong>：工具内部捕获业务逻辑（策略1）+ ToolNode 兜底意外异常（策略2）+ Agent 看到错误信息自主决策（策略3）——三层配合。<strong>工具内部捕获，返回友好错误 → 让 Agent 感知，Agent 不会崩溃。</strong></p>
 </div>
@@ -491,7 +491,7 @@ def query_database(sql: str) -&gt; str:
 <tr><th>现象</th><th>原因</th></tr>
 <tr><td>工具把原始 traceback 抛给模型</td><td>模型看不懂堆栈只会乱编，要包装成"工具名+原因+建议"</td></tr>
 <tr><td>业务错误也自动重试</td><td>余额不足重试只会再扣一次费；业务错误只能如实返回，让 Agent 上报</td></tr>
-<tr><td>以为 create_agent 默认兜底所有异常</td><td>其 ToolNode 默认 handle_tool_errors=False，要显式开或工具内部 try-except</td></tr>
+<tr><td>以为 create_agent 能把所有异常都兜住</td><td>它没有 <code>handle_tool_errors</code> 这个参数；要自定义兜底逻辑得用 <code>@wrap_tool_call</code> 中间件，或在工具内部 try/except 后返回说明。注意别和 <code>ToolNode(handle_tool_errors=...)</code>（默认 True）混为一谈</td></tr>
 </table>
 </div>
 </div></div>

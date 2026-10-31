@@ -239,7 +239,7 @@ def query_database(sql: str) -> str:
 ```python
 ToolNode(tools, handle_tool_errors=True)   # 工具抛异常时自动包装为 ToolMessage
 ```
-好处：统一兜底；注意：**create_agent 内部的 ToolNode create_agent 没有 handle_tool_errors 这个参数；异常要走 @wrap_tool_call middleware 兜（ToolNode 的 handle_tool_errors 默认就是 True）**，要显式配置或靠策略 1/3。
+好处：统一兜底。注意两点：**① `ToolNode` 的 `handle_tool_errors` 默认就是 `True`**（异常会被自动包成 ToolMessage），上面写 `=True` 只是把它显式化；**② `create_agent` 没有这个参数**，它的兜底由内置 ToolNode/中间件完成，想自定义就走 `@wrap_tool_call` 中间件。
 
 **策略 3：Agent 自行决策（最终防线）**
 错误信息作为 ToolMessage 返回给 Agent，Agent 根据错误内容自行回复用户、换参数重试或放弃。这是"智能"的体现。
@@ -251,7 +251,7 @@ ToolNode(tools, handle_tool_errors=True)   # 工具抛异常时自动包装为 T
 |---|---|
 | 工具把原始 traceback 抛给模型 | 模型看不懂堆栈只会乱编，要包装成"工具名+原因+建议" |
 | 业务错误也自动重试 | 余额不足重试只会再扣一次费；业务错误只能如实返回，让 Agent 上报 |
-| 以为 create_agent 默认兜底所有异常 | 其 ToolNode 默认 handle_tool_errors=False，要显式开或工具内部 try-except |
+| 以为 create_agent 能把所有异常都兜住 | 它没有 `handle_tool_errors` 这个参数；要自定义兜底逻辑得用 `@wrap_tool_call` 中间件，或在工具内部 try/except 后返回说明。注意别和 `ToolNode(handle_tool_errors=...)`（默认 True）混为一谈 |
 
 @@summary 这一章你学到了什么
 - 理解了工具三要素：名称、描述、参数——描述决定模型"何时用"，参数 Schema 决定"怎么填对"
