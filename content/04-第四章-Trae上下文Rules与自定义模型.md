@@ -106,10 +106,11 @@ Trae IDE **默认忽略 `.gitignore` 文件中罗列的文件**。除此之外�
 `.ignore` 文件示例（这是 Trae 自身配置，不是某个特定项目里的文件）：
 
 ```text
-/**foo: 忽略 /foo, a/foo, a/b/foo 等
-config.js: 忽略当前路径的 config.js 文件
-/mtk/: 忽略整个文件夹
-*.zip: 忽略所有 zip 文件
+# 一行一条规则，别把说明写在规则后面（会被当成模式的一部分）
+/**/foo
+config.js
+/mtk/
+*.zip
 /list
 ```
 

@@ -90,7 +90,7 @@ diff 输出里的符号含义：
 @@idea 核心思路
 
 ```bash
-git checkout -- aaa.txt   # 用仓库里的版本覆盖工作区，丢弃对 aaa.txt 的修改
+git checkout -- aaa.txt   # 用【暂存区】的版本覆盖工作区（没 add 过时，暂存区=上次提交）
 git checkout -- .         # 丢弃当前所有文件的未提交修改（危险，先确认）
 ```
 

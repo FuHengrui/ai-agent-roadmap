@@ -407,7 +407,7 @@ rm -rf dir           # 递归+强制：最狠的组合，慎用</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>删文件时它根本不问直接没了</td><td>默认就是不问，<code>-i</code> 才会逐个确认；养成本能加 -i</td></tr>
-<tr><td><code>rm -rf /var log</code>（少写了一个 <code>/</code>）变成删两个对象</td><td>空格是参数分隔符，<strong>少写分隔符/漏写一级目录</strong>才会多删；结尾多空格并不会多删。手别抖，先 <code>ls</code> 预览</td></tr>
+<tr><td><code>rm -rf /var log</code>（少写了一个 <code>/</code>）变成删两个对象</td><td><strong>多打空格</strong>就等于多一个参数（<code>/var log</code> 变成 <code>/var</code> 和 <code>log</code> 两个目标），漏写一级目录也会多删；结尾多几个空格反而无害。手别抖，先 <code>ls</code> 预览</td></tr>
 <tr><td>搜到"删不掉，加 -f"的帖子就无脑 -f</td><td>-f 是"不报错"，不是"恢复"；权限不够先看属主/chattr，别用 -f 掩盖问题</td></tr>
 <tr><td>rm -rf 一个正在使用的目录</td><td>进程还在读写，行为不可预期；先停进程再删</td></tr>
 </table>

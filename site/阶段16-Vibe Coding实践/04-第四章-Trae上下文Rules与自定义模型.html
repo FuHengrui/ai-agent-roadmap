@@ -373,10 +373,11 @@
 <p>Trae IDE <strong>默认忽略 <code>.gitignore</code> 文件中罗列的文件</strong>。除此之外，你可以<strong>自主设置 Trae 额外忽略的文件列表</strong>，作为 <code>.gitignore</code> 的补充。</p>
 <p>使用 <code>#Workspace</code> 或 <code>#Folder</code> 添加上下文时，<strong>被忽略的文件或文件夹将无法被作为上下文</strong>——这既保护隐私（比如 <code>.env</code> 密钥文件），也减少噪声（比如构建产物）。</p>
 <p><code>.ignore</code> 文件示例（这是 Trae 自身配置，不是某个特定项目里的文件）：</p>
-<pre>/**foo: 忽略 /foo, a/foo, a/b/foo 等
-config.js: 忽略当前路径的 config.js 文件
-/mtk/: 忽略整个文件夹
-*.zip: 忽略所有 zip 文件
+<pre># 一行一条规则，别把说明写在规则后面（会被当成模式的一部分）
+/**/foo
+config.js
+/mtk/
+*.zip
 /list</pre>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

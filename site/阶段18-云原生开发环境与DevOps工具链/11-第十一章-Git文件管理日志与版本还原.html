@@ -359,7 +359,7 @@ git diff --cached       # 暂存区 vs 版本库：你已经 add 了，这次提
 <p>改着改着发现思路全错，文件被改得面目全非，想<strong>把工作区恢复成和版本库一致的干净状态</strong>。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>git checkout -- aaa.txt   # 用仓库里的版本覆盖工作区，丢弃对 aaa.txt 的修改
+<pre>git checkout -- aaa.txt   # 用【暂存区】的版本覆盖工作区（没 add 过时，暂存区=上次提交）
 git checkout -- .         # 丢弃当前所有文件的未提交修改（危险，先确认）</pre>
 <p>这条命令<strong>只作用于工作区</strong>：把文件"拉回"未修改的状态。这里有个关键点：这些改动没有 add 过、也没有 commit 过，丢弃之后<strong>无法找回</strong>——用之前务必想清楚。</p>
 </div>

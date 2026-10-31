@@ -335,13 +335,13 @@
 <tr><td>-z</td><td>用 gzip 压缩（加不加决定是否 .gz）</td></tr>
 <tr><td>-f</td><td>file，后跟打包出来的文件名</td></tr>
 </table>
-<p>⚠️ <strong>-f 后面必须</strong>紧跟文件名<strong>，不能和其他选项堆成 <code>-zcfv</code>；位置本身不必在最后</strong>，这是 tar 最经典的语法约束，顺序反了必报错。</p>
+<p>⚠️ <strong><code>-f</code> 后面的那个词必须就是文件名</strong>——所以别写成 <code>-zcfv</code>（f 后面跟了 v，v 会被当成文件名）。但 <strong><code>-f</code> 本身不必放在选项串的最末尾</strong>：<code>tar -f app.tar -zcv</code> 也是合法的。记住一句话：<strong>文件名紧跟 -f，选项位置随意</strong>。</p>
 <p>变体：不压缩只打包 <code>tar -cvf app.tar /opt/app</code>（去掉 -z 就是只打包、不压缩）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>"tar: -zcfv: 不知名的选项"</td><td>选项顺序/组合写错；-f 一定要在最后且紧跟文件名</td></tr>
+<tr><td>"tar: -zcfv: 不知名的选项"</td><td>选项串写错：<code>-f</code> 后面那个词会被当成文件名，所以别把 v/z 堆在 f 后面；正确写法 <code>-zcvf 包名</code></td></tr>
 <tr><td>打包出来文件名叫 app.tar.gz 但其实是没压缩的</td><td>忘了 -z；没 -z 就不会压缩，名字带 .gz 是骗自己的</td></tr>
 <tr><td>打包整个系统（tar / 或 /etc）</td><td>会把正在变化/锁定的文件打乱，还可能打包出权限问题；要备份指向<strong>明确目录</strong></td></tr>
 </table>
@@ -562,7 +562,7 @@ ls /a &gt; all.log 2&gt;&amp;1          # 2&gt;&amp;1：错误也合并进 all.l
 <h2>本章小结</h2>
 <table>
 <tr><th>问题</th><th>答案</th></tr>
-<tr><td>打包压缩</td><td>tar -zcvf 打（-c）缩（-z）成 .tar.gz；-f 永远最后、紧跟文件名</td></tr>
+<tr><td>打包压缩</td><td>tar -zcvf 打（-c）缩（-z）成 .tar.gz；<strong>文件名紧跟 -f</strong>（<code>-f</code> 不必在选项末尾）</td></tr>
 <tr><td>解压</td><td>tar -zxvf；-C 指定位置；-t 先看内容再解</td></tr>
 <tr><td>单文件压缩</td><td>gzip（会删原文件）/ gunzip 还原</td></tr>
 <tr><td>搜内容 vs 搜名字</td><td>grep 搜内容（-i 忽略大小写、-v 反选、-r 递归）；find 搜名字/大小/时间/-exec</td></tr>
