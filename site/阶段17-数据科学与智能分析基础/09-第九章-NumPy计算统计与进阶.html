@@ -315,7 +315,7 @@ np.exp(a)      # e^1, e^2, e^3
 np.sqrt(a)     # 平方根
 np.sin(a)      # 三角</pre>
 <p>规律：<strong>几乎每个数学运算都有"运算符版"和"函数版"</strong>；numpy 运算对<strong>整块数组</strong>一次性完成，无需循环——这就是向量化。</p>
-<p>运算符优先级注意：<code>a + 1</code> 也是 ufunc 广播（见第 ⑨ 点），标量与数组自动对齐。</p>
+<p>运算符优先级注意：<code>a + 1</code> 也是 ufunc 广播（见第 ⑧ 点），标量与数组自动对齐。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -364,7 +364,7 @@ b = np.array([2, 4, 3])
 np.add(a, b)          # [12 12 9]
 np.subtract(a, b)     # [8 4 3]
 np.multiply(a, b)     # [20 32 18]
-np.divide(a, b)       # [5 2 2]
+np.divide(a, b)       # [5. 2. 2.] —— 总是返回 float（所以除 0 才能得到 inf/nan）
 np.power(a, 2)        # [100 64 36]：幂（平方）
 np.mod(a, 3)          # [1 2 0]：取余</pre>
 <p>除零注意：<strong>numpy 的 0 除不抛异常，出 inf/nan</strong>（<code>np.inf</code> 无穷、<code>np.nan</code> 非数）——这是数据分析里"脏数据"的一大来源，后面 Pandas 章节专门处理。</p>
