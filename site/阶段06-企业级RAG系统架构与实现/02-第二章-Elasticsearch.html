@@ -413,7 +413,7 @@ su elif
 vim config/elasticsearch.yml
 #   network.host: 0.0.0.0     # 允许远程访问
 #   cluster.name: mycluster
-在 config/jvm.options.d/ 下新建 heap.options，写 -Xms4g / -Xmx4g（别改根 jvm.options，升级会覆盖）
+在 config/jvm.options.d/ 下新建 heap.options，写 -Xms4g / -Xmx4g（别改根 config/jvm.options（升级会被覆盖），改动放 config/jvm.options.d/ 下的 .options 文件）
 #   -Xms4g -Xmx4g            # 内存不够会频繁 GC，见&quot;优化&quot;一节
 
 # 3. 启动
@@ -427,7 +427,7 @@ curl -k -u elastic https://localhost:9200   # 输初始密码；返回 JSON 且�
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>can not run elasticsearch as root</td><td>创建普通用户 <code>su</code> 切换后再启动</td></tr>
-<tr><td>内存不足 fatal error</td><td>ES 8 的堆大小是<strong>按节点角色 + 物理内存自动推算</strong>的（不是固定 1g）；要固定就在 <code>config/jvm.options.d/*.options</code> 里写 <code>-Xms4g</code> / <code>-Xmx4g</code>，机器小就把 jvm.options 改成 <code>-Xms512m -Xmx512m</code></td></tr>
+<tr><td>内存不足 fatal error</td><td>ES 8 的堆大小是<strong>按节点角色 + 物理内存自动推算</strong>的（不是固定 1g）；要固定就在 <code>config/jvm.options.d/*.options</code> 里写 <code>-Xms4g</code> / <code>-Xmx4g</code>（别改根 jvm.options，升级会被覆盖），机器小就写小一点，如 <code>-Xms512m -Xmx512m</code></td></tr>
 <tr><td>启动太慢 / 卡住</td><td>磁盘 IO 慢；先 <code>./bin/elasticsearch -d</code> 看 <code>/logs/elasticsearch.log</code></td></tr>
 <tr><td>忘记初始密码</td><td>用 <code>./bin/elasticsearch-reset-password -u elastic</code> 重设（<code>setup-passwords</code> 在 8.x 已废弃）</td></tr>
 </table>
@@ -612,16 +612,16 @@ GET /news/_analyze
       &quot;analyzer&quot;: {
         &quot;ik_pinyin_analyzer&quot;: {
           &quot;type&quot;: &quot;custom&quot;,
-          &quot;tokenizer&quot;: &quot;ik_max_word&quot;,        // 先按中文词典切
-          &quot;filter&quot;: [&quot;pinyin_filter&quot;]        // 再给每个词补上拼音
+          &quot;tokenizer&quot;: &quot;ik_max_word&quot;,
+          &quot;filter&quot;: [&quot;pinyin_filter&quot;]
         }
       },
       &quot;filter&quot;: {
         &quot;pinyin_filter&quot;: {
           &quot;type&quot;: &quot;pinyin&quot;,
-          &quot;keep_full_pinyin&quot;: true,          // 保留全拼 yanglao
-          &quot;keep_first_letter&quot;: true,         // 保留首字母 yl
-          &quot;keep_original&quot;: true              // 保留原文词 养老/保险
+          &quot;keep_full_pinyin&quot;: true,
+          &quot;keep_first_letter&quot;: true,
+          &quot;keep_original&quot;: true
         }
       }
     }

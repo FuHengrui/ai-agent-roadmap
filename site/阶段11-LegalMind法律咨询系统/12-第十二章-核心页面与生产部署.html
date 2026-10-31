@@ -487,7 +487,8 @@ function highlight(text) {
     texts = [f&quot;{c[&#x27;title&#x27;]}。{c[&#x27;summary&#x27;]}&quot; for c in CASES]
     vectors = await embedding_model.aembed_documents(texts)   # 异步版本以 a 开头
     # 注意：ORM 生成的是 UUID，CASES 字典里没有 id，得从 get_or_create 的返回值取
-    ids = [obj.id for obj in created]           # created 是上面 get_or_create 的结果列表
+    # get_or_create 返回 (instance, created) 元组，要取 instance；别直接 obj.id
+    ids = [obj.id for obj, _ in created]
     vector_store.add(ids=ids, embeddings=vectors, metadatas=CASES)
 
     print(f&quot;成功导入 {len(CASES)} 条案例&quot;)</pre>

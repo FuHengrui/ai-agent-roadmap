@@ -142,7 +142,7 @@ su elif
 vim config/elasticsearch.yml
 #   network.host: 0.0.0.0     # 允许远程访问
 #   cluster.name: mycluster
-在 config/jvm.options.d/ 下新建 heap.options，写 -Xms4g / -Xmx4g（别改根 jvm.options，升级会覆盖）
+在 config/jvm.options.d/ 下新建 heap.options，写 -Xms4g / -Xmx4g（别改根 config/jvm.options（升级会被覆盖），改动放 config/jvm.options.d/ 下的 .options 文件）
 #   -Xms4g -Xmx4g            # 内存不够会频繁 GC，见"优化"一节
 
 # 3. 启动
@@ -158,7 +158,7 @@ curl -k -u elastic https://localhost:9200   # 输初始密码；返回 JSON 且�
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | can not run elasticsearch as root | 创建普通用户 `su` 切换后再启动 |
-| 内存不足 fatal error | ES 8 的堆大小是**按节点角色 + 物理内存自动推算**的（不是固定 1g）；要固定就在 `config/jvm.options.d/*.options` 里写 `-Xms4g` / `-Xmx4g`，机器小就把 jvm.options 改成 `-Xms512m -Xmx512m` |
+| 内存不足 fatal error | ES 8 的堆大小是**按节点角色 + 物理内存自动推算**的（不是固定 1g）；要固定就在 `config/jvm.options.d/*.options` 里写 `-Xms4g` / `-Xmx4g`（别改根 jvm.options，升级会被覆盖），机器小就写小一点，如 `-Xms512m -Xmx512m` |
 | 启动太慢 / 卡住 | 磁盘 IO 慢；先 `./bin/elasticsearch -d` 看 `/logs/elasticsearch.log` |
 | 忘记初始密码 | 用 `./bin/elasticsearch-reset-password -u elastic` 重设（`setup-passwords` 在 8.x 已废弃） |
 
@@ -347,7 +347,7 @@ GET /news/_analyze
 IK 和拼音各管一段还不够：用户可能输入"养老"，也可能输入"ylbx"。**一个字段要同时支持中文关键词、拼音全称、拼音首字母三种匹配**——这需要一个把多个分词器叠起来的"自定义分析器"。
 
 @@idea 核心思路
-```json
+```jsonc
 PUT /news
 {
   "settings": {
@@ -355,16 +355,16 @@ PUT /news
       "analyzer": {
         "ik_pinyin_analyzer": {
           "type": "custom",
-          "tokenizer": "ik_max_word",        // 先按中文词典切
-          "filter": ["pinyin_filter"]        // 再给每个词补上拼音
+          "tokenizer": "ik_max_word",
+          "filter": ["pinyin_filter"]
         }
       },
       "filter": {
         "pinyin_filter": {
           "type": "pinyin",
-          "keep_full_pinyin": true,          // 保留全拼 yanglao
-          "keep_first_letter": true,         // 保留首字母 yl
-          "keep_original": true              // 保留原文词 养老/保险
+          "keep_full_pinyin": true,
+          "keep_first_letter": true,
+          "keep_original": true
         }
       }
     }
