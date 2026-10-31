@@ -334,8 +334,13 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>流程（以代码句法看）：</p>
-<pre>from sklearn.cluster import DBSCAN
+<pre># 全章共用这份数据：两个交错的月牙（DBSCAN 的主场）
+from sklearn.datasets import make_moons
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN
+
+X, _ = make_moons(n_samples=300, noise=0.06, random_state=42)
+X = StandardScaler().fit_transform(X)   # 标准化后再算距离
 
 X_scaled = StandardScaler().fit_transform(X)
 db = DBSCAN(eps=0.5, min_samples=5).fit(X_scaled)
@@ -451,13 +456,8 @@ ms.labels_</pre>
 <p>"密度聚能聚任意形状"不能只靠嘴说。拿经典<strong>月牙（two moons）</strong>数据跑对比实验，一眼见分晓。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>from sklearn.datasets import make_moons
-from sklearn.cluster import KMeans, DBSCAN
-from sklearn.preprocessing import StandardScaler
+<pre>from sklearn.cluster import KMeans, DBSCAN   # X 已在章首造好
 import matplotlib.pyplot as plt
-
-X, _ = make_moons(n_samples=300, noise=0.06, random_state=42)
-X = StandardScaler().fit_transform(X)
 
 km = KMeans(n_clusters=2, n_init=10, random_state=42).fit(X)
 db = DBSCAN(eps=0.3, min_samples=5).fit(X)   # eps 可从 k-距离图定

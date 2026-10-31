@@ -317,7 +317,13 @@
 <pre>Ridge 目标 = MSE + α·Σ w_j²</pre>
 <ul><li><strong>α（alpha）就是上一章的 λ</strong>，惩罚强度；默认 alpha=1.0，常见从 1e-3~10 调。</li><li>效果：权重整体被压小、稳定、抗过拟合；所有特征都保留（不砍到 0）。</li><li>自带正则化的"副作用福利"：特征间高度相关（多重共线性）时，Ridge 的 λI 项让求解稳定，系数不会剧烈跳动。</li></ul>
 <p>使用（保险实战的配方）：</p>
-<pre>from sklearn.linear_model import Ridge
+<pre># 本章示例数据（diabetes，442 行）：承前文的读者可跳过这段
+from sklearn.datasets import load_diabetes
+from sklearn.model_selection import train_test_split
+X_all, y_all = load_diabetes(return_X_y=True)
+x_train, x_test, y_train, y_test = train_test_split(X_all, y_all, test_size=0.3, random_state=42)
+x_train_s, x_test_s = x_train, x_test   # 有的地方叫 _s 版本，别名指过去
+from sklearn.linear_model import Ridge
 reg = Ridge(alpha=10.0)
 reg.fit(x_train, y_train)</pre>
 <p><strong>Ridge 是"无脑先试"的默认模型之一</strong>：不出彩但永远稳定，适合当基准。</p>
@@ -420,7 +426,7 @@ sgd.fit(x_train, y_train)</pre>
 <pre>from sklearn.preprocessing import PolynomialFeatures
 
 poly = PolynomialFeatures(degree=2, include_bias=False)
-x_poly = poly.fit_transform(x)   # 把 [x1, x2] 变成 [x1, x2, x1², x1·x2, x2²]</pre>
+x_poly = poly.fit_transform(x_train)   # 这里的 x_train 就是章首那份 diabetes 训练集</pre>
 <ul><li><code>degree=2</code>：生成所有 1~2 阶的幂次与交叉项。</li><li><code>include_bias=False</code>：<strong>不生成常数 1 列</strong>。因为后面模型自带截距（LinearRegression 的 fit_intercept=True）；若 include_bias=True 再配 fit_intercept=True，两列常数会撞车（冗余多重共线性）。</li><li>特征数爆炸提醒：n 个特征、degree=d，特征数约 C(n+d, d)。<strong>10 个特征 degree=3 就上百维</strong>——升维要克制。</li></ul>
 <p>使用纪律：<strong>先切分（train/test），再对训练集 fit_transform、测试集只 transform</strong>——poly 也是"看图学习"的预处理，参数（各阶组合规则）来自训练集。</p>
 </div>
