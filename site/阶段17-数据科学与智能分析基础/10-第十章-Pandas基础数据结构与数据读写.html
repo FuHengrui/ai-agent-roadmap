@@ -457,6 +457,7 @@ print(df)
 <pre>import pandas as pd
 
 # 读取
+# 下面几行都要有文件才能跑：先准备 data.xlsx / data.csv（或用上一节写出的文件）
 df = pd.read_excel(&#x27;data.xlsx&#x27;)                 # 默认第一个 sheet
 df = pd.read_excel(&#x27;data.xlsx&#x27;, sheet_name=&#x27;2月&#x27;)  # 指定 sheet
 df = pd.read_excel(&#x27;data.xlsx&#x27;, header=None)    # 无表头时

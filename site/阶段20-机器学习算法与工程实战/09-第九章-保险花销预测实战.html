@@ -321,7 +321,8 @@ data.head(n=6)          # 默认显示前 5 行，传参可看更多</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>import matplotlib.pyplot as plt
-%matplotlib inline          # Jupyter 内嵌显示（脚本环境用 plt.show()）
+# 下一行是 Jupyter 魔法命令（在 .py 里会报 SyntaxError）：Notebook 内嵌显示用
+%matplotlib inline
 plt.hist(data[&#x27;charges&#x27;])</pre>
 <p>观察：绝大多数人花销集中在低区（几千块），少数重症花销极高（几万块），尾巴拖向右边——<strong>右偏（长尾）分布</strong>。</p>
 <p>为什么必须关注：<strong>线性回归的假设是误差服从正态分布</strong>（回溯第二章！）。y 本身右偏，直接建模会让大值样本主导损失、残差严重偏离正态，模型被少数重症样本带偏。</p>

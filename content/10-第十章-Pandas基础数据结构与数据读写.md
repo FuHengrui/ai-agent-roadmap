@@ -214,6 +214,7 @@ print(df)
 import pandas as pd
 
 # 读取
+# 下面几行都要有文件才能跑：先准备 data.xlsx / data.csv（或用上一节写出的文件）
 df = pd.read_excel('data.xlsx')                 # 默认第一个 sheet
 df = pd.read_excel('data.xlsx', sheet_name='2月')  # 指定 sheet
 df = pd.read_excel('data.xlsx', header=None)    # 无表头时

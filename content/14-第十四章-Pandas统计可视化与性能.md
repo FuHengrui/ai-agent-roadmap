@@ -272,7 +272,8 @@ import numpy as np
 df = pd.DataFrame({'a': np.random.randn(1_000_000),
                    'b': np.random.randn(1_000_000)})
 
-# 计时手段：
+# 计时手段（下面两行是 Jupyter 魔法命令：**放进 .py 文件会报 SyntaxError**，
+# 脚本里请改用 time.perf_counter() 包住调用）
 %timeit df['a'].mean()          # Jupyter 魔法：多次计时取均值
 %time df['a'].mean()            # 单次计时
 ```
