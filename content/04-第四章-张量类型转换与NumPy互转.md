@@ -33,6 +33,7 @@
 | torch.bool | 布尔 |
 
 ```python
+import torch
 float_tensor = torch.tensor([1.0, 2.0, 3.0])
 print(float_tensor.dtype)   # torch.float32
 ```

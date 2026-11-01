@@ -382,7 +382,8 @@ h_t = (1 - z_t) * h_{t-1} + z_t * h_cand  # 旧新加权</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p>结构分三层看：</p>
 <ol><li><strong>前向 RNN（forward）</strong>：按 t=1→T 处理，得 <code>h_t→</code>。</li><li><strong>后向 RNN（backward）</strong>：按 t=T→1 处理，得 <code>h_t←</code>。</li><li><strong>拼接</strong>：每个位置 <code>h_t = concat(h_t→, h_t←)</code>，维度翻倍（hidden*2）。</li></ol>
-<pre>import torch.nn as nn
+<pre># 片段：这段是模型类内部的两行，embed_dim/hidden_dim/vocab_size 是类的参数
+import torch.nn as nn
 
 rnn = nn.LSTM(
     input_size=64,

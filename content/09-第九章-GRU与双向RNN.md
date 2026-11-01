@@ -123,6 +123,7 @@ h_t = [h_t^forward ; h_t^backward]
 3. **拼接**：每个位置 `h_t = concat(h_t→, h_t←)`，维度翻倍（hidden*2）。
 
 ```python
+# 片段：这段是模型类内部的两行，embed_dim/hidden_dim/vocab_size 是类的参数
 import torch.nn as nn
 
 rnn = nn.LSTM(

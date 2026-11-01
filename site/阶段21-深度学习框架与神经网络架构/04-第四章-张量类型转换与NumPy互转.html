@@ -309,7 +309,8 @@
 <tr><td>torch.uint8</td><td>8 位<strong>无符号</strong>整数（0~255，图像常用）</td></tr>
 <tr><td>torch.bool</td><td>布尔</td></tr>
 </table>
-<pre>float_tensor = torch.tensor([1.0, 2.0, 3.0])
+<pre>import torch
+float_tensor = torch.tensor([1.0, 2.0, 3.0])
 print(float_tensor.dtype)   # torch.float32</pre>
 <p><strong>排查"dtype 不匹配"报错的第一步永远是打印 .dtype。</strong></p>
 </div>

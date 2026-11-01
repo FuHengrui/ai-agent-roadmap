@@ -297,7 +297,8 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>把张量想成"多维表格"，索引就是确定"第几行第几列"：</p>
-<pre>t = torch.tensor([[1, 2, 3],
+<pre>import torch
+t = torch.tensor([[1, 2, 3],
                   [4, 5, 6],
                   [7, 8, 9]])
 print(t[0, 0])   # 1：第 0 行第 0 列

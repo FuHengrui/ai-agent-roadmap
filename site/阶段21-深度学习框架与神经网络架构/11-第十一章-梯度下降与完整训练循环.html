@@ -322,7 +322,8 @@ param = param - lr * gradient_of_loss(param)</pre>
 <p>每个训练步<strong>两个半场</strong>，缺一不可：</p>
 <p><strong>前向传播（Forward）</strong>：数据从输入流到输出，算出预测 → 再由损失函数算出 loss。</p>
 <p><strong>反向传播（Backward）</strong>：从 loss 出发，利用链式法则逐层回传梯度，最终每个参数都拿到自己的 ∂L/∂参数，存进 .grad。</p>
-<pre># 半场示意
+<pre># 片段：param/lr/gradient_of_loss 是示意变量，承接上一节的手推过程
+# 半场示意
 pred = model(x)              # 前向：预测
 loss = loss_fn(pred, y)     # 前向：损失
 loss.backward()             # 反向：填满所有 .grad</pre>

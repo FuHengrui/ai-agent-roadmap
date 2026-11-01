@@ -338,7 +338,8 @@ param = param + v</pre>
 <p>先补一个小工具概念：<strong>EWMA（指数加权移动平均）</strong>——给过去的数值指数衰减地加权，越近影响越大，是用来"平滑一段历史"的通用手法（Momentum、RMSProp 等内部都在用它）。</p>
 <p><strong>Adagrad</strong> 是自适应学习率的开山之作：<strong>每个参数用自己的历史梯度平方和来缩放学习率</strong>——更新大的参数降速，更新小的参数加速：</p>
 <pre>param -= lr / sqrt(G + eps) * grad   # G 是梯度平方的累积</pre>
-<pre>optimizer = torch.optim.Adagrad(model.parameters(), lr=0.01)</pre>
+<pre># 片段：model 承接上一节的模型定义，单独跑会 NameError
+optimizer = torch.optim.Adagrad(model.parameters(), lr=0.01)</pre>
 <p>优点：<strong>无需操心不同尺度的特征</strong>，稀疏数据（如词向量，多数维度更新频率低）效果好。</p>
 <p><strong>致命缺点</strong>：G 只增不减，累到后期分母过大 → 学习率趋近 0，<strong>训练提前停摆</strong>。这催生了 RMSProp。</p>
 </div>

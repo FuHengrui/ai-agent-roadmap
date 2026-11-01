@@ -142,6 +142,7 @@ step4: 输入 you(真实) → 目标 <eos>
 推理（翻译）阶段：
 
 ```python
+# 片段：PAD_ID 与 model 承接上一节定义，单独跑会 NameError
 def translate(model, src_tokens, max_len=50):
     # 1. 编码器读入源句，得到状态 z
     z = model.encode(src_tokens)

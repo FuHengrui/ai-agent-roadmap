@@ -346,7 +346,8 @@
 <p>在损失里<strong>加一项"参数大小"的惩罚</strong>，逼模型用更小的权重学规律：</p>
 <pre>L_total = L_data + lambda * R(param)</pre>
 <ul><li><strong>L2 正则</strong>：R = Σw²，惩罚"大而分散"的权重 → 权重整体被压小（<strong>权重衰减</strong>）。实现极简：</li></ul>
-<pre>optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)</pre>
+<pre># 片段：dataset 承接上一节的加载代码，单独跑会 NameError
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)</pre>
 <p><code>weight_decay</code> 一行搞定 L2（PyTorch 里 SGD/Adam 等自带该参数）。</p>
 <ul><li><strong>L1 正则</strong>：R = Σ|w|，会把不重要的权重<strong>推到恰好 0</strong>，得到稀疏模型（特征选择）。</li></ul>
 <p><strong>直觉</strong>：L2 让模型"低调做人"，每个权重都小，就不会有单个参数扭曲全局；lambda 控制惩罚力度。</p>

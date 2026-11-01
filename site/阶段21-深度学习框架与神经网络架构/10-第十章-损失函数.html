@@ -317,7 +317,9 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>MSE（均方误差）</strong> = 平均 (预测 - 真值)²：</p>
-<pre>loss_fn = nn.MSELoss()                 # 默认取平均值
+<pre>import torch
+import torch.nn as nn
+loss_fn = nn.MSELoss()                 # 默认取平均值
 pred = torch.tensor([120., 130., 110.])
 y    = torch.tensor([100., 120., 115.])
 print(loss_fn(pred, y))   # (400+100+25)/3 = 175</pre>

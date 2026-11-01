@@ -207,6 +207,7 @@ class TinyTranslator(nn.Module):
 训练核心（Teacher Forcing + 交叉熵）：
 
 ```python
+# 片段：PAD_ID/model/dataloader 承接上一节，单独跑会 NameError
 criterion = nn.CrossEntropyLoss(ignore_index=PAD_ID)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 

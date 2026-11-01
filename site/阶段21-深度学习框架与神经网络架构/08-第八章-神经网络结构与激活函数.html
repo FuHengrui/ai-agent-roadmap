@@ -318,7 +318,8 @@ a = activation(z)       # 激活函数引入非线性</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>前向传播（forward）</strong> 指数据从输入层一路算到输出层的完整过程：</p>
-<pre># 手写版：直观展示前向传播的本质
+<pre># 片段：w1/x1/w2/x2/b/activation 承接上一节的举例，单独跑会 NameError
+# 手写版：直观展示前向传播的本质
 def forward_manual(x, W1, b1, W2, b2):
     h = torch.relu(x @ W1 + b1)   # 输入→隐藏层 + 激活
     y = h @ W2 + b2               # 隐藏层→输出层

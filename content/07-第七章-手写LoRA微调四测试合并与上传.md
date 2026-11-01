@@ -32,6 +32,7 @@
 示例代码（整理为可运行版）：
 
 ```python
+import torch
 from peft import PeftConfig, PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -43,7 +44,7 @@ config = PeftConfig.from_pretrained(peft_model_path)
 # 2. 先加载底座模型（名字存于 config.base_model_name_or_path）
 model = AutoModelForCausalLM.from_pretrained(
     config.base_model_name_or_path,
-    device_map="auto", torch_dtype=torch.float16   # 文件首行记得 import torch)
+    device_map="auto", torch_dtype=torch.float16)   # 括号要在注释之前闭合
 
 # 3. 再把补丁叠上去
 model = PeftModel.from_pretrained(model, peft_model_path)
