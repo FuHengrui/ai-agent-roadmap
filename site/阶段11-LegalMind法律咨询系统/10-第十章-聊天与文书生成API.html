@@ -417,7 +417,7 @@ async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
         full_text = &quot;&quot;
         try:
             # 1. 流式走工作流，只收集 qa_generation 节点的 token
-…（以下省略 25 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
+…（以下省略 25 行，按上下文补齐即可）
                 yield f&quot;data: {json.dumps({&#x27;sources&#x27;: sources}, ensure_ascii=False)}\n\n&quot;
             yield &quot;data: [DONE]\n\n&quot;
 
@@ -479,7 +479,7 @@ async def list_sessions(user=Depends(get_current_user)):
         last_msg = await ChatMessageRecord.filter(
             chat_session=s, role=&quot;user&quot;
         ).order_by(&quot;created_at&quot;).first()
-…（以下省略 4 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
+…（以下省略 4 行，按上下文补齐即可）
         })
     return {&#x27;sessions&#x27;: result}
 
@@ -513,7 +513,7 @@ async def get_session_messages(session_id: str, user=Depends(get_current_user), 
 async def get_templates():
     return {&quot;templates&quot;: [
         {&quot;type&quot;: &quot;起诉状&quot;, &quot;description&quot;: &quot;民事起诉状&quot;},
-…（以下省略 9 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
+…（以下省略 9 行，按上下文补齐即可）
     references = []
     if request.use_references:
         references = await RetrievalAgent().retrieve(query=request.query, top_k=3)
@@ -547,7 +547,7 @@ async def get_templates():
         &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
         Authorization: `Bearer ${localStorage.getItem(&#x27;token&#x27;)}`,
       },
-…（以下省略 22 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
+…（以下省略 22 行，按上下文补齐即可）
         if (payload === &#x27;[DONE]&#x27;) { yield { done: true }; return }
         try { yield JSON.parse(payload) } catch { /* 忽略脏行 */ }
       }
