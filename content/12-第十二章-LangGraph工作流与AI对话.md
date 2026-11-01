@@ -50,7 +50,11 @@ LangGraph 是 LangChain 官方的**图编排框架**，核心模型：
 
 @@idea 核心思路
 ```python
-from typing import TypedDict
+from typing import TypedDict, Optional, Dict, Any
+
+# 这两个单例分别在第 9、11 章的文件末尾创建（llm_client = LLMClient() / rag_engine = RAGEngine()）
+from app.core.llm_client import llm_client
+from app.core.rag_engine import rag_engine
 
 class AgentState(TypedDict, total=False):
     patient_id: int          # 患者ID
