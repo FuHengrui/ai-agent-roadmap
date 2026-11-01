@@ -492,7 +492,7 @@ umount /data                   # 卸载（挂载点里没有进程占用时才�
 <p>mount 的盘一重启就消失，每次手动挂太蠢。怎么让系统开机自动挂载？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>改 <code>/etc/fstab</code>（filesystem table），加一行"开机自动挂载"规则。格式<strong>六个字段缺一不可</strong>：</p>
+<p>改 <code>/etc/fstab</code>（filesystem table），加一行"开机自动挂载"规则。格式是六列，<strong>按顺序写；后两列（dump/pass）可省略，省略即默认 0</strong>：</p>
 <pre>设备  挂载点  文件系统类型  挂载选项  dump  fsck</pre>
 <p>用 UUID 最稳（盘符 sda/sdb 会变，UUID 唯一不变）：</p>
 <pre># 先查 UUID
@@ -516,7 +516,7 @@ blkid /dev/sdb1
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>改完 fstab 直接重启，结果开机起不来</td><td>fstab 任何一个字段错都可能启动失败（紧急模式）；<strong>先 <code>mount -a</code> 试</strong>，成功再重启</td></tr>
 <tr><td>盘符 sdb 变 sdc 后挂载失效</td><td>这就是要用 <strong>UUID 而不是 /dev/sdb1</strong> 的原因——UUID 不随插拔变</td></tr>
-<tr><td>fstab 里少写一个字段</td><td>六字段缺一不可，少一段 mount -a 就报错</td></tr>
+<tr><td>fstab 里字段写错</td><td>前 4 列（设备 / 挂载点 / 类型 / 选项）写错最容易让 <code>mount -a</code> 失败；后两列可省略（默认 0），省掉不算错</td></tr>
 </table>
 </div>
 </div></div>

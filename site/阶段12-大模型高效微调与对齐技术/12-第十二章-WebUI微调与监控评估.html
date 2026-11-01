@@ -366,7 +366,7 @@
 <tr><td>训练轮数</td><td>num_train_epochs</td><td>3</td></tr>
 <tr><td>warmup 步数</td><td>warmup_steps</td><td>5~100（按总步数）</td></tr>
 <tr><td>日志间隔</td><td>logging_steps</td><td>10~50</td></tr>
-<tr><td>最大序列长度</td><td>max_seq_length</td><td>2048</td></tr>
+<tr><td>截断长度（最大序列长度）</td><td><code>cutoff_len</code></td><td>2048（LLaMA-Factory 叫 cutoff_len，别照抄 Unsloth 的 max_seq_length）</td></tr>
 <tr><td>权重衰减</td><td>weight_decay</td><td>0.01</td></tr>
 <tr><td>优化器</td><td>optim</td><td>adamw_torch / adamw_8bit</td></tr>
 </table>

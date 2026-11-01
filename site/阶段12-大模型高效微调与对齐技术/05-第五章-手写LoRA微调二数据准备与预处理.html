@@ -394,7 +394,7 @@ eval_dataset = eval_dataset_raw.map(
     preprocess_function, batched=True,
     remove_columns=eval_dataset_raw.column_names)</pre>
 <p>三个关键设计：</p>
-<ol><li><strong>prompt = 指令拼上"回应:"</strong>——既是输入，也提示模型"现在轮到你回答了"；</li><li><strong>labels = response 的 token</strong>——模型要"猜"的就是这段回应；注意这里 label 是把整段 response 当监督信号（简化版，未对 prompt 部分 mask）；</li><li><strong>padding="max_length"</strong>：同批样本对齐到 512，Trainer 才能一次性算。</li></ol>
+<ol><li><strong>prompt = 指令拼上"回应:"</strong>——既是输入，也提示模型"现在轮到你回答了"；</li><li><strong>labels = response 的 token</strong>——模型要"猜"的就是这段回应；注意：代码已经<strong>把 prompt 和 padding 都置成 -100</strong>（也就是「严格版」），labels 只有 response 那一段参与算损失；</li><li><strong>padding="max_length"</strong>：同批样本对齐到 512，Trainer 才能一次性算。</li></ol>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -462,7 +462,7 @@ print(&quot;input_len:&quot;, len(sample[&quot;input_ids&quot;]), &quot;label_le
 # 3. 解码验证：token 还原文本，确认和原始 instruction 对得上
 text = tokenizer.decode(sample[&quot;input_ids&quot;])
 print(text)  # 应看到&quot;指令: xxx\n回应:&quot;
-print(tokenizer.decode(sample[&quot;labels&quot;]))  # 应看到原 response</pre>
+print(tokenizer.decode([t for t in sample[&quot;labels&quot;] if t != -100]))  # 应只看到原 response（-100 不是合法 token）</pre>
 <p>三个断言：</p>
 <ul><li>长度都 ≤ 512（截断生效）；</li><li>解码后的指令跟原 dataset 第一条一致；</li><li>labels 解码出来是原 response 开头（而不是乱码/空）。</li></ul>
 <p><strong>"解码回人类语言看一眼"</strong> 是数据工程师的核心手艺——一切 token 预处理都能用 decode 反向验证。</p>

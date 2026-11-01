@@ -187,7 +187,7 @@ hermes tools
 | 场景 | 用什么 | 特点 |
 |---|---|---|
 | 这次任务只要网络+终端 | `hermes chat --toolsets "web,terminal"` | 一次性、不落盘 |
-| 长期开关某类工具 | `/tools enable/disable <名字>` | 会话内即时生效 |
+| 本会话临时开关某类工具 | `/tools enable/disable <名字>` | 仅本会话生效；要持久改配置用 `hermes tools` |
 | 按平台交互式配置 | `hermes tools` | 向导式、覆盖各平台 |
 
 @@trap 坑在哪

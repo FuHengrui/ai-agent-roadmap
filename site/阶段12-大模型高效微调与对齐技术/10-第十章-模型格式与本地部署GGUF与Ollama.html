@@ -318,7 +318,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>Ollama 现在<strong>能读 safetensors 目录</strong>（<code>FROM ./模型目录</code>），但它不会量化——所以想拿 q4 的体积收益，还是得先转 GGUF</td><td>Ollama 只认 GGUF。<strong>先转格式再部署</strong>，格式是部署的"语言"，说错语言人家听不懂</td></tr>
+<tr><td>Ollama 现在<strong>能直接 <code>FROM ./模型目录</code> 读 safetensors</strong>，但导入时不会量化（会被转成 f16 GGUF）</td><td>想拿 q4 的体积收益，还是得先自己转 q4_k_m GGUF。<strong>先转格式再部署</strong>，格式是部署的"语言"</td></tr>
 <tr><td>看到 .bin 就在"是不是旧模型"上纠结</td><td>bin 只是序列化方式，模型能力看架构与权重。<strong>优先用 safetensors 版</strong>（安全+快），除非必须兼容</td></tr>
 <tr><td>四种格式全要学全用</td><td>主线只需掌握 safetensors（训练/交付）+ GGUF（部署）；ONNX/bin 了解即可。<strong>抓两头、放中间</strong></td></tr>
 </table>
@@ -455,7 +455,7 @@ print(resp.json()[&quot;response&quot;])</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>完整部署链路（对应本章各节）：</p>
-<pre>lora_model_uns（补丁，几百MB）
+<pre>lora_model_uns（补丁，约 18M 参数、几十 MB）
    │ PeftModel 两步加载（第7章）
    ▼
 merged（完整模型 safetensors，GB级）
@@ -494,7 +494,7 @@ Ollama 服务（localhost:11434）
 <div class="step idea"><span class="label">核心思路</span>
 <table>
 <tr><th>报错现象</th><th>根因</th><th>解法</th></tr>
-<tr><td>Ollama 不认 safetensors</td><td>格式不对</td><td>先转 GGUF 再 create</td></tr>
+<tr><td>导入 safetensors 后体积没降、还是 f16</td><td>导入不量化</td><td>先转 q4_k_m GGUF 再 create</td></tr>
 <tr><td>create 时 not found</td><td>FROM 路径/文件名错</td><td>核对 gguf 绝对路径与文件名</td></tr>
 <tr><td>加载模型即崩（OOM）</td><td>显存不够</td><td>换 q4 档/更小模型/减 context</td></tr>
 <tr><td>中文乱码/花屏</td><td>模板或分词器不配套</td><td>用模型卡 TEMPLATE，分词器一起导出</td></tr>

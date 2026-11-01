@@ -132,7 +132,7 @@ git checkout -b new     # 创建并切换
 |---|---|
 | 切换时提示 "Your local changes would be overwritten" | 当前分支有**未提交的改动**，切换会冲突；先 commit 当前改动，或先把改动暂存起来再切 |
 | 切换后"文件消失了" | 文件在各分支本来就不一样（比如只在 dev 新建了文件），切到 master 自然看不到——切回 dev 就回来了，**没丢** |
-| 切过去发现想要的旧文件不在 | 用 `git log -- <文件名>` 查它在哪个分支出现过，再决定怎么处理 |
+| 切过去发现想要的旧文件不在 | 用 `git log --all --oneline -- <文件名>` 查它在哪些分支出现过（不加 `--all` 只查当前分支，往往什么都不输出） |
 
 @@point ⑥ 合并分支：git merge 把两边历史合流
 @@need 要解决什么
@@ -229,13 +229,14 @@ git branch -D dev      # 强制删除：不检查是否合并，直接删（慎�
 找回原理：需要知道**原分支最后指向的提交号**。
 
 ```bash
-git reflog                     # 1. 找到原分支最后指向的提交号（删除动作在 reflog 里有记录）
+git reflog                     # 1. 找回原分支最后指向的提交号：看删除前你还挂在该分支上的最后一条 commit 记录
+                               #    （`git branch -D` 打的 "Deleted branch ..." 只打印在终端，不进 reflog）
 git branch new_dev b2323b      # 2. 用新名字建分支，指向那个提交号（这里是占位示例）
 git checkout new_dev           # 3. 切换过去验证，文件都在
 ```
 
 如果还记得提交号，直接 `git branch 新分支名 <提交号>` 也行；
-如果不知道，reflog 里找 "Deleted branch dev (was xxxxxx)"——括号里的就是要找的提交号。
+如果不知道，就看 `git reflog` 里删除前最后一条 `commit:` 记录，那个哈希就是原分支的 tip。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

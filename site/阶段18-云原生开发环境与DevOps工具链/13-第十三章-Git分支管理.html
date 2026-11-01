@@ -388,7 +388,7 @@ git checkout -b new     # 创建并切换</pre>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>切换时提示 "Your local changes would be overwritten"</td><td>当前分支有<strong>未提交的改动</strong>，切换会冲突；先 commit 当前改动，或先把改动暂存起来再切</td></tr>
 <tr><td>切换后"文件消失了"</td><td>文件在各分支本来就不一样（比如只在 dev 新建了文件），切到 master 自然看不到——切回 dev 就回来了，<strong>没丢</strong></td></tr>
-<tr><td>切过去发现想要的旧文件不在</td><td>用 <code>git log -- &lt;文件名&gt;</code> 查它在哪个分支出现过，再决定怎么处理</td></tr>
+<tr><td>切过去发现想要的旧文件不在</td><td>用 <code>git log --all --oneline -- &lt;文件名&gt;</code> 查它在哪些分支出现过（不加 <code>--all</code> 只查当前分支，往往什么都不输出）</td></tr>
 </table>
 </div>
 </div></div>
@@ -466,10 +466,11 @@ git branch -D dev      # 强制删除：不检查是否合并，直接删（慎�
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>找回原理：需要知道<strong>原分支最后指向的提交号</strong>。</p>
-<pre>git reflog                     # 1. 找到原分支最后指向的提交号（删除动作在 reflog 里有记录）
+<pre>git reflog                     # 1. 找回原分支最后指向的提交号：看删除前你还挂在该分支上的最后一条 commit 记录
+                               #    （`git branch -D` 打的 &quot;Deleted branch ...&quot; 只打印在终端，不进 reflog）
 git branch new_dev b2323b      # 2. 用新名字建分支，指向那个提交号（这里是占位示例）
 git checkout new_dev           # 3. 切换过去验证，文件都在</pre>
-<p>如果还记得提交号，直接 <code>git branch 新分支名 &lt;提交号&gt;</code> 也行； 如果不知道，reflog 里找 "Deleted branch dev (was xxxxxx)"——括号里的就是要找的提交号。</p>
+<p>如果还记得提交号，直接 <code>git branch 新分支名 &lt;提交号&gt;</code> 也行； 如果不知道，就看 <code>git reflog</code> 里删除前最后一条 <code>commit:</code> 记录，那个哈希就是原分支的 tip。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -481,8 +481,9 @@ git checkout -b release-0.1.0 develop
 git checkout master &amp;&amp; git merge --no-ff release-0.1.0
 git checkout develop &amp;&amp; git merge --no-ff release-0.1.0   # release 要双合：master 和 develop 都要合回
 
-# 3. 打标签并推送
-git tag -a v0.1.0 -m &quot;release 0.1.0&quot;   # 附注标签；且此时在 master 的发布提交上
+# 3. 打标签并推送（注意：上一行末尾人在 develop，打标签前必须切回 master，否则标签会落在 develop 的合并提交上）
+git checkout master
+git tag -a v0.1.0 -m &quot;release 0.1.0&quot;   # 附注标签，打在 master 的发布提交上
 git push &amp;&amp; git push origin v0.1.0</pre>
 <pre># 4. 紧急修补：从 master 开 hotfix
 git checkout -b hotfix-0.1.1 master

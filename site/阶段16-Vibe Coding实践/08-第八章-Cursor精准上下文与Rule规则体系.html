@@ -400,7 +400,7 @@
 <tr><td><strong>User Rules（用户规则）</strong></td><td>全局（所有项目）</td><td>用户设置目录</td><td>你最通用的偏好，如"默认使用中文注释"</td></tr>
 <tr><td><strong>Project Rules（项目规则）</strong></td><td>单个项目</td><td><code>.cursor/rules/</code> 目录</td><td>该项目专属规范，如组件风格、目录约定</td></tr>
 <tr><td><strong>Team Rules（团队规则）</strong></td><td>Team / Enterprise 套餐，在 Dashboard 配置</td><td>全团队共享</td><td>团队统一规范，优先级最高</td></tr>
-<tr><td><strong>System Rules（系统规则）</strong></td><td>系统内置/兜底</td><td>Cursor 内部</td><td>厂商预设，优先级最低，一般不感知</td></tr>
+<tr><td><strong>目录内规则</strong></td><td>某目录及其子目录</td><td><code>.cursor/rules/</code> 下的子目录</td><td>局部规范（如前端组件只在 <code>src/components</code> 生效）</td></tr>
 </table>
 <p><strong>Team &gt; Project &gt; User</strong>：越"团队/项目"的越优先——团队规范 &gt; 项目约定 &gt; 个人习惯。口诀别记反：「越公共的越优先」（个人习惯优先级最低，这样才不会一个人的偏好覆盖整个团队）。</p>
 <p><strong>在 <code>.cursor/rules</code> 下用 <code>.mdc</code> 文件</strong>：Cursor 的规则文件支持 <strong>.mdc（带 YAML frontmatter 的 Markdown 规则文件）</strong>，frontmatter 支持 <code>description</code> / <code>globs</code> / <code>alwaysApply</code> 三个字段——<strong>只是 Markdown 加 YAML 头，没有"函数"能力</strong>——比纯 md 多一层"结构化约束"。规则文件通常会在对话中被自动加载，无需每次手动引用。</p>
@@ -418,7 +418,7 @@ globs: &quot;**/*.ts&quot;     # 注意是复数，配合 alwaysApply 用
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>把全局偏好写进项目规则</td><td>项目规则只对该项目生效；全局偏好写 User Rules</td></tr>
-<tr><td>.mdc 里写了 JS 代码执行</td><td>.mdc 支持的函数是<strong>给 AI 用的约束/动作描述</strong>，不是自动执行脚本；照格式写，别当代码库</td></tr>
+<tr><td>.mdc 里写 JS 想让它执行</td><td>.mdc 只是 <strong>Markdown + YAML frontmatter</strong>（description/globs/alwaysApply 三个字段），没有任何代码执行能力；写进去只会被当成文本</td></tr>
 <tr><td>glob 写错导致规则张冠李戴</td><td>glob 如 <code>**/*.ts</code> 限定文件范围；写错会该生效不生效，核实后重写</td></tr>
 </table>
 </div>
@@ -467,7 +467,7 @@ globs: &quot;**/*.ts&quot;     # 注意是复数，配合 alwaysApply 用
 </div></div>
 <div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ 规则触发类型与 User Rule 配置入口</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>第 ④ 点讲了规则的四种"级别"（User/Project/Notebook/System），但 .mdc 规则文件还有四种"触发类型"——它们是什么？User Rule 在哪里配置？</p>
+<p>第 ⑤ 点讲了规则的四种"级别"（Team / Project / User / 目录内），但 .mdc 规则文件还有四种"触发类型"——它们是什么？User Rule 在哪里配置？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>① .mdc 规则文件的四种触发类型</strong>（决定规则"什么时候生效"）：</p>

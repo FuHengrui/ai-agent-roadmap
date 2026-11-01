@@ -97,7 +97,7 @@ WebUI 的"训练参数"页字段很多，但**每一个都对应你学过的概�
 | 训练轮数 | num_train_epochs | 3 |
 | warmup 步数 | warmup_steps | 5~100（按总步数） |
 | 日志间隔 | logging_steps | 10~50 |
-| 最大序列长度 | max_seq_length | 2048 |
+| 截断长度（最大序列长度） | `cutoff_len` | 2048（LLaMA-Factory 叫 cutoff_len，别照抄 Unsloth 的 max_seq_length） |
 | 权重衰减 | weight_decay | 0.01 |
 | 优化器 | optim | adamw_torch / adamw_8bit |
 

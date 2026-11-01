@@ -129,7 +129,7 @@ eval_dataset = eval_dataset_raw.map(
 
 三个关键设计：
 1. **prompt = 指令拼上"回应:"**——既是输入，也提示模型"现在轮到你回答了"；
-2. **labels = response 的 token**——模型要"猜"的就是这段回应；注意这里 label 是把整段 response 当监督信号（简化版，未对 prompt 部分 mask）；
+2. **labels = response 的 token**——模型要"猜"的就是这段回应；注意：代码已经**把 prompt 和 padding 都置成 -100**（也就是「严格版」），labels 只有 response 那一段参与算损失；
 3. **padding="max_length"**：同批样本对齐到 512，Trainer 才能一次性算。
 
 @@trap 坑在哪
@@ -200,7 +200,7 @@ print("input_len:", len(sample["input_ids"]), "label_len:", len(sample["labels"]
 # 3. 解码验证：token 还原文本，确认和原始 instruction 对得上
 text = tokenizer.decode(sample["input_ids"])
 print(text)  # 应看到"指令: xxx\n回应:"
-print(tokenizer.decode(sample["labels"]))  # 应看到原 response
+print(tokenizer.decode([t for t in sample["labels"] if t != -100]))  # 应只看到原 response（-100 不是合法 token）
 ```
 
 三个断言：

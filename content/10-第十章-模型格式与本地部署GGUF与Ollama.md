@@ -47,7 +47,7 @@
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| Ollama 现在**能读 safetensors 目录**（`FROM ./模型目录`），但它不会量化——所以想拿 q4 的体积收益，还是得先转 GGUF | Ollama 只认 GGUF。**先转格式再部署**，格式是部署的"语言"，说错语言人家听不懂 |
+| Ollama 现在**能直接 `FROM ./模型目录` 读 safetensors**，但导入时不会量化（会被转成 f16 GGUF） | 想拿 q4 的体积收益，还是得先自己转 q4_k_m GGUF。**先转格式再部署**，格式是部署的"语言" |
 | 看到 .bin 就在"是不是旧模型"上纠结 | bin 只是序列化方式，模型能力看架构与权重。**优先用 safetensors 版**（安全+快），除非必须兼容 |
 | 四种格式全要学全用 | 主线只需掌握 safetensors（训练/交付）+ GGUF（部署）；ONNX/bin 了解即可。**抓两头、放中间** |
 
@@ -203,7 +203,7 @@ print(resp.json()["response"])
 完整部署链路（对应本章各节）：
 
 ```
-lora_model_uns（补丁，几百MB）
+lora_model_uns（补丁，约 18M 参数、几十 MB）
    │ PeftModel 两步加载（第7章）
    ▼
 merged（完整模型 safetensors，GB级）
@@ -243,7 +243,7 @@ Ollama 服务（localhost:11434）
 @@idea 核心思路
 | 报错现象 | 根因 | 解法 |
 |---|---|---|
-| Ollama 不认 safetensors | 格式不对 | 先转 GGUF 再 create |
+| 导入 safetensors 后体积没降、还是 f16 | 导入不量化 | 先转 q4_k_m GGUF 再 create |
 | create 时 not found | FROM 路径/文件名错 | 核对 gguf 绝对路径与文件名 |
 | 加载模型即崩（OOM） | 显存不够 | 换 q4 档/更小模型/减 context |
 | 中文乱码/花屏 | 模板或分词器不配套 | 用模型卡 TEMPLATE，分词器一起导出 |
