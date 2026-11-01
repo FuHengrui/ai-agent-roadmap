@@ -237,6 +237,8 @@ async def load(theme: str, user_id: int = Depends(get_current_user_id)):
 ```
 任何一个环节崩了，错误码就告诉你问题在哪一段：400 校验、401/403 鉴权、500 AI/解析/落库。
 
+接线还差一行：`main.py` 里要 `app.include_router(create.router, prefix="/v1/create", tags=["内容生成"])`，不注册这条路由，`/v1/create/*` 全是 404。
+
 @@note tip 让 AI 带你做：第 10 步 — /start /themes /load 三个接口与落库
 
 ```text

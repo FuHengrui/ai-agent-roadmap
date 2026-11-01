@@ -242,6 +242,7 @@ async def get_templates():
 - `use_references=True` 时先按 query 检索 3 个参考案例喂给生成器——**没有检索，纯模板生成就会"空有格式没依据"**。
 - 中文类型名（起诉状）→ 模板（civil_complaint）的映射在 DocumentAgent 内部完成。
 - 流式版 `/generate/stream` 与聊天流同构：`agent.astream_generate(...)` 逐 token 推 SSE。
+- 生成成功后写一条 `GeneratedDocument`（user/type/title/content）——第 1 章需求里的「文书存档」靠它落地。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |

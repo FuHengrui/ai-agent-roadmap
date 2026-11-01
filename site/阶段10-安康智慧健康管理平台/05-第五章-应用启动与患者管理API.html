@@ -587,7 +587,7 @@ python main.py
   - CORS 放行 allow_origins=[&quot;*&quot;]；lifespan 用 @asynccontextmanager，先写 pass
   - register_db 自己写在 app/database.py：register_tortoise(..., generate_schemas=False)（第①点注释）
   - app/routers/__init__.py 建 main_router，prefix=&quot;/api&quot;，先只 include patient 一个（第②点）
-  - KnowledgeBase 那两行 import 先注释掉——第 11 章才写，现在放开会 ModuleNotFoundError
+  - knowledge_base 那两行 import 先注释掉——第 11 章才写，现在放开会 ModuleNotFoundError
   - app/routers/patient.py 的 prefix=&quot;/patients&quot;，五个接口（第⑤点）：
       GET /、GET /{patient_id}、POST /、PUT /{patient_id}、DELETE /{patient_id}
   - 查到/查不到一律用 Patient.get_or_none(...)，判空后抛 404「患者不存在」，不许 500

@@ -449,6 +449,7 @@ return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algor
    │
    └─ 后台慢慢做（几十秒到几分钟）
         转写 → 提炼 → 改状态为「已完成」或「失败」</pre>
+<p>对外就是两个接口：<code>POST /api/meetings</code> 收文件、建「处理中」记录、立刻返回 id；<code>GET /api/meetings/{id}</code> 查状态与结果。</p>
 <p><strong>这就是"异步"</strong>。它不是技术炫技，而是把"用户的等待"从几分钟压到几十毫秒。</p>
 <h4>三步的顺序不能乱</h4>
 <pre># 1. 先校验扩展名，生成安全的存储名
@@ -517,6 +518,7 @@ await client.chat.completions.create(
 <pre># Qwen3-ASR-Flash 单次输入上限：Base64 编码后不超过 10MB。
 # Base64 膨胀比约 4/3，故原始字节数阈值取 10MB * 3/4。
 _MAX_RAW_BYTES = 10 * 1024 * 1024 * 3 // 4</pre>
+<p>转写出来的文字落进会议表的 <code>transcript</code> 字段，第 ⑤ 节的摘要与待办都从它提炼。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -880,12 +882,12 @@ curl -X POST http://127.0.0.1:8000/api/auth/login \
 <table>
 <tr><th>步</th><th>这一步只做</th><th>做完该看到</th></tr>
 <tr><td>2</td><td><strong>账号系统</strong>：User 表 + bcrypt 哈希 + JWT，<code>/api/auth/register</code>、<code>/api/auth/login</code></td><td>注册 200、重名 400、错密码 401（第 1 步已验过）</td></tr>
-<tr><td>3</td><td><strong>上传</strong>：<code>POST /api/meetings</code> 收 mp3/wav，uuid 落盘，<strong>立刻</strong>返回 id，状态 <code>processing</code></td><td>上传后马上拿到 id，列表里能看到这条 <code>processing</code></td></tr>
-<tr><td>4</td><td><strong>转写</strong>：后台调语音识别，完成后把文字写进 <code>transcript</code></td><td>过一会儿查详情，<code>transcript</code> 有内容，状态还是 <code>processing</code></td></tr>
-<tr><td>5</td><td><strong>摘要与待办</strong>：调 LLM，按四层容错解析 JSON，写 <code>summary</code> 和 <code>todos</code>，然后标 <code>done</code></td><td>详情里有摘要 + 待办列表，每条有待办内容与优先级</td></tr>
+<tr><td>3</td><td><strong>上传</strong>：<code>POST /api/meetings</code> 收 mp3/wav，uuid 落盘，<strong>立刻</strong>返回 id，状态 <code>处理中</code></td><td>上传后马上拿到 id，列表里能看到这条 <code>处理中</code></td></tr>
+<tr><td>4</td><td><strong>转写</strong>：后台调语音识别，完成后把文字写进 <code>transcript</code></td><td>过一会儿查详情，<code>transcript</code> 有内容，状态还是 <code>处理中</code></td></tr>
+<tr><td>5</td><td><strong>摘要与待办</strong>：调 LLM，按四层容错解析 JSON，写 <code>summary</code> 和 <code>todos</code>，然后标 <code>已完成</code></td><td>详情里有摘要 + 待办列表，每条有待办内容与优先级</td></tr>
 <tr><td>6</td><td><strong>事务边界</strong>：把 LLM / 语音调用<strong>挪到事务外</strong>，只把结果写库放进事务</td><td>处理变慢时，别的接口照样秒回（盯锁等待能看出来）</td></tr>
-<tr><td>7</td><td><strong>失败隔离</strong>：单场出错只把这一场标 <code>failed</code>，别抛到外层</td><td>故意传一个坏文件：只有它失败，其他会议照常处理</td></tr>
-<tr><td>8</td><td><strong>轮询</strong>：<code>GET /api/meetings/{id}</code> + 前端用 <code>setTimeout</code> 链自己续</td><td>列表页状态自动从 <code>processing</code> 变 <code>done</code>，不用手刷</td></tr>
+<tr><td>7</td><td><strong>失败隔离</strong>：单场出错只把这一场标 <code>失败</code>，别抛到外层</td><td>故意传一个坏文件：只有它失败，其他会议照常处理</td></tr>
+<tr><td>8</td><td><strong>轮询</strong>：<code>GET /api/meetings/{id}</code> + 前端用 <code>setTimeout</code> 链自己续</td><td>列表页状态自动从 <code>处理中</code> 变 <code>已完成</code>，不用手刷</td></tr>
 <tr><td>9</td><td><strong>契约</strong>：前端写 <code>types</code> + <code>Record&lt;MeetingStatus, StatusMeta&gt;</code> 映射</td><td>状态多一个少一个，<code>tsc</code> 立刻报错</td></tr>
 <tr><td>10</td><td><strong>CLAUDE.md</strong>：给 AI 写禁令（项目用 uv，别直接 pip/python）</td><td>新开会话时 AI 按规矩来，不再乱装包</td></tr>
 </table>

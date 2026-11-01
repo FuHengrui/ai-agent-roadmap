@@ -528,14 +528,14 @@ aerich upgrade                              # 应用迁移到数据库</pre>
 <p>读迁移文件能回答三类问题：<strong>哪张表哪个字段在哪次变更引入</strong>、<strong>当前库能否升上去</strong>、<strong>回滚是否安全</strong>。排查"库表结构与代码不符"时，第一个看的就是 migrations 最后几个文件。</p>
 </div>
 </div></div>
-<div class="note tip"><span class="t">让 AI 带你做：第 4 步 — 八张表的模型与 Aerich 迁移</span>
+<div class="note tip"><span class="t">让 AI 带你做：第 4 步 — 七张表的模型与 Aerich 迁移</span>
 <pre>继续这个项目。这一步只写模型和首次迁移，不写接口、不碰 main.py。
 
 约束（照书里的，别自己起名）：
   - app/models/ 下按表拆文件：__init__.py 统一 re-export，再放 user.py / section.py /
     title.py / image.py / style.py / model.py / publish.py（第 ① 点）
-  - 每个模型显式 Meta.table，八个表名：t_users / t_sections / t_titles / t_title_images /
-    t_style / t_models / t_publish_records / t_publish_images，别让默认表名生效
+  - 每个模型显式 Meta.table，七个表名：t_users / t_sections / t_titles / t_title_images /
+    t_style / t_publish_records / t_publish_images，别让默认表名生效（t_models 暂不建模）
   - 字段类型照第 ② 点对照表：IntField(pk=True)、图片表用 BigIntField(pk=True)、
     CharField 必须带 max_length、TextField、SmallIntField(default=0)、
     DatetimeField(auto_now_add=True) / DatetimeField(auto_now=True)

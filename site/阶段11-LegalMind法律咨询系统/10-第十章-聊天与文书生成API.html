@@ -522,7 +522,7 @@ async def get_templates():
         query=request.query, references=references)
     return {&quot;content&quot;: result[&quot;content&quot;], &quot;document_type&quot;: request.document_type,
             &quot;references&quot;: result[&quot;references&quot;]}</pre>
-<ul><li><code>use_references=True</code> 时先按 query 检索 3 个参考案例喂给生成器——<strong>没有检索，纯模板生成就会"空有格式没依据"</strong>。</li><li>中文类型名（起诉状）→ 模板（civil_complaint）的映射在 DocumentAgent 内部完成。</li><li>流式版 <code>/generate/stream</code> 与聊天流同构：<code>agent.astream_generate(...)</code> 逐 token 推 SSE。</li></ul>
+<ul><li><code>use_references=True</code> 时先按 query 检索 3 个参考案例喂给生成器——<strong>没有检索，纯模板生成就会"空有格式没依据"</strong>。</li><li>中文类型名（起诉状）→ 模板（civil_complaint）的映射在 DocumentAgent 内部完成。</li><li>流式版 <code>/generate/stream</code> 与聊天流同构：<code>agent.astream_generate(...)</code> 逐 token 推 SSE。</li><li>生成成功后写一条 <code>GeneratedDocument</code>（user/type/title/content）——第 1 章需求里的「文书存档」靠它落地。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -498,6 +498,7 @@ async def load(theme: str, user_id: int = Depends(get_current_user_id)):
 前端随后 GET /v1/create/load?theme=xxx 拉全量
   → 素材页渲染板块与标题</pre>
 <p>任何一个环节崩了，错误码就告诉你问题在哪一段：400 校验、401/403 鉴权、500 AI/解析/落库。</p>
+<p>接线还差一行：<code>main.py</code> 里要 <code>app.include_router(create.router, prefix="/v1/create", tags=["内容生成"])</code>，不注册这条路由，<code>/v1/create/*</code> 全是 404。</p>
 </div>
 </div></div>
 <div class="note tip"><span class="t">让 AI 带你做：第 10 步 — /start /themes /load 三个接口与落库</span>
