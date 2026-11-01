@@ -497,7 +497,7 @@ df.write
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>partitionBy 后文件反而多到爆</td><td>分区基数太高（按 user_id 分）。分区列选低基数；高频筛选靠二级索引/桶</td></tr>
 <tr><td>filter 没写分区字段，白分</td><td>分区裁剪只对手写分区列的过滤生效。SQL 里 where 没写 dt → 全扫。<strong>写 SQL 的同事要约定好分区条件</strong></td></tr>
-<tr><td>分区目录里 schema 漂移（多一列）</td><td>partitionBy 的列<strong>不写进数据文件</strong>（在目录名里），读回时你显式加回分区列。schema 变化用 <code>mergeSchema=true</code></td></tr>
+<tr><td>分区目录里 schema 漂移（多一列）</td><td>partitionBy 的列<strong>不写进数据文件</strong>（在目录名里），标准 <code>key=value</code> 布局<strong>读回时会自动带回分区列</strong>（别再手动加，加了会重复）；只有自造的非标准布局才要手动加。schema 变化用 <code>mergeSchema=true</code></td></tr>
 <tr><td>对已存在的分区 overwrite</td><td>partitionBy+overwrite 会<strong>清掉整个表再写</strong>，不是只覆盖目标分区。要只覆盖某分区：<code>df.write.mode("overwrite").option("partitionOverwriteMode","dynamic")</code>（Spark 3 默认 dynamic 了对非分区表？不对——记得 Hive 分区覆盖语义）</td></tr>
 </table>
 </div>

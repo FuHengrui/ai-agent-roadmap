@@ -49,7 +49,7 @@ spark.sql("""
 
 | 场景 | 推荐 | 原因 |
 |---|---|---|
-| 逻辑简单、代码内嵌 | DSL | 编译期查列名错误、好调试 |
+| 逻辑简单、代码内嵌 | DSL | 链式写法好调试；**字符串列名仍是运行时解析**，要编译期检查得用 `Dataset[T]` |
 | 复杂 join/多次聚合/子查询 | SQL | 表达力强，SQL 老司机直接写 |
 | 团队协作、BI 复用 | SQL | 可复制到 Hive/Impala/可视化工具 |
 | 需要动态拼条件（循环/参数化） | DSL 或 SQL 拼接都要小心 | 别注入；DSL 天然参数安全 |
@@ -59,7 +59,7 @@ spark.sql("""
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| DSL 里列名拼错编译期才发现（Python） | PySpark 是运行时才报错；Scala 有类型检查。两个语言体验不同，写 Python 多用 `.printSchema()` 自查 |
+| DSL 里列名拼错什么时候报错 | 用字符串列名时，Scala 和 PySpark **都是运行时**才报；只有 `Dataset[T]`（样例类）才有编译期类型检查。写完先 `.printSchema()` 自查 |
 | SQL 字符串里列名错了 | 运行时才报 `cannot resolve column`。先 `df.printSchema()` / `SHOW COLUMNS` 核对 |
 | 两种写法混在一个项目 | 团队约定：简单链路 DSL，复杂查询 SQL，别一人一套。可读性优先 |
 | 以为 SQL 比 DSL 快 | 两种都被 Catalyst 转成一个计划，没有"SQL 更优"这回事。别为了"更快"换写法 |

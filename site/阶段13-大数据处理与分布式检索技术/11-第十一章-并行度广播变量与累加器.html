@@ -437,7 +437,8 @@ val result = data.map(row =&gt; bcRules.value(row.key))</pre>
 <tr><td>200MB×1000 Task</td><td>200GB</td><td>200MB×8=1.6GB</td></tr>
 <tr><td>每 Executor 占用</td><td>多份</td><td>1 份</td></tr>
 </table>
-<p><strong>撒手锏细节</strong>：广播用的是<strong>序列化存储 + 懒加载</strong>——Executor 第一次用到时才反序列化，且数据<strong>不会</strong>随每个 Task 走网络。<strong>join 小表 ≤10MB 时 Spark 会自动广播；</strong>闭包里的变量不会自动广播<strong>，大变量要手动 sc.broadcast（spark.sql.autoBroadcastJoinThreshold）的变量</strong>，大对象必须手动 broadcast。</p>
+<p><strong>撒手锏细节</strong>：广播用的是<strong>序列化存储 + 懒加载</strong>——Executor 第一次用到时才反序列化，数据不随每个 Task 走网络。</p>
+<ul><li><strong>SparkSQL/DSL 的 join</strong>：小表 ≤10MB 会自动广播（<code>spark.sql.autoBroadcastJoinThreshold</code>）；</li><li><strong>RDD 的 join</strong>：<strong>不会</strong>自动广播，永远走 shuffle；小表要自己 <code>sc.broadcast</code> 后做 map 侧关联；</li><li><strong>闭包里的变量</strong>从不自动广播，大对象必须手动 broadcast。要手动 sc.broadcast（spark.sql.autoBroadcastJoinThreshold）的变量**，大对象必须手动 broadcast。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

@@ -109,6 +109,8 @@ import org.apache.spark._
 import org.apache.spark.streaming._
 
 // ① 创建 StreamingContext（批间隔 2 秒）
+val conf = new SparkConf().setMaster("local[2]").setAppName("streaming-demo")
+val sc = new SparkContext(conf)              // 本章后面 sc.parallelize/sc.broadcast 要用它
 val ssc = new StreamingContext(sc, Seconds(2))
 
 // ② 输入源：Socket 文本流（测试常用；生产用 Kafka，下章）

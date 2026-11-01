@@ -489,7 +489,7 @@ spark-submit --master yarn --deploy-mode cluster app.py</pre>
 ④ Driver 就在 AM 进程内（cluster 模式），它直接用 AM 的 AMRMClient 向 RM 申请 executors 的 Container
 ⑤ RM 在 NodeManager 上启动 Executor 容器并回注册
 ⑥ Driver 把 DAG 切成 Task 调度到 Executor 执行
-⑦ 任务完成，Driver 向 AM 汇报，AM 让 RM 释放所有 Container</pre>
+⑦ 任务完成，Driver（cluster 模式下它就是 AM 本身）向 RM **注销**，RM 回收所有 Container</pre>
 <p>每一步对应你会在日志/UI 看到的东西：</p>
 <table>
 <tr><th>步骤</th><th>观察点</th></tr>

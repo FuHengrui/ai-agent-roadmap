@@ -434,8 +434,7 @@ P3: [c,1][b,1]
 每个 Map 分区按 key 哈希生成 2 个分桶文件   每个 Reduce 分区从每个&quot;上游文件&quot;拉自己那份
 （分区数 = 下游分区数）                  再做聚合（合并相同 key）</pre>
 <p><strong>关键细节</strong>：</p>
-<p>才是下游分区数（<code>上游×下游 个小文件</code> 是早期 hash shuffle 的老模型）。所以现在文件数 ≈ Map Task 数，不是「上游×下游」——那个数字只在老的 hash shuffle 下成立。</p>
-<ol><li><strong>数据倾斜时</strong>：某个 key 数据量巨大 → 对应那个 Reduce 分区拉取极慢 → 单个 Task 拖垮整个 Job（UI 上能看到"某 Task 耗时远超其他"）</li><li><strong>Shuffle 可能排序</strong>：部分算子（sortByKey）要求 shuffle 时排序，额外开销</li></ol>
+<ol><li><strong>文件数不是「上游×下游」</strong>：每个 Map Task 按下游分区数分桶，但 sort shuffle 一个 Map Task 只落<strong>一个</strong>数据文件，分桶数才是下游分区数（<code>上游×下游 个小文件</code> 是早期 hash shuffle 的老模型）。所以现在文件数 ≈ Map Task 数。</li><li><strong>数据倾斜时</strong>：某个 key 数据量巨大 → 对应那个 Reduce 分区拉取极慢 → 单个 Task 拖垮整个 Job（UI 上能看到"某 Task 耗时远超其他"）</li><li><strong>Shuffle 可能排序</strong>：部分算子（sortByKey）要求 shuffle 时排序，额外开销</li></ol>
 <p><strong>调优常识</strong>：Spark 会把 Map 端的小文件聚合批量写（shuffle 合并），但根本出路还是控制分区数和避免不必要的宽依赖。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -533,7 +532,7 @@ Executor（执行器）── 在 Worker 节点上
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>本地跑完程序 UI 就没了</td><td>UI 随 Application 结束而关闭。想边跑边看用 <code>--driver-ui-port</code> 或开 <code>spark.ui.retainedJobs</code> 持久化；跑完看日志里的统计也行</td></tr>
+<tr><td>本地跑完程序 UI 就没了</td><td>UI 随 Application 结束而关闭（<code>spark.ui.retainedJobs</code> 只决定内存里留多少 Job 记录，救不回来）。想<strong>事后</strong>回看只能开 eventLog + History Server；端口被占就用 <code>--conf spark.ui.port=4041</code></td></tr>
 <tr><td>4040 端口打不开</td><td>多实例冲突：4040 被占 → 自动 4041/4042……看启动日志里实际的 UI 地址</td></tr>
 <tr><td>UI 上 DAG 有"蓝色盒子带漩涡"</td><td>那是 <strong>广播变量</strong> 的标志（下下章讲），正常的</td></tr>
 <tr><td>前端端口在生产环境不可达</td><td>生产看历史服务器（History Server）——<code>spark.eventLog.enabled=true</code> 落盘事件后，任意时间回看 UI。作业加这个配置就是给"事后体检"留下档案</td></tr>

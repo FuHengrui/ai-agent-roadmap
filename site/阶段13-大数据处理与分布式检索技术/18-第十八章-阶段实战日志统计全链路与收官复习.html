@@ -349,7 +349,7 @@ val clean = raw
   .filter(col(&quot;ts_str&quot;).isNotNull &amp;&amp; col(&quot;user_id&quot;).isNotNull)
     .withColumn(&quot;dt&quot;, to_date(col(&quot;ts_str&quot;), &quot;yyyy-MM-dd HH:mm:ss&quot;))
     .withColumn(&quot;ts&quot;, to_timestamp(col(&quot;ts_str&quot;), &quot;yyyy-MM-dd HH:mm:ss&quot;))   // 分钟粒度要靠它，别只留 dt
-  .withColumn(&quot;page&quot;, regexp_replace(col(&quot;page&quot;), &quot;\?.*$&quot;, &quot;&quot;))
+  .withColumn(&quot;page&quot;, regexp_replace(col(&quot;page&quot;), &quot;\\?.*$&quot;, &quot;&quot;)   // Scala 字符串里反斜杠要转义)
   .drop(&quot;ts_str&quot;).filter(col(&quot;dt&quot;).isNotNull)
 
 // 写 DWD 分区表（按 dt 分区）
@@ -393,7 +393,7 @@ clean.groupBy(&quot;region&quot;).agg(count(&quot;*&quot;).as(&quot;cnt&quot;)).
 <p><strong>输出策略（ADS 层）</strong>：指标结果合并成"一张指标宽表"落数仓，报表/BI 直接查：</p>
 <pre>val daily = clean.groupBy(&quot;dt&quot;)
   .agg(count(&quot;*&quot;).as(&quot;pv&quot;),
-    approx_count_distinct(&quot;user_id&quot;).as(&quot;uv&quot;))   // Structured Streaming 不支持 countDistinct
+       approx_count_distinct(&quot;user_id&quot;).as(&quot;uv&quot;),   // 流式里别用 countDistinct，用 approx
        countDistinct(&quot;page&quot;).as(&quot;page_uv&quot;))
 daily.write.mode(&quot;overwrite&quot;).partitionBy(&quot;dt&quot;).saveAsTable(&quot;ads.daily_metric&quot;)</pre>
 <p><strong>至此批线闭环</strong>：raw → ODS 读 → DWD 宽表 → ADS 指标 → 报表工具消费。</p>
@@ -427,6 +427,7 @@ val metric = parsed
 
 // 输出：写 Redis/MySQL（foreachBatch 批量写）
 metric.writeStream.outputMode(&quot;update&quot;)
+  .option(&quot;checkpointLocation&quot;, &quot;hdfs:///spark/ckpt/uv_metric&quot;)   // 流式必填，不写启动即报错
   .trigger(Trigger.ProcessingTime(&quot;10 seconds&quot;))
   .foreachBatch(...).start()</pre>
 <p><strong>批流对账（口径一致性验证）</strong>：</p>

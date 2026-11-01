@@ -189,7 +189,7 @@ P3: [c,1][b,1]
 
 **关键细节**：
 
-才是下游分区数（`上游×下游 个小文件` 是早期 hash shuffle 的老模型）。所以现在文件数 ≈ Map Task 数，不是「上游×下游」——那个数字只在老的 hash shuffle 下成立。
+1. **文件数不是「上游×下游」**：每个 Map Task 按下游分区数分桶，但 sort shuffle 一个 Map Task 只落**一个**数据文件，分桶数才是下游分区数（`上游×下游 个小文件` 是早期 hash shuffle 的老模型）。所以现在文件数 ≈ Map Task 数。
 2. **数据倾斜时**：某个 key 数据量巨大 → 对应那个 Reduce 分区拉取极慢 → 单个 Task 拖垮整个 Job（UI 上能看到"某 Task 耗时远超其他"）
 3. **Shuffle 可能排序**：部分算子（sortByKey）要求 shuffle 时排序，额外开销
 
@@ -305,7 +305,7 @@ Executor（执行器）── 在 Worker 节点上
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 本地跑完程序 UI 就没了 | UI 随 Application 结束而关闭。想边跑边看用 `--driver-ui-port` 或开 `spark.ui.retainedJobs` 持久化；跑完看日志里的统计也行 |
+| 本地跑完程序 UI 就没了 | UI 随 Application 结束而关闭（`spark.ui.retainedJobs` 只决定内存里留多少 Job 记录，救不回来）。想**事后**回看只能开 eventLog + History Server；端口被占就用 `--conf spark.ui.port=4041` |
 | 4040 端口打不开 | 多实例冲突：4040 被占 → 自动 4041/4042……看启动日志里实际的 UI 地址 |
 | UI 上 DAG 有"蓝色盒子带漩涡" | 那是 **广播变量** 的标志（下下章讲），正常的 |
 | 前端端口在生产环境不可达 | 生产看历史服务器（History Server）——`spark.eventLog.enabled=true` 落盘事件后，任意时间回看 UI。作业加这个配置就是给"事后体检"留下档案 |

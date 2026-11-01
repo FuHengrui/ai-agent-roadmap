@@ -171,9 +171,9 @@ cache/persist 解决"重复计算"，但**解决不了长链重算**：Executor 
 @@idea 核心思路
 ```scala
 sc.setCheckpointDir("hdfs://.../ckpt/")   // ① 先设检查点目录
-rdd.map(...).filter(...)...                // 数据链
-rdd.checkpoint()                           // ② 标记检查点
-rdd.count()                                // ③ 行动算子：先算完，把结果落盘到 HDFS，然后切断血缘
+val mid = rdd.map(...).filter(...)         // 数据链（长血缘在这一步之后）
+mid.checkpoint()                           // ② 标记在【链尾】那个 RDD 上，不是源 RDD
+mid.count()                                // ③ 行动算子：算完落盘到 HDFS，然后切断血缘
 ```
 
 **checkpoint 的三步动作（在一个行动算子触发时完成）**：

@@ -345,7 +345,7 @@ rdd.collect()           各分区算完 → 汇总回来</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>把"弹性"理解成"自动扩容"</td><td>弹性指的是<strong>存储弹性</strong>（内存↔磁盘自由切换），不是集群扩缩容。词是同一个，别答错含义</td></tr>
+<tr><td>把"弹性"理解成"自动扩容"</td><td>RDD 的「弹性」有两层：<strong>存储弹性</strong>（内存↔磁盘切换）和<strong>容错弹性</strong>（血缘重算），都和集群扩缩容无关</td></tr>
 <tr><td>以为 RDD 可变、能往里面 add</td><td>不可变是 Spark 分布式容错的基石：只有不可变才能记录"计算链"，挂了按链重放。想"改"就生成新 RDD</td></tr>
 <tr><td>以为每个 RDD 都是数据快照</td><td>RDD 大部分时候只是<strong>计算逻辑</strong>（惰性的），真正数据算出来发生在 Action 触发时——这正是后面惰性求值的基础</td></tr>
 </table>
@@ -475,7 +475,7 @@ rdd = rdd.partitionBy(3, partitionFunc)   # 自定义规则</pre>
 <p><strong>方式一：并行化集合创建（把本地集合转 RDD）</strong></p>
 <pre># 把 Python/Scala 的本地集合变成分布式 RDD
 rdd1 = sc.parallelize([1, 2, 3, 4, 5], 2)      # 指定 2 个分区
-rdd2 = sc.makeRDD([1, 2, 3, 4, 5], 2)          # 等价，内部就是 parallelize</pre>
+# rdd2 = sc.makeRDD(...)   # 注意：makeRDD 只在 Scala 的 SparkContext 里有；PySpark 没有，会 AttributeError</pre>
 <p><strong>方式二：读取文件创建（最常用）</strong></p>
 <pre>rdd = sc.textFile(&quot;data/words.txt&quot;)                 # 读本地/分布式文件
 rdd = sc.textFile(&quot;data/words.txt&quot;, minPartitions=3) # 指定最小分区数

@@ -321,7 +321,7 @@ spark.sql(&quot;&quot;&quot;
 <p><strong>选择策略</strong>：</p>
 <table>
 <tr><th>场景</th><th>推荐</th><th>原因</th></tr>
-<tr><td>逻辑简单、代码内嵌</td><td>DSL</td><td>编译期查列名错误、好调试</td></tr>
+<tr><td>逻辑简单、代码内嵌</td><td>DSL</td><td>链式写法好调试；<strong>字符串列名仍是运行时解析</strong>，要编译期检查得用 <code>Dataset[T]</code></td></tr>
 <tr><td>复杂 join/多次聚合/子查询</td><td>SQL</td><td>表达力强，SQL 老司机直接写</td></tr>
 <tr><td>团队协作、BI 复用</td><td>SQL</td><td>可复制到 Hive/Impala/可视化工具</td></tr>
 <tr><td>需要动态拼条件（循环/参数化）</td><td>DSL 或 SQL 拼接都要小心</td><td>别注入；DSL 天然参数安全</td></tr>
@@ -331,7 +331,7 @@ spark.sql(&quot;&quot;&quot;
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>DSL 里列名拼错编译期才发现（Python）</td><td>PySpark 是运行时才报错；Scala 有类型检查。两个语言体验不同，写 Python 多用 <code>.printSchema()</code> 自查</td></tr>
+<tr><td>DSL 里列名拼错什么时候报错</td><td>用字符串列名时，Scala 和 PySpark <strong>都是运行时</strong>才报；只有 <code>Dataset[T]</code>（样例类）才有编译期类型检查。写完先 <code>.printSchema()</code> 自查</td></tr>
 <tr><td>SQL 字符串里列名错了</td><td>运行时才报 <code>cannot resolve column</code>。先 <code>df.printSchema()</code> / <code>SHOW COLUMNS</code> 核对</td></tr>
 <tr><td>两种写法混在一个项目</td><td>团队约定：简单链路 DSL，复杂查询 SQL，别一人一套。可读性优先</td></tr>
 <tr><td>以为 SQL 比 DSL 快</td><td>两种都被 Catalyst 转成一个计划，没有"SQL 更优"这回事。别为了"更快"换写法</td></tr>

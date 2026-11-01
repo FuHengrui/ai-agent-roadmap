@@ -74,7 +74,7 @@ RDD（Resilient Distributed Dataset）拆开看：
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 把"弹性"理解成"自动扩容" | 弹性指的是**存储弹性**（内存↔磁盘自由切换），不是集群扩缩容。词是同一个，别答错含义 |
+| 把"弹性"理解成"自动扩容" | RDD 的「弹性」有两层：**存储弹性**（内存↔磁盘切换）和**容错弹性**（血缘重算），都和集群扩缩容无关 |
 | 以为 RDD 可变、能往里面 add | 不可变是 Spark 分布式容错的基石：只有不可变才能记录"计算链"，挂了按链重放。想"改"就生成新 RDD |
 | 以为每个 RDD 都是数据快照 | RDD 大部分时候只是**计算逻辑**（惰性的），真正数据算出来发生在 Action 触发时——这正是后面惰性求值的基础 |
 
@@ -223,7 +223,7 @@ rdd = rdd.partitionBy(3, partitionFunc)   # 自定义规则
 ```python
 # 把 Python/Scala 的本地集合变成分布式 RDD
 rdd1 = sc.parallelize([1, 2, 3, 4, 5], 2)      # 指定 2 个分区
-rdd2 = sc.makeRDD([1, 2, 3, 4, 5], 2)          # 等价，内部就是 parallelize
+# rdd2 = sc.makeRDD(...)   # 注意：makeRDD 只在 Scala 的 SparkContext 里有；PySpark 没有，会 AttributeError
 ```
 
 **方式二：读取文件创建（最常用）**

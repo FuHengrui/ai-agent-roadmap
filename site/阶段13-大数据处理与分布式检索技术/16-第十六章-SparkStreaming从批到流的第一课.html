@@ -371,6 +371,8 @@ Structured Streaming（结构化流）—— Spark 2.x 新一代，基于 DataFr
 import org.apache.spark.streaming._
 
 // ① 创建 StreamingContext（批间隔 2 秒）
+val conf = new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;streaming-demo&quot;)
+val sc = new SparkContext(conf)              // 本章后面 sc.parallelize/sc.broadcast 要用它
 val ssc = new StreamingContext(sc, Seconds(2))
 
 // ② 输入源：Socket 文本流（测试常用；生产用 Kafka，下章）

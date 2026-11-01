@@ -422,9 +422,9 @@ rdd.persist(StorageLevel.MEMORY_AND_DISK_2)  // _2 = 每个分区存两份、落
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <pre>sc.setCheckpointDir(&quot;hdfs://.../ckpt/&quot;)   // ① 先设检查点目录
-rdd.map(...).filter(...)...                // 数据链
-rdd.checkpoint()                           // ② 标记检查点
-rdd.count()                                // ③ 行动算子：先算完，把结果落盘到 HDFS，然后切断血缘</pre>
+val mid = rdd.map(...).filter(...)         // 数据链（长血缘在这一步之后）
+mid.checkpoint()                           // ② 标记在【链尾】那个 RDD 上，不是源 RDD
+mid.count()                                // ③ 行动算子：算完落盘到 HDFS，然后切断血缘</pre>
 <p><strong>checkpoint 的三步动作（在一个行动算子触发时完成）</strong>：</p>
 <ol><li><strong>计算</strong>：正常算完该 RDD</li><li><strong>落盘</strong>：把每个分区写入 checkpoint 目录（是可靠存储，如 HDFS，天然多副本）</li><li><strong>断链</strong>：此后该 RDD 的血缘被替换成"我从 checkpoint 读"，上游算子链被截断</li></ol>
 <pre>断链前：textFile → 20 步算子 → rdd      （重算=20 步全跑）

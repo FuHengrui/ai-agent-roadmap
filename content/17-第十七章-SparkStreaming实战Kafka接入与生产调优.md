@@ -89,7 +89,7 @@ Direct 模式（Spark 1.3+，唯一正确）：
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 教程里还在讲 Receiver API | 那是老教程。看 `createDirectStream` 才对了；见到 `KafkaUtils.createStream` 直接跳过 |
-| Direct 模式下并行度想调大 | 并行度上限=Kafka 分区数。想加大：Kafka 侧多开分区（repartition），不是 Spark 侧 repartition |
+| Direct 模式下并行度想调大 | **读入阶段**的并行度上限 = Kafka 分区数，想加大首选 Kafka 侧多开分区；读入之后下游算不动，可以 `repartition` 摊开（代价是多一次 shuffle） |
 | 以为 Direct 完全不需要 checkpoint | 状态/元数据恢复仍靠 checkpoint；但"数据本身"在 Kafka，不怕 Executor 挂。两者分工不同 |
 | Receiver 模式重启丢一批数据 | 这就是废弃它的原因之一。切 Direct 后，数据源变成"Kafka 可重放"，丢数据窗口消失 |
 

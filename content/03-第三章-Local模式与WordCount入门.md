@@ -129,7 +129,10 @@ Scala 版（spark-shell 里可直接粘贴）：
 
 ```scala
 // 1. 读取本地文件，得到 RDD[String]，每一行是一条数据
-// 先在 shell 里准备输入文件（Spark 发行包不带它）：mkdir -p data && printf 'hello spark\nhello world\n' > data/word.txt
+// 先在 cmd 里准备输入文件（Spark 发行包不带它）：
+//   mkdir data
+//   echo hello spark> data\word.txt
+//   echo hello world>> data\word.txt
 val lines = sc.textFile("data/word.txt")
 
 // 2. flatMap：把每行按空格拆成单词，并压平成单词流

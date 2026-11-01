@@ -261,7 +261,7 @@ df.write
 |---|---|
 | partitionBy 后文件反而多到爆 | 分区基数太高（按 user_id 分）。分区列选低基数；高频筛选靠二级索引/桶 |
 | filter 没写分区字段，白分 | 分区裁剪只对手写分区列的过滤生效。SQL 里 where 没写 dt → 全扫。**写 SQL 的同事要约定好分区条件** |
-| 分区目录里 schema 漂移（多一列） | partitionBy 的列**不写进数据文件**（在目录名里），读回时你显式加回分区列。schema 变化用 `mergeSchema=true` |
+| 分区目录里 schema 漂移（多一列） | partitionBy 的列**不写进数据文件**（在目录名里），标准 `key=value` 布局**读回时会自动带回分区列**（别再手动加，加了会重复）；只有自造的非标准布局才要手动加。schema 变化用 `mergeSchema=true` |
 | 对已存在的分区 overwrite | partitionBy+overwrite 会**清掉整个表再写**，不是只覆盖目标分区。要只覆盖某分区：`df.write.mode("overwrite").option("partitionOverwriteMode","dynamic")`（Spark 3 默认 dynamic 了对非分区表？不对——记得 Hive 分区覆盖语义） |
 
 @@point ⑦ Spark On Hive：算归 Spark，表归 Hive
