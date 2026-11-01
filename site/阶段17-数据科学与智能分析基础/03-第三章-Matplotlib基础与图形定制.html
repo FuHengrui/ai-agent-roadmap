@@ -305,7 +305,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>Matplotlib 是 Python 数据可视化的事实标准库：接口风格类似 MATLAB，能画折线、散点、直方图、饼图、3D 图等几乎所有常见图表，是数据分析、科学计算的标配。</p>
 <p>安装（在目标虚拟环境中）：</p>
-<pre>pip install matplotlib==3.8.2</pre>
+<pre>pip install &quot;matplotlib&gt;=3.10&quot;   # 第 4 章用到 tick_labels，3.9 才有；3.8 会报 TypeError</pre>
 <p>两个认知校准：</p>
 <ul><li>Matplotlib <strong>不止能画 2D</strong>，通过 <code>projection='3d'</code> 也支持 3D 图（第 4 章细讲）；</li><li>它是"底层绘图库"——后面学的 Seaborn 就是<strong>建立在 Matplotlib 之上</strong>的高层封装。</li></ul>
 </div>
@@ -492,12 +492,12 @@ fig, ax1 = plt.subplots()
 times = [1, 2, 3, 4]
 temp = [28, 30, 32, 31]        # 左侧量纲：温度
 
-ax1.plot(times, temp, color=&#x27;red&#x27;)
+ax1.plot(times, temp, color=&#x27;red&#x27;, label=&#x27;温度&#x27;)
 ax1.set_ylabel(&#x27;温度(℃)&#x27;)
 
 ax2 = ax1.twinx()              # 右边新 y 轴，共享 x 轴
 humidity = [65, 70, 72, 68]
-ax2.plot(times, humidity, color=&#x27;blue&#x27;)
+ax2.plot(times, humidity, color=&#x27;blue&#x27;, label=&#x27;湿度&#x27;)   # legend 只认 label
 ax2.set_ylabel(&#x27;湿度(%)&#x27;)
 
 # 两条 plot 各自先设 label=&#x27;温度&#x27; / label=&#x27;湿度&#x27;，图例才有名字
@@ -535,7 +535,7 @@ plt.plot(x, y,
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>marker 加了没效果</td><td>marker 只对点生效；线用 linestyle，点用 marker，两者配合才是"带点的线"</td></tr>
-<tr><td>拼写 linewith 不报错但线宽没变</td><td>参数名拼错会被忽略；正确是 linewidth</td></tr>
+<tr><td>拼写 linewith 会立刻抛 AttributeError（unexpected keyword argument），按报错把名字改回 linewidth</td><td>参数名拼错会被忽略；正确是 linewidth</td></tr>
 </table>
 </div>
 </div></div>
@@ -582,7 +582,7 @@ plt.grid(axis=&#x27;y&#x27;,            # 只显示 y 向网格；&#x27;x&#x27; 
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>grid 拼成 gird</td><td>单词拼错参数不生效且不报错，检查拼写</td></tr>
+<tr><td>grid 拼成 gird</td><td>单词拼错会抛 ValueError（keyword grid_gird is not recognized），不会静默失效，检查拼写</td></tr>
 <tr><td>网格太黑盖住数据</td><td>用 alpha=0.3~0.5 调淡</td></tr>
 </table>
 </div>

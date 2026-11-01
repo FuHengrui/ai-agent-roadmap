@@ -441,7 +441,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>汇总本章全部操作要点：</p>
-<pre>掩码：前向与反向都乘 Mask，剪掉的权重永不更新
+<pre>掩码：前向与反向都乘 Mask **还不够**——被剪位置要先清零优化器状态（动量/Adam 的 m、v），并且每步 `optimizer.step()` 之后再 `W ← W ⊙ M` 硬复位，权重才真的不复活
 稀疏度：渐进提高，找&quot;精度-压缩&quot;曲线拐点
 重要性：Weight Magnitude（幅度）或 Gradient Magnitude（梯度），可加权组合
 动态网络手术：训练中动态&quot;剪+再生长&quot;，允许误剪复活

@@ -169,7 +169,7 @@ Untracked files:
 | 状态 | 含义 | 怎么进入 | 下一步去哪 |
 |---|---|---|---|
 | **untracked（未跟踪）** | 文件在文件夹里，但 Git 不认识它 | 新建文件 | `git add` → staged |
-| **unmodified（未修改）** | 已入库，内容与版本库一致 | `git commit` 之后 | 改它 → modified；`git rm` 移出 → untracked |
+| **unmodified（未修改）** | 已入库，内容与版本库一致 | `git commit` 之后 | 改它 → modified；`git rm --cached` 移出 → untracked（`git rm` 不带 --cached 会连文件一起删，状态是 deleted） |
 | **modified（已修改）** | 改过了但还没 add | 修改 unmodified 文件 | `git add` → staged；`git checkout --` → 丢弃修改 |
 | **staged（已暂存）** | 改动已放入暂存区，等提交 | `git add` 之后 | `git commit` → unmodified；`git reset HEAD` → modified |
 

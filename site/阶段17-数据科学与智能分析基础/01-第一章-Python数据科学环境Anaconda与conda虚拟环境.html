@@ -304,7 +304,7 @@
 <p>先回答一个你迟早会问的问题：<strong>为什么大家都在说"装 numpy 很麻烦"？</strong> 不懂这段历史，你就无法理解 wheel、conda 这些概念是为什么存在的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>Python 语言本身很简洁，但早期的第三方库安装体验极差。原因是：<strong>很多科学计算库（numpy、scipy、pandas）内部含有 C/C++ 扩展代码</strong>，早期只有源码包，<code>pip install</code> 拿到源码后必须在你本机现场编译——Windows 上缺编译器（MKL、OpenBLAS）就直接报错，装一个库折腾半天。</p>
+<p>Python 语言本身很简洁，但早期的第三方库安装体验极差。原因是：<strong>很多科学计算库（numpy、scipy、pandas）内部含有 C/C++ 扩展代码</strong>，早期只有源码包，<code>pip install</code> 拿到源码后必须在你本机现场编译——Windows 上缺编译器（如 MSVC Build Tools）、或 BLAS 库（MKL / OpenBLAS）不匹配，都会直接报错，装一个库折腾半天。</p>
 <p>转折点是 <strong>wheel 二进制格式</strong>（PEP 427 标准）：把编译好的成品打成 .whl 文件，<code>pip install</code> 直接解压即用，不再需要本机编译。从此 Python 依靠 numpy/scipy/pandas 等库进入科学计算领域，实现了"<strong>语法简洁 + 性能高效</strong>"的组合。</p>
 <p>一句话记住：<strong>wheel = 预编译好的二进制包，解决了"现场编译装不上"的历史难题</strong>。</p>
 </div>

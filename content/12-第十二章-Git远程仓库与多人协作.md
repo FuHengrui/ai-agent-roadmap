@@ -48,7 +48,7 @@ git remote add origin https://gitee.com/yourname/my-project.git
 ```
 
 - `origin` 是**远程仓库的别名**（惯例叫 origin，也可以叫别的）；
-- 以后推拉代码不用敲一长串地址，直接 `git push origin` 就行；
+- 以后推拉代码不用敲一长串地址，直接 `git push origin <分支名>` 就行（**首次必须带 -u**：`git push -u origin main` 绑定上游，之后才可以只敲 `git push`；没绑定过就 `git push origin` 会报 no upstream branch）；
 - 平台新建仓库一般会给出提示命令，复制 `remote add` 这一行即可。
 
 @@trap 坑在哪

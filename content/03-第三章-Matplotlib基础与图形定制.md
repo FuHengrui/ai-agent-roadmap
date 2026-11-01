@@ -32,7 +32,7 @@ Matplotlib 是 Python 数据可视化的事实标准库：接口风格类似 MAT
 安装（在目标虚拟环境中）：
 
 ```bash
-pip install matplotlib==3.8.2
+pip install "matplotlib>=3.10"   # 第 4 章用到 tick_labels，3.9 才有；3.8 会报 TypeError
 ```
 
 两个认知校准：
@@ -250,12 +250,12 @@ fig, ax1 = plt.subplots()
 times = [1, 2, 3, 4]
 temp = [28, 30, 32, 31]        # 左侧量纲：温度
 
-ax1.plot(times, temp, color='red')
+ax1.plot(times, temp, color='red', label='温度')
 ax1.set_ylabel('温度(℃)')
 
 ax2 = ax1.twinx()              # 右边新 y 轴，共享 x 轴
 humidity = [65, 70, 72, 68]
-ax2.plot(times, humidity, color='blue')
+ax2.plot(times, humidity, color='blue', label='湿度')   # legend 只认 label
 ax2.set_ylabel('湿度(%)')
 
 # 两条 plot 各自先设 label='温度' / label='湿度'，图例才有名字
@@ -297,7 +297,7 @@ plt.plot(x, y,
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | marker 加了没效果 | marker 只对点生效；线用 linestyle，点用 marker，两者配合才是"带点的线" |
-| 拼写 linewith 不报错但线宽没变 | 参数名拼错会被忽略；正确是 linewidth |
+| 拼写 linewith 会立刻抛 AttributeError（unexpected keyword argument），按报错把名字改回 linewidth | 参数名拼错会被忽略；正确是 linewidth |
 
 @@point ⑩ 坐标轴刻度定制：xticks / yticks
 @@need 要解决什么
@@ -352,7 +352,7 @@ plt.grid(axis='y',            # 只显示 y 向网格；'x' 或 'both'
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| grid 拼成 gird | 单词拼错参数不生效且不报错，检查拼写 |
+| grid 拼成 gird | 单词拼错会抛 ValueError（keyword grid_gird is not recognized），不会静默失效，检查拼写 |
 | 网格太黑盖住数据 | 用 alpha=0.3~0.5 调淡 |
 
 @@point ⑫ 数据标注与注释：text / annotate

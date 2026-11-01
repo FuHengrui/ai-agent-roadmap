@@ -322,7 +322,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <pre>git remote add origin https://gitee.com/yourname/my-project.git
 #                ↑简称    ↑远程仓库地址（换成你自己的，这里是占位示例）</pre>
-<ul><li><code>origin</code> 是<strong>远程仓库的别名</strong>（惯例叫 origin，也可以叫别的）；</li><li>以后推拉代码不用敲一长串地址，直接 <code>git push origin</code> 就行；</li><li>平台新建仓库一般会给出提示命令，复制 <code>remote add</code> 这一行即可。</li></ul>
+<ul><li><code>origin</code> 是<strong>远程仓库的别名</strong>（惯例叫 origin，也可以叫别的）；</li><li>以后推拉代码不用敲一长串地址，直接 <code>git push origin &lt;分支名&gt;</code> 就行（<strong>首次必须带 -u</strong>：<code>git push -u origin main</code> 绑定上游，之后才可以只敲 <code>git push</code>；没绑定过就 <code>git push origin</code> 会报 no upstream branch）；</li><li>平台新建仓库一般会给出提示命令，复制 <code>remote add</code> 这一行即可。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

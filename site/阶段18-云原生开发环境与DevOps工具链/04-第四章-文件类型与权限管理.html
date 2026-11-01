@@ -505,7 +505,7 @@ chown -R dev /opt/app        # -R 递归：连同目录下所有文件一起改<
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>最小权限原则</strong>：只给"刚好够用"的权限，多一分都不给。</p>
 <ul><li>服务跑文件：属主读写+执行即可，别给其他用户写；</li><li>配置文件：属主只读（甚至 600），密码类文件绝不公开；</li><li>目录：按"谁需要进入/列出/管理"分三档给，不滥用 -R 大范围授权。</li></ul>
-<pre># 一个&quot;克制&quot;的示例：日志目录只让运维组读写，其他组只读
+<pre># 一个&quot;克制&quot;的示例：日志目录只让 root 写、运维组只读可进入，其他人无权限（要「组读写」得用 770/774）
 chown -R root:devops /var/log/app
 chmod 750 /var/log/app        # root 全权；devops 组**读+执行**（5=r-x，不能写）；其他无（0）；组要能写就把 5 换成 7（770）</pre>
 </div>

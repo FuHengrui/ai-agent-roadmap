@@ -427,7 +427,7 @@ Untracked files:
 <table>
 <tr><th>状态</th><th>含义</th><th>怎么进入</th><th>下一步去哪</th></tr>
 <tr><td><strong>untracked（未跟踪）</strong></td><td>文件在文件夹里，但 Git 不认识它</td><td>新建文件</td><td><code>git add</code> → staged</td></tr>
-<tr><td><strong>unmodified（未修改）</strong></td><td>已入库，内容与版本库一致</td><td><code>git commit</code> 之后</td><td>改它 → modified；<code>git rm</code> 移出 → untracked</td></tr>
+<tr><td><strong>unmodified（未修改）</strong></td><td>已入库，内容与版本库一致</td><td><code>git commit</code> 之后</td><td>改它 → modified；<code>git rm --cached</code> 移出 → untracked（<code>git rm</code> 不带 --cached 会连文件一起删，状态是 deleted）</td></tr>
 <tr><td><strong>modified（已修改）</strong></td><td>改过了但还没 add</td><td>修改 unmodified 文件</td><td><code>git add</code> → staged；<code>git checkout --</code> → 丢弃修改</td></tr>
 <tr><td><strong>staged（已暂存）</strong></td><td>改动已放入暂存区，等提交</td><td><code>git add</code> 之后</td><td><code>git commit</code> → unmodified；<code>git reset HEAD</code> → modified</td></tr>
 </table>
