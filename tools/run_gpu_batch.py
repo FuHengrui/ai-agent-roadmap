@@ -11,6 +11,7 @@
 """
 import argparse
 import json
+import os
 import pathlib
 import re
 import subprocess
@@ -38,13 +39,26 @@ def needs_torch(name: str) -> bool:
 
 
 def run_one(name: str):
-    r = subprocess.run([sys.executable, str(RUNNER), name],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace")
-    out = r.stdout or ""
+    # 子进程必须强制 UTF-8：Windows 管道默认 GBK，中文打印会 UnicodeEncodeError 崩掉
+    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
+    r = subprocess.run([sys.executable, str(RUNNER), name], capture_output=True,
+                       text=True, encoding="utf-8", errors="replace", env=env)
+    out = (r.stdout or "") + (r.stderr or "")
     m = re.search(r"通过 (\d+) / 报错 (\d+) / 跳过 (\d+)", out)
-    ok, bad, skip = (int(m.group(1)), int(m.group(2)), int(m.group(3))) if m else (0, 0, 0)
+    if m:
+        ok, bad, skip = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    else:
+        # 汇总行没打出来（子进程崩了）：退化成数 [OK]/[ERR] 标记，并把原因记下来
+        ok = len(re.findall(r"\[OK\]", out))
+        bad = len(re.findall(r"\[ERR\]", out))
+        skip = len(re.findall(r"\[SKIP", out))
     errs = [l.strip() for l in out.split("\n") if "[ERR]" in l][:3]
-    return {"chapter": name, "ok": ok, "bad": bad, "skip": skip, "errors": errs}
+    note = "" if m else "（没拿到汇总行，子进程可能中途崩了）"
+    if r.returncode and not m:
+        tail = [x for x in out.strip().split("\n") if x.strip()][-1:] or [""]
+        note += " " + tail[0][:80]
+    return {"chapter": name, "ok": ok, "bad": bad, "skip": skip,
+            "errors": errs, "note": note, "returncode": r.returncode}
 
 
 def main() -> int:
