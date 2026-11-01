@@ -135,7 +135,7 @@ async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
         full_text = ""
         try:
             # 1. 流式走工作流，只收集 qa_generation 节点的 token
-…（以下省略 25 行，完整代码见仓库对应位置）
+…（以下省略 25 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
                 yield f"data: {json.dumps({'sources': sources}, ensure_ascii=False)}\n\n"
             yield "data: [DONE]\n\n"
 
@@ -196,7 +196,7 @@ async def list_sessions(user=Depends(get_current_user)):
         last_msg = await ChatMessageRecord.filter(
             chat_session=s, role="user"
         ).order_by("created_at").first()
-…（以下省略 4 行，完整代码见仓库对应位置）
+…（以下省略 4 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
         })
     return {'sessions': result}
 
@@ -229,7 +229,7 @@ class DocumentGenerateRequest(BaseModel):
 async def get_templates():
     return {"templates": [
         {"type": "起诉状", "description": "民事起诉状"},
-…（以下省略 9 行，完整代码见仓库对应位置）
+…（以下省略 9 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
     references = []
     if request.use_references:
         references = await RetrievalAgent().retrieve(query=request.query, top_k=3)
@@ -264,7 +264,7 @@ export function streamSendMessage(message, sessionId) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-…（以下省略 22 行，完整代码见仓库对应位置）
+…（以下省略 22 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
         if (payload === '[DONE]') { yield { done: true }; return }
         try { yield JSON.parse(payload) } catch { /* 忽略脏行 */ }
       }

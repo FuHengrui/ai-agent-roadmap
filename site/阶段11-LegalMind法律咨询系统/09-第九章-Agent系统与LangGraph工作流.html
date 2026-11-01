@@ -374,7 +374,7 @@ class AgentState(TypedDict):
     workflow.add_node(&quot;document_generation&quot;, self._document_node)
     workflow.add_node(&quot;final_output&quot;, self._output_node)
 
-…（以下省略 11 行，完整代码见仓库对应位置）
+…（以下省略 11 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
         &quot;qa&quot;: &quot;qa_generation&quot;,
         &quot;search&quot;: &quot;final_output&quot;,
     })
@@ -419,7 +419,7 @@ async def _retrieval_node(self, state: AgentState) -&gt; dict:
     cases = await self.retrieval_agent.retrieve(query=state.get(&quot;query&quot;), top_k=5, filters=state.get(&quot;filters&quot;))
     return {&quot;retrieved_cases&quot;: cases}
 
-…（以下省略 14 行，完整代码见仓库对应位置）
+…（以下省略 14 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
 async def _document_node(self, state: AgentState) -&gt; dict:
     response = await self.document_agent.generate(
         document_type=state.get(&quot;document_type&quot;, &quot;起诉状&quot;),
@@ -474,7 +474,7 @@ _checkpointer: AsyncPostgresSaver | None = None
 async def init_checkpointer():
     &quot;&quot;&quot;lifespan 启动时调用：建连接池 + 幂等建表&quot;&quot;&quot;
     global _pool, _checkpointer
-…（以下省略 4 行，完整代码见仓库对应位置）
+…（以下省略 4 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
     _checkpointer = AsyncPostgresSaver(conn=_pool)
     await _checkpointer.setup()      # 自动创建 checkpoints 表
     return _checkpointer

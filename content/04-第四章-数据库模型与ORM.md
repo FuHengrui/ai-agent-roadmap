@@ -87,7 +87,7 @@ class Case(Model):
     case_type = fields.CharField(max_length=50)       # 民事/刑事/行政/劳动争议
     summary = fields.TextField()                      # 裁判要旨/案情摘要
     content = fields.TextField(null=True)             # 裁判文书全文（详情页用）
-…（以下省略 6 行，完整代码见仓库对应位置）
+…（以下省略 6 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
             "title": self.title,
             "case_number": self.case_number,
             "court": self.court,

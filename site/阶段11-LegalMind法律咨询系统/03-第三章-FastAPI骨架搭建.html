@@ -314,7 +314,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.db.database import init_db, close_db
-…（以下省略 33 行，完整代码见仓库对应位置）
+…（以下省略 33 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
 app.include_router(auth.router, prefix=&quot;/api/auth&quot;, tags=[&quot;auth&quot;])
 app.include_router(chat.router, prefix=&quot;/api/chat&quot;, tags=[&quot;chat&quot;])
 app.include_router(documents.router, prefix=&quot;/api/documents&quot;, tags=[&quot;documents&quot;])
@@ -367,7 +367,7 @@ DB_MODELS = [
     &quot;app.models.chat&quot;,
     &quot;app.models.document&quot;,
 ]
-…（以下省略 3 行，完整代码见仓库对应位置）
+…（以下省略 3 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
         db_url=settings.DATABASE_URL,
         modules={&quot;models&quot;: DB_MODELS},
     )
