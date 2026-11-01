@@ -102,7 +102,7 @@ def add_documents(self, documents, metadatas=None, ids=None):
     embeddings = self.embeddings.embed_documents(documents)
     batch_size = 100
     for i in range(0, len(documents), batch_size):
-        self.collection.add(
+        self.collection.upsert(   # add 遇到重复 ID 会报错；upsert 才是「有则更新」
             documents=documents[i:i+batch_size],
             embeddings=embeddings[i:i+batch_size],
             metadatas=metadatas[i:i+batch_size],
@@ -223,6 +223,8 @@ ChromaDB 给的是"距离"（越小越相似），业务上要"分数"（越大�
 
 @@idea 核心思路
 ```python
+from typing import Dict, List   # 本章前面没导入，照抄会 NameError
+
 def search_knowledge(query, category=None, top_k=5) -> List[Dict]:
     where = {"category": category} if category else None
     results = vector_store.query(query_text=query, top_k=top_k, where=where)

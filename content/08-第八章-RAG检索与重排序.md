@@ -57,10 +57,12 @@ class HybridRetriever:
         tokenized = [list(jieba.cut(d)) for d in docs]                # 中文必须分词
         return BM25Okapi(tokenized), cases
 
-    def retrieve(self, query: str, top_k: int = 5):
+    async def retrieve(self, query: str, top_k: int = 5, filters: dict | None = None):
         # ① 向量召回（返回 Document，先转成 dict）
-        vector_hits = self.vector_store.similarity_search(query, top_k=top_k * 3)
-        vector_cases = [{"content": d.page_content, **d.metadata} for d in vector_hits]
+        # 第 7 章的 similarity_search 是 async，且返回 (Document, 距离) 元组
+        vector_hits = await self.vector_store.similarity_search(
+            query, top_k=top_k * 3, filters=filters)
+        vector_cases = [{"content": d.page_content, **d.metadata} for d, _ in vector_hits]
 
         # ② BM25 召回（本身就是 dict，两边结构对齐才能合并）
         tokenized_query = list(jieba.cut(query))
@@ -130,10 +132,11 @@ class RetrievalAgent:
 
     async def retrieve(self, query: str, top_k: int = 5, filters: dict | None = None) -> list[dict]:
         # 1. 多路召回（候选池的放大在 retriever 内部做一次，别再叠加）
-        candidates = self.retriever.retrieve(query=query, top_k=top_k, filters=filters)
+        candidates = await self.retriever.retrieve(query=query, top_k=top_k, filters=filters)
 
         # 2. 重排序（可选；不开就用截断）
-        candidates = self.reranker.rerank(query, candidates, top_k) if self.reranker else candidates[:top_k]
+        candidates = (await self.reranker.rerank(query, candidates, top_k)
+                      if self.reranker else candidates[:top_k])
         return candidates
 
     async def search_by_keywords(self, keywords: list[str], top_k: int = 10) -> list[dict]:
@@ -212,7 +215,7 @@ def _format_cases(self, cases: list[dict]) -> str:
 filters = {}
 if court:     filters["court"] = court
 if case_type: filters["case_type"] = case_type
-if article:   filters["laws"] = {"$in": [article]}
+if article:   filters["_laws_substring"] = article   # laws 是拼接串，只能拉回内存做子串筛（见下）
 
 results = await agent.retrieve(query=q, top_k=limit, filters=filters or None)
 ```

@@ -409,12 +409,12 @@ const router = createRouter({
   }
 })</pre>
 <p>三行核心逻辑：</p>
-<ul><li><strong>requiresAuth 且无 token</strong> → 踢到 /login，并带上 <code>redirect</code>（登录成功后自动跳回原页面）。</li><li><strong>guestOnly 且已登录</strong> → 去首页（别浪费登录页）。</li><li><strong>其余</strong> → 放行。</li><li>用 <code>to.matched.some()</code> 而非 <code>to.meta</code>：<strong>子路由继承父路由 meta</strong>，深层路由也能取到。</li></ul>
+<ul><li><strong>requiresAuth 且无 token</strong> → 踢到 /login，并带上 <code>redirect</code>（登录成功后自动跳回原页面）。</li><li><strong>guestOnly 且已登录</strong> → 去首页（别浪费登录页）。</li><li><strong>其余</strong> → 放行。</li><li><code>to.meta</code> 与 <code>to.matched.some()</code> 的区别：<strong>vue-router 4 的 <code>to.meta</code> 已经把 matched 各级 meta 合并了</strong>，父级写 <code>requiresAuth</code> 子级也能读到；<code>to.matched.some()</code> 只是更显式（一眼看出是哪一级命中的），不是「必须用它才对」。</li></ul>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>直接读 <code>to.meta.requiresAuth</code>，嵌套路由永远 false</td><td><code>to.meta</code> <strong>已经合并了 matched 各级</strong>的 meta（子路由会继承父级）；这里用 <code>to.matched.some(...)</code> 是为了显式、也能兼容老版本。原文说法反了。所以别写成「读到 <code>to.meta.requiresAuth</code>，嵌套路由永远 false」；用 <code>to.matched.some(r =&gt; r.meta.requiresAuth)</code> 逐级向上找</td></tr>
+<tr><td>以为 <code>to.meta</code> 只含最后一级路由的 meta</td><td>vue-router 4 会把 <code>matched</code> 各级的 meta <strong>合并</strong>进 <code>to.meta</code>，父路由写了 <code>requiresAuth</code> 子路由照样生效；两种写法都可，<code>to.matched.some()</code> 胜在可读</td></tr>
 <tr><td>守卫里用 <code>next()</code> 处理完异步再 next，页面跳转错乱</td><td>现代 Vue Router 推荐直接 <code>return true / { path }</code> 替代 next；至少保证每次导航只调用一次 next</td></tr>
 </table>
 </div>

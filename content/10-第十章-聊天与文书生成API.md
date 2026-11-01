@@ -54,8 +54,9 @@ class ChatResponse(BaseModel):
 光把回答推给用户不行——刷新页面聊天记录就没了。每次收发都要落库：会话（ChatSession）+ 消息（ChatMessageRecord），并且**归属到当前用户**。
 @@idea 核心思路
 ```python
-async def _get_user_obj(user_info: dict) -> User:
-    return await User.get(id=user_info["user_id"])
+async def _get_user_obj(user: User) -> User:
+    """第 5 章的 get_current_user 直接返回 User 对象（不是 dict），这里保留一层是为了统一调用点"""
+    return user
 
 async def _ensure_session(session_id: str, user_obj: User) -> ChatSession:
     """确保会话存在且属于当前用户（不存在则创建）"""
@@ -72,7 +73,7 @@ async def _record_messages(session: ChatSession, user_msg: str, assistant_msg: s
 ```
 - `get_or_create`：已存在（返回的 session_id 是历史会话）则复用，不存在则创建——**天然支持"新会话/续聊"两种场景**。
 - 每轮**写两条消息**（user + assistant），保证历史回放时角色完整。
-- 越权防护：查询消息前校验 `session.user_id == user_info["user_id"]`，他人会话一律 404（第 4 章 `_get_owned_session` 就是这个职责）。
+- 越权防护：查询消息前校验 `session.user_id == user.id`，他人会话一律 404（第 4 章 `_get_owned_session` 就是这个职责）。
 
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
@@ -92,7 +93,7 @@ async def send_message(request: ChatRequest, user=Depends(get_current_user)):
         session = await _get_owned_session(request.session_id, user)
         session_id = session.session_id
     else:
-        session = await ChatSession.create(user=user_obj)
+        session = await ChatSession.create(session_id=str(uuid.uuid4()), user=user_obj)
         session_id = session.session_id
 
     # 跑完整工作流（含 checkpointer 记忆续接）
@@ -127,7 +128,7 @@ async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
         session = await _get_owned_session(request.session_id, user)
         session_id = session.session_id
     else:
-        session = await ChatSession.create(user=user_obj)
+        session = await ChatSession.create(session_id=str(uuid.uuid4()), user=user_obj)
         session_id = session.session_id
 
     async def generate():
@@ -235,7 +236,7 @@ async def get_templates():
     result = await agent.generate(
         document_type=request.document_type, params=request.params,
         query=request.query, references=references)
-    return {"content": result["content"], "document_type": result["document_type"],
+    return {"content": result["content"], "document_type": request.document_type,
             "references": result["references"]}
 ```
 - `use_references=True` 时先按 query 检索 3 个参考案例喂给生成器——**没有检索，纯模板生成就会"空有格式没依据"**。

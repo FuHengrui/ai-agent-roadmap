@@ -300,7 +300,7 @@
 <table>
 <tr><th>硬件项</th><th>要求</th></tr>
 <tr><td>GPU</td><td>NVIDIA（CUDA 生态）</td></tr>
-<tr><td>显存</td><td>≥ 24GB（7B 跑 FP16；13B 要 INT4 量化才塞得下）</td></tr>
+<tr><td>显存</td><td>≥ 24GB（7B 跑 FP16；13B 要降到 INT8（≈13GB）才塞得下 24GB（FP16 是 26GB，不够））</td></tr>
 <tr><td>CUDA</td><td>跟 wheel 走：装 cu128 就要 CUDA 12.8 的驱动，装 cu124 就要 12.4（别把 12.1 当统一门槛）</td></tr>
 </table>
 <p>为什么 24GB：7B 模型 FP16 权重≈14GB，再算上 KV 缓存与激活，"刚好塞进 24GB"是能流畅服务的最低线。<strong>显存是部署的第一约束</strong>，模型/位宽/并发全围绕它设计。</p>
@@ -456,7 +456,7 @@ source vllm_env/bin/activate   # 激活（Windows PowerShell: .\vllm_env\Scripts
 <tr><td>安装</td><td>pip install vllm</td><td>import vllm 成功</td></tr>
 </table>
 <p>平台提醒：Linux/云 GPU 首选；Windows 建议 WSL2 或容器。</p>
-<p>一句话记住本章：<strong>部署环境三步走：①nvidia-smi 核对硬件——NVIDIA GPU、显存≥24GB（7B FP16 权重就占 14GB 再加 KV 缓存）、CUDA≥12.1（记住驱动&gt;运行库&gt;框架的版本金字塔）；②建 Python 虚拟环境隔离依赖（python -m venv + activate）；③pip install vllm 后 import 验证；Windows 用户建议走 WSL2/容器，Linux/云 GPU 直装最顺——环境对了，后面部署才谈得上。</strong></p>
+<p>一句话记住本章：<strong>部署环境三步走：①nvidia-smi 核对硬件——NVIDIA GPU、显存≥24GB（7B FP16 权重就占 14GB 再加 KV 缓存）、CUDA ≥ 所装 wheel 的 cuXXX（当前默认 cu128，别看 12.1；记住驱动&gt;运行库&gt;框架的版本金字塔）；②建 Python 虚拟环境隔离依赖（python -m venv + activate）；③pip install vllm 后 import 验证；Windows 用户建议走 WSL2/容器，Linux/云 GPU 直装最顺——环境对了，后面部署才谈得上。</strong></p>
 <h4>自测：能不能答上来</h4>
 <ol><li>vLLM 部署的硬件底线是什么？24GB 显存能跑多大的模型、再大要怎么办？</li><li>预估模型部署显存占用的大致公式是什么？7B 模型 FP16 权重约占多少？</li><li>nvidia-smi 输出中要核对哪三个信息？</li><li>CUDA 版本门槛到底看什么？"驱动、运行库、框架"三者的关系是什么？</li><li>为什么要建 Python 虚拟环境？创建与激活的命令分别是什么？</li><li>安装 vLLM 的核心命令是什么？遇到网络慢怎么处理？</li><li>Windows 上装 vLLM 的正确姿势是什么？为什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>

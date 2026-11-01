@@ -335,10 +335,12 @@
         tokenized = [list(jieba.cut(d)) for d in docs]                # 中文必须分词
         return BM25Okapi(tokenized), cases
 
-    def retrieve(self, query: str, top_k: int = 5):
+    async def retrieve(self, query: str, top_k: int = 5, filters: dict | None = None):
         # ① 向量召回（返回 Document，先转成 dict）
-        vector_hits = self.vector_store.similarity_search(query, top_k=top_k * 3)
-        vector_cases = [{&quot;content&quot;: d.page_content, **d.metadata} for d in vector_hits]
+        # 第 7 章的 similarity_search 是 async，且返回 (Document, 距离) 元组
+        vector_hits = await self.vector_store.similarity_search(
+            query, top_k=top_k * 3, filters=filters)
+        vector_cases = [{&quot;content&quot;: d.page_content, **d.metadata} for d, _ in vector_hits]
 
         # ② BM25 召回（本身就是 dict，两边结构对齐才能合并）
         tokenized_query = list(jieba.cut(query))
@@ -406,10 +408,11 @@
 
     async def retrieve(self, query: str, top_k: int = 5, filters: dict | None = None) -&gt; list[dict]:
         # 1. 多路召回（候选池的放大在 retriever 内部做一次，别再叠加）
-        candidates = self.retriever.retrieve(query=query, top_k=top_k, filters=filters)
+        candidates = await self.retriever.retrieve(query=query, top_k=top_k, filters=filters)
 
         # 2. 重排序（可选；不开就用截断）
-        candidates = self.reranker.rerank(query, candidates, top_k) if self.reranker else candidates[:top_k]
+        candidates = (await self.reranker.rerank(query, candidates, top_k)
+                      if self.reranker else candidates[:top_k])
         return candidates
 
     async def search_by_keywords(self, keywords: list[str], top_k: int = 10) -&gt; list[dict]:
@@ -493,7 +496,7 @@
 filters = {}
 if court:     filters[&quot;court&quot;] = court
 if case_type: filters[&quot;case_type&quot;] = case_type
-if article:   filters[&quot;laws&quot;] = {&quot;$in&quot;: [article]}
+if article:   filters[&quot;_laws_substring&quot;] = article   # laws 是拼接串，只能拉回内存做子串筛（见下）
 
 results = await agent.retrieve(query=q, top_k=limit, filters=filters or None)</pre>
 <p>Chroma 的 metadata <strong>只支持标量</strong>（字符串/数字/布尔），不能存数组；<code>laws</code> 入库时拼成一个字符串（如 <code>"民法典第1087条;婚姻法第39条"</code>）。这样只能做<strong>精确等于</strong>，按单个法条筛就得把候选拉回内存过滤：</p>

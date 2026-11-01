@@ -383,7 +383,7 @@ class VectorStore:
             Document(
                 page_content=_chunk,   # 每个块一个 Document；标题已拼进正文，检索更容易命中
                 metadata={&quot;case_number&quot;: c[&quot;case_number&quot;], &quot;title&quot;: c[&quot;title&quot;],
-                          &quot;court&quot;: c[&quot;court&quot;], &quot;type&quot;: c[&quot;case_type&quot;]},   # Case 的字段叫 case_type，不是 type
+                          &quot;court&quot;: c[&quot;court&quot;], &quot;case_type&quot;: c[&quot;case_type&quot;], &quot;laws&quot;: &quot;;&quot;.join(c.get(&quot;laws&quot;) or [])},   # 键名要和第 8 章的 filters 一致；laws 是数组，Chroma 只收标量，拼成串
             )
             # 裁判文书动辄几千字，整篇 embed 会稀释语义（本章 trap 也提醒了）
             # 所以先按段落切块：每块 300~500 字，块内保留标题做上下文

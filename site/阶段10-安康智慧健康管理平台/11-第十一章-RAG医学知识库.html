@@ -368,7 +368,7 @@ class VectorStore:
     embeddings = self.embeddings.embed_documents(documents)
     batch_size = 100
     for i in range(0, len(documents), batch_size):
-        self.collection.add(
+        self.collection.upsert(   # add 遇到重复 ID 会报错；upsert 才是「有则更新」
             documents=documents[i:i+batch_size],
             embeddings=embeddings[i:i+batch_size],
             metadatas=metadatas[i:i+batch_size],
@@ -479,7 +479,9 @@ class VectorStore:
 <p>ChromaDB 给的是"距离"（越小越相似），业务上要"分数"（越大越相关）——怎么转换？还能按分类过滤吗？</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<pre>def search_knowledge(query, category=None, top_k=5) -&gt; List[Dict]:
+<pre>from typing import Dict, List   # 本章前面没导入，照抄会 NameError
+
+def search_knowledge(query, category=None, top_k=5) -&gt; List[Dict]:
     where = {&quot;category&quot;: category} if category else None
     results = vector_store.query(query_text=query, top_k=top_k, where=where)
     docs, metas, dists = results.get(&quot;documents&quot;) or [], results.get(&quot;metadatas&quot;) or [], results.get(&quot;distances&quot;) or []

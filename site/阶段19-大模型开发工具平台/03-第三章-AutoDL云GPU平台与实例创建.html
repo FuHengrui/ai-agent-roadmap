@@ -446,7 +446,7 @@
 <div class="step idea"><span class="label">核心思路</span>
 <p>AutoDL 的计费规则核心一条：<strong>实例状态显示「运行中」才开始计费，如不使用请及时关机停止计费。</strong></p>
 <p>拆解成三条铁律：</p>
-<ol><li><strong>运行中 = 计费中</strong>：创建完成后只要状态是"运行中"就在按小时（或按量）扣钱，<strong>不管你在不在操作</strong>；</li><li><strong>关机 = 停止计费</strong>：不用时去控制台<strong>关机</strong>，状态变为"已关机"后不再计费（存储一般仍保留并单独计费或保留若干天）；</li><li><strong>高峰期价格浮动</strong>：按量计费在高峰时段价格可能上浮，长任务可考虑包周/包月更划算。</li></ol>
+<ol><li><strong>运行中 = 计费中</strong>：创建完成后只要状态是"运行中"就在按小时（或按量）扣钱，<strong>不管你在不在操作</strong>；</li><li><strong>关机 = 停算力费（数据盘存储仍按天计费，别以为关机就零成本）</strong>：不用时去控制台<strong>关机</strong>，状态变为"已关机"后不再计费（存储一般仍保留并单独计费或保留若干天）；</li><li><strong>高峰期价格浮动</strong>：按量计费在高峰时段价格可能上浮，长任务可考虑包周/包月更划算。</li></ol>
 <p><strong>好习惯</strong>：晚上跑完训练随手关机；跑长任务前先算好预计小时数再决定按量还是包月。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

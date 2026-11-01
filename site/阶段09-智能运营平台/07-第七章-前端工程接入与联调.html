@@ -340,7 +340,7 @@ yarn dev          # 启动开发服务器，默认 5173 端口</pre>
   },
 }</pre>
 <p>机制拆解（这是联调最容易懵的点）：</p>
-<ul><li>前端请求 <code>/api/v1/test/styles</code> → Vite dev server 收到 → <strong>去掉 /api 前缀</strong> → 转发给 <code>http://127.0.0.1:8000/v1/test/styles</code> → 后端路由正好匹配。</li><li>所以后端路由里<strong>根本没有 /api 前缀</strong>！rewrite 就是"前后端路径不一致的桥梁"。</li><li>登录页照上面规则写 <code>/api/v1/auth/login</code>，不需要额外代理规则。</li></ul>
+<ul><li>前端请求 <code>/api/v1/test/styles</code> → Vite dev server 收到 → <strong>去掉 /api 前缀</strong> → 转发给 <code>http://127.0.0.1:8000/v1/test/styles</code> → 后端路由正好匹配。</li><li>所以后端路由里<strong>根本没有 /api 前缀</strong>！rewrite 就是"前后端路径不一致的桥梁"。</li><li>登录页照上面规则写 <code>/v1/auth/login</code>（baseURL 已经带了 <code>/api</code>，再加就变成 /api/api/…），不需要额外代理规则。</li></ul>
 <p>⚠️ 联调必查：代理只在 <strong>Vite dev server（开发模式）</strong>生效；<code>yarn build</code> 后的静态文件没有代理，线上部署要用 Nginx 做同样的转发规则！</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

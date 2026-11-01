@@ -446,7 +446,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>营养量没乘 portion</td><td>吃 2 份却按 1 份统计，营养结果偏小；统计时记得乘 portion（或前端录入时就乘好）</td></tr>
+<tr><td>营养量没乘 portion</td><td>吃 2 份却按 1 份统计，营养结果偏小；统计时才乘 portion——<strong>录入端不要提前乘</strong>（否则用户改份数就没法回溯）</td></tr>
 <tr><td>gi_value 为 NULL 也被算平均 GI</td><td>mean 会跳过 None，但如果数据全是 None 就没法算；注意空值兜底</td></tr>
 </table>
 </div>

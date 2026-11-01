@@ -80,13 +80,13 @@ resp = dashscope.ImageSynthesis.call(
 url = resp.output.results[0].url        # 取生成的图片 URL
 ```
 - `size="960*1696"`：小红书竖版封面常见比例（3:5 左右），**尺寸随用途定**（封面/正文/缩略图可不同）；
-- **返回解析路径很深**：`output.choices[0].message.content[0].image`——多一层数组就多一个取错的机会；
+- **返回解析路径**：文生图用 `ImageSynthesis`，结果在 `output.results[0].url`；识图（多模态理解）才走 `choices[0].message.content`，两者别混；
 - 超时/失败要重试：图片生成是重活，偶发失败属常态。
 
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| KeyError: 'image' / NoneType | content 里可能带文字或图片数组顺序不同；解析前先打印 resp 结构再定位 |
+| KeyError / AttributeError（取不到图） | 十有八九是拿识图的结构去解析文生图的结果：文生图看 `output.results[0].url`，解析前先打印 resp 结构 |
 | 报 ApiKey 鉴权失败 | QWEN_KEY 缺失或不是百炼密钥（别名 okhttp-apikey），检查 .env |
 | 拿到的 URL 直接入库后过期打不开 | 必须"转存 OSS"（见下一点），别把临时 URL 当正式数据 |
 
@@ -210,7 +210,7 @@ if resp.status_code == 200:
 @@summary 这一章你学到了什么
 - 配图链路：标题+风格 → 拼提示词 → 百炼文生图 → 转存 OSS → 落库
 - 提示词工程：风格（数据驱动）+ 主体 + 文字分支 + 质量约束 + 负向提示词
-- 百炼调用：MultiModalConversation、size 960*1696、深度解析 output.choices[0].message.content[0].image
+- 百炼调用：ImageSynthesis、size 960*1696、取 output.results[0].url（别再按多模态那条路径解age
 - OSS v2 SDK：load_default + StaticCredentialsProvider + oss.Client；与老版 oss2 API 完全不同
 - oss_key 规则：原名_uuid8 + 扩展名；中文文件名/Content-Type 显式处理；bucket public-read 才可访问
 - 双上传姿势：本地文件 put_object_from_file / URL 下载内存 put_object，统一 upload_image 封装
