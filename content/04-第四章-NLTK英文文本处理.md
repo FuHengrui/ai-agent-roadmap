@@ -58,7 +58,7 @@ print(sentences)
 # ['Dr. Smith visited the U.S.A.', 'He loves NLP.']
 tokens = word_tokenize(sentences[0])
 print(tokens)
-# ['Dr.', 'Smith', 'visited', 'the', 'U.S.A.', '.']
+# ['Dr.', 'Smith', 'visited', 'the', 'U.S.A', '.']   # 句末句点被单独切出来
 ```
 
 `sent_tokenize` 分句、`word_tokenize` 分词，底层用无监督算法学习"哪些句点是句子边界"，比无脑 split 稳得多。
@@ -270,7 +270,7 @@ print(Counter(clean_text(text)))
 | 分块 | 基于词性规则把词拼成短语（NP/VP） |
 | 名词短语 | NNP 连续提取 + NP 规则，抽取多词实体 |
 | 停用词 | stopwords.words('english')，配套小写化 |
-| 流水线 | 小写→分词→停用词→标注→还原→统计 |
+| 流水线 | 小写→分词→**标注**→停用词→还原→统计 |
 
 一句话记住本章：**英文处理用 NLTK 一条链走完：word_tokenize 分词、stopwords 过滤、pos_tag 标注、WordNetLemmatizer 还原，分块规则则可以按模式拼出名词短语——和 jieba 那条线是"中文版/英文版"的同构工具书。**
 
