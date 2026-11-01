@@ -325,6 +325,9 @@ class User(Model):
 <ul><li>容易被枚举遍历（<code>GET /cases/1</code>、<code>/cases/2</code> 一路爬下来，等于案例库裸奔）。</li><li>多实例写库时主键冲突（各自维护递增序列很难）。</li><li>前端拿到的是数字，一旦迁移或 JSON 序列化精度丢失，就错了。</li></ul>
 <p>UUID 主键（本项目用 <code>uuid4</code>）生成一串全局唯一的字符串：</p>
 <pre>class Case(Model):
+    class Meta:
+        table = &quot;cases&quot;   # 不写就用类名小写（case），和第一章的表清单对不上
+
     id = fields.UUIDField(pk=True)
     title = fields.CharField(max_length=200)
     case_number = fields.CharField(max_length=50, unique=True)   # 案号唯一
@@ -348,6 +351,9 @@ class User(Model):
 <p>看完整的 Case 模型：</p>
 <pre># app/models/case.py
 class Case(Model):
+    class Meta:
+        table = &quot;cases&quot;   # 不写就用类名小写（case），和第一章的表清单对不上
+
     id = fields.UUIDField(pk=True)
     title = fields.CharField(max_length=200)          # 案例标题
     case_number = fields.CharField(max_length=50, unique=True)  # 案号
@@ -383,6 +389,9 @@ class Case(Model):
 <div class="step idea"><span class="label">核心思路</span>
 <pre># app/models/chat.py
 class ChatSession(Model):
+    class Meta:
+        table = &quot;chat_sessions&quot;
+
     session_id = fields.CharField(max_length=64, pk=True)   # 前端生成的 UUID 字符串
     user = fields.ForeignKeyField(&quot;models.User&quot;, related_name=&quot;sessions&quot;)
     created_at = fields.DatetimeField(auto_now_add=True)
@@ -391,6 +400,9 @@ class ChatSession(Model):
         return f&quot;ChatSession({self.session_id})&quot;
 
 class ChatMessageRecord(Model):
+    class Meta:
+        table = &quot;chat_messages&quot;
+
     id = fields.UUIDField(pk=True)
     chat_session = fields.ForeignKeyField(&quot;models.ChatSession&quot;, related_name=&quot;messages&quot;)
     role = fields.CharField(max_length=20)       # user / assistant
@@ -413,11 +425,14 @@ class ChatMessageRecord(Model):
 <div class="step idea"><span class="label">核心思路</span>
 <pre># app/models/document.py
 class GeneratedDocument(Model):
+    class Meta:
+        table = &quot;generated_documents&quot;
+
     id = fields.UUIDField(pk=True)
     user = fields.ForeignKeyField(&quot;models.User&quot;, related_name=&quot;documents&quot;)
 # 注意：建表 SQL 里写 ON DELETE RESTRICT 并不够——Tortoise 的 ForeignKeyField
 # 默认是 CASCADE，ORM 删父记录时会先连坐删子表。要让「有子记录就删不掉」真的生效，
-# 必须在模型里显式写：patient = fields.ForeignKeyField(..., on_delete=fields.RESTRICT)
+# 必须在模型里显式写：user = fields.ForeignKeyField(..., on_delete=fields.RESTRICT)
     type = fields.CharField(max_length=50)        # 起诉状/答辩状/合同...
     title = fields.CharField(max_length=200, default=&quot;&quot;)
     content = fields.TextField()
@@ -518,7 +533,7 @@ messages = await ChatMessageRecord.filter(chat_session=session).order_by(&quot;c
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>
 <tr><th>拿到了什么</th><th>为什么要紧</th></tr>
-<tr><td><strong>四个 ORM 模型</strong></td><td>User/Case/ChatSession/ChatMessage/GeneratedDocument 五张表，业务数据有了家</td></tr>
+<tr><td><strong>五个 ORM 模型</strong></td><td>User/Case/ChatSession/ChatMessage/GeneratedDocument 五张表，业务数据有了家</td></tr>
 <tr><td><strong>UUID + JSONB 的设计语感</strong></td><td>主键不裸奔、法条列表不进关系表——分布式与 JSON 场景的标准解</td></tr>
 <tr><td><strong>CRUD 与查询套路</strong></td><td>update_or_create 幂等写、双下划线过滤、外键反向查询，第 9 章 API 直接复用</td></tr>
 </table>

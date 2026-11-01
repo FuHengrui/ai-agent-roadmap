@@ -30,13 +30,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers import main_router
 from app.database import register_db   # 这个函数要在 database.py 里自己写（见下）
 import uvicorn                         # 下面 uvicorn.run 要用
-from app.core.knowledge_base import init_knowledge_base
+# 注意：knowledge_base 在第 11 章才写。跑本章时先注释掉下面两行（以及 lifespan 里的调用），
+# 等第 11 章写完再放开，否则 ModuleNotFoundError。
+# from app.core.knowledge_base import init_knowledge_base
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理：启动时初始化医学知识库"""
-    init_knowledge_base()   # 启动时把20条医学知识写入 ChromaDB
+    # init_knowledge_base()   # 第 11 章写好后再放开：启动时把 20 条医学知识写入 ChromaDB
+    pass
     yield
 
 app = FastAPI(lifespan=lifespan)
@@ -198,7 +201,7 @@ async def list_patients(skip: int = 0, limit: int = 20):
 # 单个详情
 @router.get("/{patient_id}", response_model=PatientResponse)
 async def get_patient(patient_id: int):
-    patient = await Patient.get(id=patient_id)
+    patient = await Patient.get_or_none(id=patient_id)   # get() 查不到会抛 DoesNotExist，不是返回 None
     if not patient:
         raise HTTPException(status_code=404, detail="患者不存在")
     return patient
@@ -212,7 +215,7 @@ async def create_patient(patient: PatientCreate):
 # 更新（局部更新）
 @router.put("/{patient_id}", response_model=PatientResponse)
 async def update_patient(patient_id: int, data: PatientUpdate):
-    patient = await Patient.get(id=patient_id)
+    patient = await Patient.get_or_none(id=patient_id)   # get() 查不到会抛 DoesNotExist，不是返回 None
     if not patient:
         raise HTTPException(status_code=404, detail="患者不存在")
     update_data = data.model_dump(exclude_unset=True)  # 只取传了的字段
@@ -224,7 +227,7 @@ async def update_patient(patient_id: int, data: PatientUpdate):
 # 删除
 @router.delete("/{patient_id}")
 async def delete_patient(patient_id: int):
-    patient = await Patient.get(id=patient_id)
+    patient = await Patient.get_or_none(id=patient_id)   # get() 查不到会抛 DoesNotExist，不是返回 None
     if not patient:
         raise HTTPException(status_code=404, detail="患者不存在")
     await patient.delete()
@@ -236,7 +239,7 @@ async def delete_patient(patient_id: int):
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| 查不存在的患者返回 500 而非 404 | 用 `Patient.get()` 查不到会抛 DoesNotExist；先 get_or_none 判空再抛 HTTPException（本项目 get 配 if not 也可，注意 get 抛异常场景） |
+| 查不存在的患者返回 500 而非 404 | `Patient.get()` 查不到**会抛 `DoesNotExist`**，不会返回 None，所以 `if not patient` 是死代码；用 `get_or_none()` 判空再抛 404 |
 | 创建接口 422 校验失败 | 前端传的字段名/类型与 Schema 不符；422 响应体里有具体字段错误，照着改 |
 | 更新用 PUT 全量替换了记录 | PUT 语义是替换，本项目用 exclude_unset 实现"部分更新"，字段缺省则不覆盖 |
 

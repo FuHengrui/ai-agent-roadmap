@@ -315,12 +315,8 @@ mkdir diabetes_assistant; cd diabetes_assistant   # Windows PowerShell 不认 &a
 uv init
 
 # 5. 安装全部依赖（一次装齐）
-uv add &quot;fastapi&gt;=0.115.6&quot; &quot;uvicorn[standard]&gt;=0.34.0&quot; \
-  &quot;pydantic-settings&gt;=2.7.1&quot; &quot;tortoise-orm[asyncmy]&gt;=0.23.0&quot; \
-  &quot;langchain&gt;=1.3.4,&lt;2.0&quot; &quot;langchain-openai&gt;=1.0.0&quot; \
-  &quot;langgraph&gt;=1.2.4,&lt;2.0&quot; &quot;openai&gt;=1.80.0&quot; \
-  &quot;chromadb&gt;=1.5.9,&lt;2.0&quot; &quot;python-dotenv&gt;=1.1.0&quot; \
-  &quot;python-multipart&gt;=0.0.20&quot; &quot;tzdata&gt;=2026.2&quot;</pre>
+# PowerShell 不认行尾的 \ 续行（会报 ParserError），这里写成一整行；bash/zsh 用户可以按 \ 折行
+uv add &quot;fastapi&gt;=0.115.6&quot; &quot;uvicorn[standard]&gt;=0.34.0&quot; &quot;pydantic-settings&gt;=2.7.1&quot; &quot;tortoise-orm[asyncmy]&gt;=0.23.0&quot; &quot;langchain&gt;=1.3.4,&lt;2.0&quot; &quot;langchain-openai&gt;=1.0.0&quot; &quot;langgraph&gt;=1.2.4,&lt;2.0&quot; &quot;openai&gt;=1.80.0&quot; &quot;chromadb&gt;=1.5.9,&lt;2.0&quot; &quot;python-dotenv&gt;=1.1.0&quot; &quot;python-multipart&gt;=0.0.20&quot; &quot;tzdata&gt;=2026.2&quot;</pre>
 <p>注意依赖分三组理解：<strong>Web 组</strong>（fastapi/uvicorn/python-multipart）、<strong>数据组</strong>（tortoise-orm[asyncmy]——asyncmy 驱动是 MySQL 异步连接的关键）、<strong>AI 组</strong>（langchain/langchain-openai/langgraph/chromadb/openai）。根目录会生成 <code>pyproject.toml</code> 和 <code>uv.lock</code>，版本锁定交给 uv。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

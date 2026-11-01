@@ -53,6 +53,10 @@ header.payload.signature
 import jwt, time
 from fastapi import APIRouter, Body, HTTPException
 
+# 这三个常量要先加进 app/config.py（第 3 章的 config 里原来没有）：
+# JWT_SECRET = os.getenv("JWT_SECRET")        # .env 里必须有，别给默认值
+# JWT_ALGORITHM = "HS256"
+# JWT_ACCESS_EXPIRE_SECONDS = 7 * 24 * 3600    # 7 天
 from app.config import JWT_ALGORITHM, JWT_ACCESS_EXPIRE_SECONDS, JWT_SECRET
 from app.models import User
 

@@ -52,6 +52,9 @@ class User(Model):
 UUID 主键（本项目用 `uuid4`）生成一串全局唯一的字符串：
 ```python
 class Case(Model):
+    class Meta:
+        table = "cases"   # 不写就用类名小写（case），和第一章的表清单对不上
+
     id = fields.UUIDField(pk=True)
     title = fields.CharField(max_length=200)
     case_number = fields.CharField(max_length=50, unique=True)   # 案号唯一
@@ -73,6 +76,9 @@ RAG 的"语料源"就是 cases 表。它既要存给 LLM 看的 summary/内容�
 ```python
 # app/models/case.py
 class Case(Model):
+    class Meta:
+        table = "cases"   # 不写就用类名小写（case），和第一章的表清单对不上
+
     id = fields.UUIDField(pk=True)
     title = fields.CharField(max_length=200)          # 案例标题
     case_number = fields.CharField(max_length=50, unique=True)  # 案号
@@ -108,6 +114,9 @@ class Case(Model):
 ```python
 # app/models/chat.py
 class ChatSession(Model):
+    class Meta:
+        table = "chat_sessions"
+
     session_id = fields.CharField(max_length=64, pk=True)   # 前端生成的 UUID 字符串
     user = fields.ForeignKeyField("models.User", related_name="sessions")
     created_at = fields.DatetimeField(auto_now_add=True)
@@ -116,6 +125,9 @@ class ChatSession(Model):
         return f"ChatSession({self.session_id})"
 
 class ChatMessageRecord(Model):
+    class Meta:
+        table = "chat_messages"
+
     id = fields.UUIDField(pk=True)
     chat_session = fields.ForeignKeyField("models.ChatSession", related_name="messages")
     role = fields.CharField(max_length=20)       # user / assistant
@@ -139,11 +151,14 @@ class ChatMessageRecord(Model):
 ```python
 # app/models/document.py
 class GeneratedDocument(Model):
+    class Meta:
+        table = "generated_documents"
+
     id = fields.UUIDField(pk=True)
     user = fields.ForeignKeyField("models.User", related_name="documents")
 # 注意：建表 SQL 里写 ON DELETE RESTRICT 并不够——Tortoise 的 ForeignKeyField
 # 默认是 CASCADE，ORM 删父记录时会先连坐删子表。要让「有子记录就删不掉」真的生效，
-# 必须在模型里显式写：patient = fields.ForeignKeyField(..., on_delete=fields.RESTRICT)
+# 必须在模型里显式写：user = fields.ForeignKeyField(..., on_delete=fields.RESTRICT)
     type = fields.CharField(max_length=50)        # 起诉状/答辩状/合同...
     title = fields.CharField(max_length=200, default="")
     content = fields.TextField()
@@ -246,7 +261,7 @@ messages = await ChatMessageRecord.filter(chat_session=session).order_by("create
 这一章你实际拿到的是**三样东西**：
 | 拿到了什么 | 为什么要紧 |
 |---|---|
-| **四个 ORM 模型** | User/Case/ChatSession/ChatMessage/GeneratedDocument 五张表，业务数据有了家 |
+| **五个 ORM 模型** | User/Case/ChatSession/ChatMessage/GeneratedDocument 五张表，业务数据有了家 |
 | **UUID + JSONB 的设计语感** | 主键不裸奔、法条列表不进关系表——分布式与 JSON 场景的标准解 |
 | **CRUD 与查询套路** | update_or_create 幂等写、双下划线过滤、外键反向查询，第 9 章 API 直接复用 |
 

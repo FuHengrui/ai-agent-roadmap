@@ -294,7 +294,7 @@
 <span class="node">上一章（阶段 10 · 安康智慧健康管理平台）：LangGraph 五节点工作流 + RAG 医学知识库——你已经跑通过"检索-生成"链路</span>
 <span class="node"><span class="here">本章 ← 你在这里：为"法律咨询系统"画全景图——痛点、功能模块、技术栈、架构分层与数据流</span></span>
 <span class="node">下一章：开发环境与基础设施——Python 3.14、Postgres/Redis 容器、.env 配置怎么一次搭好</span>
-<span class="node">再往后：FastAPI 骨架 → ORM 建模（用户/案例/会话/文书四张表）→ JWT 认证 → LLM 客户端 → 向量库 → RAG → Agent 工作流 → API 组装 → Vue3 前端</span>
+<span class="node">再往后：FastAPI 骨架 → ORM 建模（用户/案例/会话/消息/文书五张表）→ JWT 认证 → LLM 客户端 → 向量库 → RAG → Agent 工作流 → API 组装 → Vue3 前端</span>
 <span class="node">阶段终点：交付一个能跑通"咨询-检索-问答/文书生成"全流程的 AI 法律顾问 Web 应用</span>
 </div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 这个项目解决的真实痛点</div><div class="body">
@@ -483,7 +483,7 @@ LangGraph 工作流 (workflow.py)  ── 状态图编排节点，条件边按�
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>把 .env 提交进 Git 仓库</td><td>.env 里有 LLM Key 和数据库密码，Git 历史里删不掉，扫号机器人几小时内就会抓到。<strong>先写进 .gitignore 再创建文件</strong>；已经提交了就立即吊销 Key 重建</td></tr>
 <tr><td>以为"改了 .env 立即生效"</td><td>pydantic-settings 在<strong>进程启动时</strong>读一次 .env，改完必须重启 uvicorn（<code>--reload</code> 会自动重启，但改 .env 本身不触发 reload 规则时需手动重启）</td></tr>
-<tr><td><code>.env</code> 里把值写成 <code>"sk-xxx"</code>（带引号）</td><td>引号会被当成值的一部分读进去；值直接写，不加引号</td></tr>
+<tr><td><code>.env</code> 里把值写成 <code>"sk-xxx"</code>（带引号）</td><td>成对的引号会被解析器剥掉（不加引号时，含空格或 <code>#</code> 的值会被截断）；值直接写，不加引号</td></tr>
 </table>
 </div>
 </div></div>

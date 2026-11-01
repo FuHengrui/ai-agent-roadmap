@@ -473,10 +473,10 @@ function highlight(text) {
 
     CASES = [
         {&quot;case_number&quot;: &quot;（2025）京01民终1234号&quot;, &quot;title&quot;: &quot;某公司与劳动者劳动合同纠纷案&quot;,
-         &quot;court&quot;: &quot;北京市第一中级人民法院&quot;, &quot;case_type&quot;: &quot;民事&quot;, &quot;laws&quot;: &quot;劳动合同法第39条&quot;,
+         &quot;court&quot;: &quot;北京市第一中级人民法院&quot;, &quot;case_type&quot;: &quot;民事&quot;, &quot;laws&quot;: [&quot;劳动合同法第39条&quot;],
          &quot;summary&quot;: &quot;…&quot;, &quot;content&quot;: &quot;…完整判决要旨…&quot;, &quot;judgment_date&quot;: &quot;2026-01-15&quot;},
         {&quot;case_number&quot;: &quot;（2025）沪02民终5678号&quot;, &quot;title&quot;: &quot;借款合同纠纷逾期利息计算案&quot;,
-         &quot;court&quot;: &quot;上海市第二中级人民法院&quot;, &quot;case_type&quot;: &quot;民事&quot;, &quot;laws&quot;: &quot;民法典第676条&quot;,
+        &quot;court&quot;: &quot;上海市第二中级人民法院&quot;, &quot;case_type&quot;: &quot;民事&quot;, &quot;laws&quot;: [&quot;民法典第676条&quot;],
          &quot;summary&quot;: &quot;…&quot;, &quot;content&quot;: &quot;…&quot;, &quot;judgment_date&quot;: &quot;2025-11-02&quot;},
         # 20+ 条真实风格案例
     ]
@@ -536,7 +536,7 @@ volumes:
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>验证三板斧：</p>
-<pre># 1. 服务状态：8 个容器都 UP 且无 RESTARTING
+<pre># 1. 服务状态：4 个容器（postgres / redis / backend / frontend）都 UP 且无 RESTARTING
 docker compose ps
 
 # 2. 后端健康：API 响应正常（会返回 401，说明鉴权活着）

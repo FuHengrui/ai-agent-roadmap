@@ -331,7 +331,7 @@ def verify_password(plain_password: str, hashed_password: str) -&gt; bool:
 <pre>&lt;Header:算法&gt;.eyJzdWIiOiI8dXNlcl9pZD4iLCJleHAiOjE3MDAwMDAwfQ.&lt;Signature:签名&gt;</pre>
 <p>签发逻辑（python-jose）：</p>
 <pre># app/utils/security.py（续）
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from jose import jwt
 from app.config import settings
 
