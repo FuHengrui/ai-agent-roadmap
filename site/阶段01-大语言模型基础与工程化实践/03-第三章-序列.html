@@ -537,8 +537,11 @@ a.sort()                       # 就地排序，返回 None ← 注意！
 a.sort(reverse=True)           # 降序
 b = sorted(a)                  # 返回【新列表】，原列表不动
 
-# 按某个规则排（实战最常用）
-jobs.sort(key=lambda j: j[&quot;salary&quot;], reverse=True)</pre>
+# 按某个规则排（实战最常用）——先给一份数据
+jobs = [{&quot;title&quot;: &quot;前端&quot;, &quot;salary&quot;: 12000},
+        {&quot;title&quot;: &quot;后端&quot;, &quot;salary&quot;: 15000},
+        {&quot;title&quot;: &quot;测试&quot;, &quot;salary&quot;: 9000}]
+jobs.sort(key=lambda j: j[&quot;salary&quot;], reverse=True)   # 按薪资从高到低</pre>
 <p><strong><code>sort()</code> 和 <code>sorted()</code> 的区别必须记牢</strong>：</p>
 <table>
 <tr><th></th><th>改原列表？</th><th>返回什么</th></tr>
@@ -692,9 +695,14 @@ del job[&quot;level&quot;]             # 删除，不存在会 KeyError
 job.pop(&quot;level&quot;, None)       # 删除并返回，带默认值更安全
 job.popitem()                # 弹出最后一个键值对（3.7+）</pre>
 <p><strong>遍历——三种都常用</strong>：</p>
-<pre>for k in job:                # 遍历键（默认）
+<pre>job = {&quot;title&quot;: &quot;Python开发&quot;, &quot;city&quot;: &quot;昆明&quot;, &quot;salary&quot;: 12000}
+
+for k in job:                # 遍历键（默认）
+    print(k)
 for v in job.values():       # 遍历值
-for k, v in job.items():     # 遍历键值对 ← 最常用</pre>
+    print(v)
+for k, v in job.items():     # 遍历键值对 ← 最常用
+    print(k, v)</pre>
 <p><strong>序列解包</strong>——元组/列表那套在字典上也管用：</p>
 <pre>d = {&quot;a&quot;: 1, &quot;b&quot;: 2}
 for k, v in d.items():

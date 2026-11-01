@@ -52,6 +52,19 @@ def blocks(text: str):
     return out
 
 
+def _report(i: int, tb: str) -> None:
+    """打印报错的最内层一行（tb 必须是 except 里取到的）。"""
+    frames = [x for x in tb.strip().split("\n") if x.strip()]
+    last = frames[-1] if frames else "（无 traceback）"
+    where = ""
+    for ln in frames:
+        if ln.strip().startswith("File \"<块"):
+            where = ln.strip()
+    print("  块%-2d [ERR] %s" % (i, last[:110]))
+    if where:
+        print("        %s" % where[:110])
+
+
 def run(name: str) -> int:
     p = CONTENT / name
     if not p.exists():
@@ -69,20 +82,20 @@ def run(name: str) -> int:
         try:
             with contextlib.redirect_stdout(io.StringIO()):
                 exec(compile(code, "<块%d>" % i, "exec"), ns)
-            ok += 1
-            print("  块%-2d [OK]" % i)
-            continue
         except ModuleNotFoundError as e:
             if any(m in str(e) for m in SOFT_MISSING):
                 skip += 1
                 print("  块%-2d [SKIP 缺依赖] %s" % (i, str(e)[:60]))
                 continue
-            err = e
-        except Exception as e:  # noqa: BLE001 - 就是要抓所有异常
-            err = e
-        bad += 1
-        last = [x for x in traceback.format_exc().strip().split("\n") if x.strip()][-1]
-        print("  块%-2d [ERR] %s" % (i, last[:110]))
+            bad += 1
+            # 注意：format_exc() 必须留在 except 里，出块后异常状态就清了（会打印 NoneType: None）
+            _report(i, traceback.format_exc())
+        except Exception:  # noqa: BLE001 - 就是要抓所有异常
+            bad += 1
+            _report(i, traceback.format_exc())
+        else:
+            ok += 1
+            print("  块%-2d [OK]" % i)
     print("== 结果：通过 %d / 报错 %d / 跳过 %d" % (ok, bad, skip))
     return 0 if bad == 0 else 1
 

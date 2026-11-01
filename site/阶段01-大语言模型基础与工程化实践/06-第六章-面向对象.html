@@ -464,8 +464,9 @@ print(j2.title)        # 后端  ← 互不影响</pre>
 <pre>j1.level = &quot;P5&quot;        # 直接加，不用事先声明
 print(j1.__dict__)     # {&#x27;title&#x27;: &#x27;改过了&#x27;, &#x27;level&#x27;: &#x27;P5&#x27;}</pre>
 <p><strong>这很灵活，但也意味着：写错属性名不会报错。</strong></p>
-<pre>j1.tilte = &quot;前端&quot;      # 拼错了
-print(j1.tilte)        # 拼错了才报 AttributeError —— 而且错误发现在很远的地方</pre>
+<pre>j1.tilte = &quot;前端&quot;      # 拼错了：Python 不会报错，而是悄悄新建一个属性
+print(j1.__dict__)     # {&#x27;title&#x27;: &#x27;改过了&#x27;, &#x27;level&#x27;: &#x27;P5&#x27;, &#x27;tilte&#x27;: &#x27;前端&#x27;} ← 两个都在！
+# 要写 j1.title 才读到原值；拼错的那个永远不会被别处用到，bug 就这么藏住了</pre>
 <p><strong><code>__slots__</code> 可以限制只能有哪些属性</strong>（进阶技巧，知道有这回事就行）：</p>
 <pre>class Job:
     __slots__ = (&quot;title&quot;, &quot;city&quot;, &quot;salary&quot;)   # 只能有这三个属性</pre>
@@ -836,7 +837,7 @@ class D(B, C): pass      # 菱形继承</pre>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong>多态就是"同一个调用，不同对象有不同表现"。</strong></p>
 <pre>collectors = [
-    ZhaopinCollector(&quot;前端&quot;),
+    ZhaopinCollector(&quot;前端&quot;, &quot;昆明&quot;),
     Job51Collector(&quot;后端&quot;),
 ]
 
@@ -923,7 +924,8 @@ sorted([Job(12000), Job(8000)])      # 自动按 salary 排</pre>
 <p><strong>判断标准就一句话</strong>：</p>
 <p>&gt; <strong>IS-A（是一个）→ 继承；HAS-A（有一个）→ 组合。</strong></p>
 <pre># ✗ 错：Job 不是一个 Exporter
-class Job(Exporter):          # 逻辑上说不通
+class Job(Exporter):          # 逻辑上说不通——Job 是「任务」，不是「导出器」
+    pass                      # 反例只是示意，加 pass 才能被解析器接受
 
 # ✓ 对：Job 有一个导出器（或者说&quot;用&quot;它）
 class Job:
