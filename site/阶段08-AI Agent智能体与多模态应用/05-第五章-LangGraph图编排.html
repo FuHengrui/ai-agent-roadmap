@@ -486,7 +486,7 @@ graph.add_edge(&quot;task_c&quot;, &quot;merge&quot;)</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因</th></tr>
-<tr><td>多个父节点并发写同一 state 字段互相覆盖</td><td>并发写必须配 reducer 合并</td><td>同一 superstep 里对同一通道只能写一次，不配 reducer 会直接抛 <code>InvalidUpdateError</code>；只有<strong>串行</strong>（不同 superstep）执行时才是「后写覆盖先写」</td></tr>
+<tr><td>多个父节点并发写同一 state 字段互相覆盖</td><td>这是<strong>串行</strong>（不同 superstep）时的表现。同一 superstep 并发写同一通道，不配 reducer 会直接抛 <code>InvalidUpdateError</code>（每 superstep 每通道只允许一次写入）；要合并就配 <code>operator.add</code> 之类的 reducer</td></tr>
 <tr><td>以为并行节点一定同时执行</td><td>无依赖才并行；共享状态有依赖时实际串行/合并</td></tr>
 </table>
 </div>
