@@ -308,8 +308,9 @@
 
   <h2>二、开工前先弄清三件事</h2>
 
-<p><strong>① 代码和数据在哪。</strong>正文里的代码都是<strong>片段</strong>，能直接抄；但<strong>本书不附完整项目代码包</strong>——三个实战阶段（9 / 10 / 11）的代码是「关键代码节选」，合计约 400~800 行，而真实全栈项目通常 3000 行以上，剩下的要照着章节自己拼。</p>
-<p>拼的时候没有标准答案，只有一条判断标准：<strong>能不能跑起来、接口能不能通</strong>。阶段 11 另有 29 处标着「以下省略 N 行」的地方，要按上下文自己补。</p>
+<p><strong>① 代码在哪。</strong>正文里的代码都是<strong>片段</strong>，能直接抄；<strong>本书不附完整项目代码包</strong>——四个实战阶段的代码是「关键代码节选」，真实全栈项目通常 3000 行以上，剩下的要自己拼。</p>
+<p><strong>怎么拼：让 AI 带你做。</strong>四个项目阶段（3 / 9 / 10 / 11）的第 1 章各有一份<strong>需求文档</strong>（只写做什么、不写怎么做），每章末尾各有一段<strong>可以复制的提示词</strong>。把需求 + 提示词一起发给 AI，它带你一步步做出来。</p>
+<p><strong>判断做对没有</strong>：每段提示词后面都有<strong>验收命令</strong>，跑一下看到预期输出才算过。阶段 11 还有 29 处「以下省略 N 行」，提示词里已经点名让 AI 补，不用自己猜。</p>
 
 <p><strong>② 哪些章要装东西。</strong></p>
 <table>
@@ -541,6 +542,17 @@ Windows 11、内存 8GB、Python 没装过、命令行没用过。
     </div>
   </div>
 
+  <div class="point">
+    <div class="head"><span class="no">6</span>项目章：把提示词发给 AI</div>
+    <div class="body">
+      <div class="step need"><span class="label">怎么用</span>
+        <p>只有四个项目阶段（3 / 9 / 10 / 11）有这一步。</p>
+        <p>第 1 章先读<strong>需求文档</strong>，之后每章末尾复制那段<strong>提示词</strong>发给 AI。<strong>一次只发一步</strong>——跑完验收再发下一步。</p>
+        <p>AI 说"做完了"不算完，<strong>验收命令过了才算</strong>。</p>
+      </div>
+    </div>
+  </div>
+
   <h2>六、页面上那几块颜色分别是什么</h2>
   <table>
     <tr><th style="width:24%">看到什么</th><th>含义</th></tr>
@@ -593,13 +605,15 @@ Windows 11、内存 8GB、Python 没装过、命令行没用过。
     <tr><td>这一章完全看不懂</td><td><strong>回去看「在全局框架里的位置」</strong>——十有八九是上一章没看</td></tr>
     <tr><td>环境装不起来</td><td>跳到阶段 17 / 18 / 19，那三块专门解决这个</td></tr>
     <tr><td>看懂了但不会写</td><td>正常。<strong>看和写之间隔着十遍练习</strong></td></tr>
+    <tr><td>AI 做出来的跟验收对不上</td><td>把<strong>验收的真实输出</strong>原文贴回去让它改。两轮还不收敛，就让它先解释「它到底写了什么、为什么这么写」——通常是它自作主张换了写法</td></tr>
+    <tr><td>AI 把后面几步也顺手做了</td><td>明确说「只做这一步，别的先别动」；已经做了就让它列出改了哪些文件，逐个回退</td></tr>
   </table>
 
   <h2>九、学到什么程度算学会了</h2>
   <div class="map">
     <span class="node"><strong>最低标准</strong>：能答出章末自测题，而且不是靠背的</span>
     <span class="node"><strong>及格</strong>：能对着<strong>不懂的人</strong>把这个知识点的「要解决什么问题」讲清楚</span>
-    <span class="node"><strong>真会了</strong>：能自己写出代码，而且知道换掉某个参数会发生什么</span>
+    <span class="node"><strong>真会了</strong>：能自己写出代码，而且知道换掉某个参数会发生什么<br><small>项目章例外：能把它讲给 AI 讲明白、并且判断出 AI 做得对不对，也算会</small></span>
   </div>
 
   <div class="note warn">
