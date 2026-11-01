@@ -867,7 +867,16 @@ curl -X POST http://127.0.0.1:8000/api/auth/login \
   -d &#x27;{&quot;username&quot;:&quot;tom&quot;,&quot;password&quot;:&quot;wrong&quot;}&#x27;         # 401，不是 500</pre>
 <p>三条都对，第 1 步就算过。<strong>有一条不对，就把报错原文贴回给 AI，别自己改</strong>——它比你更清楚自己刚写了什么。</p>
 <p>&gt; 效果取决于你用的模型：指令理解差一点的，可能一次做不完或漏掉硬性要求。这时候把「验收结果」贴回去，让它按错的地方改，通常两轮就能收敛。</p>
-<p><strong>后面 9 步照同一句话改</strong>——把「只做 / 约束 / 产出 / 验收」四块换掉就行，不用重新组织语言。</p>
+<p><strong>后面 9 步怎么发</strong>：把上面那段提示词复制一份，只改四个地方——「只做」换成表里这一步的事、「约束」换成这一步要守的表名/字段/路由（从对应小节抄）、 「产出」列这一步要生成的文件、「验收」照表里「做完该看到」那一列写。 骨架和句式都不用动，像填空一样：</p>
+<pre>继续这个项目。这一步只做【表里这一步的事】，不碰【后面才做的事】。
+
+约束（照书里的，别自己起名）：
+  - 【这一步涉及的表名 / 字段 / 路由，从对应小节抄】
+
+产出：【这一步要生成的文件】
+
+做完告诉我怎么验证。</pre>
+<p>验收就照表里「做完该看到」那一列来写，不用自己发明。</p>
 <table>
 <tr><th>步</th><th>这一步只做</th><th>做完该看到</th></tr>
 <tr><td>2</td><td><strong>账号系统</strong>：User 表 + bcrypt 哈希 + JWT，<code>/api/auth/register</code>、<code>/api/auth/login</code></td><td>注册 200、重名 400、错密码 401（第 1 步已验过）</td></tr>
@@ -920,7 +929,6 @@ curl -X POST http://127.0.0.1:8000/api/auth/login \
 <a href="https://api-docs.deepseek.com/zh-cn/" target="_blank" rel="noopener"><span class="k">文档</span>DeepSeek API 文档</a>
 <a href="https://fastapi.tiangolo.com/tutorial/background-tasks/" target="_blank" rel="noopener"><span class="k">文档</span>BackgroundTasks 说明</a>
 <a href="https://docs.claude.com/en/docs/claude-code/memory" target="_blank" rel="noopener"><span class="k">阅读</span>Claude Code 项目说明文件（CLAUDE.md）实践</a>
-<div class="links-off" title="这些资料不在站点里（PDF、源码包、配套软件），需要自己准备"><span class="tag2">未收录</span><span class="lk"><span class="k">需求</span>本项目需求文档</span></div>
 </div>
 <div class="pager">
 <a href="../阶段02-AI智能体Web系统构建实战/02-第二章-FastAPI进阶.html">← 第二章　FastAPI 进阶</a>
