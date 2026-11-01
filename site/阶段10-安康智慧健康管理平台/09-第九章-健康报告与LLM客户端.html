@@ -358,7 +358,8 @@ class LLMClient:
         response = self._llm.invoke(messages)
         return str(response.content)
     except Exception as e:
-        logger.exception(&quot;LLM 调用失败&quot;)\n        return &quot;抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。&quot;   # 别把 {e} 拼给用户，内部错误只进日志</pre>
+        logger.exception(&quot;LLM 调用失败&quot;)
+        return &quot;抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。&quot;   # 别把 {e} 拼给用户，内部错误只进日志</pre>
 <p>三处细节：</p>
 <ul><li><strong>SystemMessage 开头</strong>：全局设定"你是糖尿病健康管理专家"，约束说话方式；</li><li><strong>历史截断 10 条</strong>：<code>chat_history[-10:]</code> 只取最近，既控 token 又防上下文漂移；</li><li><strong>角色映射</strong>：历史里 user → HumanMessage、assistant/bot → AIMessage，LangChain 消息类型与角色一一对应。</li></ul>
 </div>

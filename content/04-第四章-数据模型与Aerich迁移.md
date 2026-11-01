@@ -10,7 +10,7 @@
 第 3 章的 uv 工程和 config.py 能跑就能开始；aerich 已随依赖装好，不用另装。
 
 @@goal 学到这儿就够了
-能写出八张表的模型类、说清 `aerich init` / `migrate` / `upgrade` 各干什么、已有库为什么不能直接跑 `init-db`，这一章就算过了。
+能写出七张表的模型类（`t_models` 暂不建模）、说清 `aerich init` / `migrate` / `upgrade` 各干什么、已有库为什么不能直接跑 `init-db`，这一章就算过了。
 
 @@map 这一章在整个知识库里的位置
 上一章：后端工程搭建——uv 工程 + config.py 数据源配置就绪

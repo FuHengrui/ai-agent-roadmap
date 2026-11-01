@@ -546,7 +546,7 @@ async def get_stats(patient_id: int, days: int = Query(7, ge=1, le=90)):
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td><code>**analysis</code> 报多余关键字</td><td>Schema 字段与字典键不完全一致；多一个少一个都会炸</td></tr>
+<tr><td><code>**analysis</code> 报多余关键字</td><td>Pydantic 默认 <code>extra='ignore'</code>，<strong>多余的键会被忽略、不报错</strong>；真正会炸的是反过来——引擎返回的键 Schema 必填、却没给默认值（少一个就 ValidationError）</td></tr>
 <tr><td>error 字段漏了</td><td>无数据时引擎返回带 <code>error</code> 的字典；响应 Schema 没定义这个字段，构造响应时会抛 <code>ValidationError</code>，最终是 <strong>500</strong> 而不是 422（请求体缺字段才是 422；多余的键 Pydantic 默认忽略）</td></tr>
 </table>
 </div>

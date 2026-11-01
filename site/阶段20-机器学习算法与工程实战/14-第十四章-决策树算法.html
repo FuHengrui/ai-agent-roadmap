@@ -484,7 +484,9 @@ plt.plot(range(1, 11), test_acc, &#x27;s-&#x27;, label=&#x27;test&#x27;)
 plt.xlabel(&quot;max_depth&quot;); plt.ylabel(&quot;accuracy&quot;)
 plt.legend(); plt.show()</pre>
 <p>预期画面：</p>
-<ul><li>训练准确率随深度单调上升（往 1 逼近）。</li><li>测试准确率先升后降（比如 depth=3 附近最高，depth 增大后 <strong>测试不升反降</strong>）。</li><li>交叉点右侧就是<strong>过拟合区</strong>——深度再大只是"背答案"。</li></ul>
+<ul><li>训练准确率随深度单调上升（往 1 逼近）。</li><li>测试准确率先升后<strong>走平</strong>：鸢尾花只有 150 条、太简单，实测 depth=1~10 是 0.68 / 0.97 / 1.0 / 1.0 …，3 层就到顶。</li></ul>
+<p>想看明显的升后降，得换更难的据或加噪声特征——<strong>简单数据上看不出过拟合</strong>，这本身就是个结论。</p>
+<ul><li>交叉点右侧就是<strong>过拟合区</strong>——深度再大只是"背答案"。</li></ul>
 <p>这就是"深度 → 复杂度 → 过拟合"的第一手证据；最佳深度在"测试曲线峰值"处。<strong>再往后，这个扫描套路会被"网格搜索+交叉验证"自动化</strong>（笔试题里常出现）。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

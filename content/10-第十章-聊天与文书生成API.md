@@ -87,8 +87,13 @@ async def _record_messages(session: ChatSession, user_msg: str, assistant_msg: s
 @router.post("/send", response_model=ChatResponse)
 async def send_message(request: ChatRequest, user=Depends(get_current_user)):
     user_obj = await _get_user_obj(user)
-    session_id = request.session_id or str(uuid.uuid4())
-    session = await _ensure_session(session_id, user_obj)
+    # 有 session_id 就必须校验归属（否则拿到别人的 id 就能续写他人会话）；没有才新建
+    if request.session_id:
+        session = await _get_owned_session(request.session_id, user)
+        session_id = session.session_id
+    else:
+        session = await ChatSession.create(user=user_obj)
+        session_id = session.session_id
 
     # 跑完整工作流（含 checkpointer 记忆续接）
     result = await workflow.run(query=request.message, thread_id=session_id)
@@ -117,8 +122,13 @@ async def send_message(request: ChatRequest, user=Depends(get_current_user)):
 @router.post("/stream")
 async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
     user_obj = await _get_user_obj(user)
-    session_id = request.session_id or str(uuid.uuid4())
-    session = await _ensure_session(session_id, user_obj)
+    # 有 session_id 就必须校验归属（否则拿到别人的 id 就能续写他人会话）；没有才新建
+    if request.session_id:
+        session = await _get_owned_session(request.session_id, user)
+        session_id = session.session_id
+    else:
+        session = await ChatSession.create(user=user_obj)
+        session_id = session.session_id
 
     async def generate():
         full_text = ""
@@ -133,8 +143,8 @@ async def stream_message(request: ChatRequest, user=Depends(get_current_user)):
             yield f"data: {json.dumps({'error': f'处理出错：{e}'}, ensure_ascii=False)}\n\n"
             # 已经累计的内容要落库并标记失败，否则刷新就丢（与「报错也要有落库兜底」一致）
             if full_text:
-                await ChatMessageRecord.create(session_id=session_id, role="assistant",
-                                              content=full_text, status="failed")
+                await ChatMessageRecord.create(chat_session_id=session_id, role="assistant",
+                                              content=full_text)
             yield "data: [DONE]\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")

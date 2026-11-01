@@ -358,7 +358,7 @@
     if date_str:
         date = datetime.strptime(date_str, &quot;%Y-%m-%d&quot;).replace(tzinfo=ZoneInfo(&quot;Asia/Shanghai&quot;))   # 日期是本地的，别当 UTC
     else:
-        date = datetime.now(timezone.utc)
+        date = datetime.now(ZoneInfo(&quot;Asia/Shanghai&quot;))   # 和上面 date_str 分支保持同一时区
     start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0)
     end_of_day = start_of_day + timedelta(days=1)
     records = await DietRecord.filter(
@@ -500,7 +500,7 @@ async def recommend_meal(patient_id: int, meal_type: str):
     recent_bg = await BloodSugar.get_or_none(
         patient_id=patient_id).order_by(&quot;-created_at&quot;).first()
     return diet_advisor.recommend_meal(meal_type, recent_bg.value)</pre>
-<p>注意：示例代码里 <code>BloodSugar.get_or_none(...).order_by(...)</code> 这种写法<strong>真实值得警惕</strong>——<code>get_or_none</code> 返回单条记录的协程对象，再链 <code>.order_by()</code> 并不正确；若要"最近一次记录"，应写：</p>
+<p>注意：示例代码里 <code>BloodSugar.get_or_none(...).order_by(...)</code> 这种写法<strong>能跑但语义绕</strong>——<code>get_or_none</code> 是「取零或一条」，在它后面接排序再去 <code>first()</code>，读代码的人会误以为在查列表；若要"最近一次记录"，直接写：</p>
 <pre>recent_bg = await BloodSugar.filter(patient_id=patient_id) \
     .order_by(&quot;-measured_at&quot;).first()</pre>
 <p>并处理"无记录"的 None 情况。读代码要带着"它写对了吗"的眼睛。</p>
@@ -508,7 +508,7 @@ async def recommend_meal(patient_id: int, meal_type: str):
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>get_or_none 后链 order_by 报错</td><td>get_or_none 语义是"取零或一"；链排序应改用 filter().order_by().first()</td></tr>
+<tr><td>get_or_none 后链 order_by 语义绕</td><td>语法上能跑（tortoise 里它返回的是单值 QuerySet），但"取零或一 + 排序"读起来矛盾；要排序就写 filter().order_by().first()，要唯一记录就直接 get_or_none</td></tr>
 <tr><td>无血糖记录时 .value 崩溃</td><td>recent_bg 为 None 要判空：<code>recent_bg.value if recent_bg else None</code></td></tr>
 <tr><td>忘给 diet_advisor 加括号</td><td>导入的是实例不是类；调用才 <code>diet_advisor.recommend_meal</code></td></tr>
 </table>

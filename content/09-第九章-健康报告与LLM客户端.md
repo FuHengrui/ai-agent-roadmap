@@ -86,7 +86,8 @@ def chat(self, system_prompt: str, user_message: str,
         response = self._llm.invoke(messages)
         return str(response.content)
     except Exception as e:
-        logger.exception("LLM 调用失败")\n        return "抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。"   # 别把 {e} 拼给用户，内部错误只进日志
+        logger.exception("LLM 调用失败")
+        return "抱歉，医学助手暂时无法响应，请稍后再试或咨询医生。"   # 别把 {e} 拼给用户，内部错误只进日志
 ```
 
 三处细节：

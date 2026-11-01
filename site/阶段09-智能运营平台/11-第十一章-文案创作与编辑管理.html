@@ -402,7 +402,7 @@ async def save_copy(title_id: int, content: str, user_id: int = Depends(...)):
     title.content = content
     if title.status in (2, 3):
         raise HTTPException(400, &quot;已发布/已废弃的文案不能重新生成&quot;)
-    title.status = 1 手工保存也视为&quot;已生成&quot;
+    title.status = 1   # 手工保存也视为&quot;已生成&quot;
     await title.save()
     return {&quot;code&quot;: 200, &quot;message&quot;: &quot;保存成功&quot;}</pre>
 <p>与前一个拷贝接口共享同一落库逻辑——提取一个 <code>_update_content(title, text)</code> 工具函数，重置/生成/保存三处复用，避免"三份差不多的代码三个不同 bug"。</p>

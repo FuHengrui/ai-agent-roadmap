@@ -383,13 +383,26 @@ class VectorStore:
             Document(
                 page_content=_chunk,   # 每个块一个 Document；标题已拼进正文，检索更容易命中
                 metadata={&quot;case_number&quot;: c[&quot;case_number&quot;], &quot;title&quot;: c[&quot;title&quot;],
-                          &quot;court&quot;: c[&quot;court&quot;], &quot;type&quot;: c[&quot;type&quot;]},   # 去重与展示都要用
+                          &quot;court&quot;: c[&quot;court&quot;], &quot;type&quot;: c[&quot;case_type&quot;]},   # Case 的字段叫 case_type，不是 type
             )
             # 裁判文书动辄几千字，整篇 embed 会稀释语义（本章 trap 也提醒了）
             # 所以先按段落切块：每块 300~500 字，块内保留标题做上下文
             for c in cases
             for _chunk in self._split_chunks(c[&quot;title&quot;] + &quot;\n&quot; + c[&quot;content&quot;])
         ]
+        self.db.add_documents(docs)      # ← 少这行，库永远是空的
+
+    def add_cases(self, cases: list[dict]) -&gt; None:
+        &quot;&quot;&quot;④ 的脚本用这个名字；内部转调 build_index&quot;&quot;&quot;
+        self.build_index(cases)
+
+    def count(self) -&gt; int:
+        return self.db._collection.count()
+
+    def get_existing_case_numbers(self) -&gt; set[str]:
+        &quot;&quot;&quot;已入库的案号集合（脚本用它跳过重复）&quot;&quot;&quot;
+        got = self.db._collection.get(include=[&quot;metadatas&quot;])
+        return {m[&quot;case_number&quot;] for m in (got.get(&quot;metadatas&quot;) or []) if m}
 
     async def similarity_search(self, query: str, top_k: int = 5, filters: dict | None = None):
         return self.db.similarity_search_with_score(

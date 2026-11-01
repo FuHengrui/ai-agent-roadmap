@@ -177,7 +177,7 @@ model = Word2Vec(
     sentences,
     vector_size=100,  # 词向量维度
     window=5,         # 上下文窗口
-    min_count=1,      # 本例语料小，min_count=2 会把词全滤掉
+    min_count=1,      # 本例语料小：min_count=2 会滤掉只出现一次的词（33 个词剩 13 个），类比就查不到了
     sg=1,             # 1=Skip-gram, 0=CBOW
     negative=5,       # 负采样个数
     epochs=10,        # 训练轮数
