@@ -36,3 +36,14 @@ venv/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# ---- 跑示例代码时生成的产物（run_chapter / run_gpu_batch 会写到仓库根目录）----
+/big.csv
+/data.csv
+/结果.csv
+/结果.xlsx
+/lin_model.pkl
+/model.pt
+/my_dict.txt
+/resp.json
+/data/
