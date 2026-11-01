@@ -36,7 +36,8 @@ def search(query: str) -> str:
 
 # search.name           → "search"          ← 名称：LLM 用它指定调哪个
 # search.description    → "搜索互联网信息"    ← 描述：LLM 用它理解用途
-# search.args_schema    → {"query": str}     ← 参数：LLM 自动提取参数值
+# search.args_schema    → 自动生成的 Pydantic 类（字段 query: str）← 参数：LLM 自动提取参数值
+#                        想看字段就 model_fields，别当成 dict 索引
 ```
 
 类比：顾客（用户）点菜 → 服务员（LLM）不亲自做菜，但知道菜单（工具描述）→ 写好单子（tool_calls）→ 厨房（工具）真实做菜 → 端回给服务员 → 服务员报给顾客。
@@ -93,6 +94,9 @@ def search_product(keyword: str, category: str, max_price: float) -> str:
 **ToolNode** 是 LangGraph 提供的"工具执行器"：接收 LLM 输出的 tool_calls，**自动执行对应工具**，并将结果包装为 **ToolMessage** 追加回消息列表。
 
 ```python
+from typing import Annotated, TypedDict, Sequence
+from operator import add
+from langgraph.graph import StateGraph, END
 from langgraph.prebuilt import ToolNode
 
 # State：消息用 Annotated[Sequence, add] 自动追加（Reducer 累加）

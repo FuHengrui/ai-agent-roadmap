@@ -484,7 +484,9 @@ agent = create_agent(llm, tools, checkpointer=MemorySaver(), store=store)</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>只用改两行，Agent 代码完全不用动：</p>
-<pre>from langgraph.checkpoint.postgres import PostgresSaver
+<pre># 这两个类在【独立的包】里，先装：pip install langgraph-checkpoint-postgres
+# （langgraph 本体不带 checkpoint/postgres 与 store/postgres）
+from langgraph.checkpoint.postgres import PostgresSaver
 from langgraph.store.postgres import PostgresStore
 
 DB_URI = &quot;postgresql://user:pass@localhost:5432/mydb&quot;

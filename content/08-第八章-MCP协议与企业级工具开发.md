@@ -89,7 +89,7 @@ Host（宿主应用）
 | Streamable HTTP（推荐） | HTTP 流式传输 | 远程 Server，2025 年推荐方式 |
 
 要点：
-- **stdio**：MCP 的 stdio 模式会在调用工具时**启动新的子进程**——在 Web 服务（远程部署）场景下不可用。只适合本地开发
+- **stdio**：Client **建立连接时拉起一次** Server 子进程，之后所有调用复用同一对 stdin/stdout。所以它只能服务启动它的那个 Host——Web / 多客户端场景用不了，只适合本地开发
 - **SSE**：基于 HTTP 长连接，服务端持续推送，旧版方案，**新项目不推荐**
 - **Streamable HTTP（推荐）**：HTTP 流式传输，远程部署主流，`mcp.run(transport="streamable-http")` 一行切到 HTTP 服务，访问地址形如 `http://localhost:8000/mcp`
 
@@ -232,7 +232,7 @@ agent = asyncio.run(build_agent())
 要点：
 - **本地 @tool 与 MCP 工具可以混合使用**——按需挑选，不冲突
 - Server 名（math/weather）做命名空间防止工具重名
-- 生产注意：**stdio 模式每次调用启动子进程，Web 服务场景换 streamable-http**
+- 生产注意：**stdio 的子进程绑在启动它的 Host 上**，Web / 多客户端场景换 streamable-http
 
 @@trap 坑在哪
 | 现象 | 原因 |

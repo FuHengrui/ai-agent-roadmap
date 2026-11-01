@@ -250,7 +250,7 @@ print(data.age + 1)   # 29，类型已经是 int
 有些场景输出不止 JSON：可能要多字段混合、特殊排版、或原型阶段还没定死结构。需要一种"我定义字段，模型照着出"的灵活方案。
 
 @@idea 核心思路
-StructuredOutputParser 用 ResponseSchema 声明字段（名称+类型+描述），自动生成格式指令。
+**注意**：`StructuredOutputParser` / `ResponseSchema` 在 **LangChain 1.x 里已被移除**（连 `langchain.output_parsers` 模块都没了），今天 `pip install langchain` 照抄会 `ModuleNotFoundError`。1.x 请改用下面的 `PydanticOutputParser` 或 `with_structured_output`（本节 ⑨⑪ 已讲）；只有钉在 0.3.x 的老项目才还能用下面这段。
 
 ```python
 from langchain.output_parsers import StructuredOutputParser, ResponseSchema

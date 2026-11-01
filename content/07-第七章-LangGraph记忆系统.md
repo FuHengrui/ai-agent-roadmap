@@ -228,6 +228,8 @@ MemorySaver / InMemoryStore 都在内存，服务一重启全部丢失——生�
 只用改两行，Agent 代码完全不用动：
 
 ```python
+# 这两个类在【独立的包】里，先装：pip install langgraph-checkpoint-postgres
+# （langgraph 本体不带 checkpoint/postgres 与 store/postgres）
 from langgraph.checkpoint.postgres import PostgresSaver
 from langgraph.store.postgres import PostgresStore
 

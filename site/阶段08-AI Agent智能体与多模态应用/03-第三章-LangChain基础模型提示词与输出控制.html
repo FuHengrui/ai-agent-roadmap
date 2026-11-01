@@ -501,7 +501,7 @@ print(data.age + 1)   # 29，类型已经是 int</pre>
 <p>有些场景输出不止 JSON：可能要多字段混合、特殊排版、或原型阶段还没定死结构。需要一种"我定义字段，模型照着出"的灵活方案。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>StructuredOutputParser 用 ResponseSchema 声明字段（名称+类型+描述），自动生成格式指令。</p>
+<p><strong>注意</strong>：<code>StructuredOutputParser</code> / <code>ResponseSchema</code> 在 <strong>LangChain 1.x 里已被移除</strong>（连 <code>langchain.output_parsers</code> 模块都没了），今天 <code>pip install langchain</code> 照抄会 <code>ModuleNotFoundError</code>。1.x 请改用下面的 <code>PydanticOutputParser</code> 或 <code>with_structured_output</code>（本节 ⑨⑪ 已讲）；只有钉在 0.3.x 的老项目才还能用下面这段。</p>
 <pre>from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 from langchain_core.prompts import PromptTemplate
 
