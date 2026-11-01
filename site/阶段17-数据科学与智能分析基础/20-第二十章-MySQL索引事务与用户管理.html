@@ -355,7 +355,7 @@ ALTER TABLE t ADD UNIQUE INDEX uk_email (email);
 CREATE INDEX idx_name ON t (name);          -- 等价写法
 
 -- 组合索引（多列，走最左前缀，见第 ④ 点）
-ALTER TABLE t ADD INDEX idx_a_b (a, b);
+ALTER TABLE t ADD INDEX idx_name_email (name, email);
 
 -- 查看 / 删除
 SHOW INDEX FROM t;
@@ -452,7 +452,7 @@ COMMIT;    -- 或 ROLLBACK;
 -- 全局关自动提交（会话级，不推荐在连接池用）
 SET autocommit = 0;</pre>
 <ul><li><strong>隐式提交</strong>：autocommit=1 时每条 DML 语句自成一个事务，<strong>执行完立刻提交</strong>——所以"UPDATE 忘 WHERE"才会立刻全表修改且无法回滚（除非从头包在事务里）；</li><li><strong>显式事务的优势</strong>：多条语句一起成功/一起失败、中途可见性可控；</li><li>注意：<strong>DDL（CREATE/ALTER/DROP）不可回滚</strong>（隐式提交触发），事务只包 DML。</li></ul>
-<p>本教程练习场景：把"改密码"这类单条语句写进 START TRANSACTION + ROLLBACK，练手安全。</p>
+<p>本教程练习场景：把一条 UPDATE（比如改某个用户的 email）写进 START TRANSACTION + ROLLBACK 再查一次；<strong>别拿改密码试</strong>——ALTER USER / SET PASSWORD 是隐式提交，ROLLBACK 不还原，练手安全。</p>
 <p><strong>安全习惯推广</strong>：生产环境危险操作（DELETE 大范围）先 <code>START TRANSACTION</code> → SELECT 核对 → DELETE → 核对 → COMMIT。（21 章后你会感谢这个习惯）</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
@@ -585,7 +585,7 @@ mysqldump -u root -p demo student &gt; student.sql  # 单表
 mysqldump -u root -p --no-data demo &gt; schema.sql # 只要结构
 
 # 导入
-mysql -u root -p &lt; demo.sql
+mysql -u root -p demo &lt; demo.sql
 mysql -u root -p demo &lt; student.sql           # 指定库导入
 
 # 或 SQL 内：source

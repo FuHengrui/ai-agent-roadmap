@@ -93,7 +93,7 @@ ALTER TABLE t ADD UNIQUE INDEX uk_email (email);
 CREATE INDEX idx_name ON t (name);          -- 等价写法
 
 -- 组合索引（多列，走最左前缀，见第 ④ 点）
-ALTER TABLE t ADD INDEX idx_a_b (a, b);
+ALTER TABLE t ADD INDEX idx_name_email (name, email);
 
 -- 查看 / 删除
 SHOW INDEX FROM t;
@@ -208,7 +208,7 @@ SET autocommit = 0;
 - **显式事务的优势**：多条语句一起成功/一起失败、中途可见性可控；
 - 注意：**DDL（CREATE/ALTER/DROP）不可回滚**（隐式提交触发），事务只包 DML。
 
-本教程练习场景：把"改密码"这类单条语句写进 START TRANSACTION + ROLLBACK，练手安全。
+本教程练习场景：把一条 UPDATE（比如改某个用户的 email）写进 START TRANSACTION + ROLLBACK 再查一次；**别拿改密码试**——ALTER USER / SET PASSWORD 是隐式提交，ROLLBACK 不还原，练手安全。
 
 **安全习惯推广**：生产环境危险操作（DELETE 大范围）先 `START TRANSACTION` → SELECT 核对 → DELETE → 核对 → COMMIT。（21 章后你会感谢这个习惯）
 
@@ -366,7 +366,7 @@ mysqldump -u root -p demo student > student.sql  # 单表
 mysqldump -u root -p --no-data demo > schema.sql # 只要结构
 
 # 导入
-mysql -u root -p < demo.sql
+mysql -u root -p demo < demo.sql
 mysql -u root -p demo < student.sql           # 指定库导入
 
 # 或 SQL 内：source

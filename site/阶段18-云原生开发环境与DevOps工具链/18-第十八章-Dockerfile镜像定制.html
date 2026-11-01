@@ -332,6 +332,7 @@ LABEL maintainer=&quot;yourname@example.com&quot;
 RUN echo &quot;开始安装 Tomcat...&quot;
 
 # 容器启动执行指令：run 时执行
+# 注意：JSON 格式的 CMD/ENTRYPOINT 行内不能写 #（会被当成参数，构建直接报错）
 CMD [&quot;catalina.sh&quot;, &quot;run&quot;]   # 不带 run 的话 catalina.sh 只打印用法就退出，容器秒退</pre>
 <p><strong>核心区别</strong>：第 ③ 段是<strong>构建时</strong>执行（做镜像时跑一次），第 ④ 段是<strong>运行时</strong>执行（每次启动容器都跑）——这个区别是本章最重要的认知，很多坑都源于搞混它。</p>
 </div>

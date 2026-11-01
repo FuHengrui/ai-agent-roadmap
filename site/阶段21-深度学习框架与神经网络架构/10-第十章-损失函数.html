@@ -372,7 +372,7 @@ print(ce)</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>双重 softmax</td><td>输入已过 softmax 又喂 CE，训练 bug 难排查；牢记"CE 内置 softmax"</td></tr>
-<tr><td>标签喂成 one-hot</td><td>CE 要整数索引；one-hot 请改用 NLLLoss（配合 log_softmax）或先 argmax</td></tr>
+<tr><td>标签喂成 one-hot</td><td>CE 要整数索引；one-hot 的 target 不能直接喂 NLLLoss（它只收 long 类型的类别索引）：先 <code>argmax(1)</code> 转成索引；如果是软标签，手算 <code>-(target * log_softmax(x, 1)).sum(1).mean()</code>或先 argmax</td></tr>
 <tr><td>输出通道数 ≠ 类别数</td><td>输出层神经元个数必须等于类别数</td></tr>
 <tr><td>二分类用 CE 还是 BCE</td><td>二分类用 <strong>BCEWithLogitsLoss</strong>（更稳），或多分类形式 CE 也兼容</td></tr>
 </table>

@@ -327,7 +327,7 @@
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>背下这个模板，一个字母都不要放错位置：</p>
-<pre>cd /opt &amp;&amp; tar -zcvf ~/app.tar.gz app   # 先 cd 到父目录、用相对路径打包：包内顶层是 app/，不会触发「绝对路径」警告，包内变成 opt/app</pre>
+<pre>cd /opt &amp;&amp; tar -zcvf ~/app.tar.gz app   # 先 cd 到父目录、用相对路径打包：包内顶层就是 app/，不会触发「绝对路径」警告</pre>
 <table>
 <tr><th>选项</th><th>含义</th></tr>
 <tr><td>-c</td><td>create，创建包</td></tr>

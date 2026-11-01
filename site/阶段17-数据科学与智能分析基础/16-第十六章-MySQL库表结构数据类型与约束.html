@@ -404,7 +404,7 @@ ALTER DATABASE demo CHARACTER SET gbk;
     score FLOAT
 );
 
-INSERT INTO t VALUES (99999999.99, 88.5);</pre>
+INSERT INTO t_time VALUES (99999999.99, 88.5);</pre>
 <p>核心认知：<strong>FLOAT/DOUBLE 是二进制近似（0.1+0.2 ≠ 0.3 的坑），DECIMAL 是精确十进制。</strong> 规则：<strong>金额/对账单/需要精确比较 → DECIMAL；科学计算的近似值 → FLOAT/DOUBLE。</strong></p>
 <p>DECIMAL(M,D)：M 总位数（含小数），D 小数位，D 必须 ≤ M。超出小数位会四舍五入，超出整数位报错。</p>
 </div>
@@ -534,7 +534,7 @@ DROP TABLE IF EXISTS student;    -- 删除表</pre>
     gender CHAR(1) DEFAULT &#x27;男&#x27;          -- 默认
 );
 
-INSERT INTO student (name) VALUES (&#x27;张三&#x27;);   -- id 自动 1，gender 自动 &#x27;男&#x27;</pre>
+INSERT INTO student_default (name) VALUES (&#x27;张三&#x27;);   -- id 自动 1，gender 自动 &#x27;男&#x27;</pre>
 <p>三个易混对比：</p>
 <ul><li><strong>PRIMARY KEY = UNIQUE + NOT NULL</strong>；</li><li>一张表<strong>只能一个主键</strong>，但可多个 UNIQUE；</li><li><strong>AUTO_INCREMENT 必须配索引列</strong>（主键天然是），且只能整数列。</li></ul>
 <p><strong>逻辑主键 vs 业务字段</strong>：id 是逻辑主键（与业务无关），身份证号等业务字段用 UNIQUE 防重——别用身份证号当主键。</p>
@@ -591,7 +591,7 @@ CREATE TABLE orders (
     gender ENUM(&#x27;男&#x27;, &#x27;女&#x27;)                                  -- 枚举类型
 );
 
-INSERT INTO student (score, gender) VALUES (150, &#x27;男&#x27;);   -- 报错：CHECK 拦截
+INSERT INTO student_check (score, gender) VALUES (150, &#x27;男&#x27;);   -- 报错：CHECK 拦截
 INSERT INTO student (score, gender) VALUES (90, &#x27;x&#x27;);     -- 报错：ENUM 不认</pre>
 <ul><li><strong>CHECK</strong>：MySQL 8.0.16 起真正强制执行，旧版本只写不查（遇到过就当版本差异）；</li><li><strong>ENUM('A','B')</strong>：只能取列出的值，适合<strong>固定少量选项</strong>（性别、状态）；</li><li>ENUM 底层按数字存（'男'=1），小心 <code>ORDER BY</code> 按<strong>定义顺序</strong>而非字母序。</li></ul>
 <p>适用判断：<strong>选项固定且少 → ENUM；规则复杂/范围判定 → CHECK；选项多或会变 → 别用 ENUM（换字典表）。</strong></p>

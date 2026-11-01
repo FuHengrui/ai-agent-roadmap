@@ -30,10 +30,10 @@
 
 ```sql
 -- 写法 1：指定列（推荐，列顺序可打乱，自增/默认列自动填）
-INSERT INTO student (name, gender, score) VALUES ('张三', '男', 88.5);   # 列名以第 16 章的建表为准，别用表里没有的 age
+INSERT INTO student (name, gender, score) VALUES ('张三', '男', 88.5);   # 只给想填的列，其余走默认/留 NULL
 
 -- 写法 2：全列（必须按表结构顺序，一列不少）
-INSERT INTO student VALUES (1, '李四', 21, '女');
+INSERT INTO student VALUES (1, '李四', '女', 21, '13800000000', 92.0, NOW());
 
 -- 批量插入（一次多条，效率高）
 INSERT INTO student (name, age) VALUES
@@ -69,6 +69,9 @@ CREATE TABLE student (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL,
     gender CHAR(1) DEFAULT '男',
+    age INT,
+    phone VARCHAR(20),
+    score DECIMAL(5,1),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -250,7 +253,7 @@ SELECT * FROM student WHERE name LIKE '%三%';     -- 中间带"三"
 SELECT * FROM student WHERE name LIKE '张_';      -- "张"+1 个字符（2 字名）
 
 -- 范围：
-SELECT * FROM t WHERE score BETWEEN 60 AND 90;    -- 含端点 [60,90]
+SELECT * FROM student WHERE score BETWEEN 60 AND 90;    -- 含端点 [60,90]
 SELECT * FROM t WHERE score NOT BETWEEN 60 AND 90;
 
 -- 枚举匹配：

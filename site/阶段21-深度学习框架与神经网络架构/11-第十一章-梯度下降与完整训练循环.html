@@ -425,14 +425,16 @@ loader = DataLoader(TensorDataset(x, y), batch_size=8, shuffle=True)
 
 # 4 训练 20 个 epoch
 for epoch in range(20):
+    total_loss = 0.0                   # 每个 epoch 归零，用来算整轮平均
     for xb, yb in loader:
         optimizer.zero_grad()          # 清梯度
         pred = model(xb)               # 前向
         loss = loss_fn(pred, yb)       # 损失
         loss.backward()                # 反向
         optimizer.step()               # 更新
+        total_loss += loss.item() * len(xb)   # 按样本数加权累加
     if epoch % 5 == 0:
-        print(epoch, running_loss / len(loader.dataset))   # 整轮平均，别拿末批 loss 当 epoch 指标
+        print(epoch, total_loss / len(loader.dataset))   # 整轮平均，别拿末批 loss 当 epoch 指标
 
 # 5 验证：学到的 w、b 应接近 2 和 1
 print(model.weight.item(), model.bias.item())</pre>

@@ -144,7 +144,7 @@ CREATE TABLE t_time (
     score FLOAT
 );
 
-INSERT INTO t VALUES (99999999.99, 88.5);
+INSERT INTO t_time VALUES (99999999.99, 88.5);
 ```
 
 核心认知：**FLOAT/DOUBLE 是二进制近似（0.1+0.2 ≠ 0.3 的坑），DECIMAL 是精确十进制。** 规则：**金额/对账单/需要精确比较 → DECIMAL；科学计算的近似值 → FLOAT/DOUBLE。**
@@ -295,7 +295,7 @@ CREATE TABLE student_default (
     gender CHAR(1) DEFAULT '男'          -- 默认
 );
 
-INSERT INTO student (name) VALUES ('张三');   -- id 自动 1，gender 自动 '男'
+INSERT INTO student_default (name) VALUES ('张三');   -- id 自动 1，gender 自动 '男'
 ```
 
 三个易混对比：
@@ -366,7 +366,7 @@ CREATE TABLE student_check (
     gender ENUM('男', '女')                                  -- 枚举类型
 );
 
-INSERT INTO student (score, gender) VALUES (150, '男');   -- 报错：CHECK 拦截
+INSERT INTO student_check (score, gender) VALUES (150, '男');   -- 报错：CHECK 拦截
 INSERT INTO student (score, gender) VALUES (90, 'x');     -- 报错：ENUM 不认
 ```
 

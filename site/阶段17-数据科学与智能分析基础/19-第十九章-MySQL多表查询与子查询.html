@@ -317,7 +317,7 @@ SELECT * FROM 客户表 CROSS JOIN 订单表;</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>查询结果突然多了 N 倍</td><td>忘了连接条件：JOIN 时没 ON 或 ON 写错，变成笛卡尔积</td></tr>
-<tr><td>想数"有效连接"用不上</td><td>见下一知识点 n-1 规律：有效行数通常 ≤ 较小表行数</td></tr>
+<tr><td>想数"有效连接"用不上</td><td>见下一知识点 n-1 规律：内连接的有效行数 = <strong>匹配成功的从表行数</strong>，一对多时会多于任何一张单表</td></tr>
 </table>
 </div>
 </div></div>

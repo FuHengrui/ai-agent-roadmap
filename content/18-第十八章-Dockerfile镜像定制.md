@@ -60,6 +60,7 @@ LABEL maintainer="yourname@example.com"
 RUN echo "开始安装 Tomcat..."
 
 # 容器启动执行指令：run 时执行
+# 注意：JSON 格式的 CMD/ENTRYPOINT 行内不能写 #（会被当成参数，构建直接报错）
 CMD ["catalina.sh", "run"]   # 不带 run 的话 catalina.sh 只打印用法就退出，容器秒退
 ```
 
