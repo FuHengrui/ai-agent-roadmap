@@ -1,16 +1,27 @@
 @echo off
-chcp 65001 >nul
 setlocal
-set "PY=C:\Users\35799\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe"
+chcp 65001 >nul
 cd /d "%~dp0.."
-echo 用这个解释器跑：%PY%
-echo.
-"%PY%" -c "import torch; print('torch', torch.__version__)" || (echo [错误] 这个解释器加载不了 torch & pause & exit /b 1)
-echo.
-"%PY%" tools\run_gpu_batch.py --json gpu_report.json > gpu_report.txt 2>&1
-echo.
+set "PY=C:\Users\35799\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe"
 echo ============================================
-type gpu_report.txt | more +0
+echo  torch check
 echo ============================================
-echo 结果已写入 gpu_report.txt 和 gpu_report.json
+"%PY%" -c "import torch; print('torch OK', torch.__version__)"
+echo.
+if errorlevel 1 goto failed
+echo ============================================
+echo  running chapters...
+echo ============================================
+"%PY%" tools\run_gpu_batch.py --json gpu_report.json
+echo.
+echo done. results in gpu_report.json
+goto end
+
+:failed
+echo.
+echo [ERROR] this python cannot load torch.
+echo.
+
+:end
+echo.
 pause
