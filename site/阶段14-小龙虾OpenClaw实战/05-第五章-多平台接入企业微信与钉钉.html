@@ -431,7 +431,7 @@
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>在"创建机器人"弹窗里找已建机器人，找不到</td><td>机器人列表在<strong>应用管理页签</strong>里，创建弹窗只在创建时出现</td></tr>
-<tr><td>页签里的 URL 和 openclaw.json 里填的不一致</td><td>两者必须完全一致，不一致会导致消息转发失败；以应用管理页签显示的 URL 为准去改 OpenClaw 配置</td></tr>
+<tr><td>页签里的 URL 和 openclaw.json 里填的不一致</td><td><strong>仅 URL 回调模式才需要核对</strong>：两者必须一致，否则消息转发失败；走长连接（推荐）时压根不填 URL，没有可比对的东西</td></tr>
 <tr><td>改了 URL 后消息还是不到</td><td>改完要保存生效；同时确认 OpenClaw 服务已重启（见第 ⑧ 点）</td></tr>
 </table>
 </div>

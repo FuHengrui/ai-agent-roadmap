@@ -400,8 +400,8 @@ JDK 只是"跑了个命令"。Tomcat 更接近真实：它是一个 Web 服务�
 
 @@idea 核心思路
 ```cmd
-# 1. 搜索 + 拉取（docker.io/tomee 是官方 Tomcat 的一个实现）
-docker search docker.io/tomee
+# 1. 搜索 + 拉取（`tomee` 是 Apache TomEE：Tomcat + Java EE 的整合发行版，不是官方 Tomcat 镜像；官方镜像是 `tomcat`）
+docker search tomee
 docker pull docker.io/tomee
 
 # 2. 后台运行，起名 mytomcat，把宿主 9090 映射到容器内 8080

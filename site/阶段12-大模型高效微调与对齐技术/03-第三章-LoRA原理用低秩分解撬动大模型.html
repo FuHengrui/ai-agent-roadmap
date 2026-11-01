@@ -309,7 +309,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>以为"微调开销=模型参数×2"就够算</td><td>全量微调的显存大头是<strong>优化器状态</strong>：AdamW 每参数还要存一阶/二阶动量，约等于再翻 2 倍多的参数空间。这也是 7B 全量微调动辄 60GB 显存的原因</td></tr>
+<tr><td>以为"微调开销=模型参数×2"就够算</td><td>全量微调的显存大头是<strong>优化器状态</strong>：AdamW 每参数还要存一阶/二阶动量，约等于再翻 2 倍多的参数空间。这也是 7B 全量微调动辄 <strong>110GB</strong> 显存的原因（AdamW 混合精度；换 8bit 优化器约 70GB）</td></tr>
 <tr><td>以为 W 全是 4096×4096 这种大矩阵</td><td>真实模型里也有小矩阵（如注意力 K/V 投影），但 LoRA 是按"作用模块"整体处理的，原理不因矩阵大小改变</td></tr>
 </table>
 </div>

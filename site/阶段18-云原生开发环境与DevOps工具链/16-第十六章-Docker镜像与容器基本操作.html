@@ -628,8 +628,8 @@ docker run openjdk:11 java -version
 <p>JDK 只是"跑了个命令"。Tomcat 更接近真实：它是一个 Web 服务器，能在浏览器里访问到页面，才算"Docker 落地"。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<div class="cmd"><span class="c"># 1. 搜索 + 拉取（docker.io/tomee 是官方 Tomcat 的一个实现）</span>
-docker search docker.io/tomee
+<div class="cmd"><span class="c"># 1. 搜索 + 拉取（`tomee` 是 Apache TomEE：Tomcat + Java EE 的整合发行版，不是官方 Tomcat 镜像；官方镜像是 `tomcat`）</span>
+docker search tomee
 docker pull docker.io/tomee
 
 <span class="c"># 2. 后台运行，起名 mytomcat，把宿主 9090 映射到容器内 8080</span>

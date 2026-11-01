@@ -29,6 +29,8 @@
 @@idea 核心思路
 
 ```sql
+-- 先执行下面 ② 的建表语句，再回来试这两条
+
 -- 写法 1：指定列（推荐，列顺序可打乱，自增/默认列自动填）
 INSERT INTO student (name, gender, score) VALUES ('张三', '男', 88.5);   # 只给想填的列，其余走默认/留 NULL
 

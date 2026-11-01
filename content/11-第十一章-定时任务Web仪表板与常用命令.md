@@ -207,7 +207,7 @@ hermes tools              # 工具/工具集查看与配置
 **② 技能与记忆类**
 ```bash
 hermes skills list / install 名 / remove 名   # 技能管理
-hermes journey            # 记忆/技能的时间线（没有 memory list；要看内容直接读 ~/.hermes/MEMORY.md）
+hermes journey            # 记忆/技能的时间线（没有 memory list；要看内容直接读 ~/.hermes/memories/MEMORY.md）
 ```
 
 **③ 网关与集成类**

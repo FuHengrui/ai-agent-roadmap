@@ -89,7 +89,7 @@ LLaMA-Factory 定位：
 |---|---|
 | Python | 3.11+（当前框架要求） |
 | PyTorch | 2.0+（CUDA 版） |
-| transformers | 4.49.0（LLaMA-Factory 对此版本有绑定） |
+| transformers | 4.55 以上（**以 `pip show llamafactory` 实际装到的版本为准**，下面有说明） |
 | peft | 0.14.0 |
 | trl | 0.8.6 |
 | 显卡 | NVIDIA，显存按上节决策树 |
@@ -115,8 +115,8 @@ print(llama_factory.__version__)
 @@trap 坑在哪
 | 现象 | 原因 / 怎么办 |
 |---|---|
-| python 3.13 装 llama-factory 依赖报错 | 部分依赖（如 flash-attn）对新 Python 支持滞后。**用 3.9~3.11** 建独立环境 |
-| transformers 升到 4.50+ 后 WebUI 报错 | 版本被框架绑定。**按官方 requirements 锁版本**（transformers 4.49 / peft 0.14 / trl 0.8.6） |
+| python 3.13 装 llama-factory 依赖报错 | 部分依赖（如 flash-attn）对新 Python 支持滞后。**用 3.11 或 3.12** 建独立环境（3.9/3.10 装不上，3.13 部分依赖还没跟上） |
+| transformers 升到 4.50+ 后 WebUI 报错 | 版本被框架绑定。**按官方 requirements 锁版本**（写作时 transformers 是 4.49，新版框架已提到 4.55+； peft 0.14 / trl 0.8.6） |
 | 在已有的 lora_env（torch 版本不同）里装 | 依赖冲突难缠。**独立环境 factory_env**，同前两套分开各自验证 |
 
 @@point ④ 数据集格式：Alpaca 与 ShareGPT 两种模板

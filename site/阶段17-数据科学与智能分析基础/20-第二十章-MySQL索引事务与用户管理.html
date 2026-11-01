@@ -352,7 +352,7 @@ INDEX idx_name (name)                    -- 普通索引（必须带 INDEX/KEY �
 -- 单独追加
 ALTER TABLE t ADD INDEX idx_name2 (name);   # 换个名字，避免与上面建表里的重名
 ALTER TABLE t ADD UNIQUE INDEX uk_email (email);
-CREATE INDEX idx_name ON t (name);          -- 等价写法
+CREATE INDEX idx_name_again ON t (name);          -- 等价写法
 
 -- 组合索引（多列，走最左前缀，见第 ④ 点）
 ALTER TABLE t ADD INDEX idx_name_email (name, email);
@@ -376,7 +376,7 @@ DROP INDEX idx_name ON t;</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>建重复索引（单独 a + 组合(a,b)）</td><td>浪费空间；能用组合覆盖就别单建（最左前缀原理）</td></tr>
-<tr><td>FULLTEXT 分词不满意</td><td>中文分词需配合 ngrm 插件（进阶）；普通场景先用 LIKE 或第三方搜索</td></tr>
+<tr><td>FULLTEXT 分词不满意</td><td>中文分词需配合 ngram 插件（进阶）；普通场景先用 LIKE 或第三方搜索</td></tr>
 <tr><td>索引名重复</td><td>同一表索引名唯一；命名带前缀区分类型</td></tr>
 </table>
 </div>

@@ -367,7 +367,7 @@ CREATE TABLE student_check (
 );
 
 INSERT INTO student_check (score, gender) VALUES (150, '男');   -- 报错：CHECK 拦截
-INSERT INTO student (score, gender) VALUES (90, 'x');     -- 报错：ENUM 不认
+INSERT INTO student_check (score, gender) VALUES (90, 'x');     -- 报错：ENUM 不认
 ```
 
 - **CHECK**：MySQL 8.0.16 起真正强制执行，旧版本只写不查（遇到过就当版本差异）；
