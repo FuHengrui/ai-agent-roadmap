@@ -487,6 +487,9 @@ TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
 <div class="layout">
+<input type="checkbox" id="navtoggle" class="nav-toggle-cb" hidden>
+<label for="navtoggle" class="nav-toggle" aria-label="打开目录"><span class="bars">☰</span>目录</label>
+<label for="navtoggle" class="nav-backdrop" aria-hidden="true"></label>
 <nav class="sidebar">
 {nav}
 </nav>

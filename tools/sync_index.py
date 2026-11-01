@@ -47,6 +47,21 @@ def chapter_href(c: dict) -> str:
     return "%s/%s" % (c["dir"], c["file"])
 
 
+TOGGLE_HTML = (
+    '<input type="checkbox" id="navtoggle" class="nav-toggle-cb" hidden>\n'
+    '<label for="navtoggle" class="nav-toggle" aria-label="打开目录">'
+    '<span class="bars">☰</span>目录</label>\n'
+    '<label for="navtoggle" class="nav-backdrop" aria-hidden="true"></label>\n'
+)
+
+
+def inject_toggle(html: str) -> str:
+    """首页/README 是手写页：把移动端目录开关插到 <div class="layout"> 之后（幂等）。"""
+    if 'id="navtoggle"' in html:
+        return html
+    return html.replace('<div class="layout">', '<div class="layout">\n' + TOGGLE_HTML, 1)
+
+
 def sidebar_html(cur: str = "index.html") -> str:
     """总览 + 各阶段分组的侧边栏（相对根目录）。
 
@@ -100,6 +115,7 @@ def main() -> int:
     for c in NAV:
         t = t.replace('href="%s"' % c["file"], 'href="%s"' % chapter_href(c))
 
+    t = inject_toggle(t)
     p.write_text(t, encoding="utf-8", newline="\n")
     print("  ✓ index.html 已同步（侧边栏 + %d 条章节链接）" % len(NAV))
 
@@ -114,6 +130,7 @@ def main() -> int:
             print("  · README 侧边栏未变")
         else:
             print("  ✓ README.html 侧边栏已同步")
+        rt2 = inject_toggle(rt2)
         r.write_text(rt2, encoding="utf-8", newline="\n")
 
     # ---------------- 可选：同步到 KB_DEPLOY ----------------

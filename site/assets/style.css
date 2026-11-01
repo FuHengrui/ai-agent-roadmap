@@ -39,6 +39,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* ---------------- 移动端目录抽屉（纯 CSS，无需 JS） ---------------- */
+.nav-toggle, .nav-backdrop { display: none; }
+.nav-toggle-cb { display: none; }
+
 /* ---------------- 布局：左侧目录 + 正文 ---------------- */
 .layout { display: flex; align-items: flex-start; }
 
@@ -359,14 +363,61 @@ th { background: var(--bg-soft); font-weight: 600; }
     .point, .why, .map { break-inside: avoid; }
 }
 
-/* ---------------- 窄屏 ---------------- */
+/* ---------------- 窄屏：目录收进抽屉 ---------------- */
 @media (max-width: 900px) {
     .layout { display: block; }
+    .wrap { padding: 20px 16px 96px; }
+
+    /* 目录变成「从左滑出」的抽屉，不再把正文顶下去 */
     .sidebar {
-        position: static; width: auto; height: auto; flex: none;
-        border-right: none; border-bottom: 1px solid var(--line);
+        position: fixed; top: 0; left: 0; z-index: 40;
+        width: 84vw; max-width: 320px; height: 100vh;
+        flex: none; border-right: 1px solid var(--line);
+        transform: translateX(-102%);
+        transition: transform .22s ease;
+        box-shadow: 2px 0 18px rgba(0,0,0,.12);
+        padding: 56px 14px 40px;
     }
-    .wrap { padding: 24px 18px 80px; }
+    #navtoggle:checked ~ .sidebar { transform: none; }
+
+    /* 左下角浮动按钮：拇指够得着 */
+    .nav-toggle {
+        display: flex; align-items: center; gap: 6px;
+        position: fixed; left: 14px; bottom: 18px; z-index: 50;
+        padding: 10px 16px; border-radius: 999px;
+        background: var(--accent); color: #fff;
+        font-size: 14px; font-weight: 600; line-height: 1;
+        box-shadow: 0 4px 14px rgba(0,0,0,.22);
+        cursor: pointer; user-select: none;
+    }
+    .nav-toggle .bars { font-size: 16px; }
+
+    /* 打开抽屉时的遮罩：点一下关掉 */
+    .nav-backdrop {
+        display: block; position: fixed; inset: 0; z-index: 35;
+        background: rgba(20,24,30,.42);
+        opacity: 0; pointer-events: none; transition: opacity .22s;
+    }
+    #navtoggle:checked ~ .nav-backdrop { opacity: 1; pointer-events: auto; }
+
+    /* 正文元素在小屏上的修正 */
+    .wrap table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .wrap pre { max-width: 100%; }
+    .wrap img { max-width: 100%; height: auto; }
+    .pager { flex-direction: column; gap: 12px; }
+    .pager .nxt { margin-left: 0; text-align: left; }
+    h1 { font-size: 24px; line-height: 1.35; }
+    h2 { font-size: 20px; }
+    .crumb { font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+    body { font-size: 15px; }
+    .wrap { padding: 16px 13px 92px; }
+    .point, .why, .map { padding-left: 14px; padding-right: 14px; }
+    .chapter-meta { padding: 2px 13px; }
+    .search-form { flex-direction: column; }
+    .search-form button { width: 100%; }
 }
 
 
