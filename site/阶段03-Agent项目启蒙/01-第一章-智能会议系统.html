@@ -299,16 +299,9 @@
 <span class="node"><span class="here">本章 ← 你在这里：把上一阶段的能力，用一个真实项目串起来</span></span>
 <span class="node">下一阶段：低代码 Agent 平台，开始用现成平台搭智能体</span>
 </div>
-<div class="note info"><span class="t">这一章和前两章不一样，先看这个</span>
-<p>前两章有完整的知识讲解。<strong>这一章没有。</strong></p>
-<p>这一章要你用两样东西——<strong>一份需求文档</strong>和<strong>一套成品代码</strong>。本书不额外提供代码包：需求文档的写法在 ①~④ 节里逐段示范，成品代码的关键结构在 ⑤~⑨ 节里逐模块拆解——读完这一章，相当于把这两样东西完整过了一遍：</p>
-<table>
-<tr><th>给了什么</th><th>里面有什么</th><th>没有这两样时怎么办</th></tr>
-<tr><td><strong>一份需求文档</strong></td><td>三页左右，写清要做什么、给谁用、有哪些功能（<strong>只写"做什么"，不写"怎么做"</strong>）</td><td>把它当成一份「用户故事 + 功能清单」来读就行</td></tr>
-<tr><td><strong>一套成品代码</strong></td><td>一个能跑起来的完整项目：后端十来个模块、前端几十个文件（<strong>没有一句讲解</strong>）</td><td>先看目录结构和接口定义，再看关键函数——顺序比通读重要</td></tr>
-</table>
-<p>所以这一章要练的是<strong>另一种能力</strong>：不是"跟着做"，而是<strong>从需求和代码里，把作者的思考反推出来</strong>。</p>
-<p><strong>这恰恰是真实工作的样子</strong>——没人会先讲一遍再让你干活。</p></div>
+<div class="note info"><span class="t">这一章不给你代码，给你两样东西</span>
+<p><strong>一份需求文档</strong>和<strong>一段提示词</strong>。需求文档长什么样，① 节末尾给了完整的一份；提示词在章末，复制给 AI，它会带你把这个项目一步步做出来。</p>
+<p>所以这一章练的<strong>不是背 API</strong>，而是两件事：<strong>把痛点写成需求</strong>，以及<strong>把需求讲清楚给 AI 听</strong>。 真实工作就是这样——没人先讲一遍再让你干活。</p></div>
 <div class="point" id="p1"><div class="head"><span class="no">1</span>① 需求先行：先想清楚要解决谁的什么问题</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>接到一个需求，最容易犯的错是<strong>直接想功能</strong>："要做登录、要做上传、要做列表……"</p>
@@ -342,6 +335,55 @@
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">完整需求文档：可以直接复制给 AI</span>
+<p>下面这份就是「三页纸」的样子——<strong>只写做什么，不写怎么做</strong>。①~④ 节讲的就是它是怎么长出来的。</p>
+<pre># 会议第二大脑 · 需求文档
+
+## 一、要解决什么
+开完会，事还没完：得再把录音听一遍，边听边记谁说了什么、哪几件事要跟进、哪件最急。
+半小时的会，往往再花二十分钟整理，还容易漏。
+
+这个项目要做的，是让录音丢进去以后，系统自动听、自动总结、自动列待办，遇到急事主动提醒。
+
+## 二、给谁用
+经常开会、会后要出结论的人：项目经理、产品、运营、团队负责人。
+典型场景：例会一散，几分钟后就能看到这场会讲了什么、有哪几件待办、哪件最急。
+
+## 三、用户故事
+1. 作为参会者，我希望注册并安全登录，这样我的会议内容只属于我自己。
+2. 作为参会者，我希望上传录音后系统自动处理，这样我不用手动去转写、去总结。
+3. 作为参会者，我希望随时看到每场会的摘要和待办清单，这样我不用再翻录音。
+4. 作为参会者，我希望紧急的事能被识别并提醒我，这样我不会错过。
+5. 作为参会者，我希望回看历史会议和处理进度，这样我知道哪场还没处理完。
+
+## 四、功能需求
+### 4.1 账号
+- 用「用户名 + 密码」注册；注册后可登录，登录后拿到凭证。
+- 之后所有操作都要带凭证；**密码不得明文存储**。
+
+### 4.2 上传录音
+- 支持 mp3 / wav。上传后保存文件，并立刻建一条「处理中」的会议记录。
+- **上传立刻返回**：用户不必在前端等到处理完。
+
+### 4.3 自动转写
+- 系统自动把语音转成文字，用户不用手动点。
+
+### 4.4 摘要与待办
+- 自动生成一段会议摘要（几句话讲清这场会讲了什么）。
+- 自动提取待办，逐条结构化（内容、负责人、优先级）。
+- 摘要与待办存进这场会议的记录，供随时查看。
+
+### 4.5 紧急提醒
+- 判断这场会里是否有紧急 / 高优先级任务；有就发一条外部通知（邮件 / 飞书 / 钉钉任选其一）。
+
+### 4.6 历史查询
+- 能看到自己的全部历史会议，以及每场的状态：处理中 / 已完成 / 失败。
+- 能看单场详情：摘要 + 待办。
+
+## 五、非功能需求（同样是需求）
+- **异步**：转写和总结都慢，必须后台做，不能让用户干等。
+- **失败隔离**：一场处理失败只标记这一场失败，不影响别的会议，也不拖垮服务。
+- **不越权**：任何人只能看到、只能操作自己的会议。</pre></div>
 <div class="point" id="p2"><div class="head"><span class="no">2</span>② 账号系统：为什么会议内容必须私有</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>会议录音里有薪资、有人事、有还没公开的商业计划。<strong>这是别人不能看的东西。</strong></p>
@@ -789,6 +831,42 @@ export type MeetingStatus = &#x27;处理中&#x27; | &#x27;已完成&#x27; | &#x2
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做 · 第 1 步：骨架 + 账号系统</span>
+<p>把上面那份需求文档贴给 AI，再跟上这段。<strong>一次只做一步</strong>，做完验收再往下走。</p>
+<pre>按我贴的需求文档，先只做第 1 步，不要做上传和分析。
+
+技术栈固定：FastAPI + Tortoise ORM + bcrypt + JWT，包管理用 uv。
+数据库先用 SQLite（后面换 MySQL 时不改代码结构，只改连接串）。
+
+要给我这些文件：
+  pyproject.toml
+  app/main.py         —— 挂 CORS、挂路由、startup 里建表
+  app/config.py       —— TORTOISE_ORM 配置，密码从环境变量读
+  app/database.py     —— 注册数据库
+  app/models.py       —— User 表：id / username / password_hash / created_at
+  app/schemas.py      —— 注册、登录、返回 token 三个模型
+  app/routers/auth.py —— POST /api/auth/register、POST /api/auth/login
+
+硬性要求（别自己发明）：
+  1. 密码用 bcrypt 哈希，库里绝不出现明文
+  2. 登录成功返回 JWT，后续接口从 Authorization: Bearer 里取
+  3. 用户名重复返回 400，密码错返回 401，不要返回 500
+  4. 路由前缀固定 /api/auth，路径就用上面那两个
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>（AI 说做完了，你自己跑一遍）：</p>
+<pre>uv run uvicorn app.main:app --reload     # 能起来，日志里没有报错
+curl -X POST http://127.0.0.1:8000/api/auth/register \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{&quot;username&quot;:&quot;tom&quot;,&quot;password&quot;:&quot;abc12345&quot;}&#x27;      # 200，返回里有 id
+curl -X POST http://127.0.0.1:8000/api/auth/login \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{&quot;username&quot;:&quot;tom&quot;,&quot;password&quot;:&quot;abc12345&quot;}&#x27;      # 200，返回 token
+curl -X POST http://127.0.0.1:8000/api/auth/login \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{&quot;username&quot;:&quot;tom&quot;,&quot;password&quot;:&quot;wrong&quot;}&#x27;         # 401，不是 500</pre>
+<p>三条都对，第 1 步就算过。<strong>有一条不对，就把报错原文贴回给 AI，别自己改</strong>——它比你更清楚自己刚写了什么。</p>
+<p>&gt; 效果取决于你用的模型：指令理解差一点的，可能一次做不完或漏掉硬性要求。这时候把「验收结果」贴回去，让它按错的地方改，通常两轮就能收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章没有讲任何新语法，但它可能是整个阶段里最"实战"的一章。</p>
 <p>你学到的是<strong>一条完整的做事链路</strong>：</p>
