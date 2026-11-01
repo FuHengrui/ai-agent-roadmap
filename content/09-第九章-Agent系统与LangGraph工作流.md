@@ -273,6 +273,47 @@ async for chunk, metadata in workflow.astream(query=query, thread_id=session_id)
 |---|---|
 | stream_mode=messages 和默认模式的事件结构弄混，解析不到内容 | 不同 stream_mode 的 event 结构不同；先用一个回显脚本打印原始事件，再写解析，别猜结构 |
 
+@@note tip 让 AI 带你做：第 9 步 — 四个 Agent + LangGraph 图
+把零件装成一台会自己选路的机器。HTTP 接口和 SSE 是下一步，这里先不碰。
+
+```text
+继续这个项目。这一步只做 Agent 与工作流（含 checkpointer），不写 HTTP 接口、不做 SSE、不碰前端。
+
+约束（照书里的，别自己起名）：
+  - 文件：app/agents/intent_agent.py、qa_agent.py、document_agent.py、app/agents/workflow.py、
+    app/llm/checkpoint.py——本章第 ① ③ ⑥ ⑦ 点；RetrievalAgent 用第 8 步那个，别重写。
+  - 五个节点名一个字都不能改：intent_recognition、case_retrieval、qa_generation、
+    document_generation、final_output。
+  - AgentState 字段照第 ② 点：query、filters、intent、retrieved_cases、document_type、
+    document_params、response、sources、messages（messages 用 Annotated[list[BaseMessage], add_messages]）。
+  - 两条条件边：intent_recognition 按意图分流（document / search / 默认 qa），
+    case_retrieval 再按 search / qa 分流；节点名和路由返回值要逐一核对（第 ③ 点坑）。
+  - 节点只返回增量 dict，绝不返回整包 State，否则会覆盖并发分支和 messages（第 ④ 点铁律）。
+  - 记忆用 AsyncPostgresSaver：init_checkpointer() 必须在图首次编译前跑完；thread_id 直接用 session_id；
+    图要懒编译（第 ⑦ 点），模块顶层别编译。
+  - 正文里标了「以下省略 N 行」的地方，按这里的约束补全：
+      · 11 行 = set_entry_point("intent_recognition")、两条 add_conditional_edges 与映射表开头；
+      · 14 行 = _qa_node 与 _output_node：_qa_node 用 astream 收 token 拼 response，
+        并把 sources 与 AIMessage 一起返回；_output_node 把 response 与 sources 交给 final_output；
+      · 4 行 = init_checkpointer 里建 AsyncConnectionPool 并 await open()。
+
+产出：
+  - app/agents/workflow.py、app/llm/checkpoint.py
+  - app/agents/intent_agent.py、qa_agent.py、document_agent.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+```bash
+uvicorn app.main:app --port 8000                                     # 启动日志里 checkpointer 建好，没有 RuntimeError
+docker exec legal-postgres psql -U legal_user -d legal_db -c "\dt"   # 多出 checkpoints 表（还有 checkpoints_* 几张）
+```
+看到 应用能起来、`checkpoints` 表被 setup() 自动建出来；再重启一次应用，表还在、也没有报错。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary
 这一章你实际拿到的是**三样东西**：
 | 拿到了什么 | 为什么要紧 |

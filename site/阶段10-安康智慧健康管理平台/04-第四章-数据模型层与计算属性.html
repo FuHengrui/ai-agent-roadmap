@@ -574,6 +574,37 @@ __all__ = [
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 4 步 — 七个模型 + 五个计算属性</span>
+<p>把第 2 章的建表 SQL 贴给 AI，再跟上这段。<strong>这一步只写模型类，不写路由、不写 Schema。</strong></p>
+<pre>继续这个项目。这一步只做 app/models/ 下的七个模型和计算属性，不写任何接口。
+
+约束（照书里的，别自己起名）：
+  - 七个文件：patient.py / blood_sugar.py / diet_record.py / medication.py / exercise.py /
+    health_report.py / chat_history.py，外加 __init__.py 统一导出（第⑦点）
+  - 类名固定：Patient / BloodSugar / DietRecord / Medication / Exercise / HealthReport / ChatHistory
+  - 每个模型都要 Meta.table，值就是第 2 章 SQL 里的表名（patients / blood_sugar / diet_records /
+    medications / exercise_records / health_reports / chat_history）
+  - 外键写成字符串：fields.ForeignKeyField(&#x27;models.Patient&#x27;, related_name=&#x27;blood_sugars&#x27;)（第②点）
+  - 可空字段一律 null=True；CharField 必须给 max_length（第①点）
+  - 五个计算属性（@property，不落库）：
+      Patient.bmi           体重 / 身高米²，round 1 位
+      Patient.bmi_category  18.5 / 24 / 28 四档：偏瘦 / 正常 / 超重 / 肥胖（第③点）
+      BloodSugar.status     按 measure_type 取上限：fasting 6.1 / postprandial 7.8 / random 11.1，兜底 7.0；
+                            &lt; 3.9 低血糖、&lt;= 上限 正常、&lt;= 上限+3 偏高、其余高血糖（第④点）
+      DietRecord.gi_level   gi_value 为 None 先返回「未知」，&lt;=55 低GI、&lt;=70 中GI、其余高GI（第⑤点）
+      Exercise.bs_change    after - before，round 1 位，任一为空返回 0.0（第⑥点）
+
+产出：
+  - app/models/ 下七个模型文件 + __init__.py（用 __all__ 导出七个类）
+
+做完告诉我：每个属性算的是什么、边界值怎么归属，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>uv run python -c &quot;from app.models import Patient; p=Patient(name=&#x27;测试&#x27;,age=40,height=170,weight=68); print(p.bmi, p.bmi_category)&quot;        # 23.5 正常
+uv run python -c &quot;from app.models import BloodSugar; print(BloodSugar(value=7.5, measure_type=&#x27;fasting&#x27;).status)&quot;                          # 偏高
+uv run python -c &quot;from app.models import BloodSugar; print(BloodSugar(value=7.5, measure_type=&#x27;postprandial&#x27;).status)&quot;                     # 正常
+uv run python -c &quot;from app.models import DietRecord; print(DietRecord(food_name=&#x27;燕麦&#x27;).gi_level, DietRecord(food_name=&#x27;燕麦&#x27;, gi_value=55).gi_level)&quot;   # 未知 低GI</pre>
+<p>四个属性都对，模型层就算过。<strong>status 边界判错，多半是等号写反了。</strong></p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

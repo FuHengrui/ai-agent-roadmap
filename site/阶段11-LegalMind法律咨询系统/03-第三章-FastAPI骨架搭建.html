@@ -484,6 +484,39 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000</pre>
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 3 步 — 应用骨架 + lifespan + 路由挂载</span>
+<p>骨架就是"能起来、有生命周期、四个模块有挂载点"。业务接口一律不做，那是第 5 步之后的事。</p>
+<pre>继续这个项目。这一步只做应用骨架（入口、生命周期、CORS、路由挂载），不写任何业务接口、
+不定义模型、不接 LLM 与向量库。
+
+约束（照书里的，别自己起名）：
+  - 入口固定 app/main.py，启动命令 uvicorn app.main:app --reload --port 8000（本章第 ⑦ ⑧ 点）。
+  - 四个 router 模块固定 app/api/auth.py、chat.py、documents.py、cases.py，先各给一个空 APIRouter()；
+    挂载前缀照本章第 ① ⑤ 点：/api/auth、/api/chat、/api/documents、/api/cases。
+  - lifespan 用 @asynccontextmanager（第 ② 点）：启动 init_db() → init_vector_store() →
+    init_checkpointer()，关闭严格逆序，不许用 gather 并行。
+  - CORS 只放 http://localhost:5173 与 http://127.0.0.1:5173，allow_credentials=True（第 ④ 点）。
+  - 建表在 app/db/database.py 的 init_db()：Tortoise.init(db_url=settings.DATABASE_URL,
+    modules={&quot;models&quot;: DB_MODELS}) + generate_schemas(safe=True)；DB_MODELS 先留空列表——
+    app/models 是第 4 章才写的，别提前 import。
+  - Windows 上在 main.py 最前面设 WindowsSelectorEventLoopPolicy（第 ⑥ 点）。
+  - /health 返回 {&quot;status&quot;: &quot;healthy&quot;, &quot;version&quot;: &quot;1.0.0&quot;}，一个字都别改。
+  - 正文里标了「以下省略 N 行」的地方，按这里的约束补全：
+      · 33 行 = 四个 router 的 import、init_vector_store / init_checkpointer 的 import、
+        lifespan 整体、app = FastAPI(lifespan=...)、CORS 中间件；
+      · 3 行 = `async def init_db():` 与 `await Tortoise.init(` 的开头及括号收口。
+
+产出：
+  - app/main.py、app/db/database.py
+  - app/api/auth.py、chat.py、documents.py、cases.py（空 router）
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>uvicorn app.main:app --reload --port 8000                                    # 能起来，日志没有 ModuleNotFoundError
+curl -s http://localhost:8000/health                                         # {&quot;status&quot;:&quot;healthy&quot;,&quot;version&quot;:&quot;1.0.0&quot;}
+curl -s -o /dev/null -w &#x27;%{http_code}\n&#x27; http://localhost:8000/docs          # 200</pre>
+<p>看到 健康检查返回 healthy、Swagger 页面 200，启动日志里 init_db 之后没有报错。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

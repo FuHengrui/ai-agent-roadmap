@@ -543,6 +543,32 @@ asyncio.run(main())</pre>
 <p>三条全过，检索端就绪，可以放心交给第 9 章的 Agent 使用了。</p>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 8 步 — 双路召回 + 重排</span>
+<p>向量管语义、BM25 管案号，"先多捞再精筛"。接口层和工作流这一步都不动。</p>
+<pre>继续这个项目。这一步只做检索（双路召回 + 重排 + 过滤透传），不写 API、不改 Agent 图。
+
+约束（照书里的，别自己起名）：
+  - 四个文件：app/rag/retriever.py（HybridRetriever）、app/rag/reranker.py（Reranker）、
+    app/agents/retrieval_agent.py（RetrievalAgent）、scripts/retrieval_agent_smoke.py
+    ——本章第 ② ③ ④ ⑧ 点。
+  - 中文必须 jieba.cut 分词：建 BM25 索引时要切，query 打分时也要切，重排那边照样切（第 ② ③ 点）。
+  - 候选池一律 top_k * 3（本项目 15 条）；合并按 case_number 去重，空案号别全并成一条。
+  - RetrievalAgent 对外只留三个方法：retrieve(query, top_k, filters)、search_by_keywords、
+    search_by_article；重排开关看 settings.RERANK_ENABLED，关了就 candidates[:top_k]。
+  - filters 让 court、case_type 一路透传到 Chroma 的 metadata 过滤；laws 是拼接串，只能拉回内存
+    做子串筛（第 ⑦ 点），别在 Chroma 里按数组过滤。
+  - 本章没有「以下省略 N 行」，别把检索写进路由层——那是第 10 步的事。
+
+产出：
+  - app/rag/retriever.py、app/rag/reranker.py、app/agents/retrieval_agent.py
+  - scripts/retrieval_agent_smoke.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>python scripts/retrieval_agent_smoke.py       # 语义查询 / 案号查询 / 过滤查询 三行都有结果
+python -c &quot;from app.rag.retriever import HybridRetriever as H; print(len(H().bm25_cases))&quot;   # 大于 0，说明 BM25 索引建起来了</pre>
+<p>看到 三条查询都有结果（案号能精确命中、过滤查询只回劳动争议）、BM25 候选数大于 0。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

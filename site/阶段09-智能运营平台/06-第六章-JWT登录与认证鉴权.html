@@ -479,6 +479,35 @@ print(payload)   # {&#x27;sub&#x27;: &#x27;1&#x27;, &#x27;iat&#x27;: 1710..., &#
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 6 步 — 登录发令牌 + 校验中间件</span>
+<pre>继续这个项目。这一步只做登录与令牌校验，不写业务接口、不碰 create.py。
+
+约束（照书里的，别自己起名）：
+  - 文件 app/routers/auth.py 里只写 router = APIRouter()，前缀由 main.py 的
+    include_router(..., prefix=&quot;/v1/auth&quot;) 给；文件里再写一次会拼成 /v1/auth/v1/auth/login（第 ② 点）
+  - 接口 POST /login，两个参数都用 Body(...)，不加 Body 会被当查询参数、传 JSON 就 422
+  - 令牌三段式 HS256，payload 用 sub=str(user_id) + iat + exp，exp 取 Unix 秒；
+    JWT_SECRET / JWT_ALGORITHM / JWT_ACCESS_EXPIRE_SECONDS 三个常量补进 app/config.py
+  - 校验用 HTTPBearer(auto_error=False) + get_current_user_id，头格式是 Authorization: Bearer 加令牌
+  - 语义稳定：没带令牌 401、过期 401、签名无效 403、参数错 400（第 ⑤ 点）
+  - login 是白名单，绝不能挂 Depends(get_current_user_id)（第 ④ 点）
+
+产出：
+  - app/routers/auth.py
+  - app/config.py 里补的三个常量
+  - main.py 里放开 app.include_router(auth.router, prefix=&quot;/v1/auth&quot;, tags=[&quot;认证&quot;])
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>curl -X POST http://127.0.0.1:8000/v1/auth/login \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;admin&quot;}&#x27;      # code 200，data.token 是两处点号的三段
+curl -i -X POST http://127.0.0.1:8000/v1/auth/login \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;wrong&quot;}&#x27;      # HTTP 401，不是 500
+curl -o /dev/null -w &#x27;%{http_code}\n&#x27; http://127.0.0.1:8000/v1/test/styles   # 200，测试接口没被误锁</pre>
+<p>看到登录返回三段式 token、密码错是 401、<code>/v1/test/styles</code> 仍是 200，鉴权这一层就算立住了。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>JWT 三段式：header.payload.signature，HS256 + 服务端 secret 保证不可伪造</li><li>签发：payload 用 sub/iat/exp（Unix 秒），PyJWT encode/decode</li><li>登录流程：查用户 → 比对密码 → _make_token → 返回 token；登录接口白名单</li><li>校验：HTTPBearer(auto_error=False) + Depends 注入，业务直接拿 user_id</li><li>错误分层：401 未登录/过期，403 令牌无效/无权限，前端分动作响应</li><li>挂法：单接口 Depends 逐个锁为主，白名单（login）绝不挂鉴权</li><li>生产加固：哈希密码、强 secret、限流、精确 CORS、token 吊销</li><li>实操拆 token：sub/iat/exp 当场可见；jwt.io 或 pyjwt decode 验证签名与过期</li></ul>
 <h4>自测：能不能答上来</h4>

@@ -480,6 +480,35 @@ async def styles():
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 11 步 — 文案生成、保存、重置与风格列表</span>
+<pre>继续这个项目。这一步只做文案的四个写接口加一个风格列表，不碰配图和发布。
+
+约束（照书里的，别自己起名）：
+  - 全挂在 /v1/create 下：POST /copy、GET /title/{title_id}、POST /title/{title_id}/reset、
+    POST /save-copy、GET /styles（第 ②③④⑤ 点）
+  - 归属校验统一写法：t_titles 没有 user_id 列，先 Title.get_or_none(id=...)，
+    再 Section.get_or_none(id=title.section_id, user_id=user_id)，不通过一律回 404（不区分「不存在」和「不是你的」）
+  - 状态机照第 ⑥ 点：0 未生成 →(/copy 成功 或 save-copy) 1 已生成 →(reset) 0；
+    status 为 2 已发布 / 3 已废弃时，生成与保存都回 400
+  - 生成/保存/重置三处共用一个 _update_content(title, text)，别写三份差不多的代码
+  - 先校验 text 非空再改 status，顺序写反会留下「已生成但没正文」的记录
+  - status 存 int（模型是 SmallIntField，前端按 === 1 判断）
+  - /styles 读 t_style，不加 user 过滤；前端只展示 name，fengge 是文生图提示词片段，由后端拼（第 ⑤ 点）
+
+产出：
+  - create.py 里新增上述五个接口
+  - 第 ⑧ 点说的脏标记：前端切换标题/刷新前给未保存提示（只在前端做，别改后端契约）
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>curl -X POST &quot;http://127.0.0.1:8000/v1/create/copy?title_id=1&quot; -H &quot;Authorization: Bearer $TOKEN&quot;
+      # code 200，data.content 是一篇正文，库里该条 status 变 1
+curl -X POST &quot;http://127.0.0.1:8000/v1/create/title/1/reset&quot; -H &quot;Authorization: Bearer $TOKEN&quot;
+      # code 200，content 清空、status 回 0
+curl &quot;http://127.0.0.1:8000/v1/create/styles&quot;            # data 里是 t_style 的风格列表
+mysql -u root -p ai_operation -e &quot;SELECT id,status,LENGTH(content) FROM t_titles WHERE id=1;&quot;</pre>
+<p>看到生成一次 <code>status=1</code> 且 <code>content</code> 长度不为 0，重置后回到 <code>status=0</code>、<code>content</code> 为 NULL，文案这一块就算过。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>文案 Bot 人设：220-420 字、口语化、emoji、引导互动、禁违禁词——内容是"规格化"产物</li><li>/copy 接口：归属校验（防 IDOR）→ 调 AI → 验证非空 → 更新 content + status=1</li><li>详情 /title/{id} 与 重置 reset：软操作（清字段回状态），不删记录</li><li>save-copy：人工改稿落库，服务端强制非空校验</li><li>风格接口 /styles：平台共享配置，不加用户过滤；与测试接口区别使用</li><li>状态机：0↔1 可逆、1→2 发布冻结、可弃为 3；变更收敛到统一守卫函数</li><li>联调剧本六步：详情/生成/重试/保存/重置/风格，刷新校验一致性</li><li>编辑态与保存态分离：脏标记 + 显式保存 + 离开拦截，保存成功才清脏</li></ul>
 <h4>自测：能不能答上来</h4>

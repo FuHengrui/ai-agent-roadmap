@@ -246,6 +246,41 @@ python -c "from main import app"                      # 应用层
 | 改了代码却还是旧报错 | reload 节点没监听到该文件（新加的文件）；重启进程最稳 |
 
 
+@@note tip 让 AI 带你做：第 5 步 — 服务跑起来 + 第一个只读接口
+
+```text
+继续这个项目。这一步只让服务能启动、加一个测试接口，不写登录、不写生成。
+
+约束（照书里的，别自己起名）：
+  - main.py：app = FastAPI(title="智能运营平台", version="1.0.0")；只 include test.router
+    （prefix="/v1/test"）；auth / create 先建成空壳（各自一行 router = APIRouter()），
+    否则现在启动就 ModuleNotFoundError（第 ① 点）
+  - CORS 中间件四个参数都写全：allow_origins / allow_credentials / allow_methods / allow_headers；
+    联调期 allow_origins 收敛到 http://127.0.0.1:5173，别 * 配 credentials=True（第 ② 点）
+  - app/database.py 写 register_db(app)，在 startup / shutdown 里做 init 与 close（第 ③ 点）
+  - 接口：GET /v1/test/styles，返回 {"code": 200, "message": "success", "data": [...]}，
+    每条带 id / name / fengge（第 ⑤ 点）
+  - 查询必须 await Style.all()——Tortoise 是异步 ORM，忘了 await 拿到的是协程
+
+产出：
+  - main.py、app/database.py、app/routers/test.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+
+```bash
+uv run uvicorn main:app --reload                                  # 日志出现 Uvicorn running on http://127.0.0.1:8000
+curl http://127.0.0.1:8000/v1/test/styles                         # code 200，data 里是种子的风格
+curl -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8000/docs  # 200，接口文档能打开
+```
+
+看到 `/v1/test/styles` 返回三件套（code / message / data）且 data 里有种子风格，说明「库 → 后端 → 响应」整条链路通了。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary 这一章你学到了什么
 - main.py 三件事：CORS 中间件、APIRouter 路由注册（prefix 前缀）、RegisterTortoise 生命周期
 - CORS 参数语义：allow_origins/credentials/methods/headers；"*" 与 credentials=True 互斥

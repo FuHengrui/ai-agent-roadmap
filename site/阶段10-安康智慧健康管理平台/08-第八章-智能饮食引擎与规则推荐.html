@@ -536,6 +536,37 @@ async def recommend_meal(patient_id: int, meal_type: str):
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 8 步 — 食谱库与血糖分支推荐</span>
+<p>三个记录模块能录数据了，这一步给饮食装上"规则智能"。<strong>这一章不调大模型</strong>——先用确定性规则把推荐做出来。</p>
+<pre>继续这个项目。这一步只做 diet_advisor 里的规则推荐，不接 LangChain/LangGraph，
+也不动前一章的三个路由骨架，只在 diet 路由上补两个查询。
+
+约束（照书里的，别自己起名）：
+  - 常量名 RECOMMENDED_FOODS，10 条食谱，每条 8 个键（第②点）：
+      name / calories / carbs / protein / fat / gi / meal / tip
+  - meal 允许一字段多值，写成「午餐/晚餐」，筛选时用 meal_type in f[&quot;meal&quot;] 做子串匹配
+  - get_daily_nutrition 必须是 async（要 await DietRecord.filter），时区统一 ZoneInfo(&quot;Asia/Shanghai&quot;)（第③点）
+  - 日期区间 [当天 0 点, 次日 0 点)，结束端用 eaten_at__lt，不许 __lte
+  - 汇总 sum((r.calories or 0) * (r.portion or 1))；avg_gi 先滤 None 再求均值，空返回 0.0
+  - 两个判定函数（第④点）：_calorie_status 以 1200 / 1800 分档；_carb_status 以 100 / 200 分档
+    &lt;下界「偏低」、&lt;=上界「适中」、其余「偏高」，等号归属与血糖 status 一致
+  - recommend_meal 是同步方法，不许标 async、不许 await（第⑥点）
+    recent_bg &gt; 8.0 时按 gi 升序取前 4 条；否则取前 5 条；recent_bg 为 None 不能崩
+  - 模块底部 diet_advisor = DietAdvisor() 单例导出（第⑦点）
+  - 路由：GET /patient/{patient_id}/daily 用 await 调；GET /recommend/{meal_type} 直接调不 await
+    最近一次血糖用 BloodSugar.filter(patient_id=...).order_by(&quot;-measured_at&quot;).first()，并判空
+
+产出：
+  - app/core/diet_advisor.py（RECOMMENDED_FOODS + 三个方法 + 单例）
+  - 在 app/routers/diet_record.py 上补 /patient/{patient_id}/daily 与 /recommend/{meal_type}
+
+做完告诉我：哪些方法 async、哪些同步，血糖高时推荐怎么变，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>curl &quot;http://127.0.0.1:8000/api/diet/patient/1/daily?date=2026-11-01&quot;   # 有 total_calories / avg_gi / calorie_status
+curl &quot;http://127.0.0.1:8000/api/diet/recommend/午餐?patient_id=1&quot;        # 最近血糖 &gt;8.0 时 4 条，否则 5 条
+uv run python -c &quot;from app.core.diet_advisor import diet_advisor; r=diet_advisor.recommend_meal(&#x27;午餐&#x27;, 9.5); print(len(r), [f[&#x27;gi&#x27;] for f in r])&quot;   # 最多 4 条，GI 升序</pre>
+<p>三条都对，规则引擎就算过。<strong>条数没变少、GI 没升序，就是血糖分支没走。</strong></p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

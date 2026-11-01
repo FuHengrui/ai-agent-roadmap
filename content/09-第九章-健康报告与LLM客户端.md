@@ -283,6 +283,51 @@ LLM 输出太飘或太长？temperature 和 max_tokens 怎么设？
 | 报告逻辑直接在路由写死 | 对话模块还要复用 analyzer/llm，不封装就得复制一遍 |
 | 把报告当对话的子集 | 报告要落库快照、要周期范围校验；对话要历史上下文；两者编排各自独立 |
 
+@@note tip 让 AI 带你做：第 9 步 — LLMClient + 周报生成
+到这一步才第一次让模型开口。**只做 LLM 封装和报告，不做 RAG、不做对话工作流**——那两件是后面两章的事。
+
+```text
+继续这个项目。这一步只做 LLMClient 和健康报告接口，不碰 ChromaDB、不写 LangGraph。
+
+约束（照书里的，别自己起名）：
+  - app/core/llm_client.py 里 class LLMClient，__init__ 从 .env 读五个键：LLM_API_KEY / LLM_MODEL /
+    LLM_BASE_URL / LLM_TEMPERATURE / LLM_MAX_TOKENS，逐个喂给 ChatOpenAI（第①点）
+  - ChatOpenAI 用 openai_api_base=LLM_BASE_URL 指向 DashScope 兼容端点，模型填 qwen3.7-max
+  - chat(system_prompt, user_message, chat_history=None) 的消息顺序：SystemMessage → 历史 → 当前提问（第②点）
+  - 历史只取最近 10 条 chat_history[-10:]；role 为 user 转 HumanMessage，assistant/bot 转 AIMessage
+  - 调用包 try/except，失败返回「抱歉，医学助手暂时无法响应…」，别把异常拼给用户
+  - 模块底部实例化 llm_client = LLMClient()（跟第 8 章第⑦点一样的单例写法，别每处 new 一个）
+  - 报告接口（第③点）：POST /api/reports/generate/{patient_id}?report_type=周报
+                     GET  /api/reports/patient/{patient_id}?limit=10（le=50）
+  - report_type 只认 周报 / 月报，days 分别 7 / 30
+  - 五步流水线不许改顺序：验患者 → health_analyzer.analyze_blood_sugar → generate_summary
+    → llm_client.chat → HealthReport.create
+  - analysis 里有 error 时不调 LLM，直接写「血糖数据不足，无法生成报告。」（第③点）
+  - generate_summary 是模板字符串拼接，不许交给模型生成（第④点）
+  - 落库字段：report_type / period_start / period_end / avg_blood_sugar / blood_sugar_std /
+    time_in_range / summary / recommendations / risk_level，存的是快照不是引用（第⑤点）
+  - 返回前 await report.fetch_related("patient")；响应里 patient 填的是 id 数字（第⑥点）
+
+产出：
+  - app/core/llm_client.py
+  - app/core/health_analyzer.py 里补 generate_summary
+  - app/routers/health_report.py + app/schemas/ 下报告响应
+
+做完告诉我：哪一步该调模型、哪一步绝不调，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+
+```bash
+uv run python -c "from app.core.llm_client import llm_client; print(llm_client.chat('你是医生，只回一句话', '低血糖该吃什么')[:30])"   # 有中文输出，没有堆栈
+curl -X POST "http://127.0.0.1:8000/api/reports/generate/1?report_type=周报"    # summary 里有达标率，recommendations 有 3-5 条
+curl "http://127.0.0.1:8000/api/reports/patient/1?limit=10"                    # 最新一份排最前
+```
+三条都对，报告就算过。**Key 报 401，先看 LLM_BASE_URL 是不是 DashScope 兼容端点。**
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary
 这一章你实际拿到的是**三样东西**：
 

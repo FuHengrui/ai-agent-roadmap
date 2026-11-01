@@ -311,6 +311,51 @@ async def send_message(data: ChatMessage):
 | 初始 state 字段不齐 | ainvoke 时缺字段节点取不到；按 AgentState 全字段初始化 |
 | 对话历史未回填 | 本项目每轮独立调用 LLM（无多轮上下文）；生产可把历史传入 chat 的 chat_history 参数 |
 
+@@note tip 让 AI 带你做：第 12 步 — 五节点工作流 + chat 接口
+最后一块：把档案、统计、RAG、模型、风险串成一条对话流水线。**这一步只做工作流和 chat 路由**，前端对话页不在本章。
+
+```text
+继续这个项目。这一步只做 LangGraph 五节点和 /chat 接口，不改前面六个模块的接口。
+
+约束（照书里的，别自己起名）：
+  - app/core/langgraph_agent.py 里 AgentState(TypedDict, total=False)，九个字段（第②点）：
+    patient_id / input_type / user_message / patient_context / blood_sugar_data /
+    rag_context / recommendations / risk_level / response
+  - 五个节点函数名固定（第③~⑦点）：classify_input、load_patient_context、retrieve_knowledge、
+    analyze_and_generate、risk_assessment；每个都是 async，只改 state 不返回数据给下一个节点
+  - 意图四类：blood_sugar / diet_query / medication_query / health_query（兜底），
+    映射 _INTENT_CATEGORY_MAP = 血糖管理 / 饮食管理 / 用药管理；health_query 时 category 传 None 走全库
+  - load_patient_context 里 health_analyzer.analyze_blood_sugar(patient.id, days=7)，
+    bg_summary 进档案文本、bg_analysis 存进 blood_sugar_data 供风险评估用（第④点）
+  - analyze_and_generate 的 system_prompt 三段式：角色 + 患者档案 + rag_context + 三条输出要求；
+    user_message 绝不拼进 system_prompt（第⑥点）
+  - risk_assessment 只用 blood_sugar_data.get('risk_level')，拿不到就是 None——
+    **不许用 or 兜成「低风险」**；高风险加就医警告，中风险加规律提醒，response = recommendations + warning（第⑦点）
+  - create_agent_workflow：StateGraph(AgentState) → add_node 五个 → set_entry_point("classify")
+    → add_edge 四跳到 assess_risk → add_edge("assess_risk", END) → compile()（第⑧点）
+  - 模块级 agent_app = create_agent_workflow()，再包一个 run_agent(patient_id, user_message)
+  - chat 路由 POST /message：先 ChatHistory.create(role="user") → run_agent → 再 create(role="assistant")（第⑧点）
+
+产出：
+  - app/core/langgraph_agent.py
+  - app/routers/chat.py（前缀 /chat，接口 POST /message）
+  - app/schemas/ 下 ChatMessage / ChatResponse
+
+做完告诉我：五个节点各改哪个字段、风险警告为什么不能交给模型，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/chat/message -H "Content-Type: application/json" -d "{\"patient_id\":1,\"message\":\"最近血糖高怎么办\"}"   # 有 response，input_type 是 blood_sugar
+curl -X POST http://127.0.0.1:8000/api/chat/message -H "Content-Type: application/json" -d "{\"patient_id\":1,\"message\":\"低血糖怎么办\"}"        # 回复里带 [参考N] 引用
+mysql -u root -p diabetes -e "SELECT role, LEFT(content,20) FROM chat_history;"      # user 和 assistant 成对落库
+```
+看到意图判对、引用带来源、两条消息都落库。**回复里没有「参考」字样，就是 retrieve 节点没把 rag_context 写进 state。**
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary
 这一章你实际拿到的是**三样东西**：
 

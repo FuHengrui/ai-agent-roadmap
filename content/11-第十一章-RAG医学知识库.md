@@ -292,6 +292,50 @@ class RAGEngine:
 | 分数阈值太高检索太少 | 0.3 是针对本项目知识量与模型调过的经验值，换库需重调 |
 | 引用格式里来源缺失 | meta.get("source", "未知来源") 兜底，格式永远完整 |
 
+@@note tip 让 AI 带你做：第 11 步 — 向量库与 RAG 检索
+模型会开口了，现在给它装资料。**这一步只做向量库和检索，chat 路由留到第 12 章**。
+
+```text
+继续这个项目。这一步只做 ChromaDB 入库和检索，不改 chat 路由、不写 LangGraph。
+
+约束（照书里的，别自己起名）：
+  - app/core/vector_store.py 里 class VectorStore（第②点）：
+      Path(CHROMA_PERSIST_DIR).mkdir(parents=True, exist_ok=True) 后再 PersistentClient
+      嵌入模型 paraphrase-multilingual-MiniLM-L12-v2，encode_kwargs={"normalize_embeddings": True}
+      get_or_create_collection(name=CHROMA_COLLECTION_NAME, metadata={"hnsw:space": "cosine"})
+      两个键都从 .env 读：CHROMA_PERSIST_DIR=./data/chroma_db、CHROMA_COLLECTION_NAME=medical_knowledge
+  - add_documents：不给 ids 就用 md5(内容) 作 ID，分批 upsert（batch_size=100），
+    **用 upsert 不用 add**——add 撞到已存在 ID 不会覆盖（第③点）
+  - query：top_k 用 int(RAG_TOP_K)，RAG_TOP_K 从 .env 读出来是字符串必须转 int；
+    结果逐层脱壳取 [0]，where 过滤传 {"category": "饮食管理"} 这种字典（第④点）
+  - app/core/knowledge_base.py：DIABETES_KNOWLEDGE 20 条，每条 content + category + source，
+    分类固定 8 种：血糖管理 / 低血糖 / 高血糖 / 血糖监测 / 饮食管理 / 运动管理 / 用药管理 / 并发症（第⑤点）
+  - init_knowledge_base：count() > 0 直接 return；ids 用 doc_0..doc_19；调 add_documents 入库（第⑥点）
+  - search_knowledge(query, category=None, top_k=5)：score = max(0.0, 1.0 - distance)，
+    category 为空则 where=None（全库检索），返回 [{content, metadata, score}]（第⑦点）
+  - app/core/rag_engine.py：RAGEngine.retrieve(query, category=None, top_k=5, min_score=0.3)，
+    先筛 score >= min_score，再 _build_context 拼成 [参考N](分类 | 来源：xxx) 的文本块（第⑧点）
+  - main.py 里第 5 章注释掉的 init_knowledge_base 现在放开，放进 lifespan
+
+产出：
+  - app/core/vector_store.py、app/core/knowledge_base.py、app/core/rag_engine.py
+  - main.py 的 lifespan 恢复 init_knowledge_base() 调用
+
+做完告诉我：距离怎么变成分数、count>0 为什么要直接 return，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+
+```bash
+uv run python -c "from app.core.knowledge_base import init_knowledge_base, vector_store; init_knowledge_base(); print(vector_store.count())"   # 20
+uv run python -c "from app.core.rag_engine import rag_engine; print(rag_engine.retrieve('低血糖怎么办')[:80])"                                # 以 [参考1](分类 | 来源：… 开头
+uv run python -c "from app.core.rag_engine import rag_engine; print(rag_engine.retrieve('能吃什么', category='饮食管理')[:40])"                # 引用行里分类都是饮食管理
+```
+看到 20 条、检索结果带分类和来源、按分类能收窄。**count 打出来是 0，就是 upsert 写成了 add，或者目录没建就建客户端。**
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary
 这一章你实际拿到的是**三样东西**：
 

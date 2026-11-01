@@ -500,6 +500,38 @@ async def load(theme: str, user_id: int = Depends(get_current_user_id)):
 <p>任何一个环节崩了，错误码就告诉你问题在哪一段：400 校验、401/403 鉴权、500 AI/解析/落库。</p>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 10 步 — /start /themes /load 三个接口与落库</span>
+<pre>继续这个项目。这一步只写选题生成的三个接口与落库，不碰文案、不碰配图。
+
+约束（照书里的，别自己起名）：
+  - create.py，前缀 /v1/create：POST /start、GET /themes、GET /load（第 ① 点）
+  - 每个接口第一行拿 user_id = Depends(get_current_user_id)，数据按用户隔离
+  - /start 参数 theme: str = Body(embed=True)；铁序是 校验 → 调 AI → 解析 → 校验形状 → 落库，
+    空主题 strip 后直接 400，绝不为空串烧一次 token（第 ② 点）
+  - _extract_json 三级降级：直接 json.loads → 取 markdown 代码块里的内容 →
+    第一个 { 到最后一个 }；全失败返回 None，上层报 500「AI 返回格式异常，请重试」（第 ③ 点）
+  - 落库前校验五个 key 全在：每日行业热点 / 热点榜单 / 专业知识榜单 / 人设共鸣 / 灵感广场；
+    缺板块就报错，不写半成品（第 ④ 点）
+  - 落库先 Section.create(user_id=..., source_name=theme, name=板块名) 拿 id，
+    再逐条 Title.create(section_id, title, sort_order=1..10, status=0)；整批用事务包住（第 ⑤ 点）
+  - /themes 先按 -created_at 倒序再按 source_name 去重，返回带 count；
+    /load 用 section_id__in=[...] 一次查回（没有 ORM 外键，prefetch_related 用不了），按 sort_order 升序
+
+产出：
+  - create.py
+  - main.py 里放开 app.include_router(create.router, prefix=&quot;/v1/create&quot;, tags=[&quot;内容生成&quot;])
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>curl -X POST http://127.0.0.1:8000/v1/create/start -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;theme&quot;:&quot;新能源汽车&quot;}&#x27;        # code 200，耗时 15~90 秒
+curl -i -X POST http://127.0.0.1:8000/v1/create/start -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;theme&quot;:&quot;   &quot;}&#x27;              # 400，且没触发 Coze 调用
+curl -G http://127.0.0.1:8000/v1/create/load --data-urlencode &quot;theme=新能源汽车&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;                                    # 五个板块，每板块 10 条
+mysql -u root -p ai_operation -e &quot;SELECT COUNT(*) FROM t_titles WHERE status=0;&quot;   # 约 50</pre>
+<p>看到库里多出 5 个 section、50 条 status=0 的 title，<code>/load</code> 按 <code>sort_order</code> 升序吐回五个板块，这条链路就通了。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>create.py 三接口：/start（生成）/themes（主题去重）/load（加载内容），全部按用户隔离</li><li>/start 铁序：校验 400 → 调 AI → 解析 → 落库；空主题绝不烧 token</li><li>_extract_json 三级防御：直接解析 → 代码块提取 → 首尾大括号截取，失败返回 None</li><li>解析成功 ≠ 可用：5 板块 key 与标题结构必须显式校验，坏数据不入库</li><li>落库顺序：先 Section 后 Title，事务包裹防孤儿数据；bulk_create 优化批量</li><li>/themes：倒序 + 去重保留最新，返回带 count；/load：按 <code>sort_order</code> <strong>升序</strong>（第 2 章定义：越小越靠前）+ <code>section_id__in</code> 防 N+1</li><li>中文主题 GET 要 URL 编码；错误码即链路定位器（400→校验 401/403→鉴权 500→AI/解析）</li></ul>
 <h4>自测：能不能答上来</h4>

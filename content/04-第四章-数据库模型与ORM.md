@@ -257,6 +257,48 @@ messages = await ChatMessageRecord.filter(chat_session=session).order_by("create
 | 列表接口不写 .limit()，全表一把梭 | 数据一多内存和耗时一起爆；列表、搜索接口务必 limit + offset 分页，配合 order_by 保持分页稳定 |
 | order_by 传 SQL 片段或用户输入 | ORM 里 order_by 该传字段名而不是拼 SQL 字符串，防注入也防字段不存在直接报错 |
 
+@@note tip 让 AI 带你做：第 4 步 — 五张表的 ORM 模型
+模型是后面所有接口的地基。这一步只写模型和种子脚本，接口、认证、检索一律不碰。
+
+```text
+继续这个项目。这一步只做 ORM 模型与种子数据，不写 API、不做认证、不碰 RAG。
+
+约束（照书里的，别自己起名）：
+  - 四个文件：app/models/user.py（User）、case.py（Case）、chat.py（ChatSession + ChatMessageRecord）、
+    document.py（GeneratedDocument）——本章第 ① ③ ④ ⑤ 点。
+  - 表名用 Meta.table 写死：users、cases、chat_sessions、chat_messages、generated_documents
+    （不写就会变成类名小写，跟第 1 章的表清单对不上）。
+  - 字段名不许改：User(id/username/email/hashed_password/nickname/created_at)、
+    Case(id/title/case_number/court/judgment_date/case_type/summary/content/laws)、
+    ChatSession(session_id/user/created_at)、ChatMessageRecord(id/chat_session/role/content/created_at)、
+    GeneratedDocument(id/user/type/title/content/created_at)。
+  - 主键一律 UUIDField(pk=True)；ChatSession 例外：session_id 是 CharField(max_length=64, pk=True)；
+    laws 是 JSONField(default=list)；case_number 必须 unique=True。
+  - 外键都要带 related_name：sessions / messages / documents；GeneratedDocument.user 显式写
+    on_delete=fields.RESTRICT（第 ⑤ 点注释里那段就是原因）。
+  - 新模型要登记进第 3 章 app/db/database.py 的 DB_MODELS，否则表不会建。
+  - 正文里标了「以下省略 6 行」的地方，按这里的约束补全：Case 的 laws 字段、def to_dict(self)
+    的定义与 return { 开头（含 "id": str(self.id)）——后面正文已经给了字典其余键。
+
+产出：
+  - app/models/user.py、case.py、chat.py、document.py
+  - app/db/database.py 的 DB_MODELS 四行
+  - scripts/seed_cases.py 里的 SAMPLE_CASES
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+```bash
+python -c "import app.models.user, app.models.case, app.models.chat, app.models.document; print('models ok')"
+python scripts/seed_cases.py                                          # ✅ 种子数据插入完成，当前共 3 条案例
+docker exec legal-postgres psql -U legal_user -d legal_db -c "\dt"    # 五张表都在，表名是复数
+```
+看到 五个模型都能 import、种子数据进库、psql 里 users / cases / chat_sessions / chat_messages / generated_documents 五张表齐全。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary
 这一章你实际拿到的是**三样东西**：
 | 拿到了什么 | 为什么要紧 |

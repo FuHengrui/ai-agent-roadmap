@@ -559,6 +559,34 @@ CREATE TABLE IF NOT EXISTS chat_history (
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 2 步 — 建库与 7 张表</span>
+<p>把第 1 章的需求文档贴给 AI，再跟上这段。<strong>这一步只碰 SQL，一行 Python 都别写。</strong></p>
+<pre>继续这个项目。这一步只做 MySQL 的建库和 7 张表，不碰模型层、不写后端代码。
+
+约束（照书里的，别自己起名）：
+  - 库名 diabetes，字符集 utf8mb4、排序 utf8mb4_general_ci（第①点）
+  - 7 张表：patients / blood_sugar / diet_records / medications / exercise_records / health_reports / chat_history（第②点）
+  - 患者是 1，其余 6 张都是 N：每张业务表都带 patient_id 外键，全挂在 patients(id) 上
+  - 外键统一 ON DELETE RESTRICT ON UPDATE CASCADE，别用 CASCADE（第④点）
+  - patients：height / weight 是 FLOAT，gender 默认「未知」、diabetes_type 默认「2型」
+  - blood_sugar.measure_type 只存英文：fasting / postprandial / random（第④点）
+  - diet_records 要有 gi_value 和 portion（DEFAULT 1.0）；营养量按「一份」存，录入端别提前乘份数（第⑤点）
+  - medications.dosage 用 VARCHAR 不用 FLOAT；is_active BOOLEAN DEFAULT 1（第⑥点）
+  - exercise_records 必须有 blood_sugar_before / blood_sugar_after（第⑦点）
+  - health_reports 的 period_start / period_end 都 NOT NULL，另有 avg_blood_sugar / time_in_range / risk_level
+  - chat_history.role 只允许 user / assistant（第⑧点）
+
+产出：
+  - 一份建库 SQL：CREATE DATABASE + 7 条 CREATE TABLE，字段与本章第③~⑧点逐字一致
+  - 一段示例数据：至少 1 个患者 + 他名下的几条血糖记录
+
+做完告诉我：每张表存什么、外键为什么用 RESTRICT，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>mysql -u root -p diabetes -e &quot;SHOW TABLES;&quot;                    # 7 张表，一张不少
+mysql -u root -p diabetes -e &quot;SHOW CREATE TABLE blood_sugar&quot;    # 结尾是 FOREIGN KEY ... RESTRICT
+mysql -u root -p diabetes -e &quot;SELECT COUNT(*) FROM patients;&quot;   # 至少 1 条示例患者</pre>
+<p>看到 7 张表、外键挂上、示例患者查得出来。<strong>少一张表或多一列，把报错原文贴回给 AI。</strong></p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

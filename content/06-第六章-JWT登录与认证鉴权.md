@@ -216,6 +216,46 @@ print(payload)   # {'sub': '1', 'iat': 1710..., 'exp': 1710..., ...}
 | 拆开 token 内容有敏感信息 | JWT payload 只 base64 编码**不加密**——别往 payload 放密码等敏感数据 |
 
 
+@@note tip 让 AI 带你做：第 6 步 — 登录发令牌 + 校验中间件
+
+```text
+继续这个项目。这一步只做登录与令牌校验，不写业务接口、不碰 create.py。
+
+约束（照书里的，别自己起名）：
+  - 文件 app/routers/auth.py 里只写 router = APIRouter()，前缀由 main.py 的
+    include_router(..., prefix="/v1/auth") 给；文件里再写一次会拼成 /v1/auth/v1/auth/login（第 ② 点）
+  - 接口 POST /login，两个参数都用 Body(...)，不加 Body 会被当查询参数、传 JSON 就 422
+  - 令牌三段式 HS256，payload 用 sub=str(user_id) + iat + exp，exp 取 Unix 秒；
+    JWT_SECRET / JWT_ALGORITHM / JWT_ACCESS_EXPIRE_SECONDS 三个常量补进 app/config.py
+  - 校验用 HTTPBearer(auto_error=False) + get_current_user_id，头格式是 Authorization: Bearer 加令牌
+  - 语义稳定：没带令牌 401、过期 401、签名无效 403、参数错 400（第 ⑤ 点）
+  - login 是白名单，绝不能挂 Depends(get_current_user_id)（第 ④ 点）
+
+产出：
+  - app/routers/auth.py
+  - app/config.py 里补的三个常量
+  - main.py 里放开 app.include_router(auth.router, prefix="/v1/auth", tags=["认证"])
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+
+```bash
+curl -X POST http://127.0.0.1:8000/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"admin","password":"admin"}'      # code 200，data.token 是两处点号的三段
+curl -i -X POST http://127.0.0.1:8000/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"admin","password":"wrong"}'      # HTTP 401，不是 500
+curl -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8000/v1/test/styles   # 200，测试接口没被误锁
+```
+
+看到登录返回三段式 token、密码错是 401、`/v1/test/styles` 仍是 200，鉴权这一层就算立住了。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary 这一章你学到了什么
 - JWT 三段式：header.payload.signature，HS256 + 服务端 secret 保证不可伪造
 - 签发：payload 用 sub/iat/exp（Unix 秒），PyJWT encode/decode

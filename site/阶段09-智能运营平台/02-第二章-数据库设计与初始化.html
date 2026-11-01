@@ -492,6 +492,32 @@ TORTOISE_ORM = {
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 2 步 — 建库、八张表与连接配置</span>
+<pre>继续这个项目。这一步只把库和八张表建出来、把连接配通，不写接口、不写模型代码。
+
+约束（照书里的，别自己起名）：
+  - 库名 ai_operation，建库必须 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci；
+    建库、.env、config.py 三处必须是同一个库名字符串（第 ⑦ 点）
+  - 八张表：t_users / t_sections / t_titles / t_title_images / t_style / t_models /
+    t_publish_records / t_publish_images，字段照第 ③④⑤ 点的清单，该加索引的加索引
+  - 枚举照第 ⑥ 点写，别自己编号：t_titles.status 0/1/2/3、t_publish_records.platform 1-4、
+    publish_status 0-4；t_title_images.image_type 是 0/1/2，t_publish_images.image_type 是 1/2/3
+  - 种子数据不是可选：t_style 两三套风格（name + fengge）、t_models 一个文本一个图像、t_users 一个管理员
+  - .env 只放 DB_HOST / DB_PORT / DB_USER / DB_PASSWORD / DB_NAME，不进仓库，仓库留 .env.example
+  - app/config.py：load_dotenv + os.getenv，密码过 quote_plus，拼出 DATABASE_URL，
+    TORTOISE_ORM 的 models 固定写 [&quot;app.models&quot;, &quot;aerich.models&quot;]（第 ⑧ 点）
+
+产出：
+  - ai_operation.sql：八张表 DDL + 索引 + 种子数据（第 ⑦ 点的建表脚本，第 5 章正文就叫这个名）
+  - .env、.env.example、app/config.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>mysql -u root -p -e &quot;SHOW DATABASES LIKE &#x27;ai_operation&#x27;;&quot;          # 一行 ai_operation
+mysql -u root -p ai_operation -e &quot;SHOW TABLES;&quot;                    # 正好 8 行
+mysql -u root -p ai_operation -e &quot;SELECT id,name,fengge FROM t_style;&quot;   # 有 2~3 条种子风格</pre>
+<p>看到 8 张表齐全、<code>t_style</code> 里能查到风格和它的 <code>fengge</code> 提示词片段。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

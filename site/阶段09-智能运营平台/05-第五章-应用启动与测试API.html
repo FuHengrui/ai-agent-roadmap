@@ -508,6 +508,30 @@ python -c &quot;from main import app&quot;                      # 应用层</pre
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 5 步 — 服务跑起来 + 第一个只读接口</span>
+<pre>继续这个项目。这一步只让服务能启动、加一个测试接口，不写登录、不写生成。
+
+约束（照书里的，别自己起名）：
+  - main.py：app = FastAPI(title=&quot;智能运营平台&quot;, version=&quot;1.0.0&quot;)；只 include test.router
+    （prefix=&quot;/v1/test&quot;）；auth / create 先建成空壳（各自一行 router = APIRouter()），
+    否则现在启动就 ModuleNotFoundError（第 ① 点）
+  - CORS 中间件四个参数都写全：allow_origins / allow_credentials / allow_methods / allow_headers；
+    联调期 allow_origins 收敛到 http://127.0.0.1:5173，别 * 配 credentials=True（第 ② 点）
+  - app/database.py 写 register_db(app)，在 startup / shutdown 里做 init 与 close（第 ③ 点）
+  - 接口：GET /v1/test/styles，返回 {&quot;code&quot;: 200, &quot;message&quot;: &quot;success&quot;, &quot;data&quot;: [...]}，
+    每条带 id / name / fengge（第 ⑤ 点）
+  - 查询必须 await Style.all()——Tortoise 是异步 ORM，忘了 await 拿到的是协程
+
+产出：
+  - main.py、app/database.py、app/routers/test.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>uv run uvicorn main:app --reload                                  # 日志出现 Uvicorn running on http://127.0.0.1:8000
+curl http://127.0.0.1:8000/v1/test/styles                         # code 200，data 里是种子的风格
+curl -o /dev/null -w &#x27;%{http_code}\n&#x27; http://127.0.0.1:8000/docs  # 200，接口文档能打开</pre>
+<p>看到 <code>/v1/test/styles</code> 返回三件套（code / message / data）且 data 里有种子风格，说明「库 → 后端 → 响应」整条链路通了。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>main.py 三件事：CORS 中间件、APIRouter 路由注册（prefix 前缀）、RegisterTortoise 生命周期</li><li>CORS 参数语义：allow_origins/credentials/methods/headers；"*" 与 credentials=True 互斥</li><li>RegisterTortoise：startup 建连 + shutdown 关连 + generate_schemas=False 不自动建表</li><li>uvicorn 启动：uv run uvicorn main:app --reload；/docs Swagger 面板</li><li>第一个接口 GET /v1/test/styles：await Style.all() + code/message/data 三件套</li><li>全局响应契约：code 业务码 ≠ HTTP 状态码，前端靠 code 分支</li><li>调试顺序：/docs 验路由 → Postman 验头与异常</li><li>启动三板斧：看首条异常 → 分三段验证 import → 查位置与依赖</li></ul>
 <h4>自测：能不能答上来</h4>

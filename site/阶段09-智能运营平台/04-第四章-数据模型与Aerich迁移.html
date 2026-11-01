@@ -528,6 +528,35 @@ aerich upgrade                              # 应用迁移到数据库</pre>
 <p>读迁移文件能回答三类问题：<strong>哪张表哪个字段在哪次变更引入</strong>、<strong>当前库能否升上去</strong>、<strong>回滚是否安全</strong>。排查"库表结构与代码不符"时，第一个看的就是 migrations 最后几个文件。</p>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 4 步 — 八张表的模型与 Aerich 迁移</span>
+<pre>继续这个项目。这一步只写模型和首次迁移，不写接口、不碰 main.py。
+
+约束（照书里的，别自己起名）：
+  - app/models/ 下按表拆文件：__init__.py 统一 re-export，再放 user.py / section.py /
+    title.py / image.py / style.py / model.py / publish.py（第 ① 点）
+  - 每个模型显式 Meta.table，八个表名：t_users / t_sections / t_titles / t_title_images /
+    t_style / t_models / t_publish_records / t_publish_images，别让默认表名生效
+  - 字段类型照第 ② 点对照表：IntField(pk=True)、图片表用 BigIntField(pk=True)、
+    CharField 必须带 max_length、TextField、SmallIntField(default=0)、
+    DatetimeField(auto_now_add=True) / DatetimeField(auto_now=True)
+  - Section 与 Title 之间用普通 IntField 存 section_id，不用 ForeignKeyField（第 ④ 点）；
+    代码里保证引用一致性，查询靠 filter(section_id=...)
+  - 两套 image_type 别混：TitleImage 是 0 正文 / 1 封面 / 2 缩略图，
+    PublishImage 是 1 正文 / 2 封面 / 3 详情图（第 ⑥ 点）
+  - 迁移只走 aerich init -t app.config.TORTOISE_ORM → migrate → upgrade；库已被 SQL 建过，别跑 init-db
+
+产出：
+  - app/models/ 七个模型文件 + __init__.py
+  - migrations/models/ 下的迁移文件（里面是 upgrade() / downgrade()）
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>uv run python -c &quot;from app.models import User, Section, Title, TitleImage, Style, PublishRecord, PublishImage; print(&#x27;7 ok&#x27;)&quot;
+uv run aerich init -t app.config.TORTOISE_ORM       # 生成 migrations 目录与配置
+uv run aerich migrate --name init_models             # 产出迁移脚本
+ls migrations/models                                 # 有 xxx_init_models.py，内含 upgrade()/downgrade()</pre>
+<p>看到 <code>__init__.py</code> 能一次导入七个模型、<code>migrations/models/</code> 下有迁移文件，就说明 Aerich 扫到了全部模型。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>模型放 app/models/ 包，__init__.py 必须导出全部类，Tortoise 按模块路径扫描</li><li>SQL ↔ Tortoise 类型对照：IntField/CharField(max_length)/TextField/SmallIntField/DatetimeField(auto_now_add)</li><li>Meta.table 显式对齐建库 SQL 表名，"user" ≠ "t_users"</li><li>7 张表的模型逐类写法与字段约束（unique、null、default、auto_now）；<code>t_models</code> 说明为何暂不建模</li><li>Section/Title 用普通 IntField 存外键 id 而非 ForeignKeyField：批量插入快但无级联，靠业务保证一致性</li><li>两套 image_type 码值（title 0/1/2, publish 1/2/3），转换必须按表区分</li><li>Aerich 命令链：init -t config → init-db（空库）/ migrate+upgrade（已有库）</li><li>迁移文件结构：upgrade/downgrade 成对出现，排查表结构不一致看这里</li></ul>
 <h4>自测：能不能答上来</h4>

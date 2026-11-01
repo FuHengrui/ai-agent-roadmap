@@ -476,6 +476,30 @@ TORTOISE_ORM = {
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 3 步 — uv 工程骨架与配置三件套</span>
+<pre>继续这个项目。这一步只搭后端工程骨架和配置读取，不写任何接口、不写模型。
+
+约束（照书里的，别自己起名）：
+  - 依赖和版本一律走 uv：uv init / uv venv / uv add，.python-version 钉 3.12，
+    pyproject 里 requires-python = &quot;&gt;=3.12&quot;（第 ② 点）
+  - pyproject.toml 依赖：cozepy、dashscope、fastapi、pyjwt、tortoise-orm[asyncmy]、uvicorn；
+    aerich / python-multipart / python-dotenv 用 uv add 补齐（第 ③ 点）
+  - .env 五类凭据分组；DB_HOST/DB_PORT/DB_USER/DB_PASSWORD/DB_NAME 给默认值兜底，
+    JWT_SECRET、COZE_TOKEN、QWEN_KEY、OSS 密钥一律不给默认值，缺了就报错（第 ④ 点）
+  - app/config.py：load_dotenv() + os.getenv，密码过 quote_plus 再拼 DATABASE_URL，
+    末尾带 charset=utf8mb4（第 ⑤ 点）
+  - TORTOISE_ORM 的 models 列表固定 [&quot;app.models&quot;, &quot;aerich.models&quot;]，timezone 写 Asia/Shanghai
+
+产出：
+  - pyproject.toml、.python-version、.env、.env.example、app/config.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>uv sync                                    # 按锁文件装齐依赖，无报错
+uv run python -c &quot;import fastapi, tortoise, jwt, cozepy, dashscope; print(&#x27;ok&#x27;)&quot;
+uv run python -c &quot;from app.config import TORTOISE_ORM; print(TORTOISE_ORM[&#x27;apps&#x27;][&#x27;models&#x27;][&#x27;models&#x27;])&quot;</pre>
+<p>看到最后一行输出 <code>['app.models', 'aerich.models']</code>，说明配置能被导入、迁移要用的模块名没漏。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>uv 三连：uv init → uv venv → uv add，依赖进 pyproject + uv.lock，可复现构建</li><li>.python-version 钉死 Python 3.12，避免 AI SDK 版本敏感问题</li><li>pyproject.toml：元数据 + 依赖清单 + Aerich 配置入口</li><li>.env 五类配置 + load_dotenv + os.getenv（带默认值兜底，敏感项不给默认）</li><li>config.py：DATABASE_URL 用 quote_plus 编码密码，charset=utf8mb4</li><li>TORTOISE_ORM：connections/apps/models 结构，"app.models" + "aerich.models" 缺一不可</li><li>配置读取两派：轻量 os.getenv 与 pydantic-settings，混用会互相干扰</li><li>uv 日常：uv run/uv add/uv remove/uv sync；IDE 必须切 .venv 解释器</li></ul>
 <h4>自测：能不能答上来</h4>

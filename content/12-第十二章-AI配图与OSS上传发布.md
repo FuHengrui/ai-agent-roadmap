@@ -207,6 +207,48 @@ if resp.status_code == 200:
 | 全链路验收时某步"卡住"但单测都过 | 全链路是"联调问题"高发区：跨站代理、Cookie、时区、字符集任一环错都难查；按"前端→代理→后端→AI→存储"逐段打断点 |
 | 验收只测"成功路径" | 至少要过一遍异常路径（错密码登录、超时重试、OSS 密钥错、发布失败回写），平台才敢交给运营用 |
 
+@@note tip 让 AI 带你做：第 12 步 — 配图转存 OSS + 发布记录
+
+```text
+继续这个项目。这一步只做配图链路与发布记录，不碰选题和文案的生成逻辑。
+
+约束（照书里的，别自己起名）：
+  - 文生图走 dashscope.ImageSynthesis.call(model="qwen-image-2.0-pro", size="960*1696")，
+    结果取 output.results[0].url；别拿识图那条 choices[0].message.content 去解（第 ③ 点）
+  - 百炼返回的是临时链接，必须转存 OSS 后再入库（第 ① 点）
+  - OSS 用 alibabacloud_oss_v2：load_default + StaticCredentialsProvider + oss.Client，
+    不是老版 oss2；oss_key 规则 images/原名_uuid8.ext，防止二次生成互相覆盖（第 ④ 点）
+  - 两种来源统一封装进 upload.py：本地文件用 put_object_from_file，URL 先 requests.get 再 put_object；
+    对外只暴露 upload_image(来源, 目标key) -> public_url（第 ⑤ 点）
+  - 入库 t_title_images：title_id / image_url / image_type（0 正文 1 封面 2 缩略图）/ sort_order
+  - 发布记录 t_publish_records：platform 1 小红书 2 抖音 3 快手 4 公众号，
+    publish_status 走 0 → 1 → 2/3 → 4，跳变算 bug（第 ⑥ 点）
+  - 交付前把 QWEN_KEY、COZE_TOKEN、OSS_ACCESS_KEY_ID、OSS_ACCESS_KEY_SECRET、
+    小红书 Cookie 全换成占位符，不出现真实值（第 ⑦ 点）
+
+产出：
+  - upload.py
+  - scripts/publish-xiaohongshu.mjs（puppeteer 执行器，Cookie 过期/页面改版就失效，别当无人值守）
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+
+```bash
+mysql -u root -p ai_operation -e "SELECT id,title_id,image_type,LEFT(image_url,60) FROM t_title_images ORDER BY id DESC LIMIT 3;"
+      # 新图入库，image_url 是 https://<bucket>.oss... 的常驻地址，不是百炼临时链接
+curl -o /dev/null -w '%{http_code}\n' "$IMG_URL"                  # 200，图能公网打开（$IMG_URL 换成上一条查出来的地址）
+node scripts/publish-xiaohongshu.mjs                              # 能起浏览器；Cookie 过期会提示重新登录
+mysql -u root -p ai_operation -e "SELECT platform,publish_status FROM t_publish_records ORDER BY id DESC LIMIT 3;"
+      # publish_status 是 0→1→2/3 里的值，不跳变
+```
+
+看到 `t_title_images` 里存的是 OSS 地址、浏览器里能直接打开，发布记录的状态也只在自己那几步之间走，配图和发布这条尾巴就接上了。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary 这一章你学到了什么
 - 配图链路：标题+风格 → 拼提示词 → 百炼文生图 → 转存 OSS → 落库
 - 提示词工程：风格（数据驱动）+ 主体 + 文字分支 + 质量约束 + 负向提示词

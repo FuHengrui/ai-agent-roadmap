@@ -204,6 +204,43 @@ async def hot_topic(theme: str) -> str:
 | 把 SDK 原始报错直接回给前端 | 内部细节外泄 + 用户体验差；对外统一 500 提示语 |
 
 
+@@note tip 让 AI 带你做：第 9 步 — AI 调用层收口 coze_agent.py
+
+```text
+继续这个项目。这一步只写 AI 调用层，不碰路由、不碰落库、不解析 JSON。
+
+约束（照书里的，别自己起名）：
+  - 文件 app/agent/coze_agent.py，客户端 Coze(auth=TokenAuth(token=COZE_TOKEN), base_url=COZE_CN_BASE_URL)
+  - COZE_CN_BASE_URL 固定 https://api.coze.cn；不配就走海外域名，token 直接无效（第 ① 点）
+  - 两个入口只回原始文本：async def hot_topic(theme) 与 async def content_creation(...)；
+    必须 async，否则下游 await 会 TypeError（第 ⑥ 点）
+  - 调 Bot 用 create_and_poll + Message.build_user_question_text，别写成 messages；
+    取回答只认 message.type == "answer"，其余是过程消息（第 ③ 点）
+  - 解析一律不在这里做：JSON 解析留给第 10 章 create.py 的 _extract_json（第 ⑥ 点坑位）
+  - 日志 logger = logging.getLogger("coze_agent")：info 记主题与返回字数，except 里
+    exc_info=True 记堆栈，对外统一抛 500「AI 生成失败，请稍后重试」（第 ⑧ 点）
+
+产出：
+  - app/agent/coze_agent.py
+  - 三条日志格式：hot_topic start / hot_topic ok / hot_topic fail
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+
+```bash
+uv run python -c "import asyncio; from app.agent.coze_agent import hot_topic; print(len(asyncio.run(hot_topic('新能源汽车'))))"
+      # 打印一个正数，日志里先 hot_topic start 再 hot_topic ok
+COZE_TOKEN=wrong-token uv run python -c "import asyncio; from app.agent.coze_agent import hot_topic; asyncio.run(hot_topic('新能源汽车'))"
+      # 抛 500，日志里有 hot_topic fail 且带堆栈
+```
+
+看到成功时有 `hot_topic ok`、失败时有 `hot_topic fail | theme=... ` 两行，这一层就算干净了——以后前端报「生成失败」，两分钟能定位到 Coze 还是自己的代码。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary 这一章你学到了什么
 - cozepy SDK：Coze + TokenAuth + COZE_CN_BASE_URL（国内必配）
 - create_and_poll 一步完成发起+轮询；遍历 message 只取 type=="answer"

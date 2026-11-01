@@ -447,6 +447,32 @@ USER_ID=ops_demo</pre>
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 8 步 — 在 Coze 上把选题 Bot 立起来</span>
+<pre>继续这个项目。这一步只在 Coze 平台上建选题 Bot 并定死输出契约，不写后端任何代码。
+
+约束（照书里的，别自己起名）：
+  - Bot 先挂联网搜索插件，否则标题没有时效性、只会编热点（第 ② 点）
+  - 五个板块名一个都不能改：每日行业热点 / 热点榜单 / 专业知识榜单 / 人设共鸣 / 灵感广场
+    —— 板块名会直接落 t_sections.name（第 ③④ 点）
+  - 每个板块 10 条标题、每条不超过 20 字、按 sort_order 1..10 排；缺一不可，生成后要数一遍
+  - 只输出一个 JSON 对象，键就是五个板块名，每条是 {&quot;title&quot;: &quot;...&quot;, &quot;sort_order&quot;: 1}；
+    不要解释文字、不要 markdown 代码围栏（第 ③ 点）
+  - 温度调低（0.3 以下），格式优先于创意（第 ⑤ 点）
+  - 调试完必须「发布」并记下 Bot ID（BOT_ID_TOPIC），没发布调不到（第 ⑦ 点）
+
+产出：
+  - 人设 Prompt 全文（第 ③ 点那三段，可直接贴进人设框）
+  - 一段调试区真实输出，随便存成 out.json 便于验形状
+  - 发布后的 Bot ID，记进 .env 待第 9 章用
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>python -m json.tool out.json          # 不报错：括号、引号、逗号都对，没被解释文字包裹
+python -c &quot;import json;d=json.load(open(&#x27;out.json&#x27;));print(len(d),[len(v) for v in d.values()])&quot;
+                                      # 5 [10, 10, 10, 10, 10]
+grep -c &#x27;一、\|二、&#x27; out.json          # 0：板块名没被写成「一/二/三」</pre>
+<p>看到 <code>5 [10, 10, 10, 10, 10]</code>，说明五板块十标题、纯 JSON 都到位了；再把 Bot ID 填进 <code>.env</code> 进第 9 章。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>Coze 三件套：Bot 人设、插件（联网搜索）、工作流编排</li><li>选题 Bot 使命：输入运营主题 → 结合实时热搜 → 5 板块 × 10 = 50 个标题</li><li>人设 Prompt = 代码：板块结构、条数、字数、JSON 输出全是硬约束</li><li>输出契约先行：JSON 的 key 直接映射数据库表字段，AI 输出生来就能落库</li><li>温度策略：选题低温度保格式，文案高温度保创意，按任务调参</li><li>调试循环：一轮一变量，记录对比，人设要版本管理</li><li>发布与 BOT_ID：发布后才可 API 调用，除人设改动记得重发</li><li>双子 Bot 架构：选题与文案各管一摊，人设聚焦输出才稳定</li></ul>
 <h4>自测：能不能答上来</h4>

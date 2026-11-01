@@ -276,6 +276,50 @@ export function streamSendMessage(message, sessionId) {
 ```
 三个关键点：**TextDecoder 处理 UTF-8 中文断字节**（token 边界可能切在中文中间）；**buffer 保留半行**（网络包可能在 \n 中间断开）；**AbortController 支持用户点"停止生成"**。
 
+@@note tip 让 AI 带你做：第 10 步 — 聊天与文书 API + SSE 推流
+把大脑装进 HTTP 外壳，顺便把"流结束后还能拿到 sources"这个坑填了。页面是下一步的事。
+
+```text
+继续这个项目。这一步只做接口层（聊天 + 文书 + SSE 解析），不写页面、不做部署。
+
+约束（照书里的，别自己起名）：
+  - 文件：app/api/chat.py、app/api/documents.py、前端 src/api/chat.js——本章第 ① ⑦ ⑧ 点。
+  - 路由路径不许改：POST /api/chat/send、POST /api/chat/stream、GET /api/chat/sessions、
+    GET /api/chat/sessions/{id}/messages、DELETE /api/chat/sessions/{id}；
+    GET /api/documents/templates、POST /api/documents/generate、POST /api/documents/generate/stream。
+  - 每个路由都挂 Depends(get_current_user)；请求里带 session_id 就必须先过 _get_owned_session，
+    不存在和越权一律 404，不返回 403（第 ⑤ 点）。
+  - 表用第 4 章的：ChatSession、ChatMessageRecord、GeneratedDocument；每轮写两条消息（user + assistant）。
+  - SSE 帧固定 `data: {JSON}` 加两个换行，结束帧 `data: [DONE]`；错误帧用 {"error": ...} 字段，
+    别把报错塞进 content（否则前端会当成回答显示）。
+  - 落库用累计的 full_text，不是每个 chunk；流断掉也要有落库兜底。
+  - 正文里标了「以下省略 N 行」的地方，按这里的约束补全：
+      · 25 行 = generate() 里 astream 循环（只推 langgraph_node == "qa_generation" 的 token）、
+        流结束后 graph.aget_state 取 sources、落库 full_text、再 yield 一帧 {"sources": ...}；
+      · 4 行 = 会话列表标题（第一条 user 消息截 30 字，空会话给"新对话"）与 result.append 的字段；
+      · 9 行 = templates 返回的其余四类文书 + @router.post("/generate") 的签名 + DocumentAgent 实例；
+      · 22 行 = 前端 fetch 的 body/signal/response.ok 检查、reader + TextDecoder、buffer 拆行、
+        data: 前缀解析。
+
+产出：
+  - app/api/chat.py、app/api/documents.py
+  - src/api/chat.js（前端流式封装）
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+```bash
+curl -s -X POST http://localhost:8000/api/chat/send -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"message":"离婚财产怎么分"}'   # 返回 response/intent/sources/session_id
+curl -sN -X POST http://localhost:8000/api/chat/stream -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"message":"离婚财产怎么分"}'   # 逐帧 data: {"content":...}，最后 [DONE]
+curl -s http://localhost:8000/api/documents/templates                                     # 五类文书
+```
+看到 /send 一次回全文且带 sources、/stream 是一帧一帧蹦出来的、最后有 `[DONE]`、templates 五个类型齐全。
+顺手用别人的 session_id 试一发，应该是 404 不是 200。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary
 这一章你实际拿到的是**三样东西**：
 | 拿到了什么 | 为什么要紧 |

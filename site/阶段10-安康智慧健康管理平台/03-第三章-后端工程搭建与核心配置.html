@@ -546,6 +546,38 @@ netstat -ano | findstr :3306
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 3 步 — uv 工程 + 数据源配置</span>
+<p>把需求文档和上一章的建库 SQL 一起贴给 AI，再跟上这段。<strong>这一步只搭骨架和配置，不写业务逻辑。</strong></p>
+<pre>继续这个项目。这一步只做 uv 工程骨架 + 数据源配置，不写任何增删改查、不接大模型。
+
+约束（照书里的，别自己起名）：
+  - 依赖一次装齐（第①点那一整行）：fastapi、uvicorn[standard]、pydantic-settings、
+    tortoise-orm[asyncmy]、langchain、langchain-openai、langgraph、openai、chromadb、
+    python-dotenv、python-multipart、tzdata。tortoise 必须带 asyncmy 驱动
+  - 目录按第②点：main.py、.env、app/config.py、app/database.py、app/models/（含 __init__.py）、
+    app/schemas/、app/routers/（含 __init__.py）、app/core/
+  - .env 键名固定（第③点）：DB_HOST / DB_PORT / DB_USER / DB_PASSWORD / DB_NAME / LLM_MODEL /
+    LLM_API_KEY / LLM_BASE_URL / LLM_TEMPERATURE / LLM_MAX_TOKENS / BG_LOW_THRESHOLD /
+    BG_HIGH_THRESHOLD / HF_TOKEN / CHROMA_PERSIST_DIR / CHROMA_COLLECTION_NAME / RAG_TOP_K
+  - config.py 里密码必须过 quote_plus 再拼 mysql://user:pwd@host:port/db?charset=utf8mb4（第④点）
+  - TORTOISE_ORM 严格用 connections / apps / default 三个键，&quot;models&quot;: [&quot;app.models&quot;]（第⑤点）
+  - register_db 里 generate_schemas=False：表由第 2 章的 SQL 建，不让 ORM 自动建（第⑥点）
+  - .env 必须进 .gitignore，代码里只 os.getenv 读，不许硬编码 Key
+
+产出：
+  - pyproject.toml / uv.lock
+  - main.py（先只到创建 app，路由留空）
+  - app/config.py、app/database.py、app/models/__init__.py
+  - .env（Key 用占位符，别写真的）
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>uv --version                     # 有版本号
+python --version                 # 3.12.x
+netstat -ano | findstr :3306     # 3306 在监听，MySQL 起来了
+uv run python -c &quot;from app.config import DATABASE_URL; print(DATABASE_URL.split(&#x27;@&#x27;)[1])&quot;   # 打印 host:port/db，密码已编码</pre>
+<p>四条都对，配置链路才算通。<strong>密码带 @ 导致连不上，就是 quote_plus 漏了，把报错贴回去。</strong></p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

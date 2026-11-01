@@ -536,6 +536,38 @@ watch(() =&gt; patientStore.currentPatient?.id, loadAll)  // 切换患者重载<
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 10 步 — 仪表盘与健康评分</span>
+<p>后端 stats 接口已经通了，这一步把它画出来。<strong>只改前端，后端一个字段都别动</strong>——接口不够用就先回第 6 章补。</p>
+<pre>继续这个项目。这一步只做前端仪表盘，不新增后端接口、不改统计口径。
+
+约束（照书里的，别自己起名）：
+  - api/index.ts：axios.create({ baseURL: &#x27;/api&#x27;, timeout: 60000 })（第②点），
+    再按模块导出 bloodSugarApi，stats 走 /blood-sugar/patient/{id}/stats?days=
+  - vite.config.ts 配 devServer 代理 /api → http://localhost:8000（第①点），前端起在 5173
+  - stores/bloodSugar.ts：state 就 records 和 stats 两块，actions 两个
+    fetchRecords(patientId, days=7) / fetchStats(patientId, days=7)（第③点）
+  - utils/charts.ts 两个函数：getBloodSugarChartOption、getHealthScoreOption
+  - 折线图三条 markLine 固定 3.9 / 7.0 / 10.0，yAxis 固定 min 2 max 16 不自动缩放，
+    xAxis 用 category 接记录时间，加 dataZoom inside（第④点）
+  - 图表数据要先把 [{measured_at, value}] 映射成两条平行数组再喂 series，别直接丢 records
+  - gauge：startAngle 200 / endAngle -20、min 0 max 100、pointer 关掉、detail formatter &#x27;{value}分&#x27;，
+    颜色 ≥80 绿、≥60 橙、其余红（第⑤点）
+  - Dashboard.vue 的 healthScore：stats 为空或带 error 或 record_count 为 0 就返回 null（空态，不是 0 分）；
+    达标率 ≥90 得 90、≥70 得 75、≥50 得 60、其余 40（第⑥点）
+  - loadAll 用 Promise.all 并行拉四个接口，onMounted 初载 + watch 患者 id 重载（第⑦点）
+  - 判定规则（risk_level）一律用后端返回值，前端不许自己算一遍
+
+产出：
+  - api/index.ts、stores/bloodSugar.ts、utils/charts.ts
+  - Dashboard.vue（趋势图 + 评分仪表盘 + 今日营养 + 今日用药四块；文件名取自第⑥点，目录按你现有工程放）
+
+做完告诉我：每块 UI 的数据来自哪个接口，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>npm install                       # 依赖装完，无报错
+npm run dev                       # 5173 能打开，/api 请求被代理到 8000
+curl &quot;http://127.0.0.1:8000/api/blood-sugar/patient/1/stats?days=7&quot;   # 先确认后端有 time_in_range</pre>
+<p>看到页面：三条阈值线在、评分有颜色、切患者会重刷。<strong>图表空白多半是 records 没映射成平行数组。</strong></p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

@@ -866,7 +866,21 @@ curl -X POST http://127.0.0.1:8000/api/auth/login \
   -H &#x27;Content-Type: application/json&#x27; \
   -d &#x27;{&quot;username&quot;:&quot;tom&quot;,&quot;password&quot;:&quot;wrong&quot;}&#x27;         # 401，不是 500</pre>
 <p>三条都对，第 1 步就算过。<strong>有一条不对，就把报错原文贴回给 AI，别自己改</strong>——它比你更清楚自己刚写了什么。</p>
-<p>&gt; 效果取决于你用的模型：指令理解差一点的，可能一次做不完或漏掉硬性要求。这时候把「验收结果」贴回去，让它按错的地方改，通常两轮就能收敛。</p></div>
+<p>&gt; 效果取决于你用的模型：指令理解差一点的，可能一次做不完或漏掉硬性要求。这时候把「验收结果」贴回去，让它按错的地方改，通常两轮就能收敛。</p>
+<p><strong>后面 9 步照同一句话改</strong>——把「只做 / 约束 / 产出 / 验收」四块换掉就行，不用重新组织语言。</p>
+<table>
+<tr><th>步</th><th>这一步只做</th><th>做完该看到</th></tr>
+<tr><td>2</td><td><strong>账号系统</strong>：User 表 + bcrypt 哈希 + JWT，<code>/api/auth/register</code>、<code>/api/auth/login</code></td><td>注册 200、重名 400、错密码 401（第 1 步已验过）</td></tr>
+<tr><td>3</td><td><strong>上传</strong>：<code>POST /api/meetings</code> 收 mp3/wav，uuid 落盘，<strong>立刻</strong>返回 id，状态 <code>processing</code></td><td>上传后马上拿到 id，列表里能看到这条 <code>processing</code></td></tr>
+<tr><td>4</td><td><strong>转写</strong>：后台调语音识别，完成后把文字写进 <code>transcript</code></td><td>过一会儿查详情，<code>transcript</code> 有内容，状态还是 <code>processing</code></td></tr>
+<tr><td>5</td><td><strong>摘要与待办</strong>：调 LLM，按四层容错解析 JSON，写 <code>summary</code> 和 <code>todos</code>，然后标 <code>done</code></td><td>详情里有摘要 + 待办列表，每条有待办内容与优先级</td></tr>
+<tr><td>6</td><td><strong>事务边界</strong>：把 LLM / 语音调用<strong>挪到事务外</strong>，只把结果写库放进事务</td><td>处理变慢时，别的接口照样秒回（盯锁等待能看出来）</td></tr>
+<tr><td>7</td><td><strong>失败隔离</strong>：单场出错只把这一场标 <code>failed</code>，别抛到外层</td><td>故意传一个坏文件：只有它失败，其他会议照常处理</td></tr>
+<tr><td>8</td><td><strong>轮询</strong>：<code>GET /api/meetings/{id}</code> + 前端用 <code>setTimeout</code> 链自己续</td><td>列表页状态自动从 <code>processing</code> 变 <code>done</code>，不用手刷</td></tr>
+<tr><td>9</td><td><strong>契约</strong>：前端写 <code>types</code> + <code>Record&lt;MeetingStatus, StatusMeta&gt;</code> 映射</td><td>状态多一个少一个，<code>tsc</code> 立刻报错</td></tr>
+<tr><td>10</td><td><strong>CLAUDE.md</strong>：给 AI 写禁令（项目用 uv，别直接 pip/python）</td><td>新开会话时 AI 按规矩来，不再乱装包</td></tr>
+</table>
+<p><strong>每一步做完就停</strong>，跑完验收再进下一步。一口气让 AI 做十步，它会在中间某处开始糊弄你。</p></div>
 <h2>本章小结</h2>
 <p>这一章没有讲任何新语法，但它可能是整个阶段里最"实战"的一章。</p>
 <p>你学到的是<strong>一条完整的做事链路</strong>：</p>

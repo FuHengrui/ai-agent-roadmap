@@ -537,6 +537,34 @@ asyncio.run(main())</pre>
 <ol><li>查 build_index 是否真的跑过（向量库 count）。</li><li>查 seed_cases 是否先跑（数据源）。</li><li>换更直白的词测试，定位是"模型问题"还是"链路问题"。</li></ol>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 7 步 — 向量化 + Chroma 建索引</span>
+<p>让 cases 表变成"能被语义搜到的向量库"。BM25、重排、Agent 都是下一步的事，这里一个都别加。</p>
+<pre>继续这个项目。这一步只做嵌入与向量库（含建索引脚本），不接 BM25、不做重排、不写 Agent。
+
+约束（照书里的，别自己起名）：
+  - 四个文件：app/rag/embeddings.py（get_embeddings）、app/rag/vector_store.py（VectorStore +
+    init_vector_store / get_vector_store 单例）、scripts/build_index.py、scripts/retrieval_smoke_test.py
+    ——本章第 ② ③ ④ ⑦ ⑧ 点。
+  - 嵌入模型读 settings.EMBEDDING_MODEL，路径从 settings.MODEL_DIR 下的本地目录取，
+    不许写 &quot;BAAI/bge-small-zh&quot; 这种仓库名（第 ② 点：会走 HF 缓存，没网就卡在下载）。
+  - Chroma 三个参数写死：collection_name=&quot;legal_cases&quot;、persist_directory=settings.CHROMA_DIR、
+    collection_metadata={&quot;hnsw:space&quot;: &quot;cosine&quot;}。
+  - Document 的 metadata 键固定这四个加一个：case_number、title、court、case_type、laws
+    （laws 是数组，Chroma 只收标量，入库前拼成 &quot;;&quot; 串）——键名要跟第 8 步的 filters 对齐。
+  - 切块 _split_chunks 按 400 字上下；build_index 幂等靠 get_existing_case_numbers 按 case_number 跳过。
+  - 本章没有「以下省略 N 行」，所以别自己发挥；检索重排逻辑留给第 8 步。
+
+产出：
+  - app/rag/embeddings.py、app/rag/vector_store.py
+  - scripts/build_index.py、scripts/retrieval_smoke_test.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>python scripts/seed_cases.py             # 先有 cases 数据（顺序反了会得到&quot;有数据但库里空&quot;）
+python scripts/build_index.py            # ✅ 索引完成，向量库共 N 条
+python scripts/retrieval_smoke_test.py   # 能搜到离婚相关案例，距离 &lt; 0.7</pre>
+<p>看到 索引脚本报出条数、冒烟脚本用"夫妻闹离婚，房子归谁"能召回离婚类案例且距离小于 0.7。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

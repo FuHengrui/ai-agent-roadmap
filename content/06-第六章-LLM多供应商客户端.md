@@ -257,6 +257,45 @@ asyncio.run(main())
 |---|---|
 | Prompt 里写了禁止事项，输出还是出现 | 角色/规则类指令要放在 system 消息里且靠前，放在 user 消息尾部最容易被忽略或覆盖；验证时多跑几条边界输入看稳定性 |
 
+@@note tip 让 AI 带你做：第 6 步 — LLM 客户端 + prompt 模板
+换供应商只改 .env，改话术只改 prompts.py。检索、Agent、接口这一步都不碰。
+
+```text
+继续这个项目。这一步只做 LLM 层（多供应商客户端 + prompt 模板），不接检索、不做 Agent、不写接口。
+
+约束（照书里的，别自己起名）：
+  - 三个文件：app/llm/model_client.py（get_llm）、app/llm/prompts.py（三组模板）、
+    scripts/llm_smoke_test.py——本章第 ① ④ ⑤ ⑥ ⑧ 点。
+  - get_llm() 返回 BaseChatModel；供应商由 settings.LLM_PROVIDER 决定，deepseek 与 openai 都走
+    ChatOpenAI，参数只用 settings.LLM_MODEL、LLM_API_KEY、LLM_BASE_URL 加 temperature=0.3；
+    未知供应商抛 ValueError。
+  - prompts.py 三样都要有：INTENT_RECOGNITION_PROMPT（few-shot 三条示例 + 只许回 qa/document/search）、
+    QA_SYSTEM_PROMPT（回答原则五条 + 回答结构四段）、DOCUMENT_TEMPLATES 五个 key：
+    civil_complaint、defense_statement、contract、lawyer_letter、appeal_statement。
+  - 意图兜底写在代码里：输出不在三值白名单就退回 qa（第 ④ 点），别在 prompt 里做判断。
+  - temperature 统一 0.3；法律场景不许上 0.7（第 ⑦ 点）。
+  - 正文里标了「以下省略 N 行」的地方，按这里的约束补全：
+      · 7 行 = deepseek 与 openai 两个分支的分流（两家都兼容 OpenAI 协议，都落到下面那个
+        ChatOpenAI 参数块）；
+      · 6 行 = 民事起诉状模板里的"事实与理由 / 证据清单 / 此致 XX 人民法院 / 具状人签名"几段，
+        骨架照第 ⑥ 点给的原被告+诉讼请求那套往下接。
+
+产出：
+  - app/llm/model_client.py、app/llm/prompts.py、scripts/llm_smoke_test.py
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。
+```
+
+**验收**：
+```bash
+python scripts/llm_smoke_test.py                                                      # 打印一句中文回答，不是 401 / Invalid URL
+python -c "from app.llm.prompts import DOCUMENT_TEMPLATES as T; print(sorted(T))"      # 五个 key 都在
+```
+看到 模型真的回了一句话、五个文书模板 key 齐全；把 .env 里 LLM_PROVIDER 改成另一家再跑一遍，脚本仍能出结果。
+
+> 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。
+
+
 @@summary
 这一章你实际拿到的是**三样东西**：
 | 拿到了什么 | 为什么要紧 |

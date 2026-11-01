@@ -578,6 +578,35 @@ python main.py
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 5 步 — main.py 装配 + 患者 CRUD</span>
+<p>模型层写完了，把 main.py 和患者模块一起搭起来。<strong>这一步只做启动装配和患者一个模块</strong>，别的六个模块先不碰。</p>
+<pre>继续这个项目。这一步只做应用启动 + 患者 CRUD，不做血糖/饮食/用药/运动/报告/对话，不接大模型。
+
+约束（照书里的，别自己起名）：
+  - main.py 顺序：建 app → add_middleware(CORS) → include_router(main_router) → register_db(app)（第①点）
+  - CORS 放行 allow_origins=[&quot;*&quot;]；lifespan 用 @asynccontextmanager，先写 pass
+  - register_db 自己写在 app/database.py：register_tortoise(..., generate_schemas=False)（第①点注释）
+  - app/routers/__init__.py 建 main_router，prefix=&quot;/api&quot;，先只 include patient 一个（第②点）
+  - KnowledgeBase 那两行 import 先注释掉——第 11 章才写，现在放开会 ModuleNotFoundError
+  - app/routers/patient.py 的 prefix=&quot;/patients&quot;，五个接口（第⑤点）：
+      GET /、GET /{patient_id}、POST /、PUT /{patient_id}、DELETE /{patient_id}
+  - 查到/查不到一律用 Patient.get_or_none(...)，判空后抛 404「患者不存在」，不许 500
+  - 更新用 data.model_dump(exclude_unset=True)，没传的字段不许被写成 null
+  - Schema 三件套 PatientCreate / PatientUpdate / PatientResponse，Response 带 bmi、bmi_category
+    （第③点），并配 model_config = ConfigDict(from_attributes=True)（第④点）
+
+产出：
+  - main.py、app/database.py、app/routers/__init__.py、app/routers/patient.py
+  - app/schemas/ 下患者三件套
+
+做完告诉我：每个文件负责什么、URL 怎么由三层前缀拼出来，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>python main.py                                                              # 8000 端口起来，日志无报错
+curl http://127.0.0.1:8000/api/patients/                                    # 返回 []
+curl -X POST http://127.0.0.1:8000/api/patients/ -H &quot;Content-Type: application/json&quot; -d &quot;{\&quot;name\&quot;:\&quot;张伟\&quot;,\&quot;age\&quot;:45,\&quot;height\&quot;:175,\&quot;weight\&quot;:80}&quot;   # 返回里有 bmi
+curl http://127.0.0.1:8000/api/patients/999                                  # 404，不是 500</pre>
+<p>四条都对，患者模块就算过。<strong>返回 500 就是 get_or_none 没判空。</strong></p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <p>这一章你实际拿到的是<strong>三样东西</strong>：</p>
 <table>

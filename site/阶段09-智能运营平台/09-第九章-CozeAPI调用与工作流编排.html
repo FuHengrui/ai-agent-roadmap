@@ -464,6 +464,32 @@ async def hot_topic(theme: str) -&gt; str:
 </table>
 </div>
 </div></div>
+<div class="note tip"><span class="t">让 AI 带你做：第 9 步 — AI 调用层收口 coze_agent.py</span>
+<pre>继续这个项目。这一步只写 AI 调用层，不碰路由、不碰落库、不解析 JSON。
+
+约束（照书里的，别自己起名）：
+  - 文件 app/agent/coze_agent.py，客户端 Coze(auth=TokenAuth(token=COZE_TOKEN), base_url=COZE_CN_BASE_URL)
+  - COZE_CN_BASE_URL 固定 https://api.coze.cn；不配就走海外域名，token 直接无效（第 ① 点）
+  - 两个入口只回原始文本：async def hot_topic(theme) 与 async def content_creation(...)；
+    必须 async，否则下游 await 会 TypeError（第 ⑥ 点）
+  - 调 Bot 用 create_and_poll + Message.build_user_question_text，别写成 messages；
+    取回答只认 message.type == &quot;answer&quot;，其余是过程消息（第 ③ 点）
+  - 解析一律不在这里做：JSON 解析留给第 10 章 create.py 的 _extract_json（第 ⑥ 点坑位）
+  - 日志 logger = logging.getLogger(&quot;coze_agent&quot;)：info 记主题与返回字数，except 里
+    exc_info=True 记堆栈，对外统一抛 500「AI 生成失败，请稍后重试」（第 ⑧ 点）
+
+产出：
+  - app/agent/coze_agent.py
+  - 三条日志格式：hot_topic start / hot_topic ok / hot_topic fail
+
+做完告诉我：每个文件负责什么，以及我要跑哪几条命令验证。</pre>
+<p><strong>验收</strong>：</p>
+<pre>uv run python -c &quot;import asyncio; from app.agent.coze_agent import hot_topic; print(len(asyncio.run(hot_topic(&#x27;新能源汽车&#x27;))))&quot;
+      # 打印一个正数，日志里先 hot_topic start 再 hot_topic ok
+COZE_TOKEN=wrong-token uv run python -c &quot;import asyncio; from app.agent.coze_agent import hot_topic; asyncio.run(hot_topic(&#x27;新能源汽车&#x27;))&quot;
+      # 抛 500，日志里有 hot_topic fail 且带堆栈</pre>
+<p>看到成功时有 <code>hot_topic ok</code>、失败时有 <code>hot_topic fail | theme=... </code> 两行，这一层就算干净了——以后前端报「生成失败」，两分钟能定位到 Coze 还是自己的代码。</p>
+<p>&gt; 效果取决于你用的模型：一次做不完或漏掉约束是常见的，把「验收结果」贴回去让它改，通常两轮收敛。</p></div>
 <h2>本章小结</h2>
 <ul><li>cozepy SDK：Coze + TokenAuth + COZE_CN_BASE_URL（国内必配）</li><li>create_and_poll 一步完成发起+轮询；遍历 message 只取 type=="answer"</li><li>chat 生命周期：插件搜热点 → 大模型生成 → 收口返回，单轮 15-90 秒</li><li>HotTopic_Workflow 节点链：开始 → 搜索 → 大模型 → JSON 收口 → 结束</li><li>扣子应用：把工作流发布成可调用端点，与直调 Bot 是两条互补路线</li><li>coze_agent.py 收口全部 AI 调用，路由层只做解析与落库</li><li>健壮性四板斧：超时可重试、限流退避、格式异常可感知、AI 与落库隔离</li><li>agent 层日志规范：入参与成果记 info、异常记 error 带堆栈，对外统一 500</li></ul>
 <h4>自测：能不能答上来</h4>
