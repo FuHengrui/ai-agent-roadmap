@@ -465,8 +465,8 @@
 <p>所有素材都齐了：N 段带字幕的视频 + 1 份旁白音轨 + 1 段背景音乐。<strong>注意：旁白要先和分段视频合并（video_audio_merge），再整体拼接</strong>——漏了这步，成片会只有 BGM 没人声。最后要把它们合成<strong>一条完整成片</strong>——手工剪辑是不可能的。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
-<p>收尾四个节点：</p>
-<ol><li><strong>代码节点</strong>：把"多段视频 URL"转成标准数组（和讲解 ⑥ 同一套路，<code>objs_to_str_list</code> 复用）；</li><li><strong>VideoConcat 插件</strong>：按顺序把多段视频<strong>拼接</strong>成一条（顺序 = 数组顺序，所以文案顺序在源头就不能乱）；</li><li><strong>合并背景音乐</strong>：</li></ol>
+<p>收尾<strong>五个</strong>节点（顺序别调：先让每段都有人声，再拼接）：</p>
+<ol><li><strong>代码节点</strong>：把"多段视频 URL"和"旁白音频 URL"分别转成标准数组（和讲解 ⑥ 同一套路，<code>objs_to_str_list</code> 复用）；</li><li><strong>逐段合旁白</strong>：对每一段调用 <code>video_audio_merge</code>（视频 + 该段旁白）——<strong>这步必须在拼接之前</strong>，否则拼完只剩 BGM；</li><li><strong>VideoConcat 插件</strong>：按顺序把多段<strong>已带旁白</strong>的视频拼接成一条（顺序 = 数组顺序，所以文案顺序在源头就不能乱）；</li><li><strong>合并背景音乐</strong>：</li></ol>
 <ul><li>背景音乐文件先上传到临时文件站（用 tmpfiles 这类服务拿到公网 URL）；</li><li><strong>video_audio_merge</strong> 把视频与音乐合成；</li><li>也可以直接插入"音乐/音效"媒体资源作为节点；</li></ul>
 <ol><li><strong>结束节点</strong>：把最终视频 URL 作为工作流输出，交给 Bot 回复给用户。</li></ol>
 <p>至此，<strong>"诸葛亮生平视频"工作流完整跑通</strong>：人物名 → 完整成片 URL。整套流程零手工、可批量、可重试——这是对话式 Bot 做不到的。</p>

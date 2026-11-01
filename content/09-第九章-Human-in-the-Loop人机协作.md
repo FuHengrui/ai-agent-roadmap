@@ -121,6 +121,7 @@ from langgraph.types import Command
 
 # 1. 危险工具内置 interrupt（见第②点 process_refund）
 # 2. 正常的 agent + tools 图
+graph = StateGraph(AgentState)              # ← 这一步别丢，否则下面全是 NameError
 graph.add_node("agent", agent_node)
 graph.add_node("tools", ToolNode([process_refund, *other_tools]))   # 注意 *，不然整个列表会被当成一个工具
 graph.add_conditional_edges("agent", tools_condition, {"tools": "tools", END: END})

@@ -808,7 +808,7 @@ resp = ImageSynthesis.call(
     size=&quot;1024*1024&quot;,
 )
 print(resp.output.results[0].url)   # 生成图的 URL</pre>
-<p><strong>别把三类接口搞混</strong>：文本对话走 OpenAI 兼容协议；识图（多模态对话）走 <code>MultiModalConversation</code>；<strong>文生图走 <code>ImageSynthesis</code></strong>——返回结构也不一样，图在 <code>output.results[0].url</code>。想看懂流程，先跑通对话，再试识图，最后试生图。</p>
+<p><strong>别把三类接口搞混</strong>：文本对话走 OpenAI 兼容协议；识图走<strong>同一个</strong> OpenAI 兼容协议的 <code>chat.completions</code> + <code>image_url</code>（本章示例即是），只有改用 DashScope 原生 SDK 时才换成 <code>MultiModalConversation</code>（那边 content 结构是 <code>{"image": ...}</code> / <code>{"text": ...}</code>，与 image_url 不同）；<strong>文生图走 <code>ImageSynthesis</code></strong>——返回结构也不一样，图在 <code>output.results[0].url</code>。想看懂流程，先跑通对话，再试识图，最后试生图。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

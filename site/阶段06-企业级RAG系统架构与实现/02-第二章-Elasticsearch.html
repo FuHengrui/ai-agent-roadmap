@@ -544,7 +544,7 @@ POST /_bulk
 </div></div>
 <div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ 分词器：ES 为什么"读不懂"中文</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
-<p>把"养老保险缴费年限"存入 ES，用"养老"去搜，<strong>搜不到</strong>——为什么？因为 ES 默认的 standard 分词器把中文当成"每个汉字一个字"，和"养老"压根不是一个词。搜索引擎的性能依赖"分词"，分错了一切都错。</p>
+<p>把"养老保险缴费年限"存入 ES，用"养老"去搜，<strong>能搜到，但结果很脏</strong>——为什么？因为 ES 默认的 standard 分词器把中文切成"养/老/保/险/缴/费/年/限"单字，<code>match</code> 查询会把"养老"也切成单字，任一命中就返回：噪声一堆、相关性排序也不对。（真要说"完全搜不到"，是把该字段建成 keyword 后用 <code>term</code> 查——那时大小写、全角半角都得完全一致。）搜索引擎的性能依赖"分词"，分错了一切都错。</p>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>分词器（Analyzer）负责把一句话切成"词"，切法决定了索引长什么样：</p>
@@ -814,7 +814,7 @@ public class NewsService {
 <p>A. 存储更省　　B. 词 → 文档映射，免全表扫描　　C. 支持事务　　D. 数据结构更简单</p>
 <ol><li>微博"状态"字段（published/draft）应该用什么类型？</li></ol>
 <p>A. text　　B. keyword　　C. long　　D. date</p>
-<ol><li>默认 standard 分词器搜中文"养老"搜不到"养老保险"的原因？</li></ol>
+<ol><li>默认 standard 分词器下，用"养老"搜"养老保险"能搜到吗？为什么结果会很脏？什么时候才会真的"搜不到"？</li></ol>
 <p>A. ES 不支持中文　　B. 中文被拆成单字，没组合成词　　C. 需要装 License　　D. 数据没写入</p>
 <ol><li>搜索"已发布 + 标题含养老 + 浏览&gt;1000"，过滤条件应放哪？</li></ol>
 <p>A. must（参与打分）　　B. filter（不参与打分，更快）　　C. must_not　　D. 任意处都行</p>

@@ -247,7 +247,7 @@ graph.add_edge("task_c", "merge")
 @@trap 坑在哪
 | 现象 | 原因 |
 |---|---|
-| 多个父节点并发写同一 state 字段互相覆盖 | 并发写必须配 reducer 合并，否则后写覆盖先写 |
+| 多个父节点并发写同一 state 字段互相覆盖 | 并发写必须配 reducer 合并 | 同一 superstep 里对同一通道只能写一次，不配 reducer 会直接抛 `InvalidUpdateError`；只有**串行**（不同 superstep）执行时才是「后写覆盖先写」 |
 | 以为并行节点一定同时执行 | 无依赖才并行；共享状态有依赖时实际串行/合并 |
 
 @@point ⑧ MemorySaver 与 Checkpointer：让状态活下来
