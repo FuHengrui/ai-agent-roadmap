@@ -67,6 +67,7 @@ jobs:
       - name: 构建站点
         run: |
           python tools/build_site.py
+        python tools/build_examples.py
           python tools/build_search.py
           python tools/build_sitemap.py
           python tools/sync_index.py

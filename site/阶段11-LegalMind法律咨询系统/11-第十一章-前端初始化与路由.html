@@ -438,7 +438,7 @@ export const useAuthStore = defineStore(&#x27;auth&#x27;, {
   getters: {
     isAuthenticated: (state) =&gt; !!state.token,
   },
-…（以下省略 7 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 7 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
     logout() {
       this.token = &#x27;&#x27;
       this.user = null
@@ -472,7 +472,7 @@ const http = axios.create({ baseURL: &#x27;/api&#x27;, timeout: 30000 })
 http.interceptors.request.use((config) =&gt; {
   const authStore = useAuthStore()
   if (authStore.token) {
-…（以下省略 11 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 11 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
       authStore.logout()
       router.push({ path: &#x27;/login&#x27;, query: { redirect: router.currentRoute.value.fullPath } })
     }
@@ -506,7 +506,7 @@ function handleLogout() {
   authStore.logout()
   router.push(&#x27;/&#x27;)
 }
-…（以下省略 18 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 18 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
         &lt;/div&gt;
       &lt;/nav&gt;
     &lt;/header&gt;
@@ -534,7 +534,7 @@ const router = useRouter()
 const route = useRoute()
 const mode = ref(&#x27;login&#x27;)          // &#x27;login&#x27; | &#x27;register&#x27;
 const form = ref({ username: &#x27;&#x27;, password: &#x27;&#x27;, confirm: &#x27;&#x27; })
-…（以下省略 18 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 18 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
     router.push(route.query.redirect || &#x27;/&#x27;)
   } catch (e) {
     error.value = e.response?.data?.detail || &#x27;操作失败&#x27;

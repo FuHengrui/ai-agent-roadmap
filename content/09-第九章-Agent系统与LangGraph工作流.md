@@ -88,7 +88,7 @@ def _build_graph(self) -> StateGraph:
     workflow.add_node("document_generation", self._document_node)
     workflow.add_node("final_output", self._output_node)
 
-…（以下省略 11 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 11 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
         "qa": "qa_generation",
         "search": "final_output",
     })
@@ -134,7 +134,7 @@ async def _retrieval_node(self, state: AgentState) -> dict:
     cases = await self.retrieval_agent.retrieve(query=state.get("query"), top_k=5, filters=state.get("filters"))
     return {"retrieved_cases": cases}
 
-…（以下省略 14 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 14 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
 async def _document_node(self, state: AgentState) -> dict:
     response = await self.document_agent.generate(
         document_type=state.get("document_type", "起诉状"),
@@ -189,7 +189,7 @@ _checkpointer: AsyncPostgresSaver | None = None
 async def init_checkpointer():
     """lifespan 启动时调用：建连接池 + 幂等建表"""
     global _pool, _checkpointer
-…（以下省略 4 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 4 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
     _checkpointer = AsyncPostgresSaver(conn=_pool)
     await _checkpointer.setup()      # 自动创建 checkpoints 表
     return _checkpointer

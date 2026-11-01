@@ -514,3 +514,9 @@ th { background: var(--bg-soft); font-weight: 600; }
     .chapter-meta .meta-row { display: block; }
     .chapter-meta .meta-k { display: block; margin-bottom: 2px; }
 }
+/* ---------------- 逐章检查点页 ---------------- */
+.cp-lead { font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+ul.cp { margin: 10px 0 18px; padding-left: 22px; }
+ul.cp li { margin: 6px 0; line-height: 1.75; }
+ul.cp li code { font-size: 13px; }
+h2[id^="p-"] { margin-top: 30px; }

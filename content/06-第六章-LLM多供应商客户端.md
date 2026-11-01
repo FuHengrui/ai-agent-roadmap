@@ -34,7 +34,7 @@ def get_llm() -> BaseChatModel:
     provider = settings.LLM_PROVIDER.lower()
 
     if provider == "deepseek":
-…（以下省略 7 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 7 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
         return ChatOpenAI(
             model=settings.LLM_MODEL,
             api_key=settings.LLM_API_KEY,
@@ -194,7 +194,7 @@ DOCUMENT_TEMPLATES = {
 1. [诉讼请求1]
 2. [诉讼请求2]
 
-…（以下省略 6 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 6 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
 原告：[签名]
 日期：[日期]
 """,

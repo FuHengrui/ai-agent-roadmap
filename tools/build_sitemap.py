@@ -37,7 +37,7 @@ except Exception:  # noqa: BLE001
 BASE = "https://fuhengrui.github.io/ai-agent-roadmap/"
 
 # 根目录下要收录的页面（stats.html 故意不放）
-ROOT_PAGES = ["index.html", "README.html", "search.html"]
+ROOT_PAGES = ["index.html", "README.html", "search.html", "检查点.html"]
 
 
 def url_for(path: str) -> str:

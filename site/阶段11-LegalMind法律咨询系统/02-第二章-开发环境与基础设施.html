@@ -314,7 +314,7 @@ services:
       POSTGRES_PASSWORD: &lt;db_password&gt;
       POSTGRES_DB: legal_db
     ports:
-…（以下省略 18 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 18 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
       test: [&quot;CMD&quot;, &quot;redis-cli&quot;, &quot;ping&quot;]
       interval: 5s
       timeout: 3s
@@ -379,7 +379,7 @@ dependencies = [
     &quot;uvicorn[standard]&quot;,
     &quot;tortoise-orm[asyncpg]&gt;=0.24&quot;,
     &quot;asyncpg&quot;,
-…（以下省略 9 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 9 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
     &quot;psycopg[binary,pool]&gt;=3.2&quot;,
     &quot;sentence-transformers&gt;=5.5&quot;,
     &quot;redis&gt;=8.0&quot;,
@@ -416,7 +416,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = &quot;redis://localhost:6379/0&quot;
 
     LLM_API_KEY: str = &quot;sk-xxx&quot;
-…（以下省略 7 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 7 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
     RAG_TOP_K: int = 5
     RAG_SCORE_THRESHOLD: float = 0.7
     RERANK_ENABLED: bool = True
@@ -473,7 +473,7 @@ python -c &quot;import fastapi, tortoise, langchain, langgraph; print(&#x27;deps
 │   ├── models/              # Tortoise ORM 模型（第 4 章）
 │   │   ├── user.py  case.py  chat.py  document.py
 │   ├── api/                 # 路由层
-…（以下省略 11 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 11 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
 │   │   └── case_service.py
 │   ├── utils/               # 工具
 │   │   └── security.py      # 密码哈希 / JWT（第 5 章）

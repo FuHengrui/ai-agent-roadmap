@@ -373,7 +373,7 @@ router = APIRouter()
 class RegisterRequest(BaseModel):
     username: str
     email: str
-…（以下省略 16 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 16 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
         hashed_password=await run_in_threadpool(get_password_hash, req.password),   # bcrypt ~100ms，同步调用会卡事件循环
         nickname=nickname,
     )
@@ -436,7 +436,7 @@ security = HTTPBearer(auto_error=False)
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     if credentials is None:
-…（以下省略 6 行，按上下文补齐即可，自查见 examples/阶段11-LegalMind/检查点.md）
+…（以下省略 6 行，按上下文补齐即可，自查见「逐章检查点」页（阶段 11 部分））
             raise HTTPException(status_code=401, detail=&quot;无效的认证凭证&quot;)
     except JWTError:
         raise HTTPException(status_code=401, detail=&quot;无效的认证凭证&quot;)
