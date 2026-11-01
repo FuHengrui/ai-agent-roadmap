@@ -421,7 +421,7 @@ http://localhost:8000/v1   ← vLLM 服务</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p>vLLM 的扩展路径：</p>
-<ul><li><strong>张量并行（Tensor Parallelism）</strong>：把模型按权重维度切到多张 GPU 卡上，单卡放不下的大模型靠多卡拼起来（如 70B 模型 FP16 权重约 140GB，要 2×80GB 起、4×80GB 较稳（24GB 卡得 6~8 张，或改量化））。</li><li><strong>多实例/横向扩展</strong>：一台机多实例、多台机负载均衡，承接更大并发。</li><li>与 <strong>Ray</strong> 等分布式框架集成，编排推理集群。</li></ul>
+<ul><li><strong>张量并行（Tensor Parallelism）</strong>：把模型按权重维度切到多张 GPU 卡上，单卡放不下的大模型靠多卡拼起来（如 70B 模型 FP16 权重约 140GB，要 2×80GB 起、4×80GB 较稳（24GB 卡<strong>至少 8 张</strong>（70B FP16 权重 140GB，vLLM 默认只用到 0.9 显存；而且 TP 必须整除注意力头数，TP=6 根本不存在），否则改 4bit/FP8））。</li><li><strong>多实例/横向扩展</strong>：一台机多实例、多台机负载均衡，承接更大并发。</li><li>与 <strong>Ray</strong> 等分布式框架集成，编排推理集群。</li></ul>
 <p>选型参考：先算模型参数"重量"（如 7B FP16 ≈ 14GB），再按单卡显存决定并行度与部署拓扑。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>

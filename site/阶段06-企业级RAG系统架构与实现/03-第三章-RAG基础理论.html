@@ -508,7 +508,7 @@
 <table>
 <tr><th>维度</th><th>RAG</th><th>微调(Fine-tuning)</th></tr>
 <tr><td>本质</td><td>每次回答前<strong>查资料</strong></td><td>把知识<strong>写进模型参数</strong></td></tr>
-<tr><td>知识更新</td><td>改资料即生效，分钟级</td><td>要重新训练，按天计</td></tr>
+<tr><td>知识更新</td><td>改完源文档要重新分块/向量化/入库，通常按<strong>小时级</strong>批处理（不是改完立刻生效）</td><td>要重新训练，按天计</td></tr>
 <tr><td>溯源能力</td><td>每句可指回原文</td><td>无（模型"记住"了但说不出出处）</td></tr>
 <tr><td>数据安全</td><td>私有数据不出本地库</td><td>训练数据进了模型=风险敞口</td></tr>
 <tr><td>成本</td><td>检索服务 + 推理费</td><td>训练算力 + 训练数据准备</td></tr>

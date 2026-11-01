@@ -417,7 +417,7 @@ t2 = cpu_tensor.cuda()                  # 2. .cuda()：快捷写法，等价于 
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td><code>.to('cuda')</code> 但机器无 GPU</td><td>不报错但也没加速；先 <code>torch.cuda.is_available()</code> 确认再写 device 逻辑</td></tr>
+<tr><td><code>.to('cuda')</code> 但机器无 GPU</td><td><strong>直接报错</strong>（<code>RuntimeError: Torch not compiled with CUDA enabled</code>）；先 <code>torch.cuda.is_available()</code> 判断，再决定 device</td></tr>
 <tr><td>CPU 张量和 GPU 张量直接运算</td><td>报 "device mismatch"；把所有张量统一 <code>to(device)</code> 到同一个设备再算</td></tr>
 <tr><td>以为装 GPU 版就自动快了</td><td>数据、模型都要显式 <code>.to(device)</code>，否则全程 CPU</td></tr>
 </table>

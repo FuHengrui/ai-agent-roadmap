@@ -448,7 +448,7 @@ def status(self) -&gt; str:
 <tr><td>value &gt; 上限+3</td><td>高血糖</td></tr>
 </table>
 <p>&gt; <code>measure_type</code> 取值不认识时兜底上限取 7.0（代码里的 <code>.get(..., 7.0)</code>）——<strong>它只是兜底，不是「空腹口径」</strong>。</p>
-<p>注意<strong>边界归属</strong>：<code>&lt; 3.9</code> 才是低血糖（3.9 本身算正常）；每一档都是 <code>(下界, 上界]</code>，也就是<strong>上界归上一档、下界归本档</strong>。写错一个等号，边界值（比如空腹 6.1）就会被判成偏高。</p>
+<p>注意<strong>边界归属</strong>：<code>&lt; 3.9</code> 才是低血糖（3.9 本身算正常）；每一档都是 <code>[下界, 上界]</code>（代码里 <code>&lt; 低值</code> 判低、<code>&lt;= high</code> 判正常），也就是<strong>边界值归本档、不归上一档</strong>。写错一个等号，边界值（比如空腹 6.1）就会被判成偏高。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>

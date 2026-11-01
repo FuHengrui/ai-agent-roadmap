@@ -31,6 +31,7 @@ import uvicorn
 # auth 在第 6 章、create 在第 10 章才写。**本章先只 import test**，
 # 或者先把这两个文件建出来当空壳（各自一行 router = APIRouter()），否则现在跑必 ModuleNotFoundError
 from app.routers import test
+# register_db 要自己在 app/database.py 里写（见下面 ③ 的代码块）
 from app.database import register_db
 
 app = FastAPI(title="智能运营平台", version="1.0.0")

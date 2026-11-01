@@ -156,7 +156,7 @@ RAG Agent（自主决策）：
 
 类比：传统 RAG = 每次出门都背百科全书（不管用不用）；RAG Agent = 需要时再查（手机查资料），还懂得换关键词再搜。
 
-@@point ① 为什么需要 LangSmith：黑盒三问
+@@point ⑥ 为什么需要 LangSmith：黑盒三问
 @@need 要解决什么
 链式调用和 LangGraph 是黑盒：prompt 真正发给模型的内容是什么？哪一步耗时最长？今天跑 50 次花了多少 Token？没有工具，只能 print 调试。
 
@@ -171,7 +171,7 @@ LangSmith 解决的三个问题场景：
 
 类比：没有仪表盘开车，只能凭感觉；LangSmith = 给代码装了个行车记录仪 + 仪表盘。
 
-@@point ② LangSmith 快速上手：三步接入
+@@point ⑦ LangSmith 快速上手：三步接入
 @@need 要解决什么
 怎么注册、怎么配置、怎么看到第一个 Trace？三步走。
 
@@ -206,7 +206,7 @@ chain.invoke({"input": "你好"})
 | API Key 泄漏到仓库 | .env 没进 .gitignore，Key 是敏感信息必须脱敏 |
 | 不知道哪个项目的数据 | LANGCHAIN_PROJECT 没设，默认项目堆一起 |
 
-@@point ③ Trace 面板解读
+@@point ⑧ Trace 面板解读
 @@need 要解决什么
 Trace 有了，怎么看？面板上那些层级、耗时、token 数字怎么读？Debug 时看哪里？
 
@@ -233,7 +233,7 @@ Trace: ChatPromptTemplate | ChatOpenAI | ...
 | 找不到 trace 或面板空白 | 检查 LANGCHAIN_API_KEY/环境变量，或模型后端是否支持 tracing |
 | 只盯 LLM 调用不看工具链 | Trace 要看完整链路：prompt→LLM→工具→结果，瓶颈常藏在工具 |
 
-@@point ④ LangSmith 在生产中的价值
+@@point ⑨ LangSmith 在生产中的价值
 @@need 要解决什么
 "能跑"和"能上线"之间隔着观测与评估。LangSmith 在生产里到底提供什么？
 
@@ -245,16 +245,6 @@ Trace: ChatPromptTemplate | ChatOpenAI | ...
 4. **协作与复现**：Trace 可分享、可回放，团队排查同一个 bug 时有共同视图
 
 上线检查清单：TRACING 开启 ✅ → 项目命名规范 ✅ → 关键毒点（失败率/成本）设预警 ✅ → 定期跑 Eval 回归 ✅。
-
-@@summary 附章你学到了什么
-- 理解 LangSmith 的价值：链式黑盒 → 可视化 Trace，Token/耗时/错误全部可观测
-- 三步接入：注册 → 配 LANGCHAIN_TRACING_V2 + API_KEY + PROJECT → 跑第一个 Trace
-- API Key 安全：不提交 Git、.env 进 .gitignore
-- 读懂 Trace 面板：树形展开、逐层看输入输出、模型层看 token、报错节点精准定位
-- 掌握生产四件套：成本追踪、性能监控、Eval 评估、协作复现
-
-下一章，从"单机 Agent"走向"Agent 互联"：A2A 跨 Agent 协作协议——Agent 之间如何发现彼此、派发任务、传递结果。
-
 
 @@summary 这一章你学到了什么
 - 理解 Agent 三合一：Tools（能力）+ Memory（记忆）+ Graph（流程）缺一不可
@@ -269,7 +259,6 @@ Trace: ChatPromptTemplate | ChatOpenAI | ...
 
 ---
 
-@@h1 附：LangSmith 调试与可观测性
 
 @@trap 坑在哪
 | 现象 | 原因 |

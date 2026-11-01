@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>附：LangSmith 调试与可观测性 · AI Agent 学习路线</title>
+<title>第十章　Agent 实战与 LangSmith 可观测 · AI Agent 学习路线</title>
 <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
@@ -279,7 +279,7 @@
 </nav>
 <main class="main"><div class="wrap">
 <div class="crumb"><a href="../index.html">AI Agent 学习路线</a> › 阶段 8 · AI Agent 智能体与多模态应用 › <strong>第十章</strong></div>
-<h1>附：LangSmith 调试与可观测性</h1>
+<h1>第十章　Agent 实战与 LangSmith 可观测</h1>
 <div class="subtitle">阶段 8 · AI Agent 智能体与多模态应用　|　实践　|　难度 ★★★★</div>
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面九章学了一堆"零件"：工具、记忆、图、MCP、审批流……但零件不等于产品。这一章做两件事：</p>
@@ -418,7 +418,7 @@ RAG Agent（自主决策）：
 <p>类比：传统 RAG = 每次出门都背百科全书（不管用不用）；RAG Agent = 需要时再查（手机查资料），还懂得换关键词再搜。</p>
 </div>
 </div></div>
-<div class="point" id="p6"><div class="head"><span class="no">6</span>① 为什么需要 LangSmith：黑盒三问</div><div class="body">
+<div class="point" id="p6"><div class="head"><span class="no">6</span>⑥ 为什么需要 LangSmith：黑盒三问</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>链式调用和 LangGraph 是黑盒：prompt 真正发给模型的内容是什么？哪一步耗时最长？今天跑 50 次花了多少 Token？没有工具，只能 print 调试。</p>
 </div>
@@ -429,7 +429,7 @@ RAG Agent（自主决策）：
 <p>类比：没有仪表盘开车，只能凭感觉；LangSmith = 给代码装了个行车记录仪 + 仪表盘。</p>
 </div>
 </div></div>
-<div class="point" id="p7"><div class="head"><span class="no">7</span>② LangSmith 快速上手：三步接入</div><div class="body">
+<div class="point" id="p7"><div class="head"><span class="no">7</span>⑦ LangSmith 快速上手：三步接入</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>怎么注册、怎么配置、怎么看到第一个 Trace？三步走。</p>
 </div>
@@ -455,7 +455,7 @@ LANGCHAIN_PROJECT=my-first-project</pre>
 </table>
 </div>
 </div></div>
-<div class="point" id="p8"><div class="head"><span class="no">8</span>③ Trace 面板解读</div><div class="body">
+<div class="point" id="p8"><div class="head"><span class="no">8</span>⑧ Trace 面板解读</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>Trace 有了，怎么看？面板上那些层级、耗时、token 数字怎么读？Debug 时看哪里？</p>
 </div>
@@ -477,7 +477,7 @@ LANGCHAIN_PROJECT=my-first-project</pre>
 </table>
 </div>
 </div></div>
-<div class="point" id="p9"><div class="head"><span class="no">9</span>④ LangSmith 在生产中的价值</div><div class="body">
+<div class="point" id="p9"><div class="head"><span class="no">9</span>⑨ LangSmith 在生产中的价值</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>"能跑"和"能上线"之间隔着观测与评估。LangSmith 在生产里到底提供什么？</p>
 </div>
@@ -488,12 +488,15 @@ LANGCHAIN_PROJECT=my-first-project</pre>
 </div>
 </div></div>
 <h2>本章小结</h2>
-<ul><li>理解 LangSmith 的价值：链式黑盒 → 可视化 Trace，Token/耗时/错误全部可观测</li><li>三步接入：注册 → 配 LANGCHAIN_TRACING_V2 + API_KEY + PROJECT → 跑第一个 Trace</li><li>API Key 安全：不提交 Git、.env 进 .gitignore</li><li>读懂 Trace 面板：树形展开、逐层看输入输出、模型层看 token、报错节点精准定位</li><li>掌握生产四件套：成本追踪、性能监控、Eval 评估、协作复现</li></ul>
-<p>下一章，从"单机 Agent"走向"Agent 互联"：A2A 跨 Agent 协作协议——Agent 之间如何发现彼此、派发任务、传递结果。</p>
-<h2>本章小结</h2>
 <ul><li>理解 Agent 三合一：Tools（能力）+ Memory（记忆）+ Graph（流程）缺一不可</li><li>会用 create_agent + checkpointer + system_prompt 组装个人助手 Agent</li><li>看清单一 Agent 局限：工具堆积、提示词膨胀、无法支撑复杂多领域任务</li><li>掌握 Supervisor 主管模式：主管只做意图分析与任务路由，专业 Agent 执行，主管汇总</li><li>会用 LangGraph 状态图表达多 Agent 协作（Supervisor 中心节点 + 条件边路由）</li><li>掌握 RAG Agent：检索即工具，Agent 自主判断是否检索、换关键词、自我修正</li><li>对比传统 RAG 与 RAG Agent：减少无效检索、支持检索修正</li></ul>
 <p>下一部分：LangSmith 可观测——把黑盒 Agent 变成可视化流程，Token 消耗不再是个谜。</p>
 <p>---</p>
+<p>@@trap 坑在哪</p>
+<table>
+<tr><th>现象</th><th>原因</th></tr>
+<tr><td>不管用户问什么都先检索，Token 白白烧</td><td>RAG Agent 要自主判断"是否需要检索"，不是固定流程</td></tr>
+<tr><td>检索结果不相关也不修正</td><td>Agent 应根据检索质量决定重检索或直接作答</td></tr>
+</table>
 <h4>自测：能不能答上来</h4>
 <ol><li>完整 Agent 的三大组合要素是？</li></ol>
 <p>A. Tools + Memory + Graph　　B. 数据库 + 前端 + 后端　　C. API + SDK + CLI　　D. 提示词 + 模型 + 温度</p>

@@ -328,7 +328,7 @@
 <tr><td><strong>位置 #1</strong></td><td>SOUL.md（你是谁、什么风格）</td><td>最高——人格基准</td></tr>
 <tr><td>位置 2+</td><td>上下文文件、工具说明、用户消息</td><td>相对更低</td></tr>
 </table>
-<p>SOUL.md 放在 #1 位，保证了：<strong>无论后续对话发生什么、用户怎么诱导，Agent 的"人格"都不会被轻易带偏</strong>。这也是为什么它在安全扫描和截断后会<strong>逐字注入</strong>——人格文件不允许被改写或丢弃。</p>
+<p>SOUL.md 放在 #1 位，保证了：<strong>无论后续对话发生什么、用户怎么诱导，Agent 的"人格"都不会被轻易带偏</strong>。这也是为什么它经安全扫描与截断后被<strong>整段注入</strong>（不是原样逐字塞进去）——人格文件不允许被改写或丢弃。</p>
 </div>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
@@ -604,7 +604,7 @@ vim ~/.hermes/SOUL.md
 </table>
 <p>一句话记住本章：<strong>SOUL.md 是 Agent 的身份证，写在系统提示词第一行——"只写'它是什么人'，不写'这次干什么'；改完重启会话再见分晓。"</strong></p>
 <h4>自测：能不能答上来</h4>
-<ol><li>SOUL.md 是什么？它位于哪个目录、在系统提示词中占据什么位置？</li><li>请至少说出 SOUL.md 五条管理规则中的四条，并解释"只从 HERMES_HOME 加载、不在当前工作目录寻找"意味着什么操作习惯。</li><li>SOUL.md 应该包含哪五类内容？哪些内容属于"不该放进 SOUL"的？请各举两个例子。</li><li>"好的 SOUL.md"的四条标准是什么？用你自己的话解释"专注于沟通和身份，而不是特定任务的指令"。</li><li>请参考本章示例，写出一个"三段式" SOUL.md 的骨架（身份/风格/要避免什么各写一行示例即可）。</li><li>用 vim 编辑 SOUL.md 的完整操作序列是什么（打开→编辑→保存退出）？如果你不熟悉 vim，还有什么替代方式？</li><li>个性（personality）和皮肤（skin）的区别是什么？SOUL / USER / AGENTS 三个配置文件各自管什么？</li></ol>
+<ol><li>SOUL.md 是什么？它位于哪个目录、在系统提示词中占据什么位置？</li><li>请至少说出 SOUL.md 五条管理规则中的四条，并解释"只从 HERMES_HOME 加载、不在当前工作目录寻找"意味着什么操作习惯。</li><li>SOUL.md 应该包含哪五类内容？哪些内容属于"不该放进 SOUL"的？请各举两个例子。</li><li>"好的 SOUL.md"的四条标准是什么？用你自己的话解释"专注于沟通和身份，而不是特定任务的指令"。</li><li>请参考本章示例，写出一个"四段式" SOUL.md 的骨架（身份→风格→规避→技术立场）（身份/风格/要避免什么各写一行示例即可）。</li><li>用 vim 编辑 SOUL.md 的完整操作序列是什么（打开→编辑→保存退出）？如果你不熟悉 vim，还有什么替代方式？</li><li>个性（personality）和皮肤（skin）的区别是什么？SOUL / USER / AGENTS 三个配置文件各自管什么？</li></ol>
 <div class="links"><span class="tag">本章配套资料</span>
 <a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener"><span class="k">官网</span>Hermes-Agent 官方网站</a>
 <a href="https://vim.rtorr.com/lang/zh_cn/" target="_blank" rel="noopener"><span class="k">参考</span>Vim 基本操作速查</a>
