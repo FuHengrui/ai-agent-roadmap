@@ -173,7 +173,7 @@ lstm = nn.LSTM(
 
 import torch
 
-x = torch.randn(16, 20, 64)   # [batch, seq_len, hidden]      # [batch, seq, embed]
+x = torch.randn(16, 20, 64)   # [batch, seq, embed]——64 是 input_size，不是 hidden（hidden 是 128）
 out, (h_n, c_n) = lstm(x)
 # out : [16, 20, 128]  每步输出
 # h_n : [2, 16, 128]   每层最后时刻隐藏状态
@@ -186,7 +186,7 @@ out, (h_n, c_n) = lstm(x)
 | 现象 | 原因 / 怎么办 |
 |---|---|
 | 解包写错 | `nn.LSTM` 返回的是 **2 个**：`out, (h_n, c_n) = lstm(x)`；写成三个变量会 ValueError |
-| 想单步自回归却用 out | 推理生成时通常喂上一步的 out 当本步输入，或手动管理 h、c 状态 |
+| 想单步自回归却把 out 当输入 | out 是隐藏态（128 维）、不是输入（64 维），直接喂会报 input_size 不匹配；正确做法是喂「上一步生成的 token 过 Embedding」，并把 (h, c) 传回下一时刻 |
 
 @@point ⑧ LSTM 的局限与后续演进
 @@need 要解决什么

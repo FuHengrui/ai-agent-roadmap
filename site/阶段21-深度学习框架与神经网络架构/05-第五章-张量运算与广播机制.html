@@ -456,7 +456,7 @@ c = a + b                           # (2,2)：b 广播成 [[5,6],[5,6]]</pre>
 <tr><th>函数</th><th>作用</th></tr>
 <tr><td>mean()</td><td>均值</td></tr>
 <tr><td>sum()</td><td>总和</td></tr>
-<tr><td>max() / min()</td><td>最大/最小值（及索引）</td></tr>
+<tr><td>max() / min()</td><td>最大/最小值；<strong>带 dim 时</strong>才同时返回索引（<code>a.max(dim=1)</code> → 命名元组 values/indices）</td></tr>
 <tr><td>median()</td><td>中位数</td></tr>
 <tr><td>std() / var()</td><td>标准差 / 方差</td></tr>
 <tr><td>mode()</td><td>众数及索引</td></tr>
@@ -473,7 +473,7 @@ print(a.mean(dim=1))   # tensor([1.5, 3.5]) 每行均值</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>dim=0 和 dim=1 记反</td><td><strong>dim=0 消除第 0 维（压缩行）→ 按列算；dim=1 消除第 1 维（压缩列）→ 按行算</strong></td></tr>
-<tr><td>wantmax 的索引抓不到</td><td>max/min 返回 (值, 索引) 两个元素；分类任务用 <code>pred.argmax(dim=1)</code> 更常用</td></tr>
+<tr><td>想要最大值的索引</td><td><code>a.max()</code> 只返回值（写 <code>v, i = a.max()</code> 会报 <code>iteration over a 0-d tensor</code>）；要索引用 <code>a.argmax(dim=...)</code>，或 <code>a.max(dim=1)</code> 拿 (值, 索引)</td></tr>
 <tr><td>均值对整型张量报错</td><td>先转浮点：a.float().mean()</td></tr>
 </table>
 </div>

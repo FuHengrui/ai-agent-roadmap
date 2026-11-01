@@ -534,7 +534,7 @@ print(bad())     # 没事   ← 异常无声无息地消失了</pre>
 </div>
 <div class="step idea"><span class="label">核心思路</span>
 <p><strong><code>raise</code> 主动抛出异常</strong>：</p>
-<pre>def set_salary(v):   # 这里演示主动抛异常，故意写成普通函数   # 方法第一个参数是 self，漏了后面 self.salary 就 NameError
+<pre>def set_salary(self, v):   # 演示主动抛异常；方法第一个参数必须是 self
     if v &lt; 0:
         raise ValueError(f&quot;薪资不能为负：{v}&quot;)
     self.salary = v</pre>
@@ -628,7 +628,8 @@ with open(&quot;data.txt&quot;, encoding=&quot;utf-8&quot;) as f:
     fout.write(fin.read())</pre>
 <p><strong>实战里你会遇到的 <code>with</code></strong>：</p>
 <pre>with open(path, encoding=&quot;utf-8&quot;) as f:        # 文件
-with sqlite3.connect(db) as conn:              # 数据库
+with sqlite3.connect(db) as conn:              # 数据库：with 只管事务提交/回滚，**不关连接**
+# 要保证关闭得用 contextlib.closing(sqlite3.connect(db)) 或 try/finally
 with requests.Session() as s:                  # 网络会话（连接复用）
 with lock:                                     # 线程锁</pre>
 </div>
