@@ -284,7 +284,7 @@
 <div class="why"><span class="tag">这一章在解决什么问题</span>
 <p>前面七章读下来，一个灵魂拷问挥之不去：<strong>"自我进化"到底进化在哪？</strong> Agent 有性格（SOUL）、有动作（工具）、有手册（技能）——但它<strong>不记事</strong>：今天聊完，明天它就忘了你是谁、你做过什么、你偏好什么。这样的 Agent 和"一年前认识的陌生人"没区别。</p>
 <p><strong>记忆就是"自我进化"的硬盘</strong>。Hermes 用两个文件承载长期记忆：<strong>MEMORY.md（关于 Agent 指挥者的事实）和 USER.md（关于用户的事实）</strong>，再加上一个会话搜索数据库，构成"长期记忆 + 情景记忆"的双层结构。记不住，一切沉淀都是空谈。</p>
-<p>学完这一章，你能回答：<strong>MEMORY.md 和 USER.md 分别记什么、它们的规模配额（2200/1375 字符）从哪来、memory 工具有哪四个操作、session_search 是什么、记忆文件增长到爆了怎么办</strong>。学完你就能真正开始"打磨"你的 Agent 记忆。</p>
+<p>学完这一章，你能回答：<strong>MEMORY.md 和 USER.md 分别记什么、它们的规模配额（2200/1375 字符）从哪来、memory 工具有哪三个操作、session_search 是什么、记忆文件增长到爆了怎么办</strong>。学完你就能真正开始"打磨"你的 Agent 记忆。</p>
 </div>
 <div class="chapter-meta">
 <div class="meta-row"><span class="meta-k">开始之前</span><div class="meta-v"><p>不用装新东西，用之前的 Hermes 环境；技能那章看过，这章接着讲经验怎么沉淀。</p></div></div>
@@ -370,7 +370,7 @@
 </table>
 </div>
 </div></div>
-<div class="point" id="p4"><div class="head"><span class="no">4</span>④ memory 工具：四个操作管两个文件</div><div class="body">
+<div class="point" id="p4"><div class="head"><span class="no">4</span>④ memory 工具：三个操作管两个文件</div><div class="body">
 <div class="step need"><span class="label">要解决什么</span>
 <p>记忆文件不是手写的，是通过 memory 工具操作。它有哪些动作？每个动作具体做什么？</p>
 </div>
@@ -393,7 +393,7 @@
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>用"记性不好"评价 Agent 不主动写记忆</td><td>检查记忆工具是否可用/开启；也可能模型策略保守，明确说"记住XX"即可触发</td></tr>
 <tr><td>满屏 add 把文件塞爆</td><td>记忆有配额管理（第 ⑤ 点）；写多了要清理/合并，别无限往里塞</td></tr>
-<tr><td>想改记忆却找不到"编辑命令"</td><td>就是 memory replace：先 search 定位旧条目 → replace 成新表述</td></tr>
+<tr><td>想改记忆却找不到"编辑命令"</td><td>就是 memory replace：把旧条目原文（<code>old_text</code>）传进去，换成新表述</td></tr>
 </table>
 </div>
 </div></div>
@@ -407,7 +407,7 @@
 <p>两个含义：<strong>① 记忆是有配额的资源</strong>（类似 SOUL 截断机制）；<strong>② 配额提示你定期 review 记忆，合并冗余、删除过时</strong>。Hermes 文档常见指引"如果达到上限，重新组织和删除陈旧条目"。</p>
 <table>
 <tr><th>动作</th><th>怎么做</th></tr>
-<tr><td>检查占用</td><td>查看记忆文件字符数 / 用 memory search 列全部</td></tr>
+<tr><td>检查占用</td><td>直接看两个 .md 文件的字符数（<code>wc -m ~/.hermes/memories/*.md</code>）</td></tr>
 <tr><td>清理</td><td>删除过时条目、合并相似条目</td></tr>
 <tr><td>重写</td><td>用 replace 重写条目，让表达更紧凑</td></tr>
 </table>
@@ -415,7 +415,7 @@
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>把 2200/1375 当死上限，到数就恐慌</td><td>它们是实例参考值，提示"该整理了"，不是程序崩溃线</td></tr>
+<tr><td>以为 2200/1375 是绝对死线</td><td>它是<strong>可配置</strong>的字符上限（在配置里能改），当前值写超了 add 会失败——先清理再写，别硬塞</td></tr>
 <tr><td>记忆文件超大也不管</td><td>超配额会挤占上下文、降低遵循度；<strong>定期整理记忆</strong>应是使用习惯</td></tr>
 <tr><td>清理时手抖全删</td><td>先备份 MEMORY.md/USER.md 再动手；删了过时条目留核心事实</td></tr>
 </table>
@@ -457,7 +457,7 @@ cat ~/.hermes/memories/USER.md</pre>
 <table>
 <tr><th>维度</th><th>MEMORY.md</th><th>session_search</th></tr>
 <tr><td>内容</td><td>整理好的事实</td><td>全部历史会话原文</td></tr>
-<tr><td>检索方式</td><td>memory search（文件内）</td><td>session_search（数据库全文）</td></tr>
+<tr><td>检索方式</td><td>直接读两个 .md（文件本身就能搜）</td><td>session_search（数据库全文）</td></tr>
 <tr><td>适合</td><td>回答"我记得你偏好X"</td><td>回答"那次我们讨论过X吗"</td></tr>
 </table>
 <p>用法：Agent 遇到"以前聊过但我忘了"的提问，会自动调 session_search 查历史；你也可以直接说"搜一下我们上次聊 XX 的内容"。<strong>两者配合 = "总结知识"+"原始回忆"双保险</strong>。</p>
@@ -465,7 +465,7 @@ cat ~/.hermes/memories/USER.md</pre>
 <div class="step trap"><span class="label">坑在哪</span>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
-<tr><td>用 session_search 查不到"偏好"</td><td>偏好是长期事实，该在 MEMORY.md（memory search），历史会话里未必有</td></tr>
+<tr><td>用 session_search 查不到"偏好"</td><td>偏好是长期事实，该在 MEMORY.md 里（直接读文件），历史会话里未必有</td></tr>
 <tr><td>搜历史没结果就判定"记忆坏了"</td><td>检查 session_search 工具是否开启（第六章工具集）；state.db 是否有数据</td></tr>
 <tr><td>希望"所有对话都自动可搜"</td><td>Hermes 在对话中进行<strong>可传承上下文的存储</strong>，默认可用；极端隐私场景可关注配置</td></tr>
 </table>
@@ -512,7 +512,7 @@ cat ~/.hermes/memories/USER.md</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>写盘后当场对话没变化</td><td>记忆大多在<strong>后续会话</strong>生效（新会话注入）；当前会话未必即时体现</td></tr>
-<tr><td>记忆写错想撤销</td><td>用 memory search 定位该条 → delete 删除，或 replace 改掉</td></tr>
+<tr><td>记忆写错想撤销</td><td>用 memory replace 传 <code>old_text</code> 改成对的，或 memory remove 直接删掉该条</td></tr>
 <tr><td>以为记忆只增不减</td><td>有 delete/replace 就有"遗忘"能力；定期维护=主动遗忘过时项</td></tr>
 </table>
 </div>
@@ -540,7 +540,7 @@ cat ~/.hermes/memories/USER.md</pre>
 <table>
 <tr><th>现象</th><th>原因 / 怎么办</th></tr>
 <tr><td>整理时把"可能有用"的全都留</td><td>这是记忆文件膨胀主因；"可能有用"→ 靠 session_search 兜底，别占长期记忆配额</td></tr>
-<tr><td>删除凭印象不动文件</td><td>删除的是<strong>记忆文件里的条目</strong>，不是聊天记录；先在 list/search 里确认目标</td></tr>
+<tr><td>删除凭印象不动文件</td><td>删除的是<strong>记忆文件里的条目</strong>，不是聊天记录；先在 直接读文件 里确认目标</td></tr>
 <tr><td>整理完没验证</td><td>新会话里抽查一条整理后的记忆，确认 Agent 读到的是新版本</td></tr>
 </table>
 </div>
@@ -601,7 +601,7 @@ cat ~/.hermes/memories/USER.md</pre>
 <tr><td><strong>双层记忆结构</strong>：MEMORY/USER 文件（长期）+ state.db（情景）</td><td>记事本与日记本分工——精而短 + 全而杂，互补不替代</td></tr>
 <tr><td><strong>MEMORY.md</strong>：关于指挥者的希望、目标、事实</td><td>长期记忆的主文件之一，知道它记什么</td></tr>
 <tr><td><strong>USER.md</strong>：关于用户的偏好与细节</td><td>用户画像的持久落盘，跨会话"懂你"的数据源</td></tr>
-<tr><td><strong>memory 四操作</strong>：add / search / replace / delete</td><td>记忆的写、查、改、删——进化的"写盘动作"</td></tr>
+<tr><td><strong>memory 三操作</strong>：add / replace / remove</td><td>记忆的写、改、删——"查"直接读文件就行</td></tr>
 <tr><td><strong>配额意识</strong>：2200/1375 是提示不是死线</td><td>记忆有成本，定期 Review+合并+删除才是健康用法</td></tr>
 <tr><td><strong>session_search</strong>：在历史里翻旧账</td><td>大量原始信息的兜底检索，与长期记忆互补</td></tr>
 <tr><td><strong>三档整理法 + 五问自检</strong></td><td>记忆可维护、可验收，"进化"能落地检查</td></tr>
@@ -625,7 +625,7 @@ cat ~/.hermes/memories/USER.md</pre>
   <a href="#p1" title="记忆的双层结构：长期记忆 + 情景回忆"><span class="n">1</span>记忆的双层结构：长期记忆 + 情景回忆</a>
   <a href="#p2" title="MEMORY.md：关于&quot;你（指挥者）&quot;的事实"><span class="n">2</span>MEMORY.md：关于"你（指挥者）"的事实</a>
   <a href="#p3" title="USER.md：同样关于&quot;你&quot;，为什么还要一个文件"><span class="n">3</span>USER.md：同样关于"你"，为什么还要一个文件</a>
-  <a href="#p4" title="memory 工具：四个操作管两个文件"><span class="n">4</span>memory 工具：四个操作管两个文件</a>
+  <a href="#p4" title="memory 工具：三个操作管两个文件"><span class="n">4</span>memory 工具：三个操作管两个文件</a>
   <a href="#p5" title="配额与基准：2200 和 1375 是&quot;让你注意&quot;的信号"><span class="n">5</span>配额与基准：2200 和 1375 是"让你注意"的信号</a>
   <a href="#p6" title="记忆文件的落盘位置与文件形态"><span class="n">6</span>记忆文件的落盘位置与文件形态</a>
   <a href="#p7" title="session_search：在&quot;日记本&quot;里翻旧账"><span class="n">7</span>session_search：在"日记本"里翻旧账</a>
